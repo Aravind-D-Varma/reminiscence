@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/crime_photo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:srcCompat="@android:color/darker_gray"
+                android:focusable="true"
+                android:background="@drawable/button_border"
+                android:contentDescription="@string/crime_photo_no_image_description"/>
+
+            <ImageButton
+                android:id="@+id/crime_camera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_menu_camera"
+                android:background="@drawable/button_border"
+
+                android:layout_margin="10dp"
+                android:contentDescription="@string/crime_photo_button_description"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="?android:listSeparatorTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/crime_title_label"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/crime_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="Title"
+                android:padding="5dp"
+                android:background="@drawable/button_border"
+                android:hint="@string/crime_title_hint"
+                android:inputType="text" />
+
+            <TextView
+                style="?android:listSeparatorTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/crime_details_label"
+                android:textColor="#1C1C1C"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/crime_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="Title"
+                android:background="@drawable/button_border"
+                android:hint="@string/crime_details_hint"
+                android:padding="5dp"
+                android:inputType="textMultiLine"
+                android:maxLines="6"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/crime_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:elevation="5dp"
+            android:stateListAnimator="@null"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/light_blue"
+            android:drawableLeft="@drawable/baseline_date_range_black_20"/>
+
+        <Button
+            android:id="@+id/crime_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:elevation="5dp"
+            android:stateListAnimator="@null"
+            android:layout_alignParentEnd="true"
+            android:backgroundTint="@color/light_blue"
+            android:textColor="@color/black"
+            android:drawableLeft="@drawable/baseline_schedule_black_20"/>
+    </RelativeLayout>
+
+    <CheckBox
+        android:id="@+id/crime_solved"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/crime_solved_label" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/first_crime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:drawableLeft="@drawable/baseline_arrow_back_black_20"
+            android:padding="0dp"
+            android:text="@string/go_to_first_crime"
+            android:textColor="#3F51B5"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/last_crime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            style="?android:attr/borderlessButtonStyle"
+            android:drawableRight="@drawable/baseline_double_arrow_black_20"
+            android:padding="0dp"
+            android:text="@string/go_to_last_crime"
+            android:textColor="#3F51B5"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/crime_suspect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/crime_report"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="5dp"
+            android:backgroundTint="@color/light_blue"
+            android:elevation="10dp"
+            android:stateListAnimator="@null"
+            android:drawableRight="@drawable/baseline_contacts_black_20"
+            android:layout_centerHorizontal="true"
+            android:text="@string/crime_suspect_text"
+            android:textColor="#171616" />
+
+        <Button
+            android:id="@+id/crime_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/call_suspect"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="5dp"
+            android:elevation="10dp"
+            android:stateListAnimator="@null"
+            android:backgroundTint="@color/light_blue"
+            android:drawableRight="@drawable/baseline_send_20"
+            android:text="@string/crime_report_text"
+            android:textColor="#131313" />
+
+        <Button
+            android:id="@+id/call_suspect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="5dp"
+            android:elevation="10dp"
+            android:stateListAnimator="@null"
+            android:backgroundTint="@color/light_blue"
+            android:drawableRight="@drawable/baseline_call_black_20"
+            android:layout_centerHorizontal="true"
+            android:text="@string/call_suspect"
+            android:textColor="#101010" />
+    </RelativeLayout>
+
+</LinearLayout>
+
+
