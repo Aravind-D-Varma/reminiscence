@@ -260,7 +260,16 @@ public class CrimeFragment extends Fragment {
         mSuspectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(pickContact, REQUEST_CONTACT);
+                if(hasContactPermission()) {
+                    startActivityForResult(pickContact, REQUEST_CONTACT);
+                }
+                else {
+                    requestPermissions(DECLARED_CONTACT_PERMISSIONS, MY_READ_CONTACTS_CODE);
+                    if(hasContactPermission())
+                        startActivityForResult(pickContact, REQUEST_CONTACT);
+                }
+
+
             }
         });
         if(mCrime.getSuspect()!=null)
@@ -345,12 +354,7 @@ public class CrimeFragment extends Fragment {
         }
         else if (requestCode == REQUEST_CONTACT && data!=null){
             getSuspectName(data);
-
-            if(hasContactPermission()) {
-                getSuspectNunber();
-            }
-            else
-                requestPermissions(DECLARED_CONTACT_PERMISSIONS, MY_READ_CONTACTS_CODE);
+            getSuspectNunber();
         }
         else if (requestCode == REQUEST_PHOTO){
             Uri uri = FileProvider.getUriForFile(getActivity(),"com.example.criminalintent.fileprovider",mPhotoFile);
