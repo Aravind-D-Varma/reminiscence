@@ -20,8 +20,8 @@
 
             <ImageView
                 android:id="@+id/crime_photo"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="105dp"
+                android:layout_height="105dp"
                 app:srcCompat="@android:color/darker_gray"
                 android:focusable="true"
                 android:background="@drawable/button_border"
