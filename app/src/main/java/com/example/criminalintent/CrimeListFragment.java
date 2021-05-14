@@ -63,12 +63,7 @@ public class CrimeListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
-            case R.id.new_crime:
-                Crime crime = new Crime();
-                CrimeLab.get(getActivity()).addCrime(crime);
-                updateUI();
-                mCallbacks.onCrimeSelected(crime);
-                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
