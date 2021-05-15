@@ -120,6 +120,7 @@
         android:id="@+id/crime_solved"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:buttonTint="@color/black"
         android:textColor="@color/black"
         android:text="@string/crime_solved_label" />
 

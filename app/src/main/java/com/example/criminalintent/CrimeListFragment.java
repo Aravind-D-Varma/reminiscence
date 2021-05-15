@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -166,6 +167,7 @@ public class CrimeListFragment extends Fragment {
         //region Declarations
         private TextView mTitleTextView;
         private TextView mDateTextView;
+        private ImageView mSolvedImageView;
         private Crime mCrime;
         //endregion
 
@@ -176,7 +178,7 @@ public class CrimeListFragment extends Fragment {
 
                 mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
                 mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
-
+                mSolvedImageView = (ImageView) itemView.findViewById(R.id.crime_solved_preview);
         }
         //endregion
         //region bind
@@ -185,6 +187,10 @@ public class CrimeListFragment extends Fragment {
             String solvedText = mCrime.isSolved()?"Solved":"Not Solved";
             mTitleTextView.setText(mCrime.getTitle()+": "+solvedText);
             mDateTextView.setText("Noticed on: "+DateFormat.getDateInstance(DateFormat.FULL).format(mCrime.getDate()));
+            if(mCrime.isSolved())
+                mSolvedImageView.setImageResource(R.drawable.solved_preview);
+            else
+                mSolvedImageView.setImageResource(R.drawable.not_solved_preview);
         }
         //endregion
 
