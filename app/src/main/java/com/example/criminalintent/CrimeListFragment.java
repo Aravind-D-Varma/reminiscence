@@ -193,14 +193,13 @@ public class CrimeListFragment extends Fragment {
                 mSolvedImageView.setImageResource(R.drawable.not_solved_preview);
         }
         //endregion
-
         //region onClick
         @Override
         public void onClick(View v) {
             //region notifyItemChanged position
             int i = 0;
             for (Crime crime: CrimeLab.get(getActivity()).getCrimes()){
-                if(crime == mCrime) {
+                if(crime.getId().equals(mCrime.getId())) {
                     itemChangedposition = i;
                     break;
                 }
@@ -223,7 +222,6 @@ public class CrimeListFragment extends Fragment {
             mCrimes = crimes;
         }
         //endregion
-
         //region onCreateViewHolder
         @NonNull
         @Override
@@ -232,11 +230,9 @@ public class CrimeListFragment extends Fragment {
             return new CrimeHolder(layoutInflater, parent);
         }
         //endregion
-
         //region onBindViewHolder
         @Override
         public void onBindViewHolder(@NonNull CrimeHolder holder, int position) {
-
             Crime crime = mCrimes.get(position);
             holder.bind(crime);
         }
