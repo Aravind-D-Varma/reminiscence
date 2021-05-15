@@ -1,4 +1,4 @@
-package com.example.criminalintent.database;
+package com.example.criminalintent;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -36,8 +36,6 @@ public class ImagePickerFragment extends DialogFragment {
         ImageView mImageView = v.findViewById(R.id.dialog_imageview);
         mImageView.setImageBitmap(bitmap);
         return new AlertDialog.Builder(getActivity())
-                .setView(v)
-                .setTitle("Crime Instance:")
-                .setPositiveButton(android.R.string.ok, null).show();
+                .setView(v).show();
     }
 }

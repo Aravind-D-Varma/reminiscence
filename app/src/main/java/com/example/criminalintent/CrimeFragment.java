@@ -37,11 +37,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import com.example.criminalintent.database.ImagePickerFragment;
-
-import org.w3c.dom.Text;
-
+import com.example.criminalintent.ImagePickerFragment;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -65,7 +61,9 @@ public class CrimeFragment extends Fragment {
     public static final int REQUEST_PHOTO = 3;
 
     private static final String[] DECLARED_CONTACT_PERMISSIONS = new String[] {Manifest.permission.READ_CONTACTS};
+    private static final String[] DECLARED_PHOTO_PERMISSIONS = new String[] {Manifest.permission.CAMERA};
     private static final int MY_READ_CONTACTS_CODE = 100;
+    private static final int MY_CAMERA_CODE = 101;
 
     private String mSuspectNumber;
     private Crime mCrime;
@@ -85,6 +83,7 @@ public class CrimeFragment extends Fragment {
 
     private File mPhotoFile;
     private String mSuspectId;
+    public int thumbnailWidth, thumbnailHeight;
     //endregion
 
     //region Fragment+Arguments
@@ -293,24 +292,18 @@ public class CrimeFragment extends Fragment {
         //region PhotoButton
         mPhotoButton = (ImageButton)v.findViewById(R.id.crime_camera);
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //boolean canTakePhoto = mPhotoFile!=null && captureImage.resolveActivity(pM)!=null;
-        //mPhotoButton.setEnabled(canTakePhoto);
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = FileProvider.getUriForFile(getActivity()
-                        , "com.example.criminalintent.fileprovider",mPhotoFile);
-                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-
-                List<ResolveInfo> cameraActivities = getActivity().getPackageManager()
-                        .queryIntentActivities(captureImage, PackageManager.MATCH_DEFAULT_ONLY);
-
-                for (ResolveInfo activity: cameraActivities){
-                    getActivity().grantUriPermission(activity.activityInfo.packageName
-                    , uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                if(hasPhotoPermission()) {
+                    takePhoto(captureImage);
                 }
-
-                startActivityForResult(captureImage, REQUEST_PHOTO);
+                else{
+                    requestPermissions(DECLARED_PHOTO_PERMISSIONS, MY_CAMERA_CODE);
+                    if(hasPhotoPermission()){
+                        takePhoto(captureImage);
+                    }
+                }
             }
         });
         //endregion
@@ -319,11 +312,11 @@ public class CrimeFragment extends Fragment {
         mPhotoView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                int thumbnailHeight = mPhotoView.getHeight();
-                int thumbnailWidth =  mPhotoView.getWidth();
+                thumbnailHeight = mPhotoView.getHeight();
+                thumbnailWidth =  mPhotoView.getWidth();
+                updatePhotoView(thumbnailHeight, thumbnailWidth);
             }
         });
-        updatePhotoView(210, 210);
         mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -359,7 +352,7 @@ public class CrimeFragment extends Fragment {
         else if (requestCode == REQUEST_PHOTO){
             Uri uri = FileProvider.getUriForFile(getActivity(),"com.example.criminalintent.fileprovider",mPhotoFile);
             getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            updatePhotoView(210, 210);
+            updatePhotoView(thumbnailHeight, thumbnailWidth);
         }
     }
 
@@ -373,6 +366,12 @@ public class CrimeFragment extends Fragment {
 
         switch(requestCode) {
             case MY_READ_CONTACTS_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
+                }
+            case MY_CAMERA_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
                 } else {
@@ -392,6 +391,20 @@ public class CrimeFragment extends Fragment {
             Bitmap definedBitMap = PictureUtils.getScaledBitMap(mPhotoFile.getPath(), (int) destHeight, (int) destWidth);
             mPhotoView.setImageBitmap(definedBitMap);
         }
+    }
+    private void takePhoto(Intent captureImage) {
+        Uri uri = FileProvider.getUriForFile(getActivity()
+                , "com.example.criminalintent.fileprovider", mPhotoFile);
+        captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+
+        List<ResolveInfo> cameraActivities = getActivity().getPackageManager()
+                .queryIntentActivities(captureImage, PackageManager.MATCH_DEFAULT_ONLY);
+
+        for (ResolveInfo activity : cameraActivities) {
+            getActivity().grantUriPermission(activity.activityInfo.packageName
+                    , uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
+        startActivityForResult(captureImage, REQUEST_PHOTO);
     }
     private void getSuspectNunber() {
         Uri callNumberURI = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
@@ -413,6 +426,10 @@ public class CrimeFragment extends Fragment {
     }
     private boolean hasContactPermission() {
         int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_CONTACT_PERMISSIONS[0]);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+    private boolean hasPhotoPermission() {
+        int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_PHOTO_PERMISSIONS[0]);
         return result == PackageManager.PERMISSION_GRANTED;
     }
     //region update Date and time
