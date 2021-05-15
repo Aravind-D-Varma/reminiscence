@@ -98,8 +98,8 @@
             android:elevation="5dp"
             android:stateListAnimator="@null"
             android:textColor="@color/black"
-            android:backgroundTint="@color/light_blue"
-            android:drawableLeft="@drawable/baseline_date_range_black_20"/>
+            android:backgroundTint="@color/purple_700"
+            android:drawableLeft="@drawable/baseline_date_range_white_20"/>
 
         <Button
             android:id="@+id/crime_time"
@@ -109,15 +109,15 @@
             android:elevation="5dp"
             android:stateListAnimator="@null"
             android:layout_alignParentEnd="true"
-            android:backgroundTint="@color/light_blue"
-            android:textColor="@color/black"
-            android:drawableLeft="@drawable/baseline_schedule_black_20"/>
+            android:backgroundTint="@color/purple_700"
+            android:drawableLeft="@drawable/baseline_time_white_20"/>
     </RelativeLayout>
 
     <CheckBox
         android:id="@+id/crime_solved"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:text="@string/crime_solved_label" />
 
     <RelativeLayout
@@ -161,13 +161,12 @@
             android:layout_above="@+id/crime_report"
             android:layout_alignParentEnd="true"
             android:layout_margin="5dp"
-            android:backgroundTint="@color/light_blue"
+            android:backgroundTint="@color/purple_700"
             android:elevation="10dp"
             android:stateListAnimator="@null"
-            android:drawableRight="@drawable/baseline_contacts_black_20"
+            android:drawableRight="@drawable/contact_white"
             android:layout_centerHorizontal="true"
-            android:text="@string/crime_suspect_text"
-            android:textColor="#171616" />
+            android:text="@string/crime_suspect_text" />
 
         <Button
             android:id="@+id/crime_report"
@@ -178,10 +177,9 @@
             android:layout_margin="5dp"
             android:elevation="10dp"
             android:stateListAnimator="@null"
-            android:backgroundTint="@color/light_blue"
-            android:drawableRight="@drawable/baseline_send_20"
-            android:text="@string/crime_report_text"
-            android:textColor="#131313" />
+            android:backgroundTint="@color/purple_700"
+            android:drawableRight="@drawable/send_white"
+            android:text="@string/crime_report_text" />
 
         <Button
             android:id="@+id/call_suspect"
@@ -192,11 +190,10 @@
             android:layout_margin="5dp"
             android:elevation="10dp"
             android:stateListAnimator="@null"
-            android:backgroundTint="@color/light_blue"
-            android:drawableRight="@drawable/baseline_call_black_20"
+            android:backgroundTint="@color/purple_700"
+            android:drawableRight="@drawable/call_white"
             android:layout_centerHorizontal="true"
-            android:text="@string/call_suspect"
-            android:textColor="#101010" />
+            android:text="@string/call_suspect"/>
     </RelativeLayout>
 
 </LinearLayout>
