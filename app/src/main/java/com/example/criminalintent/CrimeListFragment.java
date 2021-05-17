@@ -184,10 +184,10 @@ public class CrimeListFragment extends Fragment {
         //region bind
         public void bind(Crime crime){
             mCrime = crime;
-            String solvedText = mCrime.isSolved()?"Solved":"Not Solved";
-            mTitleTextView.setText(mCrime.getTitle()+": "+solvedText);
-            mDateTextView.setText("Noticed on: "+DateFormat.getDateInstance(DateFormat.FULL).format(mCrime.getDate()));
-            if(mCrime.isSolved())
+            String solvedText = mCrime.isSolved() ? "Solved" : "Not Solved";
+            mTitleTextView.setText(mCrime.getTitle() + ": " + solvedText);
+            mDateTextView.setText("Noticed on: " + DateFormat.getDateInstance(DateFormat.FULL).format(mCrime.getDate()));
+            if (mCrime.isSolved())
                 mSolvedImageView.setImageResource(R.drawable.solved_preview);
             else
                 mSolvedImageView.setImageResource(R.drawable.not_solved_preview);
@@ -211,12 +211,10 @@ public class CrimeListFragment extends Fragment {
         //endregion
     }
     //endregion
-
     //region CrimeAdapter (our CrimeAdapter)
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder>{
 
         private List<Crime> mCrimes;
-
         // region CrimeAdapter constructor
         public CrimeAdapter(List<Crime> crimes){
             mCrimes = crimes;
@@ -234,7 +232,10 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull CrimeHolder holder, int position) {
             Crime crime = mCrimes.get(position);
-            holder.bind(crime);
+            if(crime.getTitle()==null)
+                CrimeLab.get(getActivity()).deleteCrime(crime);
+            else
+                holder.bind(crime);
         }
         //endregion
 
@@ -242,7 +243,6 @@ public class CrimeListFragment extends Fragment {
         public int getItemCount() {
             return mCrimes.size();
         }
-
         public void setCrimes(List<Crime> crimes){
             mCrimes = crimes;
         }

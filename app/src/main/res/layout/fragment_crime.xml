@@ -44,7 +44,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <TextView
                 style="?android:listSeparatorTextViewStyle"
                 android:layout_width="wrap_content"
@@ -52,35 +51,41 @@
                 android:text="@string/crime_title_label"
                 android:textColor="#000000"
                 android:textStyle="bold" />
-            <EditText
-                android:id="@+id/crime_title"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/crime_text_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints="Title"
-                android:padding="5dp"
-                android:background="@drawable/button_border"
-                android:hint="@string/crime_title_hint"
-                android:inputType="text" />
-
-            <TextView
-                style="?android:listSeparatorTextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/crime_details_label"
-                android:textColor="#1C1C1C"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/crime_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="Title"
-                android:background="@drawable/button_border"
-                android:hint="@string/crime_details_hint"
-                android:padding="5dp"
-                android:inputType="textMultiLine"
-                android:maxLines="6"/>
-
+                android:background="@android:color/transparent"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="none"
+                app:errorEnabled="true">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/crime_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="Title"
+                    android:padding="5dp"
+                    android:background="@drawable/button_border"
+                    android:hint="@string/crime_title_hint"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    style="?android:listSeparatorTextViewStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/crime_details_label"
+                    android:textColor="#1C1C1C"
+                    android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/crime_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="Title"
+                    android:background="@drawable/button_border"
+                    android:hint="@string/crime_details_hint"
+                    android:padding="5dp"
+                    android:inputType="textMultiLine"
+                    android:maxLines="6"/>
         </LinearLayout>
 
     </LinearLayout>

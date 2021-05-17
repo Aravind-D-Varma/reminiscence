@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,6 +39,9 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.example.criminalintent.ImagePickerFragment;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -70,7 +74,8 @@ public class CrimeFragment extends Fragment {
     private List<Crime> mCrimes;
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
-    private EditText mTitleField;
+    private TextInputLayout mTextInputLayout;
+    private TextInputEditText mTitleField;
     private EditText mDetailField;
     private Button mDateButton;
     private Button mSendReportButton;
@@ -141,20 +146,33 @@ public class CrimeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
         mCrimes = CrimeLab.get(getActivity()).getCrimes();
         // region EditText
-        mTitleField = (EditText) v.findViewById(R.id.crime_title);
+        mTextInputLayout = (TextInputLayout) v.findViewById(R.id.crime_text_input_layout);
+        mTitleField = (TextInputEditText) v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mCrime.setTitle(s.toString());
             }
-
             @Override
             public void afterTextChanged(Editable s) {
+                mTextInputLayout.setError(null);
+            }
+        });
+        mTitleField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    if(mTitleField.getText().toString().length()==0) {
+                        mTextInputLayout.setError("Please enter a title or discard this crime");
+                        mTitleField.getBackground().clearColorFilter();
+                    }
+                    else
+                        mTextInputLayout.setError(null);
+                }
             }
         });
         //endregion
@@ -172,7 +190,18 @@ public class CrimeFragment extends Fragment {
             }
             @Override
             public void afterTextChanged(Editable s) {
-
+            }
+        });
+        mDetailField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    if(mDetailField.getText().toString().length()==0){
+                        mDetailField.setError("It is preferred to write some details of the crime");
+                    }
+                    else
+                        mDetailField.setError(null);
+                }
             }
         });
         //endregion
@@ -359,8 +388,14 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        mTitleField.setError(null);
+        if(mCrime.getTitle() == null)
+            CrimeLab.get(getActivity()).deleteCrime(mCrime);
         CrimeLab.get(getActivity()).updateCrime(mCrime);
     }
+
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
