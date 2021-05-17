@@ -27,7 +27,6 @@ public class CrimeListFragment extends Fragment {
 
     //region Declarations
     private static final String SAVE_SUBTITLE = "save_subtitle";
-
     private RecyclerView mRecyclerView;
     private FloatingActionButton mFloatingActionButton;
     private Button mNoCrimeButton;

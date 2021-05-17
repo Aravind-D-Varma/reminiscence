@@ -17,10 +17,20 @@
         android:fullBackupContent="false">
 
         <activity
-            android:name=".CrimeListActivity">
+            android:name=".Launcherclass"
+            android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".CrimeListActivity"
+            android:theme="@style/Theme.CriminalIntent">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
