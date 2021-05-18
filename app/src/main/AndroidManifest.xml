@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.criminalintent">
+    package="com.example.nostalgia">
 
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -17,7 +17,7 @@
         android:fullBackupContent="false">
 
         <activity
-            android:name=".Launcherclass"
+            android:name="com.example.nostalgia.Launcherclass"
             android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +26,7 @@
         </activity>
 
         <activity
-            android:name=".MemoryListActivity"
+            android:name="com.example.nostalgia.MemoryListActivity"
             android:theme="@style/Theme.CriminalIntent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,12 +35,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MemoryPagerActivity"
-            android:parentActivityName=".MemoryListActivity">
+            android:name="com.example.nostalgia.MemoryPagerActivity"
+            android:parentActivityName="com.example.nostalgia.MemoryListActivity">
         </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.criminalintent.fileprovider"
+            android:authorities="com.example.nostalgia.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
