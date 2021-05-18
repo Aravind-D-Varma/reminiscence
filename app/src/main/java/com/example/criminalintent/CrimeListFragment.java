@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.SortedList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -40,11 +41,8 @@ public class CrimeListFragment extends Fragment {
     private Crime mNewCrime;
     private CrimeAdapter mAdapter;
     private Callbacks mCallbacks;
-    private List<Crime> mCrimes = CrimeLab.get(getActivity()).getCrimes();
     private int itemChangedposition;
     private boolean firstTime = true;
-    private Context mContext;
-    private Comparator<Crime> mComparator;
     //endregion
 
     public interface Callbacks{
@@ -63,41 +61,29 @@ public class CrimeListFragment extends Fragment {
         mCallbacks = null;
     }
 
+
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_crime_list, menu);
+        final MenuItem searchItem = menu.findItem(R.id.crime_search_menu);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint(getString(R.string.crime_search_hint));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mAdapter.filter(query);
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.filter(newText);
+                return false;
+            }
+        });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.crime_search_menu:
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    SearchView searchView = (SearchView) item.getActionView();
-                    searchView.setQueryHint(getString(R.string.crime_search_hint));
-                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
-                        @Override
-                        public boolean onQueryTextSubmit(String query) {
-                            return false;
-                        }
-                        @Override
-                        public boolean onQueryTextChange(String newText) {
-                            return false;
-                        }
-                    });
-                    searchView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            
-                        }
-                    });
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +95,6 @@ public class CrimeListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
-
         //region RV and FAB
         mRecyclerView = (RecyclerView) view.findViewById(R.id.crime_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -240,87 +225,11 @@ public class CrimeListFragment extends Fragment {
         //endregion
     }
     //endregion
-    //region SortedList
-    private final SortedList.Callback<Crime> mCallback = new SortedList.Callback<Crime>() {
-        @Override
-        public void onInserted(int position, int count) {
-            mAdapter.notifyItemRangeInserted(position, count);
-        }
-
-        @Override
-        public void onRemoved(int position, int count) {
-            mAdapter.notifyItemRangeRemoved(position, count);
-        }
-
-        @Override
-        public void onMoved(int fromPosition, int toPosition) {
-            mAdapter.notifyItemMoved(fromPosition, toPosition);
-        }
-
-        @Override
-        public void onChanged(int position, int count) {
-            mAdapter.notifyItemRangeChanged(position, count);
-        }
-
-        @Override
-        public int compare(Crime a, Crime b) {
-            return mComparator.compare(a, b);
-        }
-
-        @Override
-        public boolean areContentsTheSame(Crime oldItem, Crime newItem) {
-            return oldItem.equals(newItem);
-        }
-
-        @Override
-        public boolean areItemsTheSame(Crime item1, Crime item2) {
-            return item1.getTitle().equals(item2.getTitle());
-        }
-    };
-    //endregion
-    final SortedList<Crime> list = new SortedList<>(Crime.class, mCallback);
     //region CrimeAdapter (our CrimeAdapter)
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder>{
 
         private List<Crime> mCrimes;
 
-        private final SortedList<Crime> mSortedList = new SortedList<>(Crime.class, new SortedList.Callback<Crime>() {
-            @Override
-            public int compare(Crime a, Crime b) {
-                return mComparator.compare(a, b);
-            }
-
-            @Override
-            public void onInserted(int position, int count) {
-                notifyItemRangeInserted(position, count);
-            }
-
-            @Override
-            public void onRemoved(int position, int count) {
-                notifyItemRangeRemoved(position, count);
-            }
-
-            @Override
-            public void onMoved(int fromPosition, int toPosition) {
-                notifyItemMoved(fromPosition, toPosition);
-            }
-
-            @Override
-            public void onChanged(int position, int count) {
-                notifyItemRangeChanged(position, count);
-            }
-
-            @Override
-            public boolean areContentsTheSame(Crime oldItem, Crime newItem) {
-                return oldItem.equals(newItem);
-            }
-
-            @Override
-            public boolean areItemsTheSame(Crime item1, Crime item2) {
-                return item1.getId() == item2.getId();
-            }
-        });
-        
         // region CrimeAdapter constructor
         public CrimeAdapter(List<Crime> crimes){
             mCrimes = crimes;
@@ -352,38 +261,17 @@ public class CrimeListFragment extends Fragment {
             mCrimes = crimes;
         }
 
-        public void add(Crime model) {
-            mSortedList.add(model);
-        }
-
-        public void remove(Crime model) {
-            mSortedList.remove(model);
-        }
-
-        public void add(List<Crime> models) {
-            mSortedList.addAll(models);
-        }
-
-        public void remove(List<Crime> models) {
-            mSortedList.beginBatchedUpdates();
-            for (Crime model : models) {
-                mSortedList.remove(model);
-            }
-            mSortedList.endBatchedUpdates();
-        }
-
-        public void replaceAll(List<Crime> models) {
-            mSortedList.beginBatchedUpdates();
-            for (int i = mSortedList.size() - 1; i >= 0; i--) {
-                final Crime model = mSortedList.get(i);
-                if (!models.contains(model)) {
-                    mSortedList.remove(model);
+        public void filter(String text) {
+            List<Crime> searchCrimesList = new ArrayList<>();
+            text = text.toLowerCase();
+            for(Crime crime: CrimeLab.get(getActivity()).getCrimes()){
+                if(crime.getTitle().contains(text)){
+                    searchCrimesList.add(crime);
                 }
             }
-            mSortedList.addAll(models);
-            mSortedList.endBatchedUpdates();
+            mAdapter.setCrimes(searchCrimesList);
+            notifyDataSetChanged();
         }
-
     }
     //endregion
 
