@@ -1,39 +1,39 @@
 <resources>
         <string name="app_name">Culpa</string>
-        <string name="crime_title_hint">Enter a title for the crime.</string>
-        <string name="crime_title_label">Title</string>
-        <string name="crime_details_label">Details</string>
-        <string name="crime_solved_label">Solved</string>
-        <string name="date_picker_title">Date of Crime:</string>
-        <string name="time_picker_title">Time of Crime:</string>
-        <string name="new_crime">New Crime</string>
+        <string name="memory_title_hint">Enter a title for the memory.</string>
+        <string name="memory_title_label">Title</string>
+        <string name="memory_details_label">Details</string>
+        <string name="memory_solved_label">Solved</string>
+        <string name="date_picker_title">Date of memory:</string>
+        <string name="time_picker_title">Time of memory:</string>
+        <string name="new_memory">New memory</string>
         <string name="show_total">Total: </string>
-        <string name="subtitle_format">%1$d crimes</string>
+        <string name="subtitle_format">%1$d memorys</string>
         <string name="Delete">Delete</string>
-        <string name="no_crimes_display">There are no crimes to display</string>
-        <string name="no_crime_add">Add a crime?</string>
-        <string name="crime_suspect_text">Choose Suspect</string>
-        <string name="crime_report_text">Send Report</string>
+        <string name="no_memorys_display">There are no memorys to display</string>
+        <string name="no_memory_add">Add a memory?</string>
+        <string name="memory_suspect_text">Choose Suspect</string>
+        <string name="memory_report_text">Send Report</string>
     <plurals name="subtitle_plural">
-                <item quantity="one">%1$d crime</item>
-                <item quantity="other">%1$d crimes</item>
+                <item quantity="one">%1$d memory</item>
+                <item quantity="other">%1$d memorys</item>
     </plurals>
-        <string name="crime_report">%1$s! The crime was discovered on %2$s. %3$s, and %4$s</string>
-        <string name="crime_report_solved">The case is solved</string>
-        <string name="crime_report_unsolved">The case is not solved</string>
-        <string name="crime_report_no_suspect">there is no suspect.</string>
-        <string name="crime_report_suspect">the suspect is %s.</string>
-        <string name="crime_report_subject">CriminalIntent Crime Report</string>
-        <string name="send_report">Send crime report via</string>
+        <string name="memory_report">%1$s! The memory was discovered on %2$s. %3$s, and %4$s</string>
+        <string name="memory_report_solved">The case is solved</string>
+        <string name="memory_report_unsolved">The case is not solved</string>
+        <string name="memory_report_no_suspect">there is no suspect.</string>
+        <string name="memory_report_suspect">the suspect is %s.</string>
+        <string name="memory_report_subject">CriminalIntent memory Report</string>
+        <string name="send_report">Send memory report via</string>
         <string name="call_suspect">Call suspect</string>
-        <string name="go_to_last_crime">Last crime</string>
-        <string name="go_to_first_crime">First crime</string>
-        <string name="crime_photo_button_description">Take photo of crime scene</string>
-        <string name="crime_photo_no_image_description">Crime scene photo (not set)</string>
-        <string name="crime_photo_image_description">Crime scene photo (set)</string>
-        <string name="crime_details_hint">Enter crime details</string>
+        <string name="go_to_last_memory">Last memory</string>
+        <string name="go_to_first_memory">First memory</string>
+        <string name="memory_photo_button_description">Take photo of memory scene</string>
+        <string name="memory_photo_no_image_description">memory scene photo (not set)</string>
+        <string name="memory_photo_image_description">memory scene photo (set)</string>
+        <string name="memory_details_hint">Enter memory details</string>
     <string name="search">Search</string>
-    <string name="crime_search_hint">Search crime</string>
+    <string name="memory_search_hint">Search memory</string>
 
 
 </resources>

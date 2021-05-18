@@ -26,7 +26,7 @@
         </activity>
 
         <activity
-            android:name=".CrimeListActivity"
+            android:name=".MemoryListActivity"
             android:theme="@style/Theme.CriminalIntent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,8 +35,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CrimePagerActivity"
-            android:parentActivityName=".CrimeListActivity">
+            android:name=".MemoryPagerActivity"
+            android:parentActivityName=".MemoryListActivity">
         </activity>
         <provider
             android:name="androidx.core.content.FileProvider"

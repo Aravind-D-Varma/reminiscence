@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/memory_photo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@android:color/darker_gray"
+                android:focusable="true"
+                android:background="@drawable/button_border"
+                android:contentDescription="@string/memory_photo_no_image_description"/>
+
+            <ImageButton
+                android:id="@+id/memory_camera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_menu_camera"
+                android:background="@drawable/button_border"
+
+                android:layout_margin="10dp"
+                android:contentDescription="@string/memory_photo_button_description"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                style="?android:listSeparatorTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/memory_title_label"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/memory_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="none"
+                app:errorEnabled="true">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/memory_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="Title"
+                    android:padding="5dp"
+                    android:background="@drawable/button_border"
+                    android:hint="@string/memory_title_hint"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    style="?android:listSeparatorTextViewStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/memory_details_label"
+                    android:textColor="#1C1C1C"
+                    android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/memory_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="Title"
+                    android:background="@drawable/button_border"
+                    android:hint="@string/memory_details_hint"
+                    android:padding="5dp"
+                    android:inputType="textMultiLine"
+                    android:maxLines="6"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/memory_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:elevation="5dp"
+            android:padding="5dp"
+            android:background="@drawable/button_border"
+            android:backgroundTint="@color/purple_700"
+            android:drawableLeft="@drawable/baseline_date_range_white_20"/>
+
+        <Button
+            android:id="@+id/memory_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:elevation="5dp"
+            android:padding="5dp"
+            android:background="@drawable/button_border"
+            android:layout_alignParentEnd="true"
+            android:backgroundTint="@color/purple_700"
+            android:drawableLeft="@drawable/baseline_time_white_20"/>
+    </RelativeLayout>
+
+    <CheckBox
+        android:id="@+id/memory_solved"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/black"
+        android:textColor="@color/black"
+        android:text="@string/memory_solved_label" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/first_memory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:drawableLeft="@drawable/baseline_arrow_back_black_20"
+            android:padding="0dp"
+            android:text="@string/go_to_first_memory"
+            android:textColor="#3F51B5"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/last_memory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            style="?android:attr/borderlessButtonStyle"
+            android:drawableRight="@drawable/baseline_double_arrow_black_20"
+            android:padding="0dp"
+            android:text="@string/go_to_last_memory"
+            android:textColor="#3F51B5"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/memory_suspect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/memory_report"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="5dp"
+            android:padding="10dp"
+            android:drawablePadding="5dp"
+            android:backgroundTint="@color/purple_700"
+            android:elevation="10dp"
+            android:background="@drawable/button_border"
+            android:drawableRight="@drawable/contact_white"
+            android:layout_centerHorizontal="true"
+            android:text="@string/memory_suspect_text" />
+
+        <Button
+            android:id="@+id/memory_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/call_suspect"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="5dp"
+            android:elevation="10dp"
+            android:padding="10dp"
+            android:drawablePadding="5dp"
+            android:background="@drawable/button_border"
+            android:backgroundTint="@color/purple_700"
+            android:drawableRight="@drawable/send_white"
+            android:text="@string/memory_report_text" />
+
+        <Button
+            android:id="@+id/call_suspect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="5dp"
+            android:elevation="10dp"
+            android:padding="10dp"
+            android:drawablePadding="5dp"
+            android:background="@drawable/button_border"
+            android:backgroundTint="@color/purple_700"
+            android:drawableRight="@drawable/call_white"
+            android:layout_centerHorizontal="true"
+            android:text="@string/call_suspect"/>
+    </RelativeLayout>
+
+</LinearLayout>
+
+
