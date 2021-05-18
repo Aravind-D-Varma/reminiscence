@@ -8,6 +8,16 @@ public class Memory {
     //region Declarations
     private UUID mId;
     private String mTitle;
+    private String mEvent;
+
+    public String getEvent() {
+        return mEvent;
+    }
+
+    public void setEvent(String event) {
+        mEvent = event;
+    }
+
     private Date mDate;
     private boolean mSolved;
     private String mSuspect;
@@ -61,14 +71,6 @@ public class Memory {
 
     public void setDate(Date date) {
         mDate = date;
-    }
-
-    public boolean isSolved() {
-        return mSolved;
-    }
-
-    public void setSolved(boolean solved) {
-        mSolved = solved;
     }
 
     public String getSuspect() {

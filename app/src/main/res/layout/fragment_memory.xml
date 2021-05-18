@@ -94,8 +94,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/memory_date"
@@ -121,13 +120,26 @@
             android:drawableLeft="@drawable/baseline_time_white_20"/>
     </RelativeLayout>
 
-    <CheckBox
-        android:id="@+id/memory_solved"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:buttonTint="@color/black"
-        android:textColor="@color/black"
-        android:text="@string/memory_solved_label" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Spinner
+            android:id="@+id/memory_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="9dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_border"
+            android:backgroundTint="@color/purple_700"
+            android:popupBackground="@color/purple_700"
+            android:dropDownWidth="match_parent"
+            android:padding="5dp"
+            android:elevation="5dp"
+            android:spinnerMode="dropdown" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -177,38 +189,26 @@
             android:background="@drawable/button_border"
             android:drawableRight="@drawable/contact_white"
             android:layout_centerHorizontal="true"
-            android:text="@string/memory_suspect_text" />
+            android:text="@string/memory_contact_text" />
 
         <Button
             android:id="@+id/memory_report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/call_suspect"
+
             android:layout_alignParentEnd="true"
-            android:layout_margin="5dp"
-            android:elevation="10dp"
-            android:padding="10dp"
-            android:drawablePadding="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/button_border"
             android:backgroundTint="@color/purple_700"
             android:drawableRight="@drawable/send_white"
-            android:text="@string/memory_report_text" />
-
-        <Button
-            android:id="@+id/call_suspect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="5dp"
+            android:drawablePadding="5dp"
             android:elevation="10dp"
             android:padding="10dp"
-            android:drawablePadding="5dp"
-            android:background="@drawable/button_border"
-            android:backgroundTint="@color/purple_700"
-            android:drawableRight="@drawable/call_white"
-            android:layout_centerHorizontal="true"
-            android:text="@string/call_suspect"/>
+            android:text="@string/memory_report_text" />
     </RelativeLayout>
 
 </LinearLayout>

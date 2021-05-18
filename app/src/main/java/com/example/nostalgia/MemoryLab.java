@@ -93,7 +93,7 @@ public class MemoryLab {
         ContentValues value = new ContentValues();
         value.put(memoryTable.Columns.UUID, memory.getId().toString());
         value.put(memoryTable.Columns.DATE, memory.getDate().getTime());
-        value.put(memoryTable.Columns.SOLVED, memory.isSolved()?1:0);
+        value.put(memoryTable.Columns.EVENT, memory.getEvent());
         value.put(memoryTable.Columns.TITLE, memory.getTitle());
         value.put(memoryTable.Columns.SUSPECT, memory.getSuspect());
         value.put(memoryTable.Columns.NUMBER, memory.getNumber());

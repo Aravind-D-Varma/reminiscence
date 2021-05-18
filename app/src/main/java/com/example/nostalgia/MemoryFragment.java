@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -19,12 +20,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,6 +46,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -75,13 +81,15 @@ public class MemoryFragment extends Fragment {
     private Button mSuspectButton;
     private Button mCallButton;
     private Button mTimeButton;
-    private CheckBox mSolvedCheckBox;
+    private Spinner mSpinner;
     private static Button mFirstmemory;
     private static Button mLastmemory;
 
     private File mPhotoFile;
     private String mSuspectId;
     public int thumbnailWidth, thumbnailHeight;
+    private boolean userTouch;
+    private static final String[] paths = {"Student life" , "Work", "Home", "Birthday", "Hangouts", "Festival"};
     //endregion
 
     //region Fragment+Arguments
@@ -225,12 +233,19 @@ public class MemoryFragment extends Fragment {
         });
         //endregion
         //region SolvedCheckbox
-        mSolvedCheckBox = (CheckBox) v.findViewById(R.id.memory_solved);
-        mSolvedCheckBox.setChecked(mMemory.isSolved());
-        mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+        mSpinner = (Spinner) v.findViewById(R.id.memory_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.myspinner,paths);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinner.setAdapter(adapter);
+        mSpinner.setSelection(Arrays.asList(paths).indexOf(mMemory.getEvent()),false);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mMemory.setSolved(isChecked);
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    mMemory.setEvent(paths[position]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
         //endregion
@@ -300,15 +315,7 @@ public class MemoryFragment extends Fragment {
 
         //endregion
         //region CallButton
-        mCallButton = (Button) v.findViewById(R.id.call_suspect);
-        mCallButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri number = Uri.parse("tel:"+mMemory.getNumber());
-                Intent callContact = new Intent(Intent.ACTION_DIAL, number);
-                startActivity(callContact);
-            }
-        });
+
         //endregion
         PackageManager pM = getActivity().getPackageManager();
         //region PhotoButton
@@ -386,8 +393,6 @@ public class MemoryFragment extends Fragment {
             MemoryLab.get(getActivity()).deleteMemory(mMemory);
         MemoryLab.get(getActivity()).updateMemory(mMemory);
     }
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -470,12 +475,6 @@ public class MemoryFragment extends Fragment {
     }
     //endregion
     private String getmemoryReport(){
-        String solvedString;
-        if(mMemory.isSolved())
-            solvedString = getString(R.string.memory_solved_label);
-        else
-            solvedString = getString(R.string.memory_report_unsolved);
-
         String dateString = DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate());
 
         String suspect = mMemory.getSuspect();
@@ -484,7 +483,7 @@ public class MemoryFragment extends Fragment {
         else
             suspect = getString(R.string.memory_report_no_suspect);
 
-        return getString(R.string.memory_report, mMemory.getTitle(), dateString, solvedString, suspect);
+        return getString(R.string.memory_report, mMemory.getTitle(), dateString, suspect);
     }
     private void getSuspectName( Intent data) {
         Uri contactURI = data.getData();

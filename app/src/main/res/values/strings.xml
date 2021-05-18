@@ -12,13 +12,13 @@
         <string name="Delete">Delete</string>
         <string name="no_memorys_display">There are no memories to display</string>
         <string name="no_memory_add">Add a memory?</string>
-        <string name="memory_suspect_text">Choose Suspect</string>
+        <string name="memory_contact_text">Choose Contact</string>
         <string name="memory_report_text">Send Report</string>
     <plurals name="subtitle_plural">
                 <item quantity="one">%1$d memory</item>
                 <item quantity="other">%1$d memories</item>
     </plurals>
-        <string name="memory_report">%1$s! The memory was discovered on %2$s. %3$s, and %4$s</string>
+        <string name="memory_report">%1$s! The memory was discovered on %2$s. %3$s</string>
         <string name="memory_report_solved">The case is solved</string>
         <string name="memory_report_unsolved">The case is not solved</string>
         <string name="memory_report_no_suspect">there is no suspect.</string>

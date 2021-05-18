@@ -47,7 +47,6 @@ com/example/nostalgia/MemoryFragment.java
  com.example.nostalgia.MemoryFragment$12
  com.example.nostalgia.MemoryFragment$13
  com.example.nostalgia.MemoryFragment$14
- com.example.nostalgia.MemoryFragment$15
  com.example.nostalgia.MemoryFragment$2
  com.example.nostalgia.MemoryFragment$3
  com.example.nostalgia.MemoryFragment$4

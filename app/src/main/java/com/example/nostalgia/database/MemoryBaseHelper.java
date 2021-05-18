@@ -21,7 +21,7 @@ public class MemoryBaseHelper extends SQLiteOpenHelper {
                 + memoryTable.Columns.TITLE + ", "
                 + memoryTable.Columns.DETAIL + ", "
                 + memoryTable.Columns.DATE + ", "
-                + memoryTable.Columns.SOLVED + ", "
+                + memoryTable.Columns.EVENT + ", "
                 + memoryTable.Columns.SUSPECT + ","
                 + memoryTable.Columns.NUMBER +
                 ")"

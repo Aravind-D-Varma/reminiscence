@@ -17,7 +17,7 @@ public class MemoryCursorWrapper extends CursorWrapper {
         String title = getString(getColumnIndex(memoryTable.Columns.TITLE));
         String detail = getString(getColumnIndex(memoryTable.Columns.DETAIL));
         long date = getLong(getColumnIndex(memoryTable.Columns.DATE));
-        int isSolved = getInt(getColumnIndex(memoryTable.Columns.SOLVED));
+        String event = getString(getColumnIndex(memoryTable.Columns.EVENT));
         String suspect = getString(getColumnIndex(memoryTable.Columns.SUSPECT));
         String number = getString(getColumnIndex(memoryTable.Columns.NUMBER));
 
@@ -25,7 +25,7 @@ public class MemoryCursorWrapper extends CursorWrapper {
         memory.setTitle(title);
         memory.setDetail(detail);
         memory.setDate(new Date(date));
-        memory.setSolved(isSolved!=0);
+        memory.setEvent(event);
         memory.setSuspect(suspect);
         memory.setNumber(number);
 

@@ -186,20 +186,14 @@ public class MemoryListFragment extends Fragment {
 
                 mTitleTextView = (TextView) itemView.findViewById(R.id.memory_title);
                 mDateTextView = (TextView) itemView.findViewById(R.id.memory_date);
-                mSolvedImageView = (ImageView) itemView.findViewById(R.id.memory_solved_preview);
         }
         //endregion
 
         //region bind
         public void bind(Memory Memory){
             mMemory = Memory;
-            String solvedText = mMemory.isSolved() ? "Solved" : "Not Solved";
-            mTitleTextView.setText(mMemory.getTitle() + ": " + solvedText);
+            mTitleTextView.setText(mMemory.getTitle());
             mDateTextView.setText("Noticed on: " + DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate()));
-            if (mMemory.isSolved())
-                mSolvedImageView.setImageResource(R.drawable.solved_preview);
-            else
-                mSolvedImageView.setImageResource(R.drawable.not_solved_preview);
         }
         //endregion
         //region onClick
