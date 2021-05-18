@@ -32,6 +32,8 @@
         <string name="crime_photo_no_image_description">Crime scene photo (not set)</string>
         <string name="crime_photo_image_description">Crime scene photo (set)</string>
         <string name="crime_details_hint">Enter crime details</string>
+    <string name="search">Search</string>
+    <string name="crime_search_hint">Search crime</string>
 
 
 </resources>
