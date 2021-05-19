@@ -6,7 +6,7 @@
         android:id="@+id/memory_search_menu"
         android:title="@string/search"
         android:icon="@android:drawable/ic_menu_search"
-        android:iconTint="@color/black"
         app:showAsAction="ifRoom"
         app:actionViewClass="android.widget.SearchView" />
+
 </menu>

@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/nostalgia_logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CriminalIntent"
+        android:theme="@style/Theme.Reminiscence"
         android:fullBackupOnly="false"
         android:fullBackupContent="false">
 
@@ -27,7 +27,7 @@
 
         <activity
             android:name="com.example.nostalgia.MemoryListActivity"
-            android:theme="@style/Theme.CriminalIntent">
+            android:theme="@style/Theme.Reminiscence">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SEARCH"/>

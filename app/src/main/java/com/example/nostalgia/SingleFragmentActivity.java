@@ -24,6 +24,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     }
     @LayoutRes
     protected int  getlayoutresID() {
-        return R.layout.activity_fragment;
+        return R.layout.activity_main;
     }
 }

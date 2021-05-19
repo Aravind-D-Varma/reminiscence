@@ -93,7 +93,7 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\Ar
 	android:allowBackup
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:10:9-36
 	android:theme
-		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:15:9-52
+		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:15:9-50
 	android:fullBackupOnly
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:16:9-39
 activity#com.example.nostalgia.Launcherclass
@@ -115,7 +115,7 @@ ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\Andr
 activity#com.example.nostalgia.MemoryListActivity
 ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:28:9-36:20
 	android:theme
-		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:30:13-56
+		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:30:13-54
 	android:name
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:29:13-68
 intent-filter#action:name:android.intent.action.MAIN+action:name:android.intent.action.SEARCH+category:name:android.intent.category.DEFAULT
