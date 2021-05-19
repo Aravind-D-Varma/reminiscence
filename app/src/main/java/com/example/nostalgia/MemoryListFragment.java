@@ -66,12 +66,12 @@ public class MemoryListFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
             @Override
             public boolean onQueryTextSubmit(String query) {
-                mAdapter.filter(query);
+                mAdapter.searchFilter(query);
                 return false;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                mAdapter.filter(newText);
+                mAdapter.searchFilter(newText);
                 return false;
             }
         });
@@ -247,7 +247,7 @@ public class MemoryListFragment extends Fragment {
             mMemories = Memorys;
         }
 
-        public void filter(String text) {
+        public void searchFilter(String text) {
             List<Memory> searchMemorysList = new ArrayList<>();
             text = text.toLowerCase();
             for(Memory Memory: MemoryLab.get(getActivity()).getMemories()){
@@ -260,5 +260,15 @@ public class MemoryListFragment extends Fragment {
         }
     }
     //endregion
+    public void eventFilter(String event) {
+        List<Memory> searchMemorysList = new ArrayList<>();
+        for(Memory Memory: MemoryLab.get(getActivity()).getMemories()){
+            if(Memory.getEvent().equals(event)){
+                searchMemorysList.add(Memory);
+            }
+        }
+        mAdapter.setMemorys(searchMemorysList);
+        mAdapter.notifyDataSetChanged();
+    }
 
 }

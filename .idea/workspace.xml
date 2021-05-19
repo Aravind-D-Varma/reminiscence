@@ -28,12 +28,53 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="62184513-64f2-49ef-8030-31f293b1f5bf" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/packaged_manifests/debug/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/packaged_manifests/debug/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/jarAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/R.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/R.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeProjectDexDebug/classes.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeProjectDexDebug/classes.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex_archive_input_jar_hashes/debug/out" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex_archive_input_jar_hashes/debug/out" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugResources/compile-file-map.properties" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugResources/compile-file-map.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugResources/merger.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugResources/merger.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/androidResources" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/androidResources" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryFragment$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryFragment$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryFragment.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryFragment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryListActivity.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryListActivity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryListFragment$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryListFragment$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryListFragment$MemoryAdapter.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryListFragment$MemoryAdapter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryListFragment.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryListFragment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/debug.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/debug.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/values.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/multi-v2/values.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/single/debug.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_res_blame_folder/debug/out/single/debug.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/processed_res/debug/out/resources-debug.ap_" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/processed_res/debug/out/resources-debug.ap_" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/b5052af06ddaf0ace5e51e035fde182f46025afc92f5d881d0735a4ba68fb971_0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/b5052af06ddaf0ace5e51e035fde182f46025afc92f5d881d0735a4ba68fb971_1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/b5052af06ddaf0ace5e51e035fde182f46025afc92f5d881d0735a4ba68fb971_2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/b5052af06ddaf0ace5e51e035fde182f46025afc92f5d881d0735a4ba68fb971_3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryFragment$7.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryFragment$7.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryFragment.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryFragment.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryListActivity.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryListActivity.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryListFragment$1.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryListFragment$1.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryListFragment$MemoryAdapter.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryListFragment$MemoryAdapter.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryListFragment.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryListFragment.dex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/layout_activity_main.xml.flat" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/layout_activity_main.xml.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/layout_main_toolbar.xml.flat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/values_values.arsc.flat" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/values_values.arsc.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/runtime_symbol_list/debug/R.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/runtime_symbol_list/debug/R.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/outputs/apk/debug/app-debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/outputs/apk/debug/app-debug.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/tmp/compileDebugJavaWithJavac/source-classes-mapping.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/tmp/compileDebugJavaWithJavac/source-classes-mapping.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryListActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryListActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/fragment_memory_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/menu/fragment_memory_list.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryListFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryListFragment.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -242,38 +283,38 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="511" y="238" key="Github.ShareDialog/0.0.1280.680@0.0.1280.680" timestamp="1621330384003" />
-    <state width="1236" height="304" key="GridCell.Tab.0.bottom" timestamp="1621452102267">
+    <state width="1236" height="424" key="GridCell.Tab.0.bottom" timestamp="1621456671318">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="304" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1621452102267" />
-    <state width="1236" height="304" key="GridCell.Tab.0.center" timestamp="1621452102267">
+    <state width="1236" height="424" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1621456671318" />
+    <state width="1236" height="424" key="GridCell.Tab.0.center" timestamp="1621456671318">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="304" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1621452102267" />
-    <state width="1236" height="304" key="GridCell.Tab.0.left" timestamp="1621452102267">
+    <state width="1236" height="424" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1621456671318" />
+    <state width="1236" height="424" key="GridCell.Tab.0.left" timestamp="1621456671318">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="304" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1621452102267" />
-    <state width="1236" height="304" key="GridCell.Tab.0.right" timestamp="1621452102267">
+    <state width="1236" height="424" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1621456671318" />
+    <state width="1236" height="424" key="GridCell.Tab.0.right" timestamp="1621456671318">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="304" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1621452102267" />
-    <state width="1236" height="192" key="GridCell.Tab.1.bottom" timestamp="1621448281947">
+    <state width="1236" height="424" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1621456671318" />
+    <state width="1236" height="367" key="GridCell.Tab.1.bottom" timestamp="1621455866241">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="192" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1621448281947" />
-    <state width="1236" height="192" key="GridCell.Tab.1.center" timestamp="1621448281947">
+    <state width="1236" height="367" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1621455866241" />
+    <state width="1236" height="367" key="GridCell.Tab.1.center" timestamp="1621455866241">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="192" key="GridCell.Tab.1.center/0.0.1280.680@0.0.1280.680" timestamp="1621448281947" />
-    <state width="1236" height="192" key="GridCell.Tab.1.left" timestamp="1621448281947">
+    <state width="1236" height="367" key="GridCell.Tab.1.center/0.0.1280.680@0.0.1280.680" timestamp="1621455866241" />
+    <state width="1236" height="367" key="GridCell.Tab.1.left" timestamp="1621455866241">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="192" key="GridCell.Tab.1.left/0.0.1280.680@0.0.1280.680" timestamp="1621448281947" />
-    <state width="1236" height="192" key="GridCell.Tab.1.right" timestamp="1621448281947">
+    <state width="1236" height="367" key="GridCell.Tab.1.left/0.0.1280.680@0.0.1280.680" timestamp="1621455866241" />
+    <state width="1236" height="367" key="GridCell.Tab.1.right" timestamp="1621455866241">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="192" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1621448281947" />
+    <state width="1236" height="367" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1621455866241" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1621328116015">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -298,9 +339,30 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="267" y="84" key="psd.add.library.dependency.panel.dimension/0.0.1280.680@0.0.1280.680" timestamp="1621220593193" />
-    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1621451540254">
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1621455912935">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1621451540254" />
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1621455912935" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java</url>
+          <line>96</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java</url>
+          <line>95</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java</url>
+          <line>94</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

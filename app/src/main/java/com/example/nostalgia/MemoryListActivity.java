@@ -19,9 +19,11 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mABDrawerToggle;
     NavigationView mNavigationView;
+    public MemoryListFragment MLfragment;
     @Override
     protected Fragment createFragment() {
-        return new MemoryListFragment();
+        MLfragment = new MemoryListFragment();
+        return MLfragment;
     }
 
     @Override
@@ -62,22 +64,28 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.studentlife:
-                Toast.makeText(this, "Clicked Student Life", Toast.LENGTH_SHORT).show();
+                MLfragment.eventFilter(getString(R.string.studentlife));
+                onBackPressed();
                 return true;
             case R.id.work:
-                Toast.makeText(this, "Clicked Work", Toast.LENGTH_SHORT).show();
+                MLfragment.eventFilter(getString(R.string.work));
+                onBackPressed();
                 return true;
             case R.id.home:
-                Toast.makeText(this, "Clicked Home", Toast.LENGTH_SHORT).show();
+                MLfragment.eventFilter(getString(R.string.home));
+                onBackPressed();
                 return true;
             case R.id.birthday:
-                Toast.makeText(this, "Clicked Birthday", Toast.LENGTH_SHORT).show();
+                MLfragment.eventFilter(getString(R.string.birthday));
+                onBackPressed();
                 return true;
             case R.id.hangouts:
-                Toast.makeText(this, "Clicked Hangouts", Toast.LENGTH_SHORT).show();
+                MLfragment.eventFilter(getString(R.string.hangouts));
+                onBackPressed();
                 return true;
             case R.id.festival:
-                Toast.makeText(this, "Clicked Festival", Toast.LENGTH_SHORT).show();
+                MLfragment.eventFilter(getString(R.string.festival));
+                onBackPressed();
                 return true;
         }
         return true;

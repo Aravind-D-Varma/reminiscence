@@ -2135,7 +2135,6 @@ id title
 id titleDividerNoCustom
 id title_template
 id toggle
-id toolbar
 id top
 id topPanel
 id touch_outside
@@ -2248,7 +2247,6 @@ layout empty_list_page
 layout fragment_memory
 layout fragment_memory_list
 layout list_item_memory
-layout main_toolbar
 layout material_chip_input_combo
 layout material_clock_display
 layout material_clock_display_divider
