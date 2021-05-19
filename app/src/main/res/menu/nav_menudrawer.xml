@@ -1,4 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item
+        android:id="@+id/studentlife"
+        android:icon="@drawable/studentlife_white"
+        android:title="@string/studentlife" />
+    <item
+        android:id="@+id/work"
+        android:icon="@drawable/work_white"
+        android:title="@string/work" />
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/home_white"
+        android:title="@string/home" />
+    <item
+        android:id="@+id/birthday"
+        android:icon="@drawable/birthday_white"
+        android:title="@string/birthday" />
+    <item
+        android:id="@+id/hangouts"
+        android:icon="@drawable/hangouts_white"
+        android:title="@string/hangouts" />
+    <item
+        android:id="@+id/festival"
+        android:icon="@drawable/festival_white"
+        android:title="@string/festival" />
 </menu>

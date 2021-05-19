@@ -34,6 +34,12 @@
         <string name="memory_details_hint">Enter memory details</string>
     <string name="search">Search</string>
     <string name="memory_search_hint">Search memory</string>
+    <string name="studentlife">Student Life</string>
+    <string name="work">Work</string>
+    <string name="home">Home</string>
+    <string name="birthday">Birthday</string>
+    <string name="hangouts">Hangouts</string>
+    <string name="festival">Festival</string>
 
 
 </resources>
