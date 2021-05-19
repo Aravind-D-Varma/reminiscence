@@ -8,9 +8,9 @@
         android:required="false"/>
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/culpa_logo"
+        android:icon="@mipmap/nostalgia_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/culpa_logo"
+        android:roundIcon="@mipmap/nostalgia_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.CriminalIntent"
         android:fullBackupOnly="false"

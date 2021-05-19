@@ -11,4 +11,6 @@
     <color name="orange_700">#FFA700</color>
     <color name="orange_500">#FFCC00</color>
     <color name="grey">#AAAAAA</color>
+    <color name="red_700">#ff0000</color>
+    <color name="red_500">#ff5555</color>
 </resources>

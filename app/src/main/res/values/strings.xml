@@ -1,5 +1,5 @@
 <resources>
-        <string name="app_name">Culpa</string>
+        <string name="app_name">Nostalgia</string>
         <string name="memory_title_hint">Enter a title for the memory.</string>
         <string name="memory_title_label">Title</string>
         <string name="memory_details_label">Details</string>

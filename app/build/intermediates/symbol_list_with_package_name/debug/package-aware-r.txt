@@ -1134,6 +1134,8 @@ color purple_200
 color purple_500
 color purple_700
 color radiobutton_themeable_attribute_color
+color red_500
+color red_700
 color ripple_material_dark
 color ripple_material_light
 color secondary_text_default_material_dark
@@ -1629,10 +1631,10 @@ drawable abc_textfield_search_activated_mtrl_alpha
 drawable abc_textfield_search_default_mtrl_alpha
 drawable abc_textfield_search_material
 drawable abc_vector_test
-drawable add_black
+drawable add_white
 drawable avd_hide_password
 drawable avd_show_password
-drawable baseline_arrow_back_black_20
+drawable backarrow_white
 drawable baseline_date_range_white_20
 drawable baseline_double_arrow_black_20
 drawable baseline_time_white_20
@@ -1653,10 +1655,10 @@ drawable design_ic_visibility
 drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
+drawable frontarrow_white
 drawable ic_baseline_list_24
 drawable ic_clock_black_24dp
 drawable ic_keyboard_black_24dp
-drawable ic_launcher
 drawable ic_menu_add
 drawable ic_menu_delete
 drawable ic_mtrl_checked_circle
@@ -2297,7 +2299,7 @@ layout text_view_with_theme_line_height
 layout text_view_without_line_height
 menu fragment_memory
 menu fragment_memory_list
-mipmap culpa_logo
+mipmap nostalgia_logo
 plurals mtrl_badge_content_description
 plurals subtitle_plural
 string Delete

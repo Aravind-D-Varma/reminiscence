@@ -91,7 +91,6 @@ public class MemoryFragment extends Fragment {
     private boolean userTouch;
     private static final String[] paths = {"Student life" , "Work", "Home", "Birthday", "Hangouts", "Festival"};
     //endregion
-
     //region Fragment+Arguments
     public static MemoryFragment newInstance(UUID memoryId){
         Bundle args = new Bundle();
@@ -102,7 +101,6 @@ public class MemoryFragment extends Fragment {
         return fragment;
     }
     //endregion
-
     //region OverRidden methods
 
     //region onCreate
@@ -415,7 +413,6 @@ public class MemoryFragment extends Fragment {
         }
     }
     //endregion
-
     //region User-defined methods
     private void updatePhotoView(float destHeight, float destWidth) {
         if(mPhotoFile == null || !mPhotoFile.exists())

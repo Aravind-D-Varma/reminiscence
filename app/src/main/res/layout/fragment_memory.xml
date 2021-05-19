@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="@color/black"
     android:clipToPadding="false">
 
     <LinearLayout
@@ -151,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="?android:attr/borderlessButtonStyle"
-            android:drawableLeft="@drawable/baseline_arrow_back_black_20"
+            android:drawableLeft="@drawable/backarrow_white"
             android:padding="0dp"
             android:text="@string/go_to_first_memory"
             android:textColor="#3F51B5"
@@ -163,7 +163,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             style="?android:attr/borderlessButtonStyle"
-            android:drawableRight="@drawable/baseline_double_arrow_black_20"
+            android:drawableRight="@drawable/frontarrow_white"
             android:padding="0dp"
             android:text="@string/go_to_last_memory"
             android:textColor="#3F51B5"
