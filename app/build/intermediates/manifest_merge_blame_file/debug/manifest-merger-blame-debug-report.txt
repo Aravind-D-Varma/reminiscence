@@ -67,8 +67,8 @@
 39-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:28:9-36:20
 40            android:name="com.example.nostalgia.MemoryListActivity"
 40-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:29:13-68
-41            android:theme="@style/Theme.Reminiscence.NoActionBar" >
-41-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:30:13-66
+41            android:theme="@style/Theme.Reminiscence" >
+41-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:30:13-54
 42            <intent-filter>
 42-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:31:13-35:29
 43                <action android:name="android.intent.action.MAIN" />

@@ -27,7 +27,7 @@
 
         <activity
             android:name="com.example.nostalgia.MemoryListActivity"
-            android:theme="@style/Theme.Reminiscence.NoActionBar">
+            android:theme="@style/Theme.Reminiscence">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SEARCH"/>

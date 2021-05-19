@@ -5,8 +5,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
@@ -16,7 +18,6 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
 
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mABDrawerToggle;
-    Toolbar mToolbar;
     NavigationView mNavigationView;
     @Override
     protected Fragment createFragment() {
@@ -43,18 +44,17 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
 
         mNavigationView = findViewById(R.id.navigation_view);
         mDrawerLayout = findViewById(R.id.main_drawerLayout);
         mNavigationView.setNavigationItemSelectedListener(this);
 
+        mABDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.NDopen, R.string.NDclose);
 
-        mABDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.NDopen, R.string.NDclose);
         mDrawerLayout.addDrawerListener(mABDrawerToggle);
 
         mABDrawerToggle.setDrawerIndicatorEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mABDrawerToggle.syncState();
     }
 
@@ -81,5 +81,14 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
                 return true;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
