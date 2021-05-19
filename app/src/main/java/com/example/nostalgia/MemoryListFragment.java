@@ -56,8 +56,6 @@ public class MemoryListFragment extends Fragment {
         mCallbacks = null;
     }
 
-
-
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -168,7 +166,6 @@ public class MemoryListFragment extends Fragment {
         updateSubtitle();
     }
     //endregion
-
     //region MemoryHolder (our ViewHolder)
     private class MemoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

@@ -40,6 +40,8 @@
     <string name="birthday">Birthday</string>
     <string name="hangouts">Hangouts</string>
     <string name="festival">Festival</string>
+    <string name="NDopen">open</string>
+    <string name="NDclose">close</string>
 
 
 </resources>

@@ -1,10 +1,23 @@
 package com.example.nostalgia;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-public class MemoryListActivity extends SingleFragmentActivity implements MemoryListFragment.Callbacks {
+import com.google.android.material.navigation.NavigationView;
+
+public class MemoryListActivity extends SingleFragmentActivity implements MemoryListFragment.Callbacks, NavigationView.OnNavigationItemSelectedListener {
+
+    DrawerLayout mDrawerLayout;
+    ActionBarDrawerToggle mABDrawerToggle;
+    Toolbar mToolbar;
+    NavigationView mNavigationView;
     @Override
     protected Fragment createFragment() {
         return new MemoryListFragment();
@@ -30,5 +43,43 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        mNavigationView = findViewById(R.id.navigation_view);
+        mDrawerLayout = findViewById(R.id.main_drawerLayout);
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+
+        mABDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.NDopen, R.string.NDclose);
+        mDrawerLayout.addDrawerListener(mABDrawerToggle);
+
+        mABDrawerToggle.setDrawerIndicatorEnabled(true);
+        mABDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.studentlife:
+                Toast.makeText(this, "Clicked Student Life", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.work:
+                Toast.makeText(this, "Clicked Work", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.home:
+                Toast.makeText(this, "Clicked Home", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.birthday:
+                Toast.makeText(this, "Clicked Birthday", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.hangouts:
+                Toast.makeText(this, "Clicked Hangouts", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.festival:
+                Toast.makeText(this, "Clicked Festival", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return true;
     }
 }
