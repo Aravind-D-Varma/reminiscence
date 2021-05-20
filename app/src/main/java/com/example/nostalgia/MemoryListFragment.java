@@ -262,8 +262,11 @@ public class MemoryListFragment extends Fragment {
     //endregion
     public void eventFilter(String event) {
         List<Memory> searchMemorysList = new ArrayList<>();
+
         for(Memory Memory: MemoryLab.get(getActivity()).getMemories()){
-            if(Memory.getEvent().equals(event)){
+            if(event.equals(getString(R.string.all)))
+                searchMemorysList.add(Memory);
+            else if(Memory.getEvent().equals(event)){
                 searchMemorysList.add(Memory);
             }
         }

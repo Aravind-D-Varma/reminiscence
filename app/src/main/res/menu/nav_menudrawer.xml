@@ -2,6 +2,16 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <group android:id="@+id/allevents">
+        <item
+            android:id="@+id/all"
+            android:icon="@drawable/all_white"
+            android:title="@string/all" />
+
+    </group>
+
+    <group android:id="@+id/events">
+
     <item
         android:id="@+id/studentlife"
         android:icon="@drawable/studentlife_white"
@@ -26,4 +36,5 @@
         android:id="@+id/festival"
         android:icon="@drawable/festival_white"
         android:title="@string/festival" />
+    </group>
 </menu>

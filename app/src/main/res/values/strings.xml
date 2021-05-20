@@ -42,6 +42,7 @@
     <string name="festival">Festival</string>
     <string name="NDopen">open</string>
     <string name="NDclose">close</string>
+    <string name="all">All Events</string>
 
 
 </resources>

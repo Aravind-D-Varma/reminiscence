@@ -63,6 +63,10 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
+            case R.id.all:
+                MLfragment.eventFilter(getString(R.string.all));
+                onBackPressed();
+                return true;
             case R.id.studentlife:
                 MLfragment.eventFilter(getString(R.string.studentlife));
                 onBackPressed();

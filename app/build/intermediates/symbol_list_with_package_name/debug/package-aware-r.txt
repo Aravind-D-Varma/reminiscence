@@ -1632,6 +1632,7 @@ drawable abc_textfield_search_default_mtrl_alpha
 drawable abc_textfield_search_material
 drawable abc_vector_test
 drawable add_white
+drawable all_white
 drawable avd_hide_password
 drawable avd_show_password
 drawable backarrow_white
@@ -1784,6 +1785,7 @@ id add
 id alertTitle
 id aligned
 id all
+id allevents
 id always
 id animateToEnd
 id animateToStart
@@ -1874,6 +1876,7 @@ id end
 id endToStart
 id enterAlways
 id enterAlwaysCollapsed
+id events
 id exitUntilCollapsed
 id expand_activities_button
 id expanded_menu
@@ -2351,6 +2354,7 @@ string abc_searchview_description_voice
 string abc_shareactionprovider_share_with
 string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
+string all
 string app_name
 string appbar_scrolling_view_behavior
 string birthday
