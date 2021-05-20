@@ -82,8 +82,6 @@ public class MemoryFragment extends Fragment {
     private Button mCallButton;
     private Button mTimeButton;
     private Spinner mSpinner;
-    private static Button mFirstmemory;
-    private static Button mLastmemory;
 
     private File mPhotoFile;
     private String mSuspectId;
@@ -245,32 +243,6 @@ public class MemoryFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        //endregion
-        //region First and Last Button
-        mFirstmemory = (Button) v.findViewById(R.id.first_memory);
-        mLastmemory = (Button) v.findViewById(R.id.last_memory);
-        mFirstmemory.setText("First memory");
-        mLastmemory.setText("Last memory");
-        if ( mMemory.getId().equals( mMemories.get(0).getId() ) )
-            mFirstmemory.setVisibility(View.GONE);
-        else {
-            mFirstmemory.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MemoryPagerActivity.getCurrentPosition(0);
-                }
-            });
-        }
-        if( mMemory.getId().equals( mMemories.get(mMemories.size()-1).getId() ) )
-            mLastmemory.setVisibility(View.GONE);
-        else {
-            mLastmemory.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MemoryPagerActivity.getCurrentPosition(MemoryLab.get(getActivity()).getMemories().size() - 1);
-                }
-            });
-        }
         //endregion
         //region SendReport Button
         mSendReportButton = (Button) v.findViewById(R.id.memory_report);
