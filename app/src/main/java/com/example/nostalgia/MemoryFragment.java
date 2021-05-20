@@ -62,16 +62,19 @@ public class MemoryFragment extends Fragment {
     public static final int REQUEST_TIME = 1;
     public static final int REQUEST_CONTACT = 2;
     public static final int REQUEST_PHOTO = 3;
+    public static final int REQUEST_GALLERY_PHOTO = 4;
 
     private static final String[] DECLARED_CONTACT_PERMISSIONS = new String[] {Manifest.permission.READ_CONTACTS};
     private static final String[] DECLARED_PHOTO_PERMISSIONS = new String[] {Manifest.permission.CAMERA};
+    private static final String[] DECLARED_GETPHOTO_PERMISSIONS = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
     private static final int MY_READ_CONTACTS_CODE = 100;
     private static final int MY_CAMERA_CODE = 101;
+    private static final int MY_STORAGE_CODE = 102;
 
     private String mSuspectNumber;
     private Memory mMemory;
     private List<Memory> mMemories;
-    private ImageButton mPhotoButton;
+    private Button mPhotoButton;
     private ImageView mPhotoView;
     private TextInputLayout mTextInputLayout;
     private TextInputEditText mTitleField;
@@ -82,8 +85,6 @@ public class MemoryFragment extends Fragment {
     private Button mCallButton;
     private Button mTimeButton;
     private Spinner mSpinner;
-    private static Button mFirstmemory;
-    private static Button mLastmemory;
 
     private File mPhotoFile;
     private String mSuspectId;
@@ -246,32 +247,6 @@ public class MemoryFragment extends Fragment {
             }
         });
         //endregion
-        //region First and Last Button
-        mFirstmemory = (Button) v.findViewById(R.id.first_memory);
-        mLastmemory = (Button) v.findViewById(R.id.last_memory);
-        mFirstmemory.setText("First memory");
-        mLastmemory.setText("Last memory");
-        if ( mMemory.getId().equals( mMemories.get(0).getId() ) )
-            mFirstmemory.setVisibility(View.GONE);
-        else {
-            mFirstmemory.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MemoryPagerActivity.getCurrentPosition(0);
-                }
-            });
-        }
-        if( mMemory.getId().equals( mMemories.get(mMemories.size()-1).getId() ) )
-            mLastmemory.setVisibility(View.GONE);
-        else {
-            mLastmemory.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MemoryPagerActivity.getCurrentPosition(MemoryLab.get(getActivity()).getMemories().size() - 1);
-                }
-            });
-        }
-        //endregion
         //region SendReport Button
         mSendReportButton = (Button) v.findViewById(R.id.memory_report);
         mSendReportButton.setOnClickListener(new View.OnClickListener() {
@@ -311,23 +286,22 @@ public class MemoryFragment extends Fragment {
             mSuspectButton.setText("Choose Suspect");
 
         //endregion
-        //region CallButton
-
-        //endregion
         PackageManager pM = getActivity().getPackageManager();
         //region PhotoButton
-        mPhotoButton = (ImageButton)v.findViewById(R.id.memory_camera);
-        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        mPhotoButton = (Button)v.findViewById(R.id.memory_camera);
+        Intent getImage = new Intent(Intent.ACTION_GET_CONTENT);
+        getImage.setType("image/*");
+        startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(hasPhotoPermission()) {
-                    takePhoto(captureImage);
+                if(getPhotoPermission()) {
+
                 }
                 else{
-                    requestPermissions(DECLARED_PHOTO_PERMISSIONS, MY_CAMERA_CODE);
-                    if(hasPhotoPermission()){
-                        takePhoto(captureImage);
+                    requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE);
+                    if(getPhotoPermission()){
+
                     }
                 }
             }
@@ -360,7 +334,6 @@ public class MemoryFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(resultCode!= Activity.RESULT_OK)
             return;
-
         if(requestCode == REQUEST_DATE){
            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mMemory.setDate(date);
@@ -397,15 +370,21 @@ public class MemoryFragment extends Fragment {
         switch(requestCode) {
             case MY_READ_CONTACTS_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Contacts Permission Granted", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Contacts Permission Denied", Toast.LENGTH_SHORT).show();
                 }
             case MY_CAMERA_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Camera Permission Granted", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Camera Permission Denied", Toast.LENGTH_SHORT).show();
+                }
+            case MY_STORAGE_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getActivity(), "Storage Permission Granted", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Storage Permission Denied", Toast.LENGTH_SHORT).show();
                 }
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -459,6 +438,10 @@ public class MemoryFragment extends Fragment {
     }
     private boolean hasPhotoPermission() {
         int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_PHOTO_PERMISSIONS[0]);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+    private boolean getPhotoPermission() {
+        int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
         return result == PackageManager.PERMISSION_GRANTED;
     }
     //region update Date and time

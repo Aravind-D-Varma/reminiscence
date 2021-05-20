@@ -12,33 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp"
-            android:padding="8dp">
 
-            <ImageView
-                android:id="@+id/memory_photo"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:scaleType="fitXY"
-                app:srcCompat="@android:color/darker_gray"
-                android:focusable="true"
-                android:background="@drawable/button_border"
-                android:contentDescription="@string/memory_photo_no_image_description"/>
-
-            <ImageButton
-                android:id="@+id/memory_camera"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_menu_camera"
-                android:background="@drawable/button_border"
-
-                android:layout_margin="10dp"
-                android:contentDescription="@string/memory_photo_button_description"/>
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/memory_title_label"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/memory_text_input_layout"
@@ -74,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/memory_details_label"
-                    android:textColor="#1C1C1C"
+                    android:textColor="@color/white"
                     android:textStyle="bold" />
                 <EditText
                     android:id="@+id/memory_details"
@@ -142,32 +116,32 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/memory_photo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@android:color/darker_gray"
+            android:focusable="true"
+            android:background="@drawable/button_border"
+            android:contentDescription="@string/memory_photo_no_image_description"/>
 
         <Button
-            android:id="@+id/first_memory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?android:attr/borderlessButtonStyle"
-            android:drawableLeft="@drawable/backarrow_white"
-            android:padding="0dp"
-            android:text="@string/go_to_first_memory"
-            android:textColor="#3F51B5"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/last_memory"
+            android:id="@+id/memory_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            style="?android:attr/borderlessButtonStyle"
-            android:drawableRight="@drawable/frontarrow_white"
-            android:padding="0dp"
-            android:text="@string/go_to_last_memory"
-            android:textColor="#3F51B5"
-            android:textStyle="bold" />
+            android:drawableStart="@android:drawable/ic_menu_camera"
+            android:text="@string/choose_photo"
+            android:background="@drawable/button_border"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/memory_photo_button_description"/>
     </RelativeLayout>
 
     <RelativeLayout
