@@ -1886,7 +1886,6 @@ id fill
 id fill_horizontal
 id fill_vertical
 id filled
-id first_memory
 id fitToContents
 id fixed
 id flip
@@ -1924,7 +1923,6 @@ id jumpToStart
 id labelGroup
 id labeled
 id largeLabel
-id last_memory
 id layout
 id left
 id leftToRight
@@ -2365,6 +2363,7 @@ string character_counter_content_description
 string character_counter_overflowed_content_description
 string character_counter_pattern
 string chip_text
+string choose_photo
 string clear_text_end_icon_content_description
 string date_picker_title
 string error_icon_content_description

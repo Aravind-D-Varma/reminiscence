@@ -291,17 +291,16 @@ public class MemoryFragment extends Fragment {
         mPhotoButton = (Button)v.findViewById(R.id.memory_camera);
         Intent getImage = new Intent(Intent.ACTION_GET_CONTENT);
         getImage.setType("image/*");
-        startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(getPhotoPermission()) {
-
+                    startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
                 }
                 else{
                     requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE);
                     if(getPhotoPermission()){
-
+                        startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
                     }
                 }
             }
@@ -352,6 +351,9 @@ public class MemoryFragment extends Fragment {
             Uri uri = FileProvider.getUriForFile(getActivity(),"com.example.criminalintent.fileprovider",mPhotoFile);
             getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             updatePhotoView(thumbnailHeight, thumbnailWidth);
+        }
+        else if (requestCode == REQUEST_GALLERY_PHOTO){
+
         }
     }
 
