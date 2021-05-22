@@ -28,24 +28,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="62184513-64f2-49ef-8030-31f293b1f5bf" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeProjectDexDebug/classes.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeProjectDexDebug/classes.dex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryFragment.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryFragment.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryFragment.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryFragment.dex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/outputs/apk/debug/app-debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/outputs/apk/debug/app-debug.apk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/Memory.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/Memory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryLab.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryLab.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/database/MemoryCursorWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/database/MemoryCursorWrapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/database/MemoryDbSchema.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/database/MemoryDbSchema.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,38 +238,38 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="511" y="238" key="Github.ShareDialog/0.0.1280.680@0.0.1280.680" timestamp="1621330384003" />
-    <state width="1236" height="270" key="GridCell.Tab.0.bottom" timestamp="1621691394172">
+    <state width="1236" height="335" key="GridCell.Tab.0.bottom" timestamp="1621693215201">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="270" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
-    <state width="1236" height="270" key="GridCell.Tab.0.center" timestamp="1621691394172">
+    <state width="1236" height="335" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1621693215201" />
+    <state width="1236" height="335" key="GridCell.Tab.0.center" timestamp="1621693215201">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="270" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
-    <state width="1236" height="270" key="GridCell.Tab.0.left" timestamp="1621691394172">
+    <state width="1236" height="335" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1621693215201" />
+    <state width="1236" height="335" key="GridCell.Tab.0.left" timestamp="1621693215201">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="270" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
-    <state width="1236" height="270" key="GridCell.Tab.0.right" timestamp="1621691394172">
+    <state width="1236" height="335" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1621693215201" />
+    <state width="1236" height="335" key="GridCell.Tab.0.right" timestamp="1621693215201">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="270" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
-    <state width="1236" height="270" key="GridCell.Tab.1.bottom" timestamp="1621691394172">
+    <state width="1236" height="335" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1621693215201" />
+    <state width="1236" height="237" key="GridCell.Tab.1.bottom" timestamp="1621693215201">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="270" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
-    <state width="1236" height="270" key="GridCell.Tab.1.center" timestamp="1621691394172">
+    <state width="1236" height="237" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1621693215201" />
+    <state width="1236" height="237" key="GridCell.Tab.1.center" timestamp="1621693215201">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="270" key="GridCell.Tab.1.center/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
-    <state width="1236" height="270" key="GridCell.Tab.1.left" timestamp="1621691394172">
+    <state width="1236" height="237" key="GridCell.Tab.1.center/0.0.1280.680@0.0.1280.680" timestamp="1621693215201" />
+    <state width="1236" height="237" key="GridCell.Tab.1.left" timestamp="1621693215201">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="270" key="GridCell.Tab.1.left/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
-    <state width="1236" height="270" key="GridCell.Tab.1.right" timestamp="1621691394172">
+    <state width="1236" height="237" key="GridCell.Tab.1.left/0.0.1280.680@0.0.1280.680" timestamp="1621693215201" />
+    <state width="1236" height="237" key="GridCell.Tab.1.right" timestamp="1621693215201">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="270" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
+    <state width="1236" height="237" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1621693215201" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1621328116015">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -316,20 +300,6 @@
     <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1621455912935" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java</url>
-          <line>381</line>
-          <option name="timeStamp" value="121" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java</url>
-          <line>382</line>
-          <option name="timeStamp" value="125" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="app">
         <watch expression="cursor" />

@@ -329,8 +329,9 @@ public class MemoryFragment extends Fragment {
         mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String[] PhotoPath = mMemory.getPhotoPaths().split(",");
                 FragmentManager fragmentManager = getFragmentManager();
-                ImagePickerFragment iP = ImagePickerFragment.getInstance(PictureUtils.getScaledBitMap(mPhotoFile.getPath(), getActivity()));
+                ImagePickerFragment iP = ImagePickerFragment.getInstance(PictureUtils.getScaledBitMap(PhotoPath[1], getActivity()));
                 iP.setTargetFragment(MemoryFragment.this, REQUEST_PHOTO);
                 iP.show(fragmentManager, DIALOG_PHOT0);
             }
@@ -421,10 +422,11 @@ public class MemoryFragment extends Fragment {
 
     //region User-defined methods
     private void updatePhotoView(float destHeight, float destWidth) {
-        if(mPhotoFile == null || !mPhotoFile.exists())
+        String[] PhotoPath = mMemory.getPhotoPaths().split(",");
+        if(PhotoPath.length == 1)
             mPhotoView.setImageDrawable(null);
         else {
-            Bitmap definedBitMap = PictureUtils.getScaledBitMap(mPhotoFile.getPath(), (int) destHeight, (int) destWidth);
+            Bitmap definedBitMap = PictureUtils.getScaledBitMap(PhotoPath[1], (int) destHeight, (int) destWidth);
             mPhotoView.setImageBitmap(definedBitMap);
         }
     }
