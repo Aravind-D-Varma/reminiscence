@@ -1,6 +1,8 @@
 package com.example.nostalgia;
 import android.Manifest;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -13,6 +15,7 @@ import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,6 +41,7 @@ import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -46,6 +50,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -291,6 +296,7 @@ public class MemoryFragment extends Fragment {
         mPhotoButton = (Button)v.findViewById(R.id.memory_camera);
         Intent getImage = new Intent(Intent.ACTION_GET_CONTENT);
         getImage.setType("image/*");
+        getImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -353,7 +359,38 @@ public class MemoryFragment extends Fragment {
             updatePhotoView(thumbnailHeight, thumbnailWidth);
         }
         else if (requestCode == REQUEST_GALLERY_PHOTO){
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            ArrayList<String> imagesEncodedList = new ArrayList<String>();
+            String imageEncoded;
+            if(data.getData()!=null){
+                Uri mImageUri=data.getData();
+                Cursor cursor = getContext().getContentResolver().query(mImageUri,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                imageEncoded  = cursor.getString(columnIndex);
+                cursor.close();
+            } else {
+                if (data.getClipData() != null) {
+                    ClipData mClipData = data.getClipData();
+                    ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
+                    for (int i = 0; i < mClipData.getItemCount(); i++) {
 
+                        ClipData.Item item = mClipData.getItemAt(i);
+                        Uri uri = item.getUri();
+                        mArrayUri.add(uri);
+                        Cursor cursor = getContext().getContentResolver().query(uri, filePathColumn, null, null, null);
+                        cursor.moveToFirst();
+
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        imageEncoded  = cursor.getString(columnIndex);
+                        imagesEncodedList.add(imageEncoded);
+                        cursor.close();
+
+                    }
+                    Log.v("LOG_TAG", "Selected Images " + mArrayUri.size());
+                }
+            }
         }
     }
 
@@ -394,6 +431,20 @@ public class MemoryFragment extends Fragment {
     }
     //endregion
     //region User-defined methods
+
+    private String getRealPathfromUri(Context context, Uri uri) {
+        Cursor cursor = null;
+        try {
+            String proj[] = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(uri,proj, null, null, null);
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(columnIndex);
+        }finally {
+            if(cursor!=null)
+                cursor.close();
+        }
+    }
     private void updatePhotoView(float destHeight, float destWidth) {
         if(mPhotoFile == null || !mPhotoFile.exists())
             mPhotoView.setImageDrawable(null);
