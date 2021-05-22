@@ -2362,7 +2362,7 @@ int string character_counter_content_description 0x7f0f0025
 int string character_counter_overflowed_content_description 0x7f0f0026
 int string character_counter_pattern 0x7f0f0027
 int string chip_text 0x7f0f0028
-int string choose_photo 0x7f0f0029
+int string choose_photos 0x7f0f0029
 int string clear_text_end_icon_content_description 0x7f0f002a
 int string date_picker_title 0x7f0f002b
 int string error_icon_content_description 0x7f0f002c

@@ -96,6 +96,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
+        <Button
+            android:id="@+id/memory_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@android:drawable/ic_menu_camera"
+            android:text="@string/choose_photos"
+            android:background="@drawable/button_border"
+            android:layout_margin="5dp"
+            android:padding="10dp"
+            android:contentDescription="@string/memory_photo_button_description"/>
+
         <Spinner
             android:id="@+id/memory_spinner"
             android:layout_width="wrap_content"
@@ -108,7 +119,7 @@
             android:backgroundTint="@color/purple_700"
             android:popupBackground="@color/purple_700"
             android:dropDownWidth="match_parent"
-            android:padding="5dp"
+            android:padding="10dp"
             android:elevation="5dp"
             android:spinnerMode="dropdown" />
     </RelativeLayout>
@@ -130,16 +141,7 @@
             android:background="@drawable/button_border"
             android:contentDescription="@string/memory_photo_no_image_description"/>
 
-        <Button
-            android:id="@+id/memory_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:drawableStart="@android:drawable/ic_menu_camera"
-            android:text="@string/choose_photo"
-            android:background="@drawable/button_border"
-            android:layout_margin="5dp"
-            android:contentDescription="@string/memory_photo_button_description"/>
+
     </RelativeLayout>
 
     <RelativeLayout

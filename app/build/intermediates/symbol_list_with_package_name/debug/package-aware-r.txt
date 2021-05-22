@@ -2363,7 +2363,7 @@ string character_counter_content_description
 string character_counter_overflowed_content_description
 string character_counter_pattern
 string chip_text
-string choose_photo
+string choose_photos
 string clear_text_end_icon_content_description
 string date_picker_title
 string error_icon_content_description
