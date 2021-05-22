@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -29,10 +30,12 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -91,13 +94,14 @@ public class MemoryFragment extends Fragment {
     private Button mDateButton;
     private Button mSendReportButton;
     private Button mSuspectButton;
-    private Button mCallButton;
     private Button mTimeButton;
+    private GridView mPhotoGridView;
     private Spinner mSpinner;
     private File mPhotoFile;
     private String mSuspectId;
     public int thumbnailWidth, thumbnailHeight;
     private final String[] paths = {"Student Life" , "Work", "Home", "Birthday", "Hangouts", "Festival"};
+    private List<Bitmap> photos = new ArrayList<Bitmap>();
     //endregion
     //region Fragment+Arguments
     public static MemoryFragment newInstance(UUID memoryId){
@@ -117,7 +121,6 @@ public class MemoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID memoryId = (UUID) getArguments().getSerializable(ARG_memory_ID);
         mMemory = MemoryLab.get(getActivity()).getMemory(memoryId);
-        System.out.println("All Photos in onCreate: "+mMemory.getPhotoPaths());
         mPhotoFile = MemoryLab.get(getActivity()).getPhotoFile(mMemory);
         setHasOptionsMenu(true);
     }
@@ -316,26 +319,37 @@ public class MemoryFragment extends Fragment {
             }
         });
         //endregion
-        //region PhotoView
-        mPhotoView = (ImageView)v.findViewById(R.id.memory_photo);
-        mPhotoView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        //region PhotoGridView i = 0 excluded since first string is null
+        String[] PhotoPaths = mMemory.getPhotoPaths().split(",");
+        for (int i = 1; i< PhotoPaths.length;i++){
+            Bitmap bpimg = BitmapFactory.decodeFile(PhotoPaths[i]);
+            photos.add(bpimg);
+        }
+        mPhotoGridView = (GridView) v.findViewById(R.id.photoGridView);
+        CustomAdapter customAdapter = new CustomAdapter(getContext(), photos);
+        mPhotoGridView.setAdapter(customAdapter);
+        /*mPhotoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onGlobalLayout() {
-                thumbnailHeight = mPhotoView.getHeight();
-                thumbnailWidth =  mPhotoView.getWidth();
-                updatePhotoView(thumbnailHeight, thumbnailWidth);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FragmentManager fragmentManager = getFragmentManager();
+                ImagePickerFragment iP = ImagePickerFragment.getInstance(PictureUtils.getScaledBitMap(PhotoPaths[position+1], getActivity()));
+                iP.setTargetFragment(MemoryFragment.this, REQUEST_PHOTO);
+                iP.show(fragmentManager, DIALOG_PHOT0);
             }
-        });
+        });*/
+        //endregion
+        //region PhotoView
+       /* mPhotoView = (ImageView)v.findViewById(R.id.memory_photo);
         mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] PhotoPath = mMemory.getPhotoPaths().split(",");
+
                 FragmentManager fragmentManager = getFragmentManager();
                 ImagePickerFragment iP = ImagePickerFragment.getInstance(PictureUtils.getScaledBitMap(PhotoPath[1], getActivity()));
                 iP.setTargetFragment(MemoryFragment.this, REQUEST_PHOTO);
                 iP.show(fragmentManager, DIALOG_PHOT0);
             }
-        });
+        });*/
         //endregion
         return v;
     }
