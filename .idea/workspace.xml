@@ -41,14 +41,18 @@
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryFragment.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/classes/com/example/nostalgia/MemoryFragment.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryFragment.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/project_dex_archive/debug/out/com/example/nostalgia/MemoryFragment.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/outputs/apk/debug/app-debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/outputs/apk/debug/app-debug.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/Memory.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/Memory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryLab.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryLab.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/database/MemoryCursorWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/database/MemoryCursorWrapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/database/MemoryDbSchema.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/database/MemoryDbSchema.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[Nexus_5X_API_24]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -218,10 +222,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1621044557360" />
-    <state x="446" y="47" key="#com.intellij.ide.util.MemberChooser" timestamp="1621483933468">
+    <state x="446" y="47" key="#com.intellij.ide.util.MemberChooser" timestamp="1621690656874">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="446" y="47" key="#com.intellij.ide.util.MemberChooser/0.0.1280.680@0.0.1280.680" timestamp="1621483933468" />
+    <state x="446" y="47" key="#com.intellij.ide.util.MemberChooser/0.0.1280.680@0.0.1280.680" timestamp="1621690656874" />
     <state x="419" y="209" width="443" height="268" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1621063409402">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -250,38 +254,38 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="511" y="238" key="Github.ShareDialog/0.0.1280.680@0.0.1280.680" timestamp="1621330384003" />
-    <state width="1236" height="192" key="GridCell.Tab.0.bottom" timestamp="1621676853610">
+    <state width="1236" height="270" key="GridCell.Tab.0.bottom" timestamp="1621691394172">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="192" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1621676853610" />
-    <state width="1236" height="192" key="GridCell.Tab.0.center" timestamp="1621676853610">
+    <state width="1236" height="270" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
+    <state width="1236" height="270" key="GridCell.Tab.0.center" timestamp="1621691394172">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="192" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1621676853610" />
-    <state width="1236" height="192" key="GridCell.Tab.0.left" timestamp="1621676853610">
+    <state width="1236" height="270" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
+    <state width="1236" height="270" key="GridCell.Tab.0.left" timestamp="1621691394172">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="192" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1621676853610" />
-    <state width="1236" height="192" key="GridCell.Tab.0.right" timestamp="1621676853610">
+    <state width="1236" height="270" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
+    <state width="1236" height="270" key="GridCell.Tab.0.right" timestamp="1621691394172">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="192" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1621676853610" />
-    <state width="872" height="192" key="GridCell.Tab.1.bottom" timestamp="1621676866165">
+    <state width="1236" height="270" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
+    <state width="1236" height="270" key="GridCell.Tab.1.bottom" timestamp="1621691394172">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="872" height="192" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1621676866165" />
-    <state width="872" height="192" key="GridCell.Tab.1.center" timestamp="1621676866164">
+    <state width="1236" height="270" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
+    <state width="1236" height="270" key="GridCell.Tab.1.center" timestamp="1621691394172">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="872" height="192" key="GridCell.Tab.1.center/0.0.1280.680@0.0.1280.680" timestamp="1621676866164" />
-    <state width="872" height="192" key="GridCell.Tab.1.left" timestamp="1621676866164">
+    <state width="1236" height="270" key="GridCell.Tab.1.center/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
+    <state width="1236" height="270" key="GridCell.Tab.1.left" timestamp="1621691394172">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="872" height="192" key="GridCell.Tab.1.left/0.0.1280.680@0.0.1280.680" timestamp="1621676866164" />
-    <state width="872" height="192" key="GridCell.Tab.1.right" timestamp="1621676866165">
+    <state width="1236" height="270" key="GridCell.Tab.1.left/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
+    <state width="1236" height="270" key="GridCell.Tab.1.right" timestamp="1621691394172">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="872" height="192" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1621676866165" />
+    <state width="1236" height="270" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1621691394172" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1621328116015">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -294,10 +298,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="452" y="118" key="chooseDestDirectoryDialog/0.0.1280.680@0.0.1280.680" timestamp="1621266046449" />
-    <state x="634" y="66" key="extract.method.dialog" timestamp="1621062854388">
+    <state x="634" y="66" key="extract.method.dialog" timestamp="1621688805491">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="634" y="66" key="extract.method.dialog/0.0.1280.680@0.0.1280.680" timestamp="1621062854388" />
+    <state x="634" y="66" key="extract.method.dialog/0.0.1280.680@0.0.1280.680" timestamp="1621688805491" />
     <state x="356" y="88" width="765" height="592" key="find.popup" timestamp="1621325877595">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -316,44 +320,20 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java</url>
-          <line>165</line>
-          <option name="timeStamp" value="37" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java</url>
-          <line>385</line>
-          <option name="timeStamp" value="59" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java</url>
-          <line>387</line>
-          <option name="timeStamp" value="61" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java</url>
-          <line>378</line>
-          <option name="timeStamp" value="63" />
+          <line>381</line>
+          <option name="timeStamp" value="121" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java</url>
           <line>382</line>
-          <option name="timeStamp" value="64" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java</url>
-          <line>383</line>
-          <option name="timeStamp" value="65" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/nostalgia/MemoryFragment.java</url>
-          <line>384</line>
-          <option name="timeStamp" value="66" />
+          <option name="timeStamp" value="125" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="app">
         <watch expression="cursor" />
+        <watch expression="column_index" />
       </configuration>
     </watches-manager>
   </component>

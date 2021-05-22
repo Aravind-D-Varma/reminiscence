@@ -23,13 +23,12 @@ public class MemoryBaseHelper extends SQLiteOpenHelper {
                 + memoryTable.Columns.DATE + ", "
                 + memoryTable.Columns.EVENT + ", "
                 + memoryTable.Columns.SUSPECT + ","
-                + memoryTable.Columns.NUMBER +
+                + memoryTable.Columns.NUMBER + ","
+                + memoryTable.Columns.PHOTOPATH +
                 ")"
         );
     }
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 }
