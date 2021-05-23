@@ -335,14 +335,16 @@ public class MemoryFragment extends Fragment {
     }
 
     private void setPhotogalleryView(String allPhotoPaths) {
-        String[] photoPaths = allPhotoPaths.split(",");
-        photos = new ArrayList<Bitmap>();
-        for (int i = 1; i< photoPaths.length; i++){
-            Bitmap bpimg = BitmapFactory.decodeFile(photoPaths[i]);
-            photos.add(bpimg);
+        if(allPhotoPaths!=null) {
+            String[] photoPaths = allPhotoPaths.split(",");
+            photos = new ArrayList<Bitmap>();
+            for (int i = 1; i < photoPaths.length; i++) {
+                Bitmap bpimg = BitmapFactory.decodeFile(photoPaths[i]);
+                photos.add(bpimg);
+            }
+            CustomAdapter customAdapter = new CustomAdapter(getContext(), photos);
+            mPhotoGridView.setAdapter(customAdapter);
         }
-        CustomAdapter customAdapter = new CustomAdapter(getContext(), photos);
-        mPhotoGridView.setAdapter(customAdapter);
     }
 
     @Override
