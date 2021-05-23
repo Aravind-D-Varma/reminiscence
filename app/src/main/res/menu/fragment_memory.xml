@@ -3,9 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/share_memory"
+        android:icon="@drawable/share_white"
+        android:title="Share"
+        app:showAsAction="ifRoom|withText"/>
+    <item
         android:id="@+id/delete_memory"
         android:icon="@drawable/ic_menu_delete"
         android:title="@string/Delete"
         app:showAsAction="withText|ifRoom"/>
+
 
 </menu>

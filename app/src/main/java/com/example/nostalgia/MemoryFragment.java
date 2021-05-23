@@ -128,6 +128,7 @@ public class MemoryFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        getActivity().setTitle(mMemory.getTitle());
         inflater.inflate(R.menu.fragment_memory, menu);
     }
 
@@ -154,6 +155,7 @@ public class MemoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_memory, container, false);
         mMemories = MemoryLab.get(getActivity()).getMemories();
+        getActivity().setTitle(mMemory.getTitle());
         // region EditText
         mTextInputLayout = (TextInputLayout) v.findViewById(R.id.memory_text_input_layout);
         mTitleField = (TextInputEditText) v.findViewById(R.id.memory_title);
@@ -258,7 +260,7 @@ public class MemoryFragment extends Fragment {
         });
         //endregion
         //region SendReport Button
-        mSendReportButton = (Button) v.findViewById(R.id.memory_report);
+        /*mSendReportButton = (Button) v.findViewById(R.id.memory_report);
         mSendReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -270,7 +272,7 @@ public class MemoryFragment extends Fragment {
                         .createChooserIntent();
                 startActivity(intent);
             }
-        });
+        });*/
         //endregion
         //region SuspectButton
         final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
@@ -393,6 +395,11 @@ public class MemoryFragment extends Fragment {
         if(mMemory.getTitle() == null)
             MemoryLab.get(getActivity()).deleteMemory(mMemory);
         MemoryLab.get(getActivity()).updateMemory(mMemory);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
