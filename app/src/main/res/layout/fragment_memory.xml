@@ -131,7 +131,9 @@
         android:layout_height="326dp"
         android:footerDividersEnabled="false"
         android:numColumns="3"
-        android:padding="1dp" />
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:padding="5dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"

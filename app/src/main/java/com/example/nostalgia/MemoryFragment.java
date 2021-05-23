@@ -97,7 +97,6 @@ public class MemoryFragment extends Fragment {
     private Button mTimeButton;
     private GridView mPhotoGridView;
     private Spinner mSpinner;
-    private File mPhotoFile;
     private String mSuspectId;
     public int thumbnailWidth, thumbnailHeight;
     private final String[] paths = {"Student Life" , "Work", "Home", "Birthday", "Hangouts", "Festival"};
@@ -121,7 +120,6 @@ public class MemoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID memoryId = (UUID) getArguments().getSerializable(ARG_memory_ID);
         mMemory = MemoryLab.get(getActivity()).getMemory(memoryId);
-        mPhotoFile = MemoryLab.get(getActivity()).getPhotoFile(mMemory);
         setHasOptionsMenu(true);
     }
     //endregion
@@ -320,25 +318,31 @@ public class MemoryFragment extends Fragment {
         });
         //endregion
         //region PhotoGridView i = 0 excluded since first string is null
-        String[] PhotoPaths = mMemory.getPhotoPaths().split(",");
-        for (int i = 1; i< PhotoPaths.length;i++){
-            Bitmap bpimg = BitmapFactory.decodeFile(PhotoPaths[i]);
-            photos.add(bpimg);
-        }
         mPhotoGridView = (GridView) v.findViewById(R.id.photoGridView);
-        CustomAdapter customAdapter = new CustomAdapter(getContext(), photos);
-        mPhotoGridView.setAdapter(customAdapter);
+        setPhotogalleryView(mMemory.getPhotoPaths());
         mPhotoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FragmentManager fragmentManager = getFragmentManager();
-                ImagePickerFragment iP = ImagePickerFragment.getInstance(PictureUtils.getScaledBitMap(PhotoPaths[position+1], getActivity()));
+                ImagePickerFragment iP = ImagePickerFragment.getInstance(
+                        PictureUtils.getScaledBitMap(mMemory.getPhotoPaths().split(",")[position+1], getActivity()));
                 iP.setTargetFragment(MemoryFragment.this, REQUEST_PHOTO);
                 iP.show(fragmentManager, DIALOG_PHOT0);
             }
         });
         //endregion
         return v;
+    }
+
+    private void setPhotogalleryView(String allPhotoPaths) {
+        String[] photoPaths = allPhotoPaths.split(",");
+        photos = new ArrayList<Bitmap>();
+        for (int i = 1; i< photoPaths.length; i++){
+            Bitmap bpimg = BitmapFactory.decodeFile(photoPaths[i]);
+            photos.add(bpimg);
+        }
+        CustomAdapter customAdapter = new CustomAdapter(getContext(), photos);
+        mPhotoGridView.setAdapter(customAdapter);
     }
 
     @Override
@@ -359,11 +363,6 @@ public class MemoryFragment extends Fragment {
             getSuspectName(data);
             getSuspectNunber();
         }
-        else if (requestCode == REQUEST_PHOTO){
-            Uri uri = FileProvider.getUriForFile(getActivity(),"com.example.criminalintent.fileprovider",mPhotoFile);
-            getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            updatePhotoView(thumbnailHeight, thumbnailWidth);
-        }
         else if (requestCode == REQUEST_GALLERY_PHOTO){
 
             String imagesEncodedList = "";
@@ -380,8 +379,9 @@ public class MemoryFragment extends Fragment {
                     }
                 }
             }
+
             mMemory.setPhotoPaths(imagesEncodedList);
-            System.out.println("All Photos when updating: "+mMemory.getPhotoPaths());
+            setPhotogalleryView(imagesEncodedList);
         }
     }
     @Override
@@ -431,20 +431,7 @@ public class MemoryFragment extends Fragment {
             mPhotoView.setImageBitmap(definedBitMap);
         }
     }
-    private void takePhoto(Intent captureImage) {
-        Uri uri = FileProvider.getUriForFile(getActivity()
-                , "com.example.criminalintent.fileprovider", mPhotoFile);
-        captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 
-        List<ResolveInfo> cameraActivities = getActivity().getPackageManager()
-                .queryIntentActivities(captureImage, PackageManager.MATCH_DEFAULT_ONLY);
-
-        for (ResolveInfo activity : cameraActivities) {
-            getActivity().grantUriPermission(activity.activityInfo.packageName
-                    , uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        }
-        startActivityForResult(captureImage, REQUEST_PHOTO);
-    }
     private void getSuspectNunber() {
         Uri callNumberURI = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
         String[] queryFieldsNumber = {ContactsContract.Data.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.NUMBER};
