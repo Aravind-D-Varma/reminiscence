@@ -13,34 +13,6 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp"
-            android:padding="8dp">
-
-            <ImageView
-                android:id="@+id/memory_photo"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:scaleType="fitXY"
-                app:srcCompat="@android:color/darker_gray"
-                android:focusable="true"
-                android:background="@drawable/button_border"
-                android:contentDescription="@string/memory_photo_no_image_description"/>
-
-            <ImageButton
-                android:id="@+id/memory_camera"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_menu_camera"
-                android:background="@drawable/button_border"
-
-                android:layout_margin="10dp"
-                android:contentDescription="@string/memory_photo_button_description"/>
-        </LinearLayout>
-
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -124,6 +96,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
+        <Button
+            android:id="@+id/memory_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@android:drawable/ic_menu_camera"
+            android:text="@string/choose_photos"
+            android:background="@drawable/button_border"
+            android:layout_margin="5dp"
+            android:padding="10dp"
+            android:contentDescription="@string/memory_photo_button_description"/>
+
         <Spinner
             android:id="@+id/memory_spinner"
             android:layout_width="wrap_content"
@@ -136,17 +119,19 @@
             android:backgroundTint="@color/purple_700"
             android:popupBackground="@color/purple_700"
             android:dropDownWidth="match_parent"
-            android:padding="5dp"
+            android:padding="10dp"
             android:elevation="5dp"
             android:spinnerMode="dropdown" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <GridView
+        android:id="@+id/photoGridView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-    </RelativeLayout>
+        android:orientation="horizontal"
+        android:layout_height="326dp"
+        android:footerDividersEnabled="false"
+        android:numColumns="3"
+        android:padding="1dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"

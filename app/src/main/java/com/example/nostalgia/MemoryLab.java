@@ -98,6 +98,7 @@ public class MemoryLab {
         value.put(memoryTable.Columns.SUSPECT, memory.getSuspect());
         value.put(memoryTable.Columns.NUMBER, memory.getNumber());
         value.put(memoryTable.Columns.DETAIL, memory.getDetail());
+        value.put(memoryTable.Columns.PHOTOPATH, memory.getPhotoPaths());
 
         return value;
     }

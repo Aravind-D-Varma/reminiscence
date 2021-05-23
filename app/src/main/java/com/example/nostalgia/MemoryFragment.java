@@ -1,18 +1,26 @@
 package com.example.nostalgia;
 import android.Manifest;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,10 +30,12 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -38,6 +48,7 @@ import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -46,6 +57,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -62,16 +74,19 @@ public class MemoryFragment extends Fragment {
     public static final int REQUEST_TIME = 1;
     public static final int REQUEST_CONTACT = 2;
     public static final int REQUEST_PHOTO = 3;
+    public static final int REQUEST_GALLERY_PHOTO = 4;
 
     private static final String[] DECLARED_CONTACT_PERMISSIONS = new String[] {Manifest.permission.READ_CONTACTS};
     private static final String[] DECLARED_PHOTO_PERMISSIONS = new String[] {Manifest.permission.CAMERA};
+    private static final String[] DECLARED_GETPHOTO_PERMISSIONS = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
     private static final int MY_READ_CONTACTS_CODE = 100;
     private static final int MY_CAMERA_CODE = 101;
+    private static final int MY_STORAGE_CODE = 102;
 
     private String mSuspectNumber;
     private Memory mMemory;
     private List<Memory> mMemories;
-    private ImageButton mPhotoButton;
+    private Button mPhotoButton;
     private ImageView mPhotoView;
     private TextInputLayout mTextInputLayout;
     private TextInputEditText mTitleField;
@@ -79,14 +94,14 @@ public class MemoryFragment extends Fragment {
     private Button mDateButton;
     private Button mSendReportButton;
     private Button mSuspectButton;
-    private Button mCallButton;
     private Button mTimeButton;
+    private GridView mPhotoGridView;
     private Spinner mSpinner;
-
     private File mPhotoFile;
     private String mSuspectId;
     public int thumbnailWidth, thumbnailHeight;
     private final String[] paths = {"Student Life" , "Work", "Home", "Birthday", "Hangouts", "Festival"};
+    private List<Bitmap> photos = new ArrayList<Bitmap>();
     //endregion
     //region Fragment+Arguments
     public static MemoryFragment newInstance(UUID memoryId){
@@ -283,43 +298,41 @@ public class MemoryFragment extends Fragment {
             mSuspectButton.setText("Choose Suspect");
 
         //endregion
-        //region CallButton
-
-        //endregion
         PackageManager pM = getActivity().getPackageManager();
         //region PhotoButton
-        mPhotoButton = (ImageButton)v.findViewById(R.id.memory_camera);
-        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        mPhotoButton = (Button)v.findViewById(R.id.memory_camera);
+        Intent getImage = new Intent(Intent.ACTION_GET_CONTENT);
+        getImage.setType("image/*");
+        getImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(hasPhotoPermission()) {
-                    takePhoto(captureImage);
+                if(getPhotoPermission()) {
+                    startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
                 }
                 else{
-                    requestPermissions(DECLARED_PHOTO_PERMISSIONS, MY_CAMERA_CODE);
-                    if(hasPhotoPermission()){
-                        takePhoto(captureImage);
+                    requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE);
+                    if(getPhotoPermission()){
+                        startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
                     }
                 }
             }
         });
         //endregion
-        //region PhotoView
-        mPhotoView = (ImageView)v.findViewById(R.id.memory_photo);
-        mPhotoView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        //region PhotoGridView i = 0 excluded since first string is null
+        String[] PhotoPaths = mMemory.getPhotoPaths().split(",");
+        for (int i = 1; i< PhotoPaths.length;i++){
+            Bitmap bpimg = BitmapFactory.decodeFile(PhotoPaths[i]);
+            photos.add(bpimg);
+        }
+        mPhotoGridView = (GridView) v.findViewById(R.id.photoGridView);
+        CustomAdapter customAdapter = new CustomAdapter(getContext(), photos);
+        mPhotoGridView.setAdapter(customAdapter);
+        mPhotoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onGlobalLayout() {
-                thumbnailHeight = mPhotoView.getHeight();
-                thumbnailWidth =  mPhotoView.getWidth();
-                updatePhotoView(thumbnailHeight, thumbnailWidth);
-            }
-        });
-        mPhotoView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FragmentManager fragmentManager = getFragmentManager();
-                ImagePickerFragment iP = ImagePickerFragment.getInstance(PictureUtils.getScaledBitMap(mPhotoFile.getPath(), getActivity()));
+                ImagePickerFragment iP = ImagePickerFragment.getInstance(PictureUtils.getScaledBitMap(PhotoPaths[position+1], getActivity()));
                 iP.setTargetFragment(MemoryFragment.this, REQUEST_PHOTO);
                 iP.show(fragmentManager, DIALOG_PHOT0);
             }
@@ -332,7 +345,6 @@ public class MemoryFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(resultCode!= Activity.RESULT_OK)
             return;
-
         if(requestCode == REQUEST_DATE){
            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mMemory.setDate(date);
@@ -352,8 +364,26 @@ public class MemoryFragment extends Fragment {
             getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             updatePhotoView(thumbnailHeight, thumbnailWidth);
         }
-    }
+        else if (requestCode == REQUEST_GALLERY_PHOTO){
 
+            String imagesEncodedList = "";
+            if(data.getData()!=null){
+                Uri mImageUri=data.getData();
+                imagesEncodedList = imagesEncodedList +","+(getImagePath(mImageUri));
+            } else {
+                if (data.getClipData() != null) {
+                    ClipData mClipData = data.getClipData();
+                    for (int i = 0; i < mClipData.getItemCount(); i++) {
+                        ClipData.Item item = mClipData.getItemAt(i);
+                        Uri uri = item.getUri();
+                        imagesEncodedList = imagesEncodedList + ","+(getImagePath(uri));
+                    }
+                }
+            }
+            mMemory.setPhotoPaths(imagesEncodedList);
+            System.out.println("All Photos when updating: "+mMemory.getPhotoPaths());
+        }
+    }
     @Override
     public void onPause() {
         super.onPause();
@@ -369,27 +399,35 @@ public class MemoryFragment extends Fragment {
         switch(requestCode) {
             case MY_READ_CONTACTS_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Contacts Permission Granted", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Contacts Permission Denied", Toast.LENGTH_SHORT).show();
                 }
             case MY_CAMERA_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Camera Permission Granted", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Camera Permission Denied", Toast.LENGTH_SHORT).show();
+                }
+            case MY_STORAGE_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getActivity(), "Storage Permission Granted", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Storage Permission Denied", Toast.LENGTH_SHORT).show();
                 }
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
     //endregion
+
     //region User-defined methods
     private void updatePhotoView(float destHeight, float destWidth) {
-        if(mPhotoFile == null || !mPhotoFile.exists())
+        String[] PhotoPath = mMemory.getPhotoPaths().split(",");
+        if(PhotoPath.length == 1)
             mPhotoView.setImageDrawable(null);
         else {
-            Bitmap definedBitMap = PictureUtils.getScaledBitMap(mPhotoFile.getPath(), (int) destHeight, (int) destWidth);
+            Bitmap definedBitMap = PictureUtils.getScaledBitMap(PhotoPath[1], (int) destHeight, (int) destWidth);
             mPhotoView.setImageBitmap(definedBitMap);
         }
     }
@@ -425,12 +463,33 @@ public class MemoryFragment extends Fragment {
             numberCursor.close();
         }
     }
+    private String getImagePath(Uri mImageUri) {
+
+        String imageEncoded;
+        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        String docId = DocumentsContract.getDocumentId(mImageUri);
+        String[] split = docId.split(":");
+        String selection = "_id=?";
+        String[] selectionArgs = new String[] {split[1]};
+        Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        Cursor cursor = getContext().getContentResolver().query(contentUri,filePathColumn, selection, selectionArgs, null);
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndexOrThrow(filePathColumn[0]);
+        imageEncoded  = cursor.getString(columnIndex);
+        cursor.close();
+
+        return imageEncoded;
+    }
     private boolean hasContactPermission() {
         int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_CONTACT_PERMISSIONS[0]);
         return result == PackageManager.PERMISSION_GRANTED;
     }
     private boolean hasPhotoPermission() {
         int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_PHOTO_PERMISSIONS[0]);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+    private boolean getPhotoPermission() {
+        int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
         return result == PackageManager.PERMISSION_GRANTED;
     }
     //region update Date and time

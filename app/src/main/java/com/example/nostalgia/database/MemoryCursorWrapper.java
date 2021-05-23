@@ -4,6 +4,7 @@ import android.database.CursorWrapper;
 import com.example.nostalgia.Memory;
 import com.example.nostalgia.database.MemoryDbSchema.memoryTable;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class MemoryCursorWrapper extends CursorWrapper {
@@ -20,6 +21,7 @@ public class MemoryCursorWrapper extends CursorWrapper {
         String event = getString(getColumnIndex(memoryTable.Columns.EVENT));
         String suspect = getString(getColumnIndex(memoryTable.Columns.SUSPECT));
         String number = getString(getColumnIndex(memoryTable.Columns.NUMBER));
+        String photopaths = getString(getColumnIndex(memoryTable.Columns.PHOTOPATH));
 
         Memory memory = new Memory(UUID.fromString(uuid));
         memory.setTitle(title);
@@ -28,6 +30,7 @@ public class MemoryCursorWrapper extends CursorWrapper {
         memory.setEvent(event);
         memory.setSuspect(suspect);
         memory.setNumber(number);
+        memory.setPhotoPaths(photopaths);
 
         return memory;
     }

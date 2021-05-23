@@ -43,6 +43,7 @@
     <string name="NDopen">open</string>
     <string name="NDclose">close</string>
     <string name="all">All Events</string>
+    <string name="choose_photos">Choose Photos</string>
 
 
 </resources>

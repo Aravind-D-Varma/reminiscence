@@ -1,5 +1,8 @@
 package com.example.nostalgia.database;
 
+import java.util.Collections;
+import java.util.List;
+
 public class MemoryDbSchema {
     public static final class memoryTable{
         public static final String NAME = "memories";
@@ -12,6 +15,7 @@ public class MemoryDbSchema {
             public static final String SUSPECT = "Suspect";
             public static final String NUMBER = "Number";
             public static final String DETAIL = "Details";
+            public static final String PHOTOPATH = "PhotoPaths";
         }
 
     }
