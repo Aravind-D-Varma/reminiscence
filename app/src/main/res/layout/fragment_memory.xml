@@ -126,8 +126,8 @@
 
     <GridView
         android:id="@+id/photoGridView"
-        android:layout_width="fill_parent"
-        android:layout_height="256dp"
+        android:layout_width="match_parent"
+        android:layout_height="326dp"
         android:footerDividersEnabled="false"
         android:numColumns="3"
         android:padding="1dp" />

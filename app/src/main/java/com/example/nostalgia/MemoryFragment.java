@@ -328,7 +328,7 @@ public class MemoryFragment extends Fragment {
         mPhotoGridView = (GridView) v.findViewById(R.id.photoGridView);
         CustomAdapter customAdapter = new CustomAdapter(getContext(), photos);
         mPhotoGridView.setAdapter(customAdapter);
-        /*mPhotoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mPhotoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FragmentManager fragmentManager = getFragmentManager();
@@ -336,20 +336,7 @@ public class MemoryFragment extends Fragment {
                 iP.setTargetFragment(MemoryFragment.this, REQUEST_PHOTO);
                 iP.show(fragmentManager, DIALOG_PHOT0);
             }
-        });*/
-        //endregion
-        //region PhotoView
-       /* mPhotoView = (ImageView)v.findViewById(R.id.memory_photo);
-        mPhotoView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                FragmentManager fragmentManager = getFragmentManager();
-                ImagePickerFragment iP = ImagePickerFragment.getInstance(PictureUtils.getScaledBitMap(PhotoPath[1], getActivity()));
-                iP.setTargetFragment(MemoryFragment.this, REQUEST_PHOTO);
-                iP.show(fragmentManager, DIALOG_PHOT0);
-            }
-        });*/
+        });
         //endregion
         return v;
     }

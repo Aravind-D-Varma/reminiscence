@@ -11,7 +11,8 @@
         android:layout_height="100dp"
         android:scaleType="fitXY"
         app:srcCompat="@android:color/darker_gray"
-        android:focusable="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:background="@drawable/button_border"
         android:contentDescription="@string/memory_photo_no_image_description"/>
 
