@@ -52,6 +52,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -76,6 +77,7 @@ public class MemoryFragment extends Fragment {
     public static final int REQUEST_CONTACT = 2;
     public static final int REQUEST_PHOTO = 3;
     public static final int REQUEST_GALLERY_PHOTO = 4;
+    public static final int REQUEST_GALLERY_ADDITIONALPHOTO = 5;
 
     private static final String[] DECLARED_CONTACT_PERMISSIONS = new String[] {Manifest.permission.READ_CONTACTS};
     private static final String[] DECLARED_PHOTO_PERMISSIONS = new String[] {Manifest.permission.CAMERA};
@@ -93,8 +95,7 @@ public class MemoryFragment extends Fragment {
     private TextInputEditText mTitleField;
     private EditText mDetailField;
     private Button mDateButton;
-    private Button mSendReportButton;
-    private Button mSuspectButton;
+    private FloatingActionButton mPhotoFAB;
     private Button mTimeButton;
     private GridView mPhotoGridView;
     private Spinner mSpinner;
@@ -309,6 +310,20 @@ public class MemoryFragment extends Fragment {
             }
         });
         //endregion
+        //region photoFAB
+            mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
+            mPhotoFAB.setVisibility(mMemory.getPhotoPaths()==null? View.GONE:View.VISIBLE);
+            mPhotoFAB.setEnabled(mMemory.getPhotoPaths()!=null);
+            Intent getmoreImage = new Intent(Intent.ACTION_GET_CONTENT);
+            getmoreImage.setType("image/*");
+            getmoreImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            mPhotoFAB.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivityForResult(Intent.createChooser(getmoreImage, "Select Image"), REQUEST_GALLERY_ADDITIONALPHOTO);
+                }
+            });
+        //endregion
         return v;
     }
     @Override
@@ -324,10 +339,6 @@ public class MemoryFragment extends Fragment {
             Date time = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
             mMemory.setDate(time);
             updateTime(time);
-        }
-        else if (requestCode == REQUEST_CONTACT && data!=null){
-            getSuspectName(data);
-            getSuspectNunber();
         }
         else if (requestCode == REQUEST_GALLERY_PHOTO){
 
@@ -345,9 +356,28 @@ public class MemoryFragment extends Fragment {
                     }
                 }
             }
-
             mMemory.setPhotoPaths(imagesEncodedList);
             setPhotogalleryView(imagesEncodedList);
+            mPhotoFAB.setVisibility(View.VISIBLE);
+            mPhotoFAB.setEnabled(true);
+        }
+        else if (requestCode == REQUEST_GALLERY_ADDITIONALPHOTO){
+            String extraImagesEncodedList = mMemory.getPhotoPaths();
+            if(data.getData()!=null){
+                Uri mImageUri=data.getData();
+                extraImagesEncodedList = extraImagesEncodedList +","+(getImagePath(mImageUri));
+            } else {
+                if (data.getClipData() != null) {
+                    ClipData mClipData = data.getClipData();
+                    for (int i = 0; i < mClipData.getItemCount(); i++) {
+                        ClipData.Item item = mClipData.getItemAt(i);
+                        Uri uri = item.getUri();
+                        extraImagesEncodedList = extraImagesEncodedList + ","+(getImagePath(uri));
+                    }
+                }
+            }
+            mMemory.setPhotoPaths(extraImagesEncodedList);
+            setPhotogalleryView(extraImagesEncodedList);
         }
     }
     @Override
@@ -392,24 +422,6 @@ public class MemoryFragment extends Fragment {
     }
     //endregion
     //region User-defined methods
-    private void getSuspectNunber() {
-        Uri callNumberURI = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-        String[] queryFieldsNumber = {ContactsContract.Data.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.NUMBER};
-        String selectionClause = ContactsContract.Data.CONTACT_ID + "= ?";
-        String selectionArgs[] = {""};
-        selectionArgs[0] = mSuspectId;
-        Cursor numberCursor = getActivity().getContentResolver()
-                .query(callNumberURI, queryFieldsNumber, selectionClause, selectionArgs, null);
-        try{
-            if(numberCursor.getCount()==0)
-                return;
-            numberCursor.moveToFirst();
-            mMemory.setNumber( numberCursor.getString(1));
-        }
-        finally {
-            numberCursor.close();
-        }
-    }
     private void setPhotogalleryView(String allPhotoPaths) {
         if(allPhotoPaths!=null) {
             String[] photoPaths = allPhotoPaths.split(",");
@@ -452,23 +464,5 @@ public class MemoryFragment extends Fragment {
         mTimeButton.setText(sdf.format(date));
     }
     //endregion
-    private void getSuspectName( Intent data) {
-        Uri contactURI = data.getData();
-        String[] queryFields = new String[] {ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME};
-        Cursor c = getActivity().getContentResolver().query(contactURI, queryFields, null, null, null);
-
-        try{
-            if(c.getCount()==0)
-                return;
-            c.moveToFirst();
-            mSuspectId = c.getString(0);
-            mMemory.setSuspect(c.getString(1));
-            mSuspectButton.setText("Suspect: "+mMemory.getSuspect());
-        }
-        finally {
-            c.close();
-        }
-        return;
-    }
     //endregion
 }

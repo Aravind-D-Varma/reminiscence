@@ -22,6 +22,7 @@
         android:layout_margin="25dp"
         android:elevation="20dp"
         android:backgroundTint="@color/purple_700"
-        android:src="@drawable/add_white"/>
+        android:src="@drawable/add_white"
+        android:contentDescription="@string/no_memory_add" />
 
 </FrameLayout>

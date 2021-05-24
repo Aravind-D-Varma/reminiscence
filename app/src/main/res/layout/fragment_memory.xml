@@ -130,16 +130,32 @@
             android:spinnerMode="dropdown" />
     </RelativeLayout>
 
-    <GridView
-        android:id="@+id/photoGridView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:footerDividersEnabled="false"
-        android:horizontalSpacing="10dp"
-        android:numColumns="2"
-        android:orientation="horizontal"
-        android:layout_margin="10dp"
-        android:verticalSpacing="10dp" />
+        android:layout_height="match_parent">
+        <GridView
+            android:id="@+id/photoGridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:footerDividersEnabled="false"
+            android:horizontalSpacing="10dp"
+            android:numColumns="2"
+            android:orientation="horizontal"
+            android:verticalSpacing="10dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/photo_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="25dp"
+            android:backgroundTint="@color/purple_700"
+            android:contentDescription="@string/photo_add"
+            android:elevation="20dp"
+            android:src="@drawable/add_white" />
+    </FrameLayout>
+
 
 </LinearLayout>
 

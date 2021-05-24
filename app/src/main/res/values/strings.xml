@@ -44,6 +44,7 @@
     <string name="NDclose">close</string>
     <string name="all">All Events</string>
     <string name="choose_photos">Choose Photos</string>
+    <string name="photo_add">Add photo</string>
 
 
 </resources>
