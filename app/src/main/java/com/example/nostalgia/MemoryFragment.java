@@ -74,16 +74,11 @@ public class MemoryFragment extends Fragment {
     private static final String DIALOG_PHOT0 = "DialogPhoto";
     public static final int REQUEST_DATE = 0;
     public static final int REQUEST_TIME = 1;
-    public static final int REQUEST_CONTACT = 2;
     public static final int REQUEST_PHOTO = 3;
     public static final int REQUEST_GALLERY_PHOTO = 4;
     public static final int REQUEST_GALLERY_ADDITIONALPHOTO = 5;
 
-    private static final String[] DECLARED_CONTACT_PERMISSIONS = new String[] {Manifest.permission.READ_CONTACTS};
-    private static final String[] DECLARED_PHOTO_PERMISSIONS = new String[] {Manifest.permission.CAMERA};
     private static final String[] DECLARED_GETPHOTO_PERMISSIONS = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
-    private static final int MY_READ_CONTACTS_CODE = 100;
-    private static final int MY_CAMERA_CODE = 101;
     private static final int MY_STORAGE_CODE = 102;
 
     private String mSuspectNumber;
@@ -99,7 +94,7 @@ public class MemoryFragment extends Fragment {
     private Button mTimeButton;
     private GridView mPhotoGridView;
     private Spinner mSpinner;
-    private String mSuspectId;
+    private Intent getImage;
     public int thumbnailWidth, thumbnailHeight;
     private final String[] paths = {"Student Life" , "Work", "Home", "Birthday", "Hangouts", "Festival"};
     private List<Bitmap> photos = new ArrayList<Bitmap>();
@@ -139,7 +134,6 @@ public class MemoryFragment extends Fragment {
 
         switch(item.getItemId()){
             case R.id.delete_memory:
-                //memoryLab.get(getActivity()).getmemorys().remove(mMemory);
                 MemoryLab.get(getActivity()).deleteMemory(mMemory);
                 Intent intent = new Intent(getActivity(), MemoryListActivity.class);
                 startActivity(intent);
@@ -278,18 +272,18 @@ public class MemoryFragment extends Fragment {
         PackageManager pM = getActivity().getPackageManager();
         //region PhotoButton
         mPhotoButton = (Button)v.findViewById(R.id.memory_camera);
-        Intent getImage = new Intent(Intent.ACTION_GET_CONTENT);
+        getImage = new Intent(Intent.ACTION_GET_CONTENT);
         getImage.setType("image/*");
         getImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getPhotoPermission()) {
+                if(hasPhotoPermission()) {
                     startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
                 }
                 else{
                     requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE);
-                    if(getPhotoPermission()){
+                    if(hasPhotoPermission()){
                         startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
                     }
                 }
@@ -396,29 +390,11 @@ public class MemoryFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        switch(requestCode) {
-            case MY_READ_CONTACTS_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "Contacts Permission Granted", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), "Contacts Permission Denied", Toast.LENGTH_SHORT).show();
-                }
-            case MY_CAMERA_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "Camera Permission Granted", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), "Camera Permission Denied", Toast.LENGTH_SHORT).show();
-                }
+        switch (requestCode){
             case MY_STORAGE_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "Storage Permission Granted", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), "Storage Permission Denied", Toast.LENGTH_SHORT).show();
-                }
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
     //endregion
     //region User-defined methods
@@ -451,7 +427,7 @@ public class MemoryFragment extends Fragment {
 
         return imageEncoded;
     }
-    private boolean getPhotoPermission() {
+    private boolean hasPhotoPermission() {
         int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
         return result == PackageManager.PERMISSION_GRANTED;
     }
