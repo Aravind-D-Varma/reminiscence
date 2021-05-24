@@ -41,6 +41,7 @@
                     android:background="@drawable/button_border"
                     android:hint="@string/memory_title_hint"
                     android:inputType="text"
+                    android:layout_margin="10dp"
                     android:padding="5dp" />
             </com.google.android.material.textfield.TextInputLayout>
                 <TextView
@@ -57,6 +58,7 @@
                     android:autofillHints="Title"
                     android:background="@drawable/button_border"
                     android:hint="@string/memory_details_hint"
+                    android:layout_margin="10dp"
                     android:padding="5dp"
                     android:inputType="textMultiLine"
                     android:maxLines="6"/>
@@ -131,35 +133,13 @@
     <GridView
         android:id="@+id/photoGridView"
         android:layout_width="match_parent"
-        android:layout_height="357dp"
+        android:layout_height="wrap_content"
         android:footerDividersEnabled="false"
         android:horizontalSpacing="10dp"
         android:numColumns="3"
         android:orientation="horizontal"
         android:padding="5dp"
         android:verticalSpacing="10dp" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="bottom">
-
-        <Button
-            android:id="@+id/memory_suspect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="5dp"
-            android:background="@drawable/button_border"
-            android:backgroundTint="@color/purple_700"
-            android:drawableRight="@drawable/contact_white"
-            android:drawablePadding="5dp"
-            android:elevation="10dp"
-            android:padding="10dp"
-            android:text="@string/memory_contact_text" />
-    </RelativeLayout>
 
 </LinearLayout>
 

@@ -1964,7 +1964,6 @@ id memory_recycler_view
 id memory_search_menu
 id memory_solved_preview
 id memory_spinner
-id memory_suspect
 id memory_text_input_layout
 id memory_time
 id memory_title

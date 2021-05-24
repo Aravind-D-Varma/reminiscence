@@ -274,45 +274,6 @@ public class MemoryFragment extends Fragment {
             }
         });
         //endregion
-        //region SendReport Button
-        /*mSendReportButton = (Button) v.findViewById(R.id.memory_report);
-        mSendReportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = ShareCompat.IntentBuilder.from(getActivity()).setType("text/plain")
-                        .setChooserTitle(getString(R.string.send_report))
-                        .setSubject(getString(R.string.memory_report_subject))
-                        .setText(getmemoryReport())
-                        .createChooserIntent();
-                startActivity(intent);
-            }
-        });*/
-        //endregion
-        //region SuspectButton
-        final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-        mSuspectButton = (Button) v.findViewById(R.id.memory_suspect);
-        mSuspectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(hasContactPermission()) {
-                    startActivityForResult(pickContact, REQUEST_CONTACT);
-                }
-                else {
-                    requestPermissions(DECLARED_CONTACT_PERMISSIONS, MY_READ_CONTACTS_CODE);
-                    if(hasContactPermission())
-                        startActivityForResult(pickContact, REQUEST_CONTACT);
-                }
-
-
-            }
-        });
-        if(mMemory.getSuspect()!=null)
-            mSuspectButton.setText("Suspect: "+mMemory.getSuspect());
-        else
-            mSuspectButton.setText("Choose Suspect");
-
-        //endregion
         PackageManager pM = getActivity().getPackageManager();
         //region PhotoButton
         mPhotoButton = (Button)v.findViewById(R.id.memory_camera);
@@ -430,7 +391,6 @@ public class MemoryFragment extends Fragment {
         }
     }
     //endregion
-
     //region User-defined methods
     private void getSuspectNunber() {
         Uri callNumberURI = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
@@ -479,14 +439,6 @@ public class MemoryFragment extends Fragment {
 
         return imageEncoded;
     }
-    private boolean hasContactPermission() {
-        int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_CONTACT_PERMISSIONS[0]);
-        return result == PackageManager.PERMISSION_GRANTED;
-    }
-    private boolean hasPhotoPermission() {
-        int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_PHOTO_PERMISSIONS[0]);
-        return result == PackageManager.PERMISSION_GRANTED;
-    }
     private boolean getPhotoPermission() {
         int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
         return result == PackageManager.PERMISSION_GRANTED;
@@ -500,17 +452,6 @@ public class MemoryFragment extends Fragment {
         mTimeButton.setText(sdf.format(date));
     }
     //endregion
-    private String getmemoryReport(){
-        String dateString = DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate());
-
-        String suspect = mMemory.getSuspect();
-        if(suspect!=null)
-            suspect = getString(R.string.memory_report_suspect, mMemory.getSuspect());
-        else
-            suspect = getString(R.string.memory_report_no_suspect);
-
-        return getString(R.string.memory_report, mMemory.getTitle(), dateString, suspect);
-    }
     private void getSuspectName( Intent data) {
         Uri contactURI = data.getData();
         String[] queryFields = new String[] {ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME};
