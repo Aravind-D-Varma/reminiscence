@@ -1,9 +1,11 @@
 package com.example.nostalgia;
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -20,6 +22,7 @@ import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -298,16 +301,24 @@ public class MemoryFragment extends Fragment {
         mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
         CustomAdapter customAdapter = new CustomAdapter(getContext(), setPhotogalleryView(mMemory.getPhotoPaths()));
         mPhotoRecyclerView.setAdapter(customAdapter);
-        /*mPhotoRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 FragmentManager fragmentManager = getFragmentManager();
                 ImagePickerFragment iP = ImagePickerFragment.getInstance(
-                        PictureUtils.getScaledBitMap(mMemory.getPhotoPaths().split(",")[position+1], getActivity()));
+                        PictureUtils.getScaledBitMap(mMemory.getPhotoPaths().split(",")[position], getActivity()));
                 iP.setTargetFragment(MemoryFragment.this, REQUEST_PHOTO);
                 iP.show(fragmentManager, DIALOG_PHOT0);
             }
-        });*/
+        });
+        ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemLongClickListener(new ItemClickSupport.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClicked(RecyclerView recyclerView, int position, View v) {
+                AlertDialog diaBox = AskOption(mMemory.getPhotoPaths().split(",")[position]);
+                diaBox.show();
+                return false;
+            }
+        });
         //endregion
         //region photoFAB
             mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
@@ -344,14 +355,17 @@ public class MemoryFragment extends Fragment {
             String imagesEncodedList = "";
             if(data.getData()!=null){
                 Uri mImageUri=data.getData();
-                imagesEncodedList = imagesEncodedList +","+(getImagePath(mImageUri));
+                imagesEncodedList = imagesEncodedList +(getImagePath(mImageUri));
             } else {
                 if (data.getClipData() != null) {
                     ClipData mClipData = data.getClipData();
                     for (int i = 0; i < mClipData.getItemCount(); i++) {
                         ClipData.Item item = mClipData.getItemAt(i);
                         Uri uri = item.getUri();
-                        imagesEncodedList = imagesEncodedList + ","+(getImagePath(uri));
+                        if(imagesEncodedList.equals(""))
+                            imagesEncodedList = imagesEncodedList +(getImagePath(uri));
+                        else
+                            imagesEncodedList = imagesEncodedList +","+(getImagePath(uri));
                     }
                 }
             }
@@ -405,13 +419,16 @@ public class MemoryFragment extends Fragment {
     }
     //endregion
     //region User-defined methods
+
     private List<Bitmap> setPhotogalleryView(String allPhotoPaths) {
         if(allPhotoPaths!=null) {
             String[] photoPaths = allPhotoPaths.split(",");
             photos = new ArrayList<Bitmap>();
-            for (int i = 1; i < photoPaths.length; i++) { //i = 0 excluded since first string is nothing
-                Bitmap bpimg = BitmapFactory.decodeFile(photoPaths[i]);
-                photos.add(bpimg);
+            for (int i = 0; i < photoPaths.length; i++) {
+                if(!photoPaths[i].equals("")) {
+                    Bitmap bpimg = BitmapFactory.decodeFile(photoPaths[i]);
+                    photos.add(bpimg);
+                }
             }
         }
         return photos;
@@ -446,5 +463,32 @@ public class MemoryFragment extends Fragment {
         mTimeButton.setText(sdf.format(date));
     }
     //endregion
+
+    private AlertDialog AskOption(String tobedeletedphotopath)
+    {
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext())
+                .setTitle("Deletion")
+                .setMessage("Do you want to delete this photo?")
+                .setIcon(android.R.drawable.ic_menu_delete)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String[] allPhotoPaths = mMemory.getPhotoPaths().split(",");
+                        List<String> list = new ArrayList<String>(Arrays.asList(allPhotoPaths));
+                        list.remove(tobedeletedphotopath);
+                        String joined = TextUtils.join(",", list);
+                        mMemory.setPhotoPaths(joined);
+                        CustomAdapter customAdapter = new CustomAdapter(getContext(), setPhotogalleryView(mMemory.getPhotoPaths()));
+                        mPhotoRecyclerView.setAdapter(customAdapter);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        return myQuittingDialogBox;
+    }
     //endregion
 }

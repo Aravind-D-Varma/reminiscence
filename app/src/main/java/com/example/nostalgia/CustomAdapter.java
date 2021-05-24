@@ -26,6 +26,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     }
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
         holder.image.setImageBitmap(photos.get(position));
     }
     @Override
@@ -41,3 +42,4 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         }
     }
 }
+

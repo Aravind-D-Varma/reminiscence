@@ -23,7 +23,6 @@ public class ImagePickerFragment extends DialogFragment {
 
         return imagePickerFragment;
     }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
