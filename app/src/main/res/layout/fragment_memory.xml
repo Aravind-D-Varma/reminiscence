@@ -24,16 +24,7 @@
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/memory_text_input_layout"
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:background="@android:color/transparent"
-                app:boxBackgroundColor="@android:color/transparent"
-                app:boxBackgroundMode="none"
-                app:errorEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
+                <EditText
                     android:id="@+id/memory_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -43,7 +34,6 @@
                     android:inputType="text"
                     android:layout_margin="10dp"
                     android:padding="5dp" />
-            </com.google.android.material.textfield.TextInputLayout>
                 <TextView
                     style="?android:listSeparatorTextViewStyle"
                     android:layout_width="wrap_content"

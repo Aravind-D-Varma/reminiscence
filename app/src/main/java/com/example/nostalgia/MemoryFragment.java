@@ -3,64 +3,42 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
-import android.content.ContentUris;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Parcelable;
-import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -87,13 +65,10 @@ public class MemoryFragment extends Fragment {
     private static final String[] DECLARED_GETPHOTO_PERMISSIONS = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
     private static final int MY_STORAGE_CODE = 102;
 
-    private String mSuspectNumber;
     private Memory mMemory;
     private List<Memory> mMemories;
     private Button mPhotoButton;
-    private ImageView mPhotoView;
-    private TextInputLayout mTextInputLayout;
-    private TextInputEditText mTitleField;
+    private EditText mTitleField;
     private EditText mDetailField;
     private Button mDateButton;
     private FloatingActionButton mPhotoFAB;
@@ -101,9 +76,10 @@ public class MemoryFragment extends Fragment {
     private RecyclerView mPhotoRecyclerView;
     private Spinner mSpinner;
     private Intent getImage;
-    public int thumbnailWidth, thumbnailHeight;
     private final String[] paths = {"Student Life" , "Work", "Home", "Birthday", "Hangouts", "Festival"};
     private List<Bitmap> photos = new ArrayList<Bitmap>();
+    private boolean discardMemory = false;
+
     //endregion
     //region Fragment+Arguments
     public static MemoryFragment newInstance(UUID memoryId){
@@ -161,7 +137,6 @@ public class MemoryFragment extends Fragment {
                 startActivity(Intent.createChooser(shareIntent, "Share Memory"));
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
     //endregion
@@ -171,10 +146,10 @@ public class MemoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_memory, container, false);
         mMemories = MemoryLab.get(getActivity()).getMemories();
+
         getActivity().setTitle(mMemory.getTitle());
         // region EditText
-        mTextInputLayout = (TextInputLayout) v.findViewById(R.id.memory_text_input_layout);
-        mTitleField = (TextInputEditText) v.findViewById(R.id.memory_title);
+        mTitleField = (EditText) v.findViewById(R.id.memory_title);
         mTitleField.setText(mMemory.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -186,19 +161,14 @@ public class MemoryFragment extends Fragment {
             }
             @Override
             public void afterTextChanged(Editable s) {
-                mTextInputLayout.setError(null);
             }
         });
         mTitleField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
-                    if(mTitleField.getText().toString().length()==0) {
-                        mTextInputLayout.setError("Please enter a title or discard this memory");
-                        mTitleField.getBackground().clearColorFilter();
-                    }
-                    else
-                        mTextInputLayout.setError(null);
+                    if(mTitleField.getText().toString().length()==0)
+                        discardMemory = true;
                 }
             }
         });
@@ -314,7 +284,7 @@ public class MemoryFragment extends Fragment {
         ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemLongClickListener(new ItemClickSupport.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClicked(RecyclerView recyclerView, int position, View v) {
-                AlertDialog diaBox = AskOption(mMemory.getPhotoPaths().split(",")[position]);
+                AlertDialog diaBox = AskDeletePhoto(mMemory.getPhotoPaths().split(",")[position]);
                 diaBox.show();
                 return false;
             }
@@ -398,15 +368,25 @@ public class MemoryFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        mTitleField.setError(null);
-        if(mMemory.getTitle() == null)
-            MemoryLab.get(getActivity()).deleteMemory(mMemory);
         MemoryLab.get(getActivity()).updateMemory(mMemory);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (mMemory.getTitle() == null) {
+                    AskDiscardMemory().show();
+                    if (discardMemory) {
+                        MemoryLab.get(getActivity()).deleteMemory(mMemory);
+                        Intent intent = new Intent(getActivity(), MemoryListActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -417,9 +397,9 @@ public class MemoryFragment extends Fragment {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
     //endregion
     //region User-defined methods
-
     private List<Bitmap> setPhotogalleryView(String allPhotoPaths) {
         if(allPhotoPaths!=null) {
             String[] photoPaths = allPhotoPaths.split(",");
@@ -454,7 +434,6 @@ public class MemoryFragment extends Fragment {
         int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
         return result == PackageManager.PERMISSION_GRANTED;
     }
-    //region update Date and time
     private void updateDate() {
         mDateButton.setText(DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate()));
     }
@@ -462,9 +441,29 @@ public class MemoryFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         mTimeButton.setText(sdf.format(date));
     }
-    //endregion
-
-    private AlertDialog AskOption(String tobedeletedphotopath)
+//endregion
+    //region AlertDialogs
+    public AlertDialog AskDiscardMemory()
+    {
+        AlertDialog discardMemoryDialogBox = new AlertDialog.Builder(getContext())
+                .setTitle("Discard Memory")
+                .setMessage("You did not set any title or choosed photos. Do you want to discard this memory?")
+                .setIcon(android.R.drawable.ic_menu_delete)
+                .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        discardMemory = true;
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        return discardMemoryDialogBox;
+    }
+    private AlertDialog AskDeletePhoto(String tobedeletedphotopath)
     {
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext())
                 .setTitle("Deletion")
