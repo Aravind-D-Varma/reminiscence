@@ -23,23 +23,25 @@
                 android:text="@string/memory_title_label"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/memory_text_input_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="54dp"
                 android:background="@android:color/transparent"
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxBackgroundMode="none"
                 app:errorEnabled="true">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/memory_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="Title"
-                    android:padding="5dp"
                     android:background="@drawable/button_border"
                     android:hint="@string/memory_title_hint"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:padding="5dp" />
             </com.google.android.material.textfield.TextInputLayout>
                 <TextView
                     style="?android:listSeparatorTextViewStyle"
@@ -103,8 +105,10 @@
             android:drawableStart="@android:drawable/ic_menu_camera"
             android:text="@string/choose_photos"
             android:background="@drawable/button_border"
-            android:layout_margin="5dp"
+            android:layout_margin="10dp"
+            android:elevation="5dp"
             android:padding="10dp"
+            android:backgroundTint="@color/purple_700"
             android:contentDescription="@string/memory_photo_button_description"/>
 
         <Spinner

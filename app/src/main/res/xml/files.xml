@@ -3,4 +3,7 @@
     <files-path
         name="memory_photos"
         path="."/>
+    <external-path
+        name="external_files"
+        path="."/>
 </paths>

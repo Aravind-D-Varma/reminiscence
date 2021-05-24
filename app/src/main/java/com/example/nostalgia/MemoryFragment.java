@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -142,7 +143,21 @@ public class MemoryFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MemoryListActivity.class);
                 startActivity(intent);
                 return true;
-
+            case R.id.share_memory:
+                ArrayList<Uri> imageUris = new ArrayList<Uri>();
+                for(String path : mMemory.getPhotoPaths().split(",")) {
+                    if(!path.equals("")) {
+                        File file = new File(path);
+                        Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
+                        imageUris.add(uri);
+                    }
+                }
+                Intent shareIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+                shareIntent.setType("image/*");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, mMemory.getTitle());
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(Intent.createChooser(shareIntent, "Share Memory"));
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -335,20 +350,6 @@ public class MemoryFragment extends Fragment {
         //endregion
         return v;
     }
-
-    private void setPhotogalleryView(String allPhotoPaths) {
-        if(allPhotoPaths!=null) {
-            String[] photoPaths = allPhotoPaths.split(",");
-            photos = new ArrayList<Bitmap>();
-            for (int i = 1; i < photoPaths.length; i++) {
-                Bitmap bpimg = BitmapFactory.decodeFile(photoPaths[i]);
-                photos.add(bpimg);
-            }
-            CustomAdapter customAdapter = new CustomAdapter(getContext(), photos);
-            mPhotoGridView.setAdapter(customAdapter);
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(resultCode!= Activity.RESULT_OK)
@@ -431,16 +432,6 @@ public class MemoryFragment extends Fragment {
     //endregion
 
     //region User-defined methods
-    private void updatePhotoView(float destHeight, float destWidth) {
-        String[] PhotoPath = mMemory.getPhotoPaths().split(",");
-        if(PhotoPath.length == 1)
-            mPhotoView.setImageDrawable(null);
-        else {
-            Bitmap definedBitMap = PictureUtils.getScaledBitMap(PhotoPath[1], (int) destHeight, (int) destWidth);
-            mPhotoView.setImageBitmap(definedBitMap);
-        }
-    }
-
     private void getSuspectNunber() {
         Uri callNumberURI = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
         String[] queryFieldsNumber = {ContactsContract.Data.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.NUMBER};
@@ -457,6 +448,18 @@ public class MemoryFragment extends Fragment {
         }
         finally {
             numberCursor.close();
+        }
+    }
+    private void setPhotogalleryView(String allPhotoPaths) {
+        if(allPhotoPaths!=null) {
+            String[] photoPaths = allPhotoPaths.split(",");
+            photos = new ArrayList<Bitmap>();
+            for (int i = 1; i < photoPaths.length; i++) {
+                Bitmap bpimg = BitmapFactory.decodeFile(photoPaths[i]);
+                photos.add(bpimg);
+            }
+            CustomAdapter customAdapter = new CustomAdapter(getContext(), photos);
+            mPhotoGridView.setAdapter(customAdapter);
         }
     }
     private String getImagePath(Uri mImageUri) {
