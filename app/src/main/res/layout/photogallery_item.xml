@@ -12,6 +12,7 @@
         android:scaleType="fitXY"
         app:srcCompat="@android:color/darker_gray"
         android:focusable="false"
+        android:layout_margin="10dp"
         android:focusableInTouchMode="false"
         android:background="@drawable/button_border"
         android:contentDescription="@string/memory_photo_no_image_description"/>

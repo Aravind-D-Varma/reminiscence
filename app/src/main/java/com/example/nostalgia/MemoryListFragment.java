@@ -215,7 +215,6 @@ public class MemoryListFragment extends Fragment {
     private class MemoryAdapter extends RecyclerView.Adapter<MemoryHolder>{
 
         private List<Memory> mMemories;
-
         // region MemoryAdapter constructor
         public MemoryAdapter(List<Memory> Memorys){
             mMemories = Memorys;

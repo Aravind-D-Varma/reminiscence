@@ -4,42 +4,40 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
-public class CustomAdapter extends BaseAdapter {
+public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
     Context context;
     List<Bitmap> photos;
-    LayoutInflater inflater;
 
     public CustomAdapter(Context applicationContext, List<Bitmap> photos) {
         this.context = applicationContext;
         this.photos = photos;
-        inflater = (LayoutInflater.from(applicationContext));
     }
-
+    @NonNull
     @Override
-    public int getCount() {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.photogallery_item, parent, false);
+        return new MyViewHolder(v);
+    }
+    @Override
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.image.setImageBitmap(photos.get(position));
+    }
+    @Override
+    public int getItemCount() {
         return photos.size();
     }
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = inflater.inflate(R.layout.photogallery_item, null);
-        ImageView icon = (ImageView) convertView.findViewById(R.id.memory_photo);
-        icon.setImageBitmap(photos.get(position));
-        return convertView;
+    public class MyViewHolder extends RecyclerView.ViewHolder{
+        ImageView image;
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            image = (ImageView) itemView.findViewById(R.id.memory_photo);
+        }
     }
 }

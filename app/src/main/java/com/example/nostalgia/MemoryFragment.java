@@ -51,6 +51,9 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -92,7 +95,7 @@ public class MemoryFragment extends Fragment {
     private Button mDateButton;
     private FloatingActionButton mPhotoFAB;
     private Button mTimeButton;
-    private GridView mPhotoGridView;
+    private RecyclerView mPhotoRecyclerView;
     private Spinner mSpinner;
     private Intent getImage;
     public int thumbnailWidth, thumbnailHeight;
@@ -290,10 +293,12 @@ public class MemoryFragment extends Fragment {
             }
         });
         //endregion
-        //region PhotoGridView i = 0 excluded since first string is null
-        mPhotoGridView = (GridView) v.findViewById(R.id.photoGridView);
-        setPhotogalleryView(mMemory.getPhotoPaths());
-        mPhotoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //region PhotoGridView
+        mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
+        mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        CustomAdapter customAdapter = new CustomAdapter(getContext(), setPhotogalleryView(mMemory.getPhotoPaths()));
+        mPhotoRecyclerView.setAdapter(customAdapter);
+        /*mPhotoRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FragmentManager fragmentManager = getFragmentManager();
@@ -302,7 +307,7 @@ public class MemoryFragment extends Fragment {
                 iP.setTargetFragment(MemoryFragment.this, REQUEST_PHOTO);
                 iP.show(fragmentManager, DIALOG_PHOT0);
             }
-        });
+        });*/
         //endregion
         //region photoFAB
             mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
@@ -351,7 +356,8 @@ public class MemoryFragment extends Fragment {
                 }
             }
             mMemory.setPhotoPaths(imagesEncodedList);
-            setPhotogalleryView(imagesEncodedList);
+            CustomAdapter customAdapter = new CustomAdapter(getContext(), setPhotogalleryView(imagesEncodedList));
+            mPhotoRecyclerView.setAdapter(customAdapter);
             mPhotoFAB.setVisibility(View.VISIBLE);
             mPhotoFAB.setEnabled(true);
         }
@@ -371,7 +377,8 @@ public class MemoryFragment extends Fragment {
                 }
             }
             mMemory.setPhotoPaths(extraImagesEncodedList);
-            setPhotogalleryView(extraImagesEncodedList);
+            CustomAdapter customAdapter = new CustomAdapter(getContext(), setPhotogalleryView(extraImagesEncodedList));
+            mPhotoRecyclerView.setAdapter(customAdapter);
         }
     }
     @Override
@@ -398,17 +405,16 @@ public class MemoryFragment extends Fragment {
     }
     //endregion
     //region User-defined methods
-    private void setPhotogalleryView(String allPhotoPaths) {
+    private List<Bitmap> setPhotogalleryView(String allPhotoPaths) {
         if(allPhotoPaths!=null) {
             String[] photoPaths = allPhotoPaths.split(",");
             photos = new ArrayList<Bitmap>();
-            for (int i = 1; i < photoPaths.length; i++) {
+            for (int i = 1; i < photoPaths.length; i++) { //i = 0 excluded since first string is nothing
                 Bitmap bpimg = BitmapFactory.decodeFile(photoPaths[i]);
                 photos.add(bpimg);
             }
-            CustomAdapter customAdapter = new CustomAdapter(getContext(), photos);
-            mPhotoGridView.setAdapter(customAdapter);
         }
+        return photos;
     }
     private String getImagePath(Uri mImageUri) {
 

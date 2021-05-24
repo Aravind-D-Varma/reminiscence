@@ -66,7 +66,6 @@
 
     </LinearLayout>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -133,16 +132,11 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <GridView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/photoGridView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:footerDividersEnabled="false"
-            android:horizontalSpacing="10dp"
-            android:numColumns="2"
-            android:orientation="horizontal"
-            android:verticalSpacing="10dp" />
+            android:layout_margin="10dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/photo_fab"
@@ -155,7 +149,6 @@
             android:elevation="20dp"
             android:src="@drawable/add_white" />
     </FrameLayout>
-
 
 </LinearLayout>
 
