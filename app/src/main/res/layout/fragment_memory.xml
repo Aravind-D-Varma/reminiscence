@@ -136,9 +136,9 @@
         android:layout_height="wrap_content"
         android:footerDividersEnabled="false"
         android:horizontalSpacing="10dp"
-        android:numColumns="3"
+        android:numColumns="2"
         android:orientation="horizontal"
-        android:padding="5dp"
+        android:layout_margin="10dp"
         android:verticalSpacing="10dp" />
 
 </LinearLayout>
