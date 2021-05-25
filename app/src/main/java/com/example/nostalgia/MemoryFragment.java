@@ -3,19 +3,23 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -66,6 +70,8 @@ public class MemoryFragment extends Fragment {
     private static final int MY_STORAGE_CODE = 102;
 
     private Memory mMemory;
+    private Memory mcurrentMemory;
+    private SharedPreferences prefs;
     private List<Memory> mMemories;
     private Button mPhotoButton;
     private EditText mTitleField;
@@ -108,6 +114,10 @@ public class MemoryFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         getActivity().setTitle(mMemory.getTitle());
+        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("Current Memory",mMemory.getTitle());
+        editor.apply();
         inflater.inflate(R.menu.fragment_memory, menu);
     }
 
@@ -146,7 +156,6 @@ public class MemoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_memory, container, false);
         mMemories = MemoryLab.get(getActivity()).getMemories();
-
         getActivity().setTitle(mMemory.getTitle());
         // region EditText
         mTitleField = (EditText) v.findViewById(R.id.memory_title);
@@ -158,18 +167,16 @@ public class MemoryFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mMemory.setTitle(s.toString());
+                getActivity().setTitle(mMemory.getTitle());
+                if (!mMemory.getTitle().trim().equals("")) {
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("Current Memory",mMemory.getTitle());
+                    editor.apply();
+                }
             }
             @Override
             public void afterTextChanged(Editable s) {
-            }
-        });
-        mTitleField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    if(mTitleField.getText().toString().length()==0)
-                        discardMemory = true;
-                }
             }
         });
         //endregion
@@ -374,19 +381,29 @@ public class MemoryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+        if(getView() == null){
+            return;
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener(){
             @Override
-            public void handleOnBackPressed() {
-                if (mMemory.getTitle() == null) {
-                    AskDiscardMemory().show();
-                    if (discardMemory) {
-                        MemoryLab.get(getActivity()).deleteMemory(mMemory);
-                        Intent intent = new Intent(getActivity(), MemoryListActivity.class);
-                        startActivity(intent);
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    String name = preferences.getString("Current Memory", "");
+                    if (name.equals("")) {
+                        AskDiscardMemory().show();
+                        return true;
                     }
+                    else
+                        return false;
                 }
+                return false;
             }
         });
+
     }
 
     @Override
@@ -451,7 +468,8 @@ public class MemoryFragment extends Fragment {
                 .setIcon(android.R.drawable.ic_menu_delete)
                 .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        discardMemory = true;
+                        Intent intent = new Intent(getActivity(), MemoryListActivity.class);
+                        startActivity(intent);
                         dialog.dismiss();
                     }
                 })

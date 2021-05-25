@@ -152,6 +152,15 @@ public class MemoryListFragment extends Fragment {
 
         MemoryLab memoryLab = MemoryLab.get(getActivity());
         List<Memory> Memorys = memoryLab.getMemories();
+        for(int i = 0; i < Memorys.size();i++) {
+            if (Memorys.contains(null)) {
+                int nullMemoryposition = Memorys.indexOf(null);
+                MemoryLab.get(getActivity()).deleteMemory(Memorys.get(nullMemoryposition));
+            }
+            else if(Memorys.get(i).getTitle()==null)
+                MemoryLab.get(getActivity()).deleteMemory(Memorys.get(i));
+        }
+        Memorys = memoryLab.getMemories();
         if(mAdapter == null && Memorys.size()!=0) {
             firstTime = false;
             mAdapter = new MemoryAdapter(Memorys);
@@ -198,12 +207,15 @@ public class MemoryListFragment extends Fragment {
         public void onClick(View v) {
             //region notifyItemChanged position
             int i = 0;
-            for (Memory Memory: MemoryLab.get(getActivity()).getMemories()){
-                if(Memory.getId().equals(mMemory.getId())) {
-                    itemChangedposition = i;
-                    break;
+            for (Memory Memory: MemoryLab.get(getActivity()).getMemories()) {
+                if (mMemory != null) {
+                    if (Memory.getId().equals(mMemory.getId())) {
+                        itemChangedposition = i;
+                        break;
+                    }
                 }
-                i++;
+                    i++;
+
             }
             //endregion
             mCallbacks.onMemorySelected(mMemory);
