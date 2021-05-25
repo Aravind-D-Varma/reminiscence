@@ -203,7 +203,14 @@ public class MemoryListFragment extends Fragment {
         //region bind
         public void bind(Memory Memory){
             mMemory = Memory;
-            mTitleTextView.setText(mMemory.getTitle());
+            if (mMemory.getTitle()==null)
+                mTitleTextView.setText("(No Title set)");
+            try{
+                if (mMemory.getTitle().equals(""))
+                    mTitleTextView.setText("(No Title set)");
+                else
+                    mTitleTextView.setText(mMemory.getTitle());
+            }catch (NullPointerException e){}
             mDateTextView.setText("Noticed on: " + DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate()));
         }
         //endregion
