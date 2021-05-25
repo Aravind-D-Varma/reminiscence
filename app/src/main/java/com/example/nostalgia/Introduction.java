@@ -18,8 +18,7 @@ public class Introduction extends AppCompatActivity {
     private Button mContinue;
     public static final String SEND_USERNAME= "username";
     public static final String APPLICABLE_EVENTS = "true_events";
-    private RadioButton mUserYesStudent, mUserNotStudent,mUserYesWorked, mUserNotWorked
-            ,mUserYesReligious,mUserNotReligious;
+    private RadioButton mUserYesStudent, mUserYesWorked,mUserYesReligious;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,11 +37,8 @@ public class Introduction extends AppCompatActivity {
             }
         });
         mUserYesStudent = (RadioButton) findViewById(R.id.yes_student);
-        mUserNotStudent = (RadioButton) findViewById(R.id.not_student);
         mUserYesWorked = (RadioButton) findViewById(R.id.yes_worked);
-        mUserNotWorked = (RadioButton) findViewById(R.id.not_worked);
         mUserYesReligious = (RadioButton) findViewById(R.id.yes_religious);
-        mUserNotReligious = (RadioButton) findViewById(R.id.not_religious);
         mContinue = (Button) findViewById(R.id.continue_button);
         mContinue.setOnClickListener(new View.OnClickListener(){
             @Override

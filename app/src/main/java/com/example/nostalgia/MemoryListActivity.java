@@ -3,6 +3,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     public MemoryListFragment MLfragment;
     private TextView mHeaderText;
     private String userName;
+    private boolean[] availableEvents;
 
     public static Intent newIntent(Context context, String text) {
         Intent intent = new Intent(context, MemoryListActivity.class);
@@ -57,20 +59,29 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userName = getIntent().getStringExtra(Introduction.SEND_USERNAME);
+        availableEvents = getIntent().getBooleanArrayExtra(Introduction.APPLICABLE_EVENTS);
+
         mNavigationView = findViewById(R.id.navigation_view);
+
+        View headerView = mNavigationView.getHeaderView(0);
+        mHeaderText = headerView.findViewById(R.id.nav_header_textView);
+        mHeaderText.setText("Welcome "+userName);
+
+        Menu menuNav = mNavigationView.getMenu();
+        MenuItem studentmenuItem = menuNav.findItem(R.id.studentlife);
+        studentmenuItem.setVisible(availableEvents[0]);
+        MenuItem workmenuItem = menuNav.findItem(R.id.work);
+        workmenuItem.setVisible(availableEvents[1]);
+        MenuItem religionmenuItem = menuNav.findItem(R.id.festival);
+        religionmenuItem.setVisible(availableEvents[2]);
+
         mDrawerLayout = findViewById(R.id.main_drawerLayout);
         mNavigationView.setNavigationItemSelectedListener(this);
-
         mABDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.NDopen, R.string.NDclose);
-
         mDrawerLayout.addDrawerListener(mABDrawerToggle);
-
         mABDrawerToggle.setDrawerIndicatorEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mABDrawerToggle.syncState();
-
-        mHeaderText = findViewById(R.id.nav_header_textView);
-        mHeaderText.setText("Welcome "+userName);
     }
 
     @Override
