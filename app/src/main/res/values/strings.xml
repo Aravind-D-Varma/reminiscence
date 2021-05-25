@@ -45,6 +45,12 @@
     <string name="all">All Events</string>
     <string name="choose_photos">Choose Photos</string>
     <string name="photo_add">Add photo</string>
+    <string name="welcome">Welcome!</string>
+    <string name="enterName">Enter your name:</string>
+    <string name="userisstudent">Do you attend or have you attended academia (college/university/institute) as a student?</string>
+    <string name="useremployed">Are you or have you been a working professional?</string>
+    <string name="userreligion">Do you consider yourself to be a religious person?</string>
+    <string name="intro">Tell a little bit about yourself!</string>
 
 
 </resources>
