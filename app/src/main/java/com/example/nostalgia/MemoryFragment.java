@@ -83,6 +83,7 @@ public class MemoryFragment extends Fragment {
     private RecyclerView mPhotoRecyclerView;
     private Spinner mSpinner;
     private Intent getImage;
+    private boolean discardPhoto = false;
     private final String[] paths = {"Student Life" , "Work", "Home", "Birthday", "Hangouts", "Festival"};
     private List<Bitmap> photos = new ArrayList<Bitmap>();
 
@@ -366,16 +367,29 @@ public class MemoryFragment extends Fragment {
         }
         else if (requestCode == REQUEST_GALLERY_ADDITIONALPHOTO){
             String extraImagesEncodedList = mMemory.getPhotoPaths();
+            String[] duplicateCheck = extraImagesEncodedList.split(",");
             if(data.getData()!=null){
                 Uri mImageUri=data.getData();
-                extraImagesEncodedList = extraImagesEncodedList +","+(getImagePath(mImageUri));
+                String newPhoto = getImagePath(mImageUri);
+                if(Arrays.asList(duplicateCheck).contains(newPhoto))
+                    discardPhoto = true;
+                else {
+                    extraImagesEncodedList = extraImagesEncodedList + "," + (getImagePath(mImageUri));
+                    discardPhoto = false;
+                }
             } else {
                 if (data.getClipData() != null) {
                     ClipData mClipData = data.getClipData();
                     for (int i = 0; i < mClipData.getItemCount(); i++) {
                         ClipData.Item item = mClipData.getItemAt(i);
                         Uri uri = item.getUri();
-                        extraImagesEncodedList = extraImagesEncodedList + ","+(getImagePath(uri));
+                        String newPhoto = getImagePath(uri);
+                        if(Arrays.asList(duplicateCheck).contains(newPhoto))
+                            discardPhoto = true;
+                        else {
+                            extraImagesEncodedList = extraImagesEncodedList + "," + newPhoto;
+                            discardPhoto = false;
+                        }
                     }
                 }
             }
@@ -393,6 +407,9 @@ public class MemoryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if(discardPhoto)
+            Toast.makeText(getContext(),"Selected same photo(s) again! Discarded them to save space"
+                    ,Toast.LENGTH_SHORT).show();
         if(getView() == null){
             return;
         }
