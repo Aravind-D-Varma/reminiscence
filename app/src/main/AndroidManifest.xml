@@ -25,7 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name="com.example.nostalgia.Introduction"
+            android:parentActivityName="com.example.nostalgia.Launcherclass">
+        </activity>
         <activity
             android:name="com.example.nostalgia.MemoryListActivity"
             android:theme="@style/Theme.Reminiscence">

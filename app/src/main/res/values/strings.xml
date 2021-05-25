@@ -51,6 +51,7 @@
     <string name="useremployed">Are you or have you been a working professional?</string>
     <string name="userreligion">Do you consider yourself to be a religious person?</string>
     <string name="intro">Tell a little bit about yourself!</string>
+    <string name="ctd">Continue</string>
 
 
 </resources>

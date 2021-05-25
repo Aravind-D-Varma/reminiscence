@@ -1831,6 +1831,7 @@ id container
 id content
 id contentPanel
 id contiguous
+id continue_button
 id coordinator
 id cos
 id counterclockwise
@@ -1915,6 +1916,7 @@ id ignore
 id ignoreRequest
 id image
 id info
+id intro
 id invisible
 id inward
 id italic
@@ -2012,6 +2014,9 @@ id no_memory_button
 id no_memory_text
 id none
 id normal
+id not_religious
+id not_student
+id not_worked
 id notification_background
 id notification_main_column
 id notification_main_column_container
@@ -2124,6 +2129,10 @@ id textSpacerNoButtons
 id textSpacerNoTitle
 id textStart
 id textTop
+id textView
+id textView2
+id textView3
+id textView5
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon
@@ -2154,6 +2163,10 @@ id uniform
 id unlabeled
 id up
 id useLogo
+id user_name
+id user_religious
+id user_student
+id user_working
 id view_offset_helper
 id visible
 id withText
@@ -2161,6 +2174,9 @@ id withinBounds
 id work
 id wrap
 id wrap_content
+id yes_religious
+id yes_student
+id yes_worked
 id zero_corner_chip
 integer abc_config_activityDefaultDur
 integer abc_config_activityShortDur
@@ -2319,6 +2335,7 @@ layout text_view_with_line_height_from_layout
 layout text_view_with_line_height_from_style
 layout text_view_with_theme_line_height
 layout text_view_without_line_height
+layout userdetails
 menu fragment_memory
 menu fragment_memory_list
 menu nav_menudrawer
@@ -2368,7 +2385,9 @@ string character_counter_pattern
 string chip_text
 string choose_photos
 string clear_text_end_icon_content_description
+string ctd
 string date_picker_title
+string enterName
 string error_icon_content_description
 string exposed_dropdown_menu_content_description
 string fab_transformation_scrim_behavior
@@ -2380,6 +2399,7 @@ string hangouts
 string hide_bottom_view_on_scroll_behavior
 string home
 string icon_content_description
+string intro
 string item_view_role_description
 string material_clock_display_divider
 string material_clock_toggle_content_description
@@ -2465,6 +2485,10 @@ string status_bar_notification_info_overflow
 string studentlife
 string subtitle_format
 string time_picker_title
+string useremployed
+string userisstudent
+string userreligion
+string welcome
 string work
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light

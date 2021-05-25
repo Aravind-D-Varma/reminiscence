@@ -1,8 +1,11 @@
 package com.example.nostalgia;
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
@@ -12,7 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 public class Introduction extends AppCompatActivity {
 
     private EditText mUsername;
-    private String toUserName;
+    private Button mContinue;
+    public static final String SEND_USERNAME= "username";
+    public static final String APPLICABLE_EVENTS = "true_events";
     private RadioButton mUserYesStudent, mUserNotStudent,mUserYesWorked, mUserNotWorked
             ,mUserYesReligious,mUserNotReligious;
 
@@ -27,26 +32,26 @@ public class Introduction extends AppCompatActivity {
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mUsername.setText(s);
             }
             @Override
             public void afterTextChanged(Editable s) {
             }
         });
         mUserYesStudent = (RadioButton) findViewById(R.id.yes_student);
-
         mUserNotStudent = (RadioButton) findViewById(R.id.not_student);
         mUserYesWorked = (RadioButton) findViewById(R.id.yes_worked);
         mUserNotWorked = (RadioButton) findViewById(R.id.not_worked);
         mUserYesReligious = (RadioButton) findViewById(R.id.yes_religious);
         mUserNotReligious = (RadioButton) findViewById(R.id.not_religious);
-        Intent intent = new Intent(Introduction.this, MemoryListActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        UserDetails.getUserDetails(mUsername.getText().toString());
+        mContinue = (Button) findViewById(R.id.continue_button);
+        mContinue.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = MemoryListActivity.newIntent(getApplicationContext(), mUsername.getText().toString());
+                boolean[] applicableEvents = {mUserYesStudent.isChecked(),mUserYesWorked.isChecked(),mUserYesReligious.isChecked()};
+                intent.putExtra(APPLICABLE_EVENTS,applicableEvents);
+                startActivity(intent);
+            }
+        });
     }
 }

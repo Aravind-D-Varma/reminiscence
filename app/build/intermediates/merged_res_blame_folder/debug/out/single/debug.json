@@ -344,6 +344,10 @@
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-xhdpi\\baseline_double_arrow_black_20.png"
     },
     {
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\layout_userdetails.xml.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\layout\\userdetails.xml"
+    },
+    {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_ic_menu_delete.png.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-xxhdpi\\ic_menu_delete.png"
     },

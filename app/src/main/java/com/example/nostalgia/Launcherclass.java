@@ -14,7 +14,7 @@ public class Launcherclass extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.LaunchTheme);
-        SystemClock.sleep(2000);
+        SystemClock.sleep(1000);
         Intent intent = new Intent(Launcherclass.this, Introduction.class);
         startActivity(intent);
         finish();

@@ -1,7 +1,11 @@
 package com.example.nostalgia;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -17,6 +21,15 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     ActionBarDrawerToggle mABDrawerToggle;
     NavigationView mNavigationView;
     public MemoryListFragment MLfragment;
+    private TextView mHeaderText;
+    private String userName;
+
+    public static Intent newIntent(Context context, String text) {
+        Intent intent = new Intent(context, MemoryListActivity.class);
+        intent.putExtra(Introduction.SEND_USERNAME, text);
+        return intent;
+    }
+
     @Override
     protected Fragment createFragment() {
         MLfragment = new MemoryListFragment();
@@ -43,7 +56,7 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        userName = getIntent().getStringExtra(Introduction.SEND_USERNAME);
         mNavigationView = findViewById(R.id.navigation_view);
         mDrawerLayout = findViewById(R.id.main_drawerLayout);
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -55,6 +68,9 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
         mABDrawerToggle.setDrawerIndicatorEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mABDrawerToggle.syncState();
+
+        mHeaderText = findViewById(R.id.nav_header_textView);
+        mHeaderText.setText("Welcome "+userName);
     }
 
     @Override
