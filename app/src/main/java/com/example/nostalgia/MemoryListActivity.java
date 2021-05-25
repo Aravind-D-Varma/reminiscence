@@ -47,6 +47,7 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     public void onMemorySelected(Memory memory) {
         if(findViewById(R.id.detail_fragment_container) == null){
             Intent intent = MemoryPagerActivity.newIntent(this, memory.getId());
+            intent.putExtra(Introduction.APPLICABLE_EVENTS,availableEvents);
             startActivity(intent);
         }
         else{

@@ -22,6 +22,7 @@ public class MemoryPagerActivity extends AppCompatActivity {
     private static final String EXTRA_memory_ID = "com.example.criminalintent.memory_id";
     private static ViewPager mViewPager;
     private List<Memory> mMemories;
+    public boolean[] availableEvents;
     //endregion
 
     public static Intent newIntent(Context packageContext, UUID memoryId){
@@ -37,6 +38,7 @@ public class MemoryPagerActivity extends AppCompatActivity {
 
         mViewPager = (ViewPager) findViewById(R.id.memory_view_pager);
         mMemories = MemoryLab.get(this).getMemories();
+        availableEvents = getIntent().getBooleanArrayExtra(Introduction.APPLICABLE_EVENTS);
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         //region setAdapter
