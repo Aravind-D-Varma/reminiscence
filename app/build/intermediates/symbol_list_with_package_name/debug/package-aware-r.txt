@@ -1956,7 +1956,7 @@ id material_timepicker_mode_button
 id material_timepicker_ok_button
 id material_timepicker_view
 id material_value_index
-id memory_camera
+id memory_addphotos
 id memory_date
 id memory_details
 id memory_fab

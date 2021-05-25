@@ -31,6 +31,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -84,7 +85,6 @@ public class MemoryFragment extends Fragment {
     private Intent getImage;
     private final String[] paths = {"Student Life" , "Work", "Home", "Birthday", "Hangouts", "Festival"};
     private List<Bitmap> photos = new ArrayList<Bitmap>();
-    private boolean discardMemory = false;
 
     //endregion
     //region Fragment+Arguments
@@ -117,6 +117,12 @@ public class MemoryFragment extends Fragment {
         prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("Current Memory",mMemory.getTitle());
+        try{
+            editor.putBoolean("Current Memory Photos",(mMemory.getPhotoPaths().length()==0));
+        }
+        catch (NullPointerException e){
+            editor.putBoolean("Current Memory Photos",true);
+        }
         editor.apply();
         inflater.inflate(R.menu.fragment_memory, menu);
     }
@@ -132,19 +138,24 @@ public class MemoryFragment extends Fragment {
                 return true;
             case R.id.share_memory:
                 ArrayList<Uri> imageUris = new ArrayList<Uri>();
-                for(String path : mMemory.getPhotoPaths().split(",")) {
-                    if(!path.equals("")) {
-                        File file = new File(path);
-                        Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
-                        imageUris.add(uri);
+                try {
+                    for (String path : mMemory.getPhotoPaths().split(",")) {
+                        if (!path.equals("")) {
+                            File file = new File(path);
+                            Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
+                            imageUris.add(uri);
+                        }
                     }
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+                    shareIntent.setType("image/*");
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, mMemory.getTitle());
+                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(Intent.createChooser(shareIntent, "Share Memory"));
                 }
-                Intent shareIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
-                shareIntent.setType("image/*");
-                shareIntent.putExtra(Intent.EXTRA_TEXT, mMemory.getTitle());
-                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivity(Intent.createChooser(shareIntent, "Share Memory"));
+                catch (NullPointerException e){
+                    Toast.makeText(getContext(), "No photos attached!",Toast.LENGTH_SHORT).show();
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -191,6 +202,7 @@ public class MemoryFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mMemory.setDetail(s.toString());
+
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -254,7 +266,7 @@ public class MemoryFragment extends Fragment {
         //endregion
         PackageManager pM = getActivity().getPackageManager();
         //region PhotoButton
-        mPhotoButton = (Button)v.findViewById(R.id.memory_camera);
+        mPhotoButton = (Button)v.findViewById(R.id.memory_addphotos);
         getImage = new Intent(Intent.ACTION_GET_CONTENT);
         getImage.setType("image/*");
         getImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
@@ -384,7 +396,6 @@ public class MemoryFragment extends Fragment {
         if(getView() == null){
             return;
         }
-
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener(){
@@ -392,8 +403,9 @@ public class MemoryFragment extends Fragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                    String name = preferences.getString("Current Memory", "");
-                    if (name.equals("")) {
+                    String title = preferences.getString("Current Memory", "");
+                    boolean photosAbsent = preferences.getBoolean("Current Memory Photos",true);
+                    if (title.equals("")&&photosAbsent) {
                         AskDiscardMemory().show();
                         return true;
                     }
@@ -428,6 +440,13 @@ public class MemoryFragment extends Fragment {
                 }
             }
         }
+        try {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("Current Memory Photos", (mMemory.getPhotoPaths().length() == 0));
+            editor.apply();
+        }
+        catch (NullPointerException e){}
         return photos;
     }
     private String getImagePath(Uri mImageUri) {
@@ -464,7 +483,7 @@ public class MemoryFragment extends Fragment {
     {
         AlertDialog discardMemoryDialogBox = new AlertDialog.Builder(getContext())
                 .setTitle("Discard Memory")
-                .setMessage("You did not set any title or choosed photos. Do you want to discard this memory?")
+                .setMessage("You did not set a title or chosen any photos. Do you want to discard this memory?")
                 .setIcon(android.R.drawable.ic_menu_delete)
                 .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {

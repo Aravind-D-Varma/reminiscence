@@ -157,7 +157,12 @@ public class MemoryListFragment extends Fragment {
                 int nullMemoryposition = Memorys.indexOf(null);
                 MemoryLab.get(getActivity()).deleteMemory(Memorys.get(nullMemoryposition));
             }
-            else if(Memorys.get(i).getTitle()==null)
+            boolean yesPhotos = true;
+            try{
+                yesPhotos = Memorys.get(i).getPhotoPaths().length()<1;
+            }
+            catch (NullPointerException e){}
+            if(Memorys.get(i).getTitle()==null && yesPhotos)
                 MemoryLab.get(getActivity()).deleteMemory(Memorys.get(i));
         }
         Memorys = memoryLab.getMemories();
@@ -244,10 +249,7 @@ public class MemoryListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull MemoryHolder holder, int position) {
             Memory Memory = mMemories.get(position);
-            if(Memory.getTitle()==null)
-                MemoryLab.get(getActivity()).deleteMemory(Memory);
-            else
-                holder.bind(Memory);
+            holder.bind(Memory);
         }
         //endregion
         @Override
