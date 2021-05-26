@@ -82,7 +82,7 @@ public class MemoryFragment extends Fragment {
     private Spinner mSpinner;
     private Intent getImage;
     private boolean discardPhoto = false;
-    private String[] paths = {"Student Life" , "Work", "Festival", "Home", "Birthdays", "Hangouts"};
+    private String[] paths ={};
     private List<Bitmap> photos = new ArrayList<Bitmap>();
 
     //endregion
@@ -165,17 +165,8 @@ public class MemoryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_memory, container, false);
-        /*boolean[] availableEvents = ((MemoryPagerActivity) getActivity()).availableEvents;
-        List<String> stringList = new ArrayList<String>(Arrays.asList(paths));
-        if(availableEvents[0])
-            stringList.remove("Student Life");
-        if(availableEvents[1])
-            stringList.remove("Work");
-        if(availableEvents[2])
-            stringList.remove("Festival");
-        paths = stringList.toArray(paths);*/
-
         getActivity().setTitle(mMemory.getTitle());
+        paths = ((MemoryPagerActivity)getActivity()).allEventPaths;
         // region EditText
         mTitleField = (EditText) v.findViewById(R.id.memory_title);
         mTitleField.setText(mMemory.getTitle());

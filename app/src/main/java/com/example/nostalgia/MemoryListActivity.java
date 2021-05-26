@@ -2,6 +2,7 @@ package com.example.nostalgia;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,11 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 public class MemoryListActivity extends SingleFragmentActivity implements MemoryListFragment.Callbacks, NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout mDrawerLayout;
@@ -25,6 +31,8 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     private TextView mHeaderText;
     private String userName;
     private boolean[] availableEvents;
+    private List<String> allEvents = new LinkedList<String>();
+    private String[] allEventpaths={};
 
     public static Intent newIntent(Context context, String text) {
         Intent intent = new Intent(context, MemoryListActivity.class);
@@ -48,6 +56,7 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
         if(findViewById(R.id.detail_fragment_container) == null){
             Intent intent = MemoryPagerActivity.newIntent(this, memory.getId());
             intent.putExtra(Introduction.APPLICABLE_EVENTS,availableEvents);
+            intent.putExtra(Introduction.APPLICABLE_EVENTS, allEventpaths);
             startActivity(intent);
         }
         else{
@@ -61,6 +70,8 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
         super.onCreate(savedInstanceState);
         userName = getIntent().getStringExtra(Introduction.SEND_USERNAME);
         availableEvents = getIntent().getBooleanArrayExtra(Introduction.APPLICABLE_EVENTS);
+        allEvents.add("Student Life");allEvents.add("Work");allEvents.add("Festivals");allEvents.add("Home");
+        allEvents.add("Birthdays");allEvents.add("Hangouts");
 
         mNavigationView = findViewById(R.id.navigation_view);
 
@@ -70,11 +81,22 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
 
         Menu menuNav = mNavigationView.getMenu();
         MenuItem studentmenuItem = menuNav.findItem(R.id.studentlife);
-        studentmenuItem.setVisible(availableEvents[0]);
+        if(!availableEvents[0]) {
+            allEvents.remove("Student Life");
+            studentmenuItem.setVisible(availableEvents[0]);
+        }
         MenuItem workmenuItem = menuNav.findItem(R.id.work);
-        workmenuItem.setVisible(availableEvents[1]);
+        if(!availableEvents[1]) {
+            allEvents.remove("Work");
+            workmenuItem.setVisible(availableEvents[1]);
+        }
         MenuItem religionmenuItem = menuNav.findItem(R.id.festival);
-        religionmenuItem.setVisible(availableEvents[2]);
+        if(!availableEvents[2]) {
+            allEvents.remove("Festivals");
+            religionmenuItem.setVisible(availableEvents[2]);
+        }
+        allEventpaths = allEvents.toArray(allEventpaths);
+
 
         mDrawerLayout = findViewById(R.id.main_drawerLayout);
         mNavigationView.setNavigationItemSelectedListener(this);
