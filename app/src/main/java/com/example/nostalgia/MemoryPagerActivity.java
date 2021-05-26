@@ -70,8 +70,4 @@ public class MemoryPagerActivity extends AppCompatActivity {
             }
         }
     }
-    public static void getCurrentPosition(int i){
-            mViewPager.setCurrentItem(i);
-    }
-
 }

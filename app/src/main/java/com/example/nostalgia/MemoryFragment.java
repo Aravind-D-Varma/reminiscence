@@ -344,7 +344,6 @@ public class MemoryFragment extends Fragment {
             updateTime(time);
         }
         else if (requestCode == REQUEST_GALLERY_PHOTO){
-
             String imagesEncodedList = "";
             if(data.getData()!=null){
                 Uri mImageUri=data.getData();
@@ -406,7 +405,6 @@ public class MemoryFragment extends Fragment {
         super.onPause();
         MemoryLab.get(getActivity()).updateMemory(mMemory);
     }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -436,6 +434,11 @@ public class MemoryFragment extends Fragment {
             }
         });
 
+    }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        
     }
 
     @Override

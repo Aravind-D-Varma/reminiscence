@@ -32,7 +32,8 @@
         </activity>
         <activity
             android:name="com.example.nostalgia.MemoryListActivity"
-            android:theme="@style/Theme.Reminiscence">
+            android:theme="@style/Theme.Reminiscence"
+            android:configChanges="screenSize|orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SEARCH"/>
@@ -41,11 +42,13 @@
         </activity>
         <activity
             android:name="com.example.nostalgia.UserSettingsActivity"
-            android:parentActivityName="com.example.nostalgia.MemoryListActivity">
+            android:parentActivityName="com.example.nostalgia.MemoryListActivity"
+            android:configChanges="screenSize|orientation|keyboardHidden">
         </activity>
         <activity
             android:name="com.example.nostalgia.MemoryPagerActivity"
-            android:parentActivityName="com.example.nostalgia.MemoryListActivity">
+            android:parentActivityName="com.example.nostalgia.MemoryListActivity"
+            android:configChanges="screenSize|orientation|keyboardHidden">
         </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
