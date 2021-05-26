@@ -37,4 +37,11 @@
         android:icon="@drawable/festival_white"
         android:title="@string/festival" />
     </group>
+    <group android:id="@+id/settings">
+        <item
+            android:id="@+id/user_settings"
+            android:icon="@drawable/settings_white"
+            android:title="@string/settings"/>
+    </group>
+
 </menu>

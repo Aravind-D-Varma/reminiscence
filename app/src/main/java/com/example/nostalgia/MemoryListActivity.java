@@ -107,6 +107,9 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
                 MLfragment.eventFilter(getString(R.string.festival));
                 onBackPressed();
                 return true;
+            case R.id.settings:
+                Intent intent = new Intent(MemoryListActivity.this, UserSettings.class);
+                startActivity(intent);
         }
         return true;
     }
