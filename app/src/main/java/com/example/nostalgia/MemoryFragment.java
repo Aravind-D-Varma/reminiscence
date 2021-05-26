@@ -166,7 +166,7 @@ public class MemoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_memory, container, false);
         getActivity().setTitle(mMemory.getTitle());
-        paths = ((MemoryPagerActivity)getActivity()).allEventPaths;
+        paths = ((MemoryPagerActivity)getActivity()).paths;
         // region EditText
         mTitleField = (EditText) v.findViewById(R.id.memory_title);
         mTitleField.setText(mMemory.getTitle());
