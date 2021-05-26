@@ -77,6 +77,13 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        GlobalInfo();
+        headerandmenuSetting(userName,allEventpaths);
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.all:
@@ -107,8 +114,8 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
                 MLfragment.eventFilter(getString(R.string.festival));
                 onBackPressed();
                 return true;
-            case R.id.settings:
-                Intent intent = new Intent(MemoryListActivity.this, UserSettings.class);
+            case R.id.user_settings:
+                Intent intent = new Intent(MemoryListActivity.this, UserSettingsActivity.class);
                 startActivity(intent);
         }
         return true;

@@ -55,6 +55,8 @@
     <string name="thanks">Thank you for sharing!</string>
     <string name="photos_reselection">Re-select Photos</string>
     <string name="settings">Settings</string>
+    <string name="changeName">Change Name: </string>
+    <string name="changesettings">Change your settings: </string>
 
 
 </resources>

@@ -53,6 +53,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.example.nostalgia.UserSettingsActivity"
+            android:parentActivityName="com.example.nostalgia.MemoryListActivity" >
+        </activity>
+        <activity
             android:name="com.example.nostalgia.MemoryPagerActivity"
             android:parentActivityName="com.example.nostalgia.MemoryListActivity" >
         </activity>

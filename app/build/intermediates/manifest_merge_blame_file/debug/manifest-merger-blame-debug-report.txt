@@ -28,7 +28,7 @@
 17-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:9:9-33
 18
 19    <application
-19-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:10:5-55:19
+19-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:10:5-59:19
 20        android:allowBackup="false"
 20-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:11:9-36
 21        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -97,29 +97,36 @@
 54        </activity>
 55        <activity
 55-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:42:9-45:20
-56            android:name="com.example.nostalgia.MemoryPagerActivity"
-56-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:43:13-69
+56            android:name="com.example.nostalgia.UserSettingsActivity"
+56-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:43:13-70
 57            android:parentActivityName="com.example.nostalgia.MemoryListActivity" >
 57-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:44:13-82
 58        </activity>
-59
-60        <provider
-60-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:46:9-54:20
-61            android:name="androidx.core.content.FileProvider"
-61-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:47:13-62
-62            android:authorities="com.example.nostalgia.fileprovider"
-62-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:48:13-69
-63            android:exported="false"
-63-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:49:13-37
-64            android:grantUriPermissions="true" >
-64-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:50:13-47
-65            <meta-data
-65-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:51:13-53:48
-66                android:name="android.support.FILE_PROVIDER_PATHS"
-66-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:52:17-67
-67                android:resource="@xml/files" />
-67-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:53:17-46
-68        </provider>
-69    </application>
-70
-71</manifest>
+59        <activity
+59-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:46:9-49:20
+60            android:name="com.example.nostalgia.MemoryPagerActivity"
+60-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:47:13-69
+61            android:parentActivityName="com.example.nostalgia.MemoryListActivity" >
+61-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:48:13-82
+62        </activity>
+63
+64        <provider
+64-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:50:9-58:20
+65            android:name="androidx.core.content.FileProvider"
+65-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:51:13-62
+66            android:authorities="com.example.nostalgia.fileprovider"
+66-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:52:13-69
+67            android:exported="false"
+67-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:53:13-37
+68            android:grantUriPermissions="true" >
+68-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:54:13-47
+69            <meta-data
+69-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:55:13-57:48
+70                android:name="android.support.FILE_PROVIDER_PATHS"
+70-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:56:17-67
+71                android:resource="@xml/files" />
+71-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:57:17-46
+72        </provider>
+73    </application>
+74
+75</manifest>
