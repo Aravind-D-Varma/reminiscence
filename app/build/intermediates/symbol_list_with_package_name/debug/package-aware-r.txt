@@ -2484,6 +2484,7 @@ string show_total
 string status_bar_notification_info_overflow
 string studentlife
 string subtitle_format
+string thanks
 string time_picker_title
 string useremployed
 string userisstudent

@@ -192,21 +192,34 @@
             app:layout_constraintStart_toStartOf="parent" />
     </RadioGroup>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="@string/thanks"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_religious" />
+
     <Button
         android:id="@+id/continue_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/button_border"
+        android:backgroundTint="@color/black"
         android:drawableRight="@drawable/frontarrow_white"
+        android:padding="10dp"
         android:text="@string/ctd"
         android:textAlignment="center"
-        android:padding="10dp"
         android:textColor="@color/white"
         android:textSize="26sp"
         android:textStyle="bold"
-        android:background="@drawable/button_border"
-        android:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

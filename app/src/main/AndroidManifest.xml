@@ -27,7 +27,8 @@
         </activity>
         <activity
             android:name="com.example.nostalgia.Introduction"
-            android:parentActivityName="com.example.nostalgia.Launcherclass">
+            android:parentActivityName="com.example.nostalgia.Launcherclass"
+            android:theme="@style/Theme.Reminiscence.NoActionBar">
         </activity>
         <activity
             android:name="com.example.nostalgia.MemoryListActivity"
