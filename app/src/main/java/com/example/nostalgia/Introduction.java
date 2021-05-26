@@ -1,5 +1,6 @@
 package com.example.nostalgia;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -45,6 +47,7 @@ public class Introduction extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+
         mUserYesStudent = (RadioButton) findViewById(R.id.yes_student);
         mUserYesWorked = (RadioButton) findViewById(R.id.yes_worked);
         mUserYesReligious = (RadioButton) findViewById(R.id.yes_religious);

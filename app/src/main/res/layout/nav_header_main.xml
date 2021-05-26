@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="wrap_content"
     android:background="@color/purple_700"
     android:clickable="true"
     android:focusable="true"
     android:gravity="bottom"
-    android:padding="16dp"
+    android:padding="12dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
     <ImageView
         android:id="@+id/nav_header_imageView"
