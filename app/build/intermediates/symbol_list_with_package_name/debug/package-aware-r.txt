@@ -2477,6 +2477,7 @@ string path_password_eye_mask_strike_through
 string path_password_eye_mask_visible
 string path_password_strike_through
 string photo_add
+string photos_reselection
 string search
 string search_menu_title
 string send_report

@@ -69,6 +69,7 @@ public class MemoryFragment extends Fragment {
 
     private static final String[] DECLARED_GETPHOTO_PERMISSIONS = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
     private static final int MY_STORAGE_CODE = 102;
+    private final String CURRENT_PHOTOS_ABSENT = "Current Memory Photos";
 
     private Memory mMemory;
     private SharedPreferences prefs;
@@ -117,10 +118,10 @@ public class MemoryFragment extends Fragment {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("Current Memory",mMemory.getTitle());
         try{
-            editor.putBoolean("Current Memory Photos",(mMemory.getPhotoPaths().length()==0));
+            editor.putBoolean(CURRENT_PHOTOS_ABSENT,(mMemory.getPhotoPaths().length()==0));
         }
         catch (NullPointerException e){
-            editor.putBoolean("Current Memory Photos",true);
+            editor.putBoolean(CURRENT_PHOTOS_ABSENT,true);
         }
         editor.apply();
         inflater.inflate(R.menu.fragment_memory, menu);
@@ -266,6 +267,10 @@ public class MemoryFragment extends Fragment {
         PackageManager pM = getActivity().getPackageManager();
         //region PhotoButton
         mPhotoButton = (Button)v.findViewById(R.id.memory_addphotos);
+        try {
+            if (mMemory.getPhotoPaths().length() != 0)
+                mPhotoButton.setText(R.string.photos_reselection);
+        }catch (NullPointerException e){}
         getImage = new Intent(Intent.ACTION_GET_CONTENT);
         getImage.setType("image/*");
         getImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
@@ -419,7 +424,7 @@ public class MemoryFragment extends Fragment {
                 if(event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                     String title = preferences.getString("Current Memory", "");
-                    boolean photosAbsent = preferences.getBoolean("Current Memory Photos",true);
+                    boolean photosAbsent = preferences.getBoolean(CURRENT_PHOTOS_ABSENT,true);
                     if (title.equals("")&&photosAbsent) {
                         AskDiscardMemory().show();
                         return true;
@@ -458,7 +463,7 @@ public class MemoryFragment extends Fragment {
         try {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("Current Memory Photos", (mMemory.getPhotoPaths().length() == 0));
+            editor.putBoolean(CURRENT_PHOTOS_ABSENT, (mMemory.getPhotoPaths().length() == 0));
             editor.apply();
         }
         catch (NullPointerException e){}

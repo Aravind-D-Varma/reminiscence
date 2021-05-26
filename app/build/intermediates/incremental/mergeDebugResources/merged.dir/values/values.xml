@@ -1160,6 +1160,7 @@
     <string name="path_password_eye_mask_visible" translatable="false">M2,4.27 L2,4.27 L4.54,1.73 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
     <string name="path_password_strike_through" translatable="false">M3.27,4.27 L19.74,20.74</string>
     <string name="photo_add">Add photo</string>
+    <string name="photos_reselection">Re-select Photos</string>
     <string name="search">Search</string>
     <string name="search_menu_title">Search</string>
     <string name="send_report">Send memory report via</string>
