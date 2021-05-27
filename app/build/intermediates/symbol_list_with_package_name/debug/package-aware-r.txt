@@ -2184,6 +2184,7 @@ id yes_religious
 id yes_student
 id yes_worked
 id zero_corner_chip
+id zoomed_imageView
 integer abc_config_activityDefaultDur
 integer abc_config_activityShortDur
 integer app_bar_elevation_anim_duration
@@ -2343,6 +2344,7 @@ layout text_view_with_line_height_from_style
 layout text_view_with_theme_line_height
 layout text_view_without_line_height
 layout userdetails
+layout zoom_image
 menu fragment_memory
 menu fragment_memory_list
 menu nav_menudrawer

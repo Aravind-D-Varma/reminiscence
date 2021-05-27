@@ -56,6 +56,8 @@ com/example/nostalgia/Launcherclass.java
 com/example/nostalgia/TimePickerFragment.java
  com.example.nostalgia.TimePickerFragment
  com.example.nostalgia.TimePickerFragment$1
+com/example/nostalgia/MyPageAdapter.java
+ com.example.nostalgia.MyPageAdapter
 com/example/nostalgia/MemoryFragment.java
  com.example.nostalgia.MemoryFragment
  com.example.nostalgia.MemoryFragment$1

@@ -2,6 +2,7 @@ package com.example.nostalgia;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,6 +27,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -43,6 +45,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -298,11 +301,18 @@ public class MemoryFragment extends Fragment {
         ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                FragmentManager fragmentManager = getFragmentManager();
+                /*FragmentManager fragmentManager = getFragmentManager();
                 ImagePickerFragment iP = ImagePickerFragment.getInstance(
                         PictureUtils.getScaledBitMap(mMemory.getPhotoPaths().split(",")[position], getActivity()));
                 iP.setTargetFragment(MemoryFragment.this, REQUEST_PHOTO);
-                iP.show(fragmentManager, DIALOG_PHOT0);
+                iP.show(fragmentManager, DIALOG_PHOT0);*/
+                Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.activity_memory_pager);
+                MyPageAdapter adapter = new MyPageAdapter(getActivity(),mMemory.getPhotoPaths().split(","));
+                ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
+                pager.setAdapter(adapter);
+                dialog.show();
             }
         });
         ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemLongClickListener(new ItemClickSupport.OnItemLongClickListener() {
