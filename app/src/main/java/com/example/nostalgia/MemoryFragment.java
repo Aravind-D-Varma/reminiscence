@@ -262,18 +262,19 @@ public class MemoryFragment extends Fragment {
                 mPhotoButton.setText(R.string.photos_reselection);
         }catch (NullPointerException e){}
         getImage = new Intent(Intent.ACTION_GET_CONTENT);
-        getImage.setType("image/*");
+        getImage.setType("*/*");
+        getImage.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {"image/*", "video/*"});
         getImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(hasPhotoPermission()) {
-                    startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
+                    startActivityForResult(Intent.createChooser(getImage, "Select Images/Videos"), REQUEST_GALLERY_PHOTO);
                 }
                 else{
                     requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE);
                     if(hasPhotoPermission()){
-                        startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
+                        startActivityForResult(Intent.createChooser(getImage, "Select Images/Videos"), REQUEST_GALLERY_PHOTO);
                     }
                 }
             }
