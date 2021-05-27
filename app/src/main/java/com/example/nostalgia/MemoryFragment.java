@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ClipData;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,7 +36,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -65,12 +64,10 @@ public class MemoryFragment extends Fragment {
     public static final String ARG_memory_ID = "memory_id";
     public static final String DIALOG_DATE = "DialogDate";
     public static final String DIALOG_TIME = "DialogTime";
-    private static final String DIALOG_PHOT0 = "DialogPhoto";
     public static final int REQUEST_DATE = 0;
     public static final int REQUEST_TIME = 1;
-    public static final int REQUEST_PHOTO = 3;
-    public static final int REQUEST_GALLERY_PHOTO = 4;
-    public static final int REQUEST_GALLERY_ADDITIONALPHOTO = 5;
+    public static final int REQUEST_GALLERY_PHOTO = 2;
+    public static final int REQUEST_GALLERY_ADDITIONALPHOTO = 3;
 
     private static final String[] DECLARED_GETPHOTO_PERMISSIONS = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
     private static final int MY_STORAGE_CODE = 102;
@@ -89,7 +86,7 @@ public class MemoryFragment extends Fragment {
     private Intent getImage;
     private boolean discardPhoto = false;
     private String[] paths ={};
-    private List<Bitmap> photos = new ArrayList<Bitmap>();
+    private List<Bitmap> photos = new ArrayList<>();
 
     //endregion
     //region Fragment+Arguments
@@ -213,18 +210,6 @@ public class MemoryFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
-        mDetailField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    if(mDetailField.getText().toString().length()==0){
-                        mDetailField.setError("It is preferred to write some details of the memory");
-                    }
-                    else
-                        mDetailField.setError(null);
-                }
-            }
-        });
         //endregion
         //region DateButton
         mDateButton = (Button) v.findViewById(R.id.memory_date);
@@ -296,23 +281,19 @@ public class MemoryFragment extends Fragment {
         //endregion
         //region PhotoGridView
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
-        mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
-        CustomAdapter customAdapter = new CustomAdapter(getContext(), setPhotogalleryView(mMemory.getPhotoPaths()));
+        mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
+        MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), setPhotogalleryView(mMemory.getPhotoPaths()));
         mPhotoRecyclerView.setAdapter(customAdapter);
         ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                /*FragmentManager fragmentManager = getFragmentManager();
-                ImagePickerFragment iP = ImagePickerFragment.getInstance(
-                        PictureUtils.getScaledBitMap(mMemory.getPhotoPaths().split(",")[position], getActivity()));
-                iP.setTargetFragment(MemoryFragment.this, REQUEST_PHOTO);
-                iP.show(fragmentManager, DIALOG_PHOT0);*/
                 Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.activity_memory_pager);
-                MyPageAdapter adapter = new MyPageAdapter(getActivity(),mMemory.getPhotoPaths().split(","));
+                MyImageAdapter adapter = new MyImageAdapter(getActivity(),mMemory.getPhotoPaths().split(","));
                 ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
                 pager.setAdapter(adapter);
+                pager.setCurrentItem(position);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.show();
             }
@@ -377,7 +358,7 @@ public class MemoryFragment extends Fragment {
                 }
             }
             mMemory.setPhotoPaths(imagesEncodedList);
-            CustomAdapter customAdapter = new CustomAdapter(getContext(), setPhotogalleryView(imagesEncodedList));
+            MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), setPhotogalleryView(imagesEncodedList));
             mPhotoRecyclerView.setAdapter(customAdapter);
             mPhotoFAB.setVisibility(View.VISIBLE);
             mPhotoFAB.setEnabled(true);
@@ -385,33 +366,33 @@ public class MemoryFragment extends Fragment {
         else if (requestCode == REQUEST_GALLERY_ADDITIONALPHOTO){
             String extraImagesEncodedList = mMemory.getPhotoPaths();
             String[] duplicateCheck = extraImagesEncodedList.split(",");
-            if(data.getData()!=null){
-                Uri mImageUri=data.getData();
-                String newPhoto = getImagePath(mImageUri);
-                if(Arrays.asList(duplicateCheck).contains(newPhoto))
-                    discardPhoto = true;
-                else {
-                    extraImagesEncodedList = extraImagesEncodedList + "," + (getImagePath(mImageUri));
-                    discardPhoto = false;
-                }
-            } else {
-                if (data.getClipData() != null) {
-                    ClipData mClipData = data.getClipData();
-                    for (int i = 0; i < mClipData.getItemCount(); i++) {
-                        ClipData.Item item = mClipData.getItemAt(i);
-                        Uri uri = item.getUri();
-                        String newPhoto = getImagePath(uri);
-                        if(Arrays.asList(duplicateCheck).contains(newPhoto))
-                            discardPhoto = true;
-                        else {
-                            extraImagesEncodedList = extraImagesEncodedList + "," + newPhoto;
-                            discardPhoto = false;
+                if(data.getData()!=null){
+                    Uri mImageUri=data.getData();
+                    String newPhoto = getImagePath(mImageUri);
+                    if(Arrays.asList(duplicateCheck).contains(newPhoto))
+                        discardPhoto = true;
+                    else {
+                        extraImagesEncodedList = extraImagesEncodedList + "," + (getImagePath(mImageUri));
+                        discardPhoto = false;
+                    }
+                } else {
+                    if (data.getClipData() != null) {
+                        ClipData mClipData = data.getClipData();
+                        for (int i = 0; i < mClipData.getItemCount(); i++) {
+                            ClipData.Item item = mClipData.getItemAt(i);
+                            Uri uri = item.getUri();
+                            String newPhoto = getImagePath(uri);
+                            if(Arrays.asList(duplicateCheck).contains(newPhoto))
+                                discardPhoto = true;
+                            else {
+                                extraImagesEncodedList = extraImagesEncodedList + "," + newPhoto;
+                                discardPhoto = false;
+                            }
                         }
                     }
                 }
-            }
             mMemory.setPhotoPaths(extraImagesEncodedList);
-            CustomAdapter customAdapter = new CustomAdapter(getContext(), setPhotogalleryView(extraImagesEncodedList));
+            MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), setPhotogalleryView(extraImagesEncodedList));
             mPhotoRecyclerView.setAdapter(customAdapter);
         }
     }
@@ -540,7 +521,7 @@ public class MemoryFragment extends Fragment {
     }
     private AlertDialog AskDeletePhoto(String tobedeletedphotopath)
     {
-        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext())
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext(),R.style.PauseDialog)
                 .setTitle("Deletion")
                 .setMessage("Do you want to delete this photo?")
                 .setIcon(android.R.drawable.ic_menu_delete)
@@ -551,7 +532,7 @@ public class MemoryFragment extends Fragment {
                         list.remove(tobedeletedphotopath);
                         String joined = TextUtils.join(",", list);
                         mMemory.setPhotoPaths(joined);
-                        CustomAdapter customAdapter = new CustomAdapter(getContext(), setPhotogalleryView(mMemory.getPhotoPaths()));
+                        MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), setPhotogalleryView(mMemory.getPhotoPaths()));
                         mPhotoRecyclerView.setAdapter(customAdapter);
                         dialog.dismiss();
                     }
@@ -562,6 +543,7 @@ public class MemoryFragment extends Fragment {
                     }
                 })
                 .create();
+        myQuittingDialogBox.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         return myQuittingDialogBox;
     }
     //endregion
