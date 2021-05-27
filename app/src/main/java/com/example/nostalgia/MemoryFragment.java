@@ -412,7 +412,7 @@ public class MemoryFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(discardPhoto)
-            Toast.makeText(getContext(),"Selected same photo(s) again! Discarded them to save space"
+            Toast.makeText(getContext(),"Duplicate(s) of some photo(s) found! Discarded them to save space"
                     ,Toast.LENGTH_SHORT).show();
         if(getView() == null){
             return;

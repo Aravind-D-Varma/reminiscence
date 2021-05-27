@@ -31,7 +31,7 @@ public class ImagePickerFragment extends DialogFragment {
         Bitmap bitmap = (Bitmap) getArguments().getParcelable(ARG_PHOTO);
         ImageView mImageView = v.findViewById(R.id.dialog_imageview);
         mImageView.setImageBitmap(bitmap);
-        return new AlertDialog.Builder(getActivity())
+        return new AlertDialog.Builder(getActivity(),R.style.PauseDialog)
                 .setView(v).show();
     }
 }
