@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -312,6 +313,7 @@ public class MemoryFragment extends Fragment {
                 MyPageAdapter adapter = new MyPageAdapter(getActivity(),mMemory.getPhotoPaths().split(","));
                 ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
                 pager.setAdapter(adapter);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.show();
             }
         });
