@@ -16,12 +16,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 style="?android:listSeparatorTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="0dp"
                 android:text="@string/memory_title_label"
                 android:textColor="@color/white"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
                 <EditText
@@ -32,15 +36,18 @@
                     android:background="@drawable/button_border"
                     android:hint="@string/memory_title_hint"
                     android:inputType="text"
-                    android:layout_margin="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:padding="5dp" />
-                <TextView
-                    style="?android:listSeparatorTextViewStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/memory_details_label"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
+
+            <TextView
+                style="?android:listSeparatorTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/memory_details_label"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
                 <EditText
                     android:id="@+id/memory_details"
                     android:layout_width="match_parent"
@@ -48,7 +55,8 @@
                     android:autofillHints="Title"
                     android:background="@drawable/button_border"
                     android:hint="@string/memory_details_hint"
-                    android:layout_margin="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:padding="5dp"
                     android:inputType="textMultiLine"
                     android:maxLines="6"/>
@@ -65,24 +73,28 @@
             android:id="@+id/memory_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:elevation="5dp"
-            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
             android:background="@drawable/button_border"
             android:backgroundTint="@color/purple_700"
-            android:drawableLeft="@drawable/baseline_date_range_white_20"/>
+            android:drawableLeft="@drawable/baseline_date_range_white_20"
+            android:elevation="5dp"
+            android:padding="2dp"
+            android:textSize="10sp" />
 
         <Button
             android:id="@+id/memory_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:elevation="5dp"
-            android:padding="5dp"
-            android:background="@drawable/button_border"
             android:layout_alignParentEnd="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button_border"
             android:backgroundTint="@color/purple_700"
-            android:drawableLeft="@drawable/baseline_time_white_20"/>
+            android:drawableLeft="@drawable/baseline_time_white_20"
+            android:elevation="5dp"
+            android:padding="2dp"
+            android:textSize="10sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -90,31 +102,33 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/memory_addphotos"
+            android:id="@+id/memory_selectphotos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableStart="@android:drawable/ic_menu_camera"
-            android:text="@string/choose_photos"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+
             android:background="@drawable/button_border"
-            android:layout_margin="10dp"
-            android:elevation="5dp"
-            android:padding="10dp"
             android:backgroundTint="@color/purple_700"
-            android:contentDescription="@string/memory_photo_button_description"/>
+            android:contentDescription="@string/memory_photo_button_description"
+            android:drawableStart="@android:drawable/ic_menu_camera"
+            android:elevation="5dp"
+            android:padding="2dp"
+            android:text="@string/choose_photos"
+            android:textSize="10sp" />
 
         <Spinner
             android:id="@+id/memory_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="9dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/button_border"
             android:backgroundTint="@color/purple_700"
             android:popupBackground="@color/purple_700"
             android:dropDownWidth="match_parent"
-            android:padding="10dp"
+            android:padding="2dp"
             android:elevation="5dp"
             android:spinnerMode="dropdown" />
     </RelativeLayout>
@@ -126,18 +140,29 @@
             android:id="@+id/photoGridView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
+            android:layout_margin="5dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/photo_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="25dp"
+            android:layout_margin="5dp"
             android:backgroundTint="@color/purple_700"
             android:contentDescription="@string/photo_add"
             android:elevation="20dp"
             android:src="@drawable/add_white" />
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:id="@+id/addphotos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add photos"
+            android:layout_marginBottom="55dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="bottom|end"
+            android:textColor="@color/white"
+            android:textSize="8dp" />
     </FrameLayout>
 
 </LinearLayout>

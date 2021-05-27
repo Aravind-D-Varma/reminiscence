@@ -1784,6 +1784,7 @@ id action_text
 id actions
 id activity_chooser_view_content
 id add
+id addphotos
 id alertTitle
 id aligned
 id all
@@ -1959,13 +1960,13 @@ id material_timepicker_mode_button
 id material_timepicker_ok_button
 id material_timepicker_view
 id material_value_index
-id memory_addphotos
 id memory_date
 id memory_details
 id memory_fab
 id memory_photo
 id memory_recycler_view
 id memory_search_menu
+id memory_selectphotos
 id memory_solved_preview
 id memory_spinner
 id memory_time

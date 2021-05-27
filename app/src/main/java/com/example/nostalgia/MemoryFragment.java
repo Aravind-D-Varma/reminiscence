@@ -31,6 +31,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -266,7 +267,7 @@ public class MemoryFragment extends Fragment {
         //endregion
         PackageManager pM = getActivity().getPackageManager();
         //region PhotoButton
-        mPhotoButton = (Button)v.findViewById(R.id.memory_addphotos);
+        mPhotoButton = (Button)v.findViewById(R.id.memory_selectphotos);
         try {
             if (mMemory.getPhotoPaths().length() != 0)
                 mPhotoButton.setText(R.string.photos_reselection);
@@ -317,6 +318,8 @@ public class MemoryFragment extends Fragment {
             mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
             mPhotoFAB.setVisibility(mMemory.getPhotoPaths()==null? View.GONE:View.VISIBLE);
             mPhotoFAB.setEnabled(mMemory.getPhotoPaths()!=null);
+            TextView mAddphoto = v.findViewById(R.id.addphotos);
+            mAddphoto.setVisibility(mMemory.getPhotoPaths()==null? View.GONE:View.VISIBLE);
             Intent getmoreImage = new Intent(Intent.ACTION_GET_CONTENT);
             getmoreImage.setType("image/*");
             getmoreImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
