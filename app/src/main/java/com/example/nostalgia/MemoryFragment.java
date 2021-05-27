@@ -283,7 +283,7 @@ public class MemoryFragment extends Fragment {
         //region PhotoGridView
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
-        MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), setPhotogalleryView(mMemory.getPhotoPaths()));
+        MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getPhotoPaths());
         mPhotoRecyclerView.setAdapter(customAdapter);
         ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
