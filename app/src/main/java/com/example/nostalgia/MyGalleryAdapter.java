@@ -54,17 +54,20 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch(holder.getItemViewType()){
             case VIDEO:
-                MediaController mc = new MediaController(context);
-                VideoView vv = ((MyVideoViewHolder)holder).video;
-                mc.setAnchorView(vv);
-                vv.setMediaController(mc);
-                vv.requestFocus();
-                vv.setVideoURI(videos.get(position));
-                vv.seekTo(1);
-                vv.setZOrderOnTop(true);
+                try {
+                    MediaController mc = new MediaController(context);
+                    VideoView vv = ((MyVideoViewHolder) holder).video;
+                    vv.setVideoURI(videos.get(position));
+                    vv.seekTo(1);
+                    vv.setZOrderOnTop(true);
+                }
+                catch(NullPointerException e){}
                 break;
             case IMAGE:
-                ((MyImageViewHolder)holder).image.setImageBitmap(photos.get(position));
+                try{
+                    ((MyImageViewHolder)holder).image.setImageBitmap(photos.get(position));
+                }
+                catch (NullPointerException e){}
                 break;
         }
     }
@@ -105,6 +108,7 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
                 Bitmap bpimg = BitmapFactory.decodeFile(photoPaths[i]);
                 photos.add(bpimg);
             }
+            else photos.add(null);
         }
         return photos;
     }
@@ -117,6 +121,8 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
                 Uri uriVid = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", new File(photoPaths[i]));
                 videos.add(uriVid);
             }
+            else
+                videos.add(null);
         }
         return videos;
     }          

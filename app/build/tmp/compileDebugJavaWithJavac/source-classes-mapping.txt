@@ -4,10 +4,8 @@ com/example/nostalgia/Introduction.java
  com.example.nostalgia.Introduction
  com.example.nostalgia.Introduction$1
  com.example.nostalgia.Introduction$2
-com/example/nostalgia/MyGalleryAdapter.java
- com.example.nostalgia.MyGalleryAdapter
- com.example.nostalgia.MyGalleryAdapter$MyImageViewHolder
- com.example.nostalgia.MyGalleryAdapter$MyVideoViewHolder
+com/example/nostalgia/Launcherclass.java
+ com.example.nostalgia.Launcherclass
 com/example/nostalgia/PictureUtils.java
  com.example.nostalgia.PictureUtils
 com/example/nostalgia/SingleFragmentActivity.java
@@ -53,8 +51,10 @@ com/example/nostalgia/Memory.java
 com/example/nostalgia/UserSettingsActivity.java
  com.example.nostalgia.UserSettingsActivity
  com.example.nostalgia.UserSettingsActivity$1
-com/example/nostalgia/Launcherclass.java
- com.example.nostalgia.Launcherclass
+com/example/nostalgia/MyGalleryAdapter.java
+ com.example.nostalgia.MyGalleryAdapter
+ com.example.nostalgia.MyGalleryAdapter$MyImageViewHolder
+ com.example.nostalgia.MyGalleryAdapter$MyVideoViewHolder
 com/example/nostalgia/GalleryViewPagerAdapter.java
  com.example.nostalgia.GalleryViewPagerAdapter
  com.example.nostalgia.GalleryViewPagerAdapter$1
