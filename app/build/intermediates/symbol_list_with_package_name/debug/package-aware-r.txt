@@ -29,6 +29,7 @@ anim design_snackbar_in
 anim design_snackbar_out
 anim fadein
 anim fadeout
+anim introduction
 anim mtrl_bottom_sheet_slide_in
 anim mtrl_bottom_sheet_slide_out
 anim mtrl_card_lowers_interpolator
@@ -1882,6 +1883,7 @@ id end
 id endToStart
 id enterAlways
 id enterAlwaysCollapsed
+id entername_text
 id events
 id exitUntilCollapsed
 id expand_activities_button
@@ -2052,6 +2054,7 @@ id progress_horizontal
 id radio
 id ratio
 id rectangles
+id religion_text
 id reverseSawtooth
 id right
 id rightToLeft
@@ -2114,6 +2117,7 @@ id staticLayout
 id staticPostLayout
 id stop
 id stretch
+id student_text
 id studentlife
 id submenuarrow
 id submit_area
@@ -2183,6 +2187,7 @@ id welcome_text
 id withText
 id withinBounds
 id work
+id work_text
 id wrap
 id wrap_content
 id yes_religious

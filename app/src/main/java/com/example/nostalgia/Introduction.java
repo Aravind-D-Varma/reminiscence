@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -41,7 +42,7 @@ public class Introduction extends AppCompatActivity {
             Intent intent = MemoryListActivity.newIntent(getApplicationContext());
             startActivity(intent);
         } else {
-            final Animation a = AnimationUtils.loadAnimation(this, R.anim.fadein);
+            final Animation a = AnimationUtils.loadAnimation(this, R.anim.introduction);
             setContentView(R.layout.userdetails);
             allEvents.add("Student Life");
             allEvents.add("Work");
@@ -51,6 +52,16 @@ public class Introduction extends AppCompatActivity {
             allEvents.add("Hangouts");
             TextView mtextView1 = (TextView) findViewById(R.id.welcome_text);
             mtextView1.startAnimation(a);
+            TextView menterName = (TextView) findViewById(R.id.entername_text);
+            menterName.startAnimation(a);
+            TextView mintroText = (TextView) findViewById(R.id.intro);
+            mintroText.startAnimation(a);
+            TextView mstudentText = (TextView) findViewById(R.id.student_text);
+            mstudentText.startAnimation(a);
+            TextView mworkText = (TextView) findViewById(R.id.work_text);
+            mworkText.startAnimation(a);
+            TextView mreligionText = (TextView) findViewById(R.id.religion_text);
+            mreligionText.startAnimation(a);
             mUsername = (EditText) findViewById(R.id.user_name);
             mUsername.startAnimation(a);
             mUsername.addTextChangedListener(new TextWatcher() {
@@ -66,13 +77,15 @@ public class Introduction extends AppCompatActivity {
                 public void afterTextChanged(Editable s) {
                 }
             });
-
+            RadioGroup muserstudent = (RadioGroup) findViewById(R.id.user_student);
+            muserstudent.startAnimation(a);
             mUserYesStudent = (RadioButton) findViewById(R.id.yes_student);
-            mUserYesStudent.setAnimation(a);
+            RadioGroup muserwork = (RadioGroup) findViewById(R.id.user_working);
+            muserwork.startAnimation(a);
             mUserYesWorked = (RadioButton) findViewById(R.id.yes_worked);
-            mUserYesWorked.setAnimation(a);
+            RadioGroup muserreligion = (RadioGroup) findViewById(R.id.user_religious);
+            muserreligion.startAnimation(a);
             mUserYesReligious = (RadioButton) findViewById(R.id.yes_religious);
-            mUserYesReligious.setAnimation(a);
             TextView mtextView2 = findViewById(R.id.thankyou_text);
             mtextView2.setAnimation(a);
             mContinue = (Button) findViewById(R.id.continue_button);
