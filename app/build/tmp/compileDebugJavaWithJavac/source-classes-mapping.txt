@@ -75,3 +75,5 @@ com/example/nostalgia/Introduction.java
  com.example.nostalgia.Introduction
 com/example/nostalgia/IntroPagerAdapter.java
  com.example.nostalgia.IntroPagerAdapter
+ com.example.nostalgia.IntroPagerAdapter$1
+ com.example.nostalgia.IntroPagerAdapter$2

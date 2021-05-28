@@ -12,7 +12,9 @@
         <LinearLayout
             android:id="@+id/welcome"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
             <TextView
                 android:id="@+id/welcome_text"
                 android:layout_width="wrap_content"
@@ -33,7 +35,7 @@
                 android:gravity="center"
                 android:lines="4"
                 android:text="Gather all your favourite memories at one place. Give a name, describe them,
-                add photos/videos in your personal app! Share, update and revive them!"
+ add photos/videos in your personal app! Share, update and revive them!"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
@@ -42,6 +44,7 @@
         <LinearLayout
             android:id="@+id/questions"
             android:orientation="vertical"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
@@ -83,6 +86,7 @@
         <LinearLayout
             android:id="@+id/event_preferences"
             android:orientation="vertical"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
@@ -102,7 +106,8 @@
                 android:layout_marginStart="28dp"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal"
-                android:id="@+id/user_student">
+                android:id="@+id/user_student"
+                android:buttonTint="@color/white">
 
                 <RadioButton
                     android:id="@+id/yes_student"
@@ -111,7 +116,9 @@
                     android:layout_gravity="start"
                     android:layout_marginStart="76dp"
                     android:layout_marginTop="32dp"
-                    android:text="Yes" />
+                    android:buttonTint="@color/white"
+                    android:text="@string/yes"
+                    android:textColor="@color/white"/>
                 <RadioButton
                     android:id="@+id/not_student"
                     android:layout_width="wrap_content"
@@ -119,7 +126,9 @@
                     android:layout_gravity="start"
                     android:layout_marginStart="76dp"
                     android:layout_marginTop="32dp"
-                    android:text="No" />
+                    android:buttonTint="@color/white"
+                    android:text="@string/no"
+                    android:textColor="@color/white"/>
             </RadioGroup>
 
             <TextView
@@ -138,7 +147,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="28dp"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:buttonTint="@color/white">
 
                 <RadioButton
                     android:id="@+id/yes_worked"
@@ -147,6 +157,9 @@
                     android:layout_gravity="start"
                     android:layout_marginStart="76dp"
                     android:layout_marginTop="32dp"
+                    android:buttonTint="@color/white"
+                    android:textColor="@color/white"
+                    android:text="@string/yes"
                     />
 
                 <RadioButton
@@ -156,7 +169,9 @@
                     android:layout_gravity="start"
                     android:layout_marginStart="76dp"
                     android:layout_marginTop="32dp"
-                    android:text="No" />
+                    android:buttonTint="@color/white"
+                    android:textColor="@color/white"
+                    android:text="@string/no" />
             </RadioGroup>
 
             <TextView
@@ -174,7 +189,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="28dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:buttonTint="@color/white">
 
                 <RadioButton
                     android:id="@+id/yes_religious"
@@ -182,7 +198,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginStart="76dp"
-                    android:layout_marginTop="32dp" />
+                    android:layout_marginTop="32dp"
+                    android:buttonTint="@color/white"
+                    android:textColor="@color/white"
+                    android:text="@string/yes"
+                    />
 
                 <RadioButton
                     android:id="@+id/not_religious"
@@ -191,7 +211,9 @@
                     android:layout_gravity="start"
                     android:layout_marginStart="76dp"
                     android:layout_marginTop="32dp"
-                    android:text="No" />
+                    android:buttonTint="@color/white"
+                    android:textColor="@color/white"
+                    android:text="@string/no" />
             </RadioGroup>
 
         </LinearLayout>
@@ -199,6 +221,7 @@
         <LinearLayout
             android:id="@+id/conclusion"
             android:orientation="vertical"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -216,6 +239,7 @@
                 android:id="@+id/continue_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/button_border"
@@ -223,7 +247,6 @@
                 android:drawableRight="@drawable/frontarrow_white"
                 android:padding="10dp"
                 android:text="@string/ctd"
-                android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="26sp"
                 android:textStyle="bold" />

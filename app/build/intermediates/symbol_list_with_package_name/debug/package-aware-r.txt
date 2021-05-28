@@ -2501,6 +2501,7 @@ string mtrl_picker_toggle_to_day_selection
 string mtrl_picker_toggle_to_text_input_mode
 string mtrl_picker_toggle_to_year_selection
 string new_memory
+string no
 string no_memory_add
 string no_memorys_display
 string password_toggle_content_description
@@ -2525,6 +2526,7 @@ string userisstudent
 string userreligion
 string welcome
 string work
+string yes
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style AndroidThemeColorAccentYellow
