@@ -129,7 +129,7 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
         }
         return mimeType;
     }
-    private String getExtension(String fileName){
+    public String getExtension(String fileName){
         char[] arrayOfFilename = fileName.toCharArray();
         for(int i = arrayOfFilename.length-1; i > 0; i--){
             if(arrayOfFilename[i] == '.'){

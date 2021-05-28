@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ClipData;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -283,7 +286,7 @@ public class MemoryFragment extends Fragment {
         //region PhotoGridView
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
-        MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getPhotoPaths());
+        MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getPhotoPaths().split(","));
         mPhotoRecyclerView.setAdapter(customAdapter);
         ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
@@ -359,7 +362,7 @@ public class MemoryFragment extends Fragment {
                 }
             }
             mMemory.setPhotoPaths(imagesEncodedList);
-            MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), setPhotogalleryView(imagesEncodedList));
+            MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getPhotoPaths().split(","));
             mPhotoRecyclerView.setAdapter(customAdapter);
             mPhotoFAB.setVisibility(View.VISIBLE);
             mPhotoFAB.setEnabled(true);
@@ -393,7 +396,7 @@ public class MemoryFragment extends Fragment {
                     }
                 }
             mMemory.setPhotoPaths(extraImagesEncodedList);
-            MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), setPhotogalleryView(extraImagesEncodedList));
+            MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getPhotoPaths().split(","));
             mPhotoRecyclerView.setAdapter(customAdapter);
         }
     }
@@ -472,12 +475,16 @@ public class MemoryFragment extends Fragment {
     private String getImagePath(Uri mImageUri) {
 
         String imageEncoded;
+        Uri contentUri;
         String[] filePathColumn = { MediaStore.Images.Media.DATA };
         String docId = DocumentsContract.getDocumentId(mImageUri);
         String[] split = docId.split(":");
         String selection = "_id=?";
         String[] selectionArgs = new String[] {split[1]};
-        Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        if(getMimeType(mImageUri).startsWith("image"))
+            contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        else
+            contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         Cursor cursor = getContext().getContentResolver().query(contentUri,filePathColumn, selection, selectionArgs, null);
         cursor.moveToFirst();
         int columnIndex = cursor.getColumnIndexOrThrow(filePathColumn[0]);
@@ -485,6 +492,17 @@ public class MemoryFragment extends Fragment {
         cursor.close();
 
         return imageEncoded;
+    }
+    public String getMimeType(Uri uri) {
+        String mimeType = "";
+        if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
+            ContentResolver cr = getContext().getContentResolver();
+            mimeType = cr.getType(uri);
+        } else {
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
+        }
+        return mimeType;
     }
     private boolean hasPhotoPermission() {
         int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
@@ -533,7 +551,7 @@ public class MemoryFragment extends Fragment {
                         list.remove(tobedeletedphotopath);
                         String joined = TextUtils.join(",", list);
                         mMemory.setPhotoPaths(joined);
-                        MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), setPhotogalleryView(mMemory.getPhotoPaths()));
+                        MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getPhotoPaths().split(","));
                         mPhotoRecyclerView.setAdapter(customAdapter);
                         dialog.dismiss();
                     }
