@@ -42,7 +42,11 @@ public class Introduction extends AppCompatActivity {
             Intent intent = MemoryListActivity.newIntent(getApplicationContext());
             startActivity(intent);
         } else {
-            final Animation a = AnimationUtils.loadAnimation(this, R.anim.introduction);
+
+            int[] introViews = {R.id.welcome_text,R.id.entername_text,R.id.user_name,R.id.intro,R.id.student_text
+                    ,R.id.user_student,R.id.work_text,R.id.user_working,R.id.religion_text,R.id.user_religious
+            ,R.id.thankyou_text,R.id.continue_button};
+            int delay = 1;
             setContentView(R.layout.userdetails);
             allEvents.add("Student Life");
             allEvents.add("Work");
@@ -50,70 +54,107 @@ public class Introduction extends AppCompatActivity {
             allEvents.add("Home");
             allEvents.add("Birthdays");
             allEvents.add("Hangouts");
-            TextView mtextView1 = (TextView) findViewById(R.id.welcome_text);
-            mtextView1.startAnimation(a);
-            TextView menterName = (TextView) findViewById(R.id.entername_text);
-            menterName.startAnimation(a);
-            TextView mintroText = (TextView) findViewById(R.id.intro);
-            mintroText.startAnimation(a);
-            TextView mstudentText = (TextView) findViewById(R.id.student_text);
-            mstudentText.startAnimation(a);
-            TextView mworkText = (TextView) findViewById(R.id.work_text);
-            mworkText.startAnimation(a);
-            TextView mreligionText = (TextView) findViewById(R.id.religion_text);
-            mreligionText.startAnimation(a);
-            mUsername = (EditText) findViewById(R.id.user_name);
-            mUsername.startAnimation(a);
-            mUsername.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
+            for(int viewID:introViews){
+                Animation a = AnimationUtils.loadAnimation(this, R.anim.introduction);
+                switch(viewID){
+                    case R.id.welcome_text:
+                        setText(a,R.id.welcome_text,delay);
+                        break;
+                    case R.id.entername_text:
+                        setText(a,R.id.entername_text,delay);
+                        break;
+                    case R.id.user_name:
+                        setgetUsername(a, delay);
+                        break;
+                    case R.id.intro:
+                        setText(a,R.id.intro,delay);
+                        break;
+                    case R.id.student_text:
+                        setText(a,R.id.student_text,delay);
+                        break;
+                    case R.id.user_student:
+                        RadioGroup muserstudent = (RadioGroup) findViewById(R.id.user_student);
+                        a.setStartOffset(delay*1000);muserstudent.startAnimation(a);
+                        mUserYesStudent = (RadioButton) findViewById(R.id.yes_student);
+                        break;
+                    case R.id.work_text:
+                        setText(a,R.id.work_text,delay);
+                        break;
+                    case R.id.user_working:
+                        RadioGroup muserwork = (RadioGroup) findViewById(R.id.user_working);
+                        a.setStartOffset(delay*100);muserwork.startAnimation(a);
+                        mUserYesWorked = (RadioButton) findViewById(R.id.yes_worked);
+                        break;
+                    case R.id.religion_text:
+                        setText(a,R.id.religion_text,delay);
+                        break;
+                    case R.id.user_religious:
+                        RadioGroup muserreligion = (RadioGroup) findViewById(R.id.user_religious);
+                        a.setStartOffset(delay*100);muserreligion.startAnimation(a);
+                        mUserYesReligious = (RadioButton) findViewById(R.id.yes_religious);
+                        break;
+                    case R.id.thankyou_text:
+                        setText(a,R.id.thankyou_text,delay);
+                        break;
+                    case R.id.continue_button:
+                        setContinue(a);
                 }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-            });
-            RadioGroup muserstudent = (RadioGroup) findViewById(R.id.user_student);
-            muserstudent.startAnimation(a);
-            mUserYesStudent = (RadioButton) findViewById(R.id.yes_student);
-            RadioGroup muserwork = (RadioGroup) findViewById(R.id.user_working);
-            muserwork.startAnimation(a);
-            mUserYesWorked = (RadioButton) findViewById(R.id.yes_worked);
-            RadioGroup muserreligion = (RadioGroup) findViewById(R.id.user_religious);
-            muserreligion.startAnimation(a);
-            mUserYesReligious = (RadioButton) findViewById(R.id.yes_religious);
-            TextView mtextView2 = findViewById(R.id.thankyou_text);
-            mtextView2.setAnimation(a);
-            mContinue = (Button) findViewById(R.id.continue_button);
-            mContinue.setAnimation(a);
-            mContinue.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!mUserYesStudent.isChecked())
-                        allEvents.remove("Student Life");
-                    if (!mUserYesWorked.isChecked())
-                        allEvents.remove("Work");
-                    if (!mUserYesReligious.isChecked())
-                        allEvents.remove("Festivals");
-
-                    String[] applicableEvents = {};
-                    applicableEvents = allEvents.toArray(applicableEvents);
-                    StringBuilder combinedEvents = new StringBuilder();
-                    for (int i = 0; i < applicableEvents.length; i++)
-                        combinedEvents.append(applicableEvents[i]).append(",");
-                    SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-                    editor.putBoolean(FIRST_TIME,true);
-                    editor.putString(SEND_USERNAME, mUsername.getText().toString());
-                    editor.putString(APPLICABLE_EVENTS, combinedEvents.toString());
-                    editor.apply();
-                    Intent intent = MemoryListActivity.newIntent(getApplicationContext());
-                    startActivity(intent);
-                }
-            });
+                delay++;
+            }
         }
+    }
+
+    private void setText(Animation a, int textViewID, int delay){
+        TextView mtextView1 = (TextView) findViewById(textViewID);
+        a.setStartOffset(delay*1000);mtextView1.startAnimation(a);
+    }
+
+    private void setContinue(Animation a) {
+        mContinue = (Button) findViewById(R.id.continue_button);
+        mContinue.setAnimation(a);
+        mContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mUserYesStudent.isChecked())
+                    allEvents.remove("Student Life");
+                if (!mUserYesWorked.isChecked())
+                    allEvents.remove("Work");
+                if (!mUserYesReligious.isChecked())
+                    allEvents.remove("Festivals");
+
+                String[] applicableEvents = {};
+                applicableEvents = allEvents.toArray(applicableEvents);
+                StringBuilder combinedEvents = new StringBuilder();
+                for (int i = 0; i < applicableEvents.length; i++)
+                    combinedEvents.append(applicableEvents[i]).append(",");
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+                editor.putBoolean(FIRST_TIME,true);
+                editor.putString(SEND_USERNAME, mUsername.getText().toString());
+                editor.putString(APPLICABLE_EVENTS, combinedEvents.toString());
+                editor.apply();
+                Intent intent = MemoryListActivity.newIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setgetUsername(Animation a, int delay) {
+        mUsername = (EditText) findViewById(R.id.user_name);
+        a.setStartOffset(delay*100);
+        mUsername.startAnimation(a);
+        mUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 }
