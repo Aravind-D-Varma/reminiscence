@@ -36,25 +36,7 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
         if(MyGalleryAdapter.isVideoFile(allphotoPaths[position])){
             v = inflater.inflate(R.layout.zoom_video,container,false);
             VideoView vv = v.findViewById(R.id.zoomed_videoView);
-            FrameLayout buttonLayout = v.findViewById(R.id.play_button_layout);
-            ImageButton ib = v.findViewById(R.id.play_button);
-            try {
-                vv.setVideoURI(getVideoURI(allphotoPaths).get(position));
-                vv.seekTo(1);
-                buttonLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (vv.isPlaying()) {
-                            ib.setVisibility(View.VISIBLE);
-                            vv.stopPlayback();
-                        } else {
-                            vv.start();
-                            ib.setVisibility(View.GONE);
-                        }
-                    }
-                });
-            }
-            catch (NullPointerException e){}
+            setVideo(position, v, vv);
         }
         else {
             v = inflater.inflate(R.layout.zoom_image, container, false);
@@ -64,6 +46,7 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
         container.addView(v);
         return v;
     }
+
     @Override
     public int getCount() {
         return allphotoPaths.length;
@@ -89,5 +72,38 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
                 videos.add(null);
         }
         return videos;
+    }
+    private void setVideo(int position, View v, VideoView vv) {
+        FrameLayout buttonLayout = v.findViewById(R.id.play_button_layout);
+        ImageButton ib = v.findViewById(R.id.play_button);
+        try {
+            vv.setVideoURI(getVideoURI(allphotoPaths).get(position));
+            vv.seekTo(1);
+            buttonLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (vv.isPlaying()) {
+                        ib.setVisibility(View.VISIBLE);
+                        vv.pause();
+                    } else {
+                        vv.start();
+                        ib.setVisibility(View.GONE);
+                    }
+                }
+            });
+            ib.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (vv.isPlaying()) {
+                        ib.setVisibility(View.VISIBLE);
+                        vv.pause();
+                    } else {
+                        vv.start();
+                        ib.setVisibility(View.GONE);
+                    }
+                }
+            });
+        }
+        catch (NullPointerException e){}
     }
 }
