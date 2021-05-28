@@ -57,6 +57,8 @@
     <string name="settings">Settings</string>
     <string name="changeName">Change Name: </string>
     <string name="changesettings">Change your settings: </string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 
 </resources>
