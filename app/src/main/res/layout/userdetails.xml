@@ -33,7 +33,7 @@
         android:gravity="center"
         android:lines="4"
         android:text="Gather all your favourite memories at one place. Give a name, describe them,
-add photos/videos in your personal app! Share, update and revive them! Now, tell a little bit your self"
+add photos/videos in your personal app! Share, update and revive them!"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -47,6 +47,7 @@ add photos/videos in your personal app! Share, update and revive them! Now, tell
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toLeftOf="parent"
         android:layout_marginTop="6dp"
+        android:layout_marginStart="8dp"
         android:text="Now, tell a little bit your self:"
         android:textColor="@color/white"
         android:textSize="24dp"

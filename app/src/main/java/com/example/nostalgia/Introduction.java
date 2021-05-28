@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,9 +45,11 @@ public class Introduction extends AppCompatActivity {
             Intent intent = MemoryListActivity.newIntent(getApplicationContext());
             startActivity(intent);
         } else {
-            int[] introViews = {R.id.welcome_text,R.id.intro,R.id.intro2,R.id.entername_text,R.id.user_name,R.id.student_text
-                    ,R.id.user_student,R.id.work_text,R.id.user_working,R.id.religion_text,R.id.user_religious
-            ,R.id.thankyou_text,R.id.continue_button};
+            LinearLayout introLL = findViewById(R.id.intro_layout);
+            int[] introTextViews = {R.id.welcome_text,R.id.intro,R.id.intro2};
+            int[] introQuestionViews = {R.id.entername_text,R.id.user_name,R.id.student_text
+                    ,R.id.user_student,R.id.work_text,R.id.user_working,R.id.religion_text,R.id.user_religious};
+            int[] introConclusionViews = {R.id.thankyou_text,R.id.continue_button};
             int delay = 1;
             setContentView(R.layout.userdetails);
             allEvents.add("Student Life");
@@ -56,56 +59,74 @@ public class Introduction extends AppCompatActivity {
             allEvents.add("Birthdays");
             allEvents.add("Hangouts");
 
-            for(int viewID:introViews){
+            for(int viewID:introTextViews) {
                 Animation a = AnimationUtils.loadAnimation(this, R.anim.introduction);
-                switch(viewID){
+                switch (viewID) {
                     case R.id.welcome_text:
-                        setText(a,R.id.welcome_text,delay);
+                        setText(a, R.id.welcome_text, delay);
                         break;
                     case R.id.intro:
-                        setText(a,R.id.intro,delay);
+                        setText(a, R.id.intro, delay);
                         break;
                     case R.id.intro2:
-                        setText(a,R.id.intro2,delay);
+                        delay = delay + 4;
+                        setText(a, R.id.intro2, delay);
                         break;
-                    case R.id.entername_text:
-                        setText(a,R.id.entername_text,delay);
-                        break;
-                    case R.id.user_name:
-                        setgetUsername(a, delay);
-                        break;
-                    case R.id.student_text:
-                        setText(a,R.id.student_text,delay);
-                        break;
-                    case R.id.user_student:
-                        RadioGroup muserstudent = (RadioGroup) findViewById(R.id.user_student);
-                        a.setStartOffset(delay*1000);muserstudent.startAnimation(a);
-                        mUserYesStudent = (RadioButton) findViewById(R.id.yes_student);
-                        break;
-                    case R.id.work_text:
-                        setText(a,R.id.work_text,delay);
-                        break;
-                    case R.id.user_working:
-                        RadioGroup muserwork = (RadioGroup) findViewById(R.id.user_working);
-                        a.setStartOffset(delay*1000);muserwork.startAnimation(a);
-                        mUserYesWorked = (RadioButton) findViewById(R.id.yes_worked);
-                        break;
-                    case R.id.religion_text:
-                        setText(a,R.id.religion_text,delay);
-                        break;
-                    case R.id.user_religious:
-                        RadioGroup muserreligion = (RadioGroup) findViewById(R.id.user_religious);
-                        a.setStartOffset(delay*1000);muserreligion.startAnimation(a);
-                        mUserYesReligious = (RadioButton) findViewById(R.id.yes_religious);
-                        break;
-                    case R.id.thankyou_text:
-                        setText(a,R.id.thankyou_text,delay);
-                        break;
-                    case R.id.continue_button:
-                        setContinue(a,delay);
                 }
                 delay++;
             }
+            introLL.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int delay = 10;
+                    for(int viewID:introQuestionViews) {
+                        Animation a = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.introduction);
+                        switch (viewID) {
+                            case R.id.entername_text:
+                                setText(a, R.id.entername_text, delay);
+                                break;
+                            case R.id.user_name:
+                                delay = delay + 2;
+                                setgetUsername(a, delay);
+                                break;
+                            case R.id.student_text:
+                                setText(a, R.id.student_text, delay);
+                                break;
+                            case R.id.user_student:
+                                RadioGroup muserstudent = (RadioGroup) findViewById(R.id.user_student);
+                                a.setStartOffset(delay * 1000);
+                                muserstudent.startAnimation(a);
+                                mUserYesStudent = (RadioButton) findViewById(R.id.yes_student);
+                                break;
+                            case R.id.work_text:
+                                setText(a, R.id.work_text, delay);
+                                break;
+                            case R.id.user_working:
+                                RadioGroup muserwork = (RadioGroup) findViewById(R.id.user_working);
+                                a.setStartOffset(delay * 1000);
+                                muserwork.startAnimation(a);
+                                mUserYesWorked = (RadioButton) findViewById(R.id.yes_worked);
+                                break;
+                            case R.id.religion_text:
+                                setText(a, R.id.religion_text, delay);
+                                break;
+                            case R.id.user_religious:
+                                RadioGroup muserreligion = (RadioGroup) findViewById(R.id.user_religious);
+                                a.setStartOffset(delay * 1000);
+                                muserreligion.startAnimation(a);
+                                mUserYesReligious = (RadioButton) findViewById(R.id.yes_religious);
+                                break;
+                        }
+                        delay++;
+                    }
+                }
+            });
+
+            Animation a = AnimationUtils.loadAnimation(this, R.anim.introduction);
+            setText(a,R.id.thankyou_text,delay);
+            delay++;
+            setContinue(a,delay);
+
         }
     }
 
@@ -152,14 +173,27 @@ public class Introduction extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
-
             @Override
             public void afterTextChanged(Editable s) {
             }
         });
+        mUsername.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH ||actionId == EditorInfo.IME_ACTION_DONE || event != null &&
+                                event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    if (event == null || !event.isShiftPressed()) {
+
+
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
     }
 }

@@ -1924,6 +1924,7 @@ id image
 id info
 id intro
 id intro2
+id intro_layout
 id invisible
 id inward
 id italic
