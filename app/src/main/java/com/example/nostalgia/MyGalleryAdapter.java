@@ -1,20 +1,31 @@
 package com.example.nostalgia;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
+import android.widget.VideoView;
+
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.File;
+import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
-public class MyGalleryAdapter extends RecyclerView.Adapter<MyGalleryAdapter.ViewHolder> {
+public class MyGalleryAdapter extends RecyclerView.Adapter {
 
     Context context;
     List<Bitmap> photos;
     String[] mediaPaths;
-    List<URI> videos;
+    List<Uri> videos;
     private static final int IMAGE = 0;
     private static final int VIDEO = 1;
 
@@ -26,23 +37,26 @@ public class MyGalleryAdapter extends RecyclerView.Adapter<MyGalleryAdapter.View
     }
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.photogallery_item, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v;
         switch(viewType){
             case VIDEO:
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.photogallery_item, parent, false);
                 return new MyVideoViewHolder(v);
             case IMAGE:
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.photogallery_item, parent, false);
                 return new MyImageViewHolder(v);
         }
+        return null;
     }
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch(holder.getItemViewType()){
             case VIDEO:
-                holder.video.setVideoURI(videos.get(position));
+                ((MyVideoViewHolder)holder).video.setVideoURI(videos.get(position));
                 break;
             case IMAGE:
-                holder.image.setImageBitmap(photos.get(position));
+                ((MyImageViewHolder)holder).image.setImageBitmap(photos.get(position));
                 break;
         }
     }
@@ -56,21 +70,20 @@ public class MyGalleryAdapter extends RecyclerView.Adapter<MyGalleryAdapter.View
     public int getItemViewType(int position) {
        if(isVideoFile(mediaPaths[position]))
             return VIDEO;
-       else if((isVideoFile(mediaPaths[position]))
+       else if(isImageFile(mediaPaths[position]));
             return IMAGE;
-       return IMAGE;
     }
 
     public class MyImageViewHolder extends RecyclerView.ViewHolder{
         ImageView image;
-        public MyViewHolder(View itemView) {
+        public MyImageViewHolder(View itemView) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.memory_photo);
         }
     }
     public class MyVideoViewHolder extends RecyclerView.ViewHolder{
         VideoView video;
-        public MyViewHolder(View itemView) {
+        public MyVideoViewHolder(View itemView) {
             super(itemView);
             video = (VideoView) itemView.findViewById(R.id.memory_video);
         }
@@ -88,25 +101,42 @@ public class MyGalleryAdapter extends RecyclerView.Adapter<MyGalleryAdapter.View
         return photos;
     }
   
-    private List<URI> getVideoURI(String[] photoPaths) {
+    private List<Uri> getVideoURI(String[] photoPaths) {
           
-        videos = new ArrayList<URI>();
+        videos = new ArrayList<Uri>();
         for (int i = 0; i < photoPaths.length; i++) {
             if(isVideoFile(photoPaths[i])) {
-                URiI uriVid = FileProvider.getUriForFile(context, context.getPackageName(), new File(photoPaths[i]));
-                videos.add(bpimg);
+                Uri uriVid = FileProvider.getUriForFile(context, context.getPackageName(), new File(photoPaths[i]));
+                videos.add(uriVid);
             }
         }
         return videos;
     }          
                
-    public static boolean isImageFile(String path) {
-        String mimeType = URLConnection.guessContentTypeFromName(path);
+    public boolean isImageFile(String path) {
+        String mimeType = getMimeType(path);
         return mimeType != null && mimeType.startsWith("image");
     }
-    public static boolean isVideoFile(String path) {
-        String mimeType = URLConnection.guessContentTypeFromName(path);
+    public boolean isVideoFile(String path) {
+        String mimeType = getMimeType(path);
         return mimeType != null && mimeType.startsWith("video");
+    }
+    public String getMimeType(String path) {
+        String mimeType = "";
+        String extension = getExtension(path);
+        if (MimeTypeMap.getSingleton().hasExtension(extension)) {
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        }
+        return mimeType;
+    }
+    private String getExtension(String fileName){
+        char[] arrayOfFilename = fileName.toCharArray();
+        for(int i = arrayOfFilename.length-1; i > 0; i--){
+            if(arrayOfFilename[i] == '.'){
+                return fileName.substring(i+1, fileName.length());
+            }
+        }
+        return "";
     }
 }
 
