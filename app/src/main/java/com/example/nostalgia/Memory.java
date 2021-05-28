@@ -14,7 +14,7 @@ public class Memory {
     private String mSuspect;
     private String mNumber;
     private String mDetail;
-    private String mPhotoPaths;
+    private String mMediaPaths;
     //endregion
 
     public Memory() {
@@ -35,11 +35,11 @@ public class Memory {
     }
 
     // region Getters and Setters for Title, Date, Time, isSolved
-    public String getPhotoPaths() {
-        return mPhotoPaths;
+    public String getMediaPaths() {
+        return mMediaPaths;
     }
-    public void setPhotoPaths(String photos) {
-        mPhotoPaths = photos;
+    public void setMediaPaths(String photos) {
+        mMediaPaths = photos;
     }
     public String getEvent() {
         return mEvent;

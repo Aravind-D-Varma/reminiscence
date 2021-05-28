@@ -15,7 +15,7 @@ public class MemoryDbSchema {
             public static final String SUSPECT = "Suspect";
             public static final String NUMBER = "Number";
             public static final String DETAIL = "Details";
-            public static final String PHOTOPATH = "PhotoPaths";
+            public static final String MEDIAPATH = "MediaPaths";
         }
 
     }

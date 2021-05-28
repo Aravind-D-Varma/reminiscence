@@ -122,7 +122,7 @@ public class MemoryFragment extends Fragment {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("Current Memory",mMemory.getTitle());
         try{
-            editor.putBoolean(CURRENT_PHOTOS_ABSENT,(mMemory.getPhotoPaths().length()==0));
+            editor.putBoolean(CURRENT_PHOTOS_ABSENT,(mMemory.getMediaPaths().length()==0));
         }
         catch (NullPointerException e){
             editor.putBoolean(CURRENT_PHOTOS_ABSENT,true);
@@ -143,7 +143,7 @@ public class MemoryFragment extends Fragment {
             case R.id.share_memory:
                 ArrayList<Uri> imageUris = new ArrayList<Uri>();
                 try {
-                    for (String path : mMemory.getPhotoPaths().split(",")) {
+                    for (String path : mMemory.getMediaPaths().split(",")) {
                         if (!path.equals("")) {
                             File file = new File(path);
                             Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
@@ -260,7 +260,7 @@ public class MemoryFragment extends Fragment {
         //region PhotoButton
         mPhotoButton = (Button)v.findViewById(R.id.memory_selectphotos);
         try {
-            if (mMemory.getPhotoPaths().length() != 0)
+            if (mMemory.getMediaPaths().length() != 0)
                 mPhotoButton.setText(R.string.photos_reselection);
         }catch (NullPointerException e){}
         getImage = new Intent(Intent.ACTION_GET_CONTENT);
@@ -286,7 +286,7 @@ public class MemoryFragment extends Fragment {
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
         try{
-            MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getPhotoPaths().split(","));
+            MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getMediaPaths().split(","));
             mPhotoRecyclerView.setAdapter(customAdapter);
         }
         catch (NullPointerException e){}
@@ -296,7 +296,7 @@ public class MemoryFragment extends Fragment {
                 Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.activity_memory_pager);
-                GalleryViewPagerAdapter adapter = new GalleryViewPagerAdapter(getActivity(),mMemory.getPhotoPaths().split(","));
+                GalleryViewPagerAdapter adapter = new GalleryViewPagerAdapter(getActivity(),mMemory.getMediaPaths().split(","));
                 ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
                 pager.setAdapter(adapter);
                 pager.setCurrentItem(position);
@@ -307,7 +307,7 @@ public class MemoryFragment extends Fragment {
         ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemLongClickListener(new ItemClickSupport.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClicked(RecyclerView recyclerView, int position, View v) {
-                AlertDialog diaBox = AskDeletePhoto(mMemory.getPhotoPaths().split(",")[position]);
+                AlertDialog diaBox = AskDeletePhoto(mMemory.getMediaPaths().split(",")[position]);
                 diaBox.show();
                 return false;
             }
@@ -315,10 +315,10 @@ public class MemoryFragment extends Fragment {
         //endregion
         //region photoFAB
             mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
-            mPhotoFAB.setVisibility(mMemory.getPhotoPaths()==null? View.GONE:View.VISIBLE);
-            mPhotoFAB.setEnabled(mMemory.getPhotoPaths()!=null);
+            mPhotoFAB.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
+            mPhotoFAB.setEnabled(mMemory.getMediaPaths()!=null);
             TextView mAddphoto = v.findViewById(R.id.addphotos);
-            mAddphoto.setVisibility(mMemory.getPhotoPaths()==null? View.GONE:View.VISIBLE);
+            mAddphoto.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
             Intent getmoreImage = new Intent(Intent.ACTION_GET_CONTENT);
             getmoreImage.setType("*/*");
             getmoreImage.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {"image/*", "video/*"});
@@ -363,14 +363,14 @@ public class MemoryFragment extends Fragment {
                     }
                 }
             }
-            mMemory.setPhotoPaths(imagesEncodedList);
-            MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getPhotoPaths().split(","));
+            mMemory.setMediaPaths(imagesEncodedList);
+            MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getMediaPaths().split(","));
             mPhotoRecyclerView.setAdapter(customAdapter);
             mPhotoFAB.setVisibility(View.VISIBLE);
             mPhotoFAB.setEnabled(true);
         }
         else if (requestCode == REQUEST_GALLERY_ADDITIONALPHOTO){
-            String extraImagesEncodedList = mMemory.getPhotoPaths();
+            String extraImagesEncodedList = mMemory.getMediaPaths();
             String[] duplicateCheck = extraImagesEncodedList.split(",");
                 if(data.getData()!=null){
                     Uri mImageUri=data.getData();
@@ -397,8 +397,8 @@ public class MemoryFragment extends Fragment {
                         }
                     }
                 }
-            mMemory.setPhotoPaths(extraImagesEncodedList);
-            MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getPhotoPaths().split(","));
+            mMemory.setMediaPaths(extraImagesEncodedList);
+            MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getMediaPaths().split(","));
             mPhotoRecyclerView.setAdapter(customAdapter);
         }
     }
@@ -463,7 +463,7 @@ public class MemoryFragment extends Fragment {
         try {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean(CURRENT_PHOTOS_ABSENT, (mMemory.getPhotoPaths().length() == 0));
+            editor.putBoolean(CURRENT_PHOTOS_ABSENT, (mMemory.getMediaPaths().length() == 0));
             editor.apply();
         }
         catch (NullPointerException e){}
@@ -543,12 +543,12 @@ public class MemoryFragment extends Fragment {
                 .setIcon(android.R.drawable.ic_menu_delete)
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        String[] allPhotoPaths = mMemory.getPhotoPaths().split(",");
+                        String[] allPhotoPaths = mMemory.getMediaPaths().split(",");
                         List<String> list = new ArrayList<String>(Arrays.asList(allPhotoPaths));
                         list.remove(tobedeletedphotopath);
                         String joined = TextUtils.join(",", list);
-                        mMemory.setPhotoPaths(joined);
-                        MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getPhotoPaths().split(","));
+                        mMemory.setMediaPaths(joined);
+                        MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getMediaPaths().split(","));
                         mPhotoRecyclerView.setAdapter(customAdapter);
                         dialog.dismiss();
                     }

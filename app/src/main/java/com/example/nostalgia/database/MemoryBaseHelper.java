@@ -24,7 +24,7 @@ public class MemoryBaseHelper extends SQLiteOpenHelper {
                 + memoryTable.Columns.EVENT + ", "
                 + memoryTable.Columns.SUSPECT + ","
                 + memoryTable.Columns.NUMBER + ","
-                + memoryTable.Columns.PHOTOPATH +
+                + memoryTable.Columns.MEDIAPATH +
                 ")"
         );
     }

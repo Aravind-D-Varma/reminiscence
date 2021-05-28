@@ -159,7 +159,7 @@ public class MemoryListFragment extends Fragment {
             }
             boolean yesPhotos = true;
             try{
-                yesPhotos = Memorys.get(i).getPhotoPaths().length()<1;
+                yesPhotos = Memorys.get(i).getMediaPaths().length()<1;
             }
             catch (NullPointerException e){}
             if(Memorys.get(i).getTitle()==null && yesPhotos)
