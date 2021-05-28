@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -42,8 +44,7 @@ public class Introduction extends AppCompatActivity {
             Intent intent = MemoryListActivity.newIntent(getApplicationContext());
             startActivity(intent);
         } else {
-
-            int[] introViews = {R.id.welcome_text,R.id.entername_text,R.id.user_name,R.id.intro,R.id.student_text
+            int[] introViews = {R.id.welcome_text,R.id.intro,R.id.intro2,R.id.entername_text,R.id.user_name,R.id.student_text
                     ,R.id.user_student,R.id.work_text,R.id.user_working,R.id.religion_text,R.id.user_religious
             ,R.id.thankyou_text,R.id.continue_button};
             int delay = 1;
@@ -61,14 +62,17 @@ public class Introduction extends AppCompatActivity {
                     case R.id.welcome_text:
                         setText(a,R.id.welcome_text,delay);
                         break;
+                    case R.id.intro:
+                        setText(a,R.id.intro,delay);
+                        break;
+                    case R.id.intro2:
+                        setText(a,R.id.intro2,delay);
+                        break;
                     case R.id.entername_text:
                         setText(a,R.id.entername_text,delay);
                         break;
                     case R.id.user_name:
                         setgetUsername(a, delay);
-                        break;
-                    case R.id.intro:
-                        setText(a,R.id.intro,delay);
                         break;
                     case R.id.student_text:
                         setText(a,R.id.student_text,delay);
@@ -107,6 +111,7 @@ public class Introduction extends AppCompatActivity {
 
     private void setText(Animation a, int textViewID, int delay){
         TextView mtextView1 = (TextView) findViewById(textViewID);
+        mtextView1.append("");
         a.setStartOffset(delay*1000);mtextView1.startAnimation(a);
     }
 
