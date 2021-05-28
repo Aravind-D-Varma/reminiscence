@@ -1831,6 +1831,7 @@ id clip_horizontal
 id clip_vertical
 id clockwise
 id collapseActionView
+id conclusion
 id confirm_button
 id container
 id content
@@ -1884,6 +1885,7 @@ id endToStart
 id enterAlways
 id enterAlwaysCollapsed
 id entername_text
+id event_preferences
 id events
 id exitUntilCollapsed
 id expand_activities_button
@@ -2034,6 +2036,7 @@ id on
 id outline
 id outward
 id packed
+id pager
 id parallax
 id parent
 id parentPanel
@@ -2053,6 +2056,7 @@ id position
 id postLayout
 id progress_circular
 id progress_horizontal
+id questions
 id radio
 id ratio
 id rectangles
@@ -2185,6 +2189,7 @@ id user_student
 id user_working
 id view_offset_helper
 id visible
+id welcome
 id welcome_text
 id withText
 id withinBounds
@@ -2285,6 +2290,7 @@ layout dialog_time
 layout empty_list_page
 layout fragment_memory
 layout fragment_memory_list
+layout introduction
 layout list_item_memory
 layout material_chip_input_combo
 layout material_clock_display

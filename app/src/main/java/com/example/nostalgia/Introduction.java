@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,103 +42,19 @@ public class Introduction extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.introduction);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sp.getBoolean(FIRST_TIME, false)) {
             Intent intent = MemoryListActivity.newIntent(getApplicationContext());
             startActivity(intent);
         } else {
-            LinearLayout introLL = findViewById(R.id.intro_layout);
-            int[] introTextViews = {R.id.welcome_text,R.id.intro,R.id.intro2};
-            int[] introQuestionViews = {R.id.entername_text,R.id.user_name,R.id.student_text
-                    ,R.id.user_student,R.id.work_text,R.id.user_working,R.id.religion_text,R.id.user_religious};
-            int[] introConclusionViews = {R.id.thankyou_text,R.id.continue_button};
-            int delay = 1;
-            setContentView(R.layout.userdetails);
-            allEvents.add("Student Life");
-            allEvents.add("Work");
-            allEvents.add("Festivals");
-            allEvents.add("Home");
-            allEvents.add("Birthdays");
-            allEvents.add("Hangouts");
-
-            for(int viewID:introTextViews) {
-                Animation a = AnimationUtils.loadAnimation(this, R.anim.introduction);
-                switch (viewID) {
-                    case R.id.welcome_text:
-                        setText(a, R.id.welcome_text, delay);
-                        break;
-                    case R.id.intro:
-                        setText(a, R.id.intro, delay);
-                        break;
-                    case R.id.intro2:
-                        delay = delay + 4;
-                        setText(a, R.id.intro2, delay);
-                        break;
-                }
-                delay++;
-            }
-            introLL.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int delay = 10;
-                    for(int viewID:introQuestionViews) {
-                        Animation a = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.introduction);
-                        switch (viewID) {
-                            case R.id.entername_text:
-                                setText(a, R.id.entername_text, delay);
-                                break;
-                            case R.id.user_name:
-                                delay = delay + 2;
-                                setgetUsername(a, delay);
-                                break;
-                            case R.id.student_text:
-                                setText(a, R.id.student_text, delay);
-                                break;
-                            case R.id.user_student:
-                                RadioGroup muserstudent = (RadioGroup) findViewById(R.id.user_student);
-                                a.setStartOffset(delay * 1000);
-                                muserstudent.startAnimation(a);
-                                mUserYesStudent = (RadioButton) findViewById(R.id.yes_student);
-                                break;
-                            case R.id.work_text:
-                                setText(a, R.id.work_text, delay);
-                                break;
-                            case R.id.user_working:
-                                RadioGroup muserwork = (RadioGroup) findViewById(R.id.user_working);
-                                a.setStartOffset(delay * 1000);
-                                muserwork.startAnimation(a);
-                                mUserYesWorked = (RadioButton) findViewById(R.id.yes_worked);
-                                break;
-                            case R.id.religion_text:
-                                setText(a, R.id.religion_text, delay);
-                                break;
-                            case R.id.user_religious:
-                                RadioGroup muserreligion = (RadioGroup) findViewById(R.id.user_religious);
-                                a.setStartOffset(delay * 1000);
-                                muserreligion.startAnimation(a);
-                                mUserYesReligious = (RadioButton) findViewById(R.id.yes_religious);
-                                break;
-                        }
-                        delay++;
-                    }
-                }
-            });
-
-            Animation a = AnimationUtils.loadAnimation(this, R.anim.introduction);
-            setText(a,R.id.thankyou_text,delay);
-            delay++;
-            setContinue(a,delay);
-
+            IntroPagerAdapter introPagerAdapter = new IntroPagerAdapter(getApplicationContext(),getParent());
+            ViewPager pager = findViewById(R.id.pager);
+            pager.setAdapter(introPagerAdapter);
         }
-    }
 
-    private void setText(Animation a, int textViewID, int delay){
-        TextView mtextView1 = (TextView) findViewById(textViewID);
-        mtextView1.append("");
-        a.setStartOffset(delay*1000);mtextView1.startAnimation(a);
     }
-
-    private void setContinue(Animation a,int delay) {
+   /* private void setContinue(Animation a,int delay) {
         mContinue = (Button) findViewById(R.id.continue_button);
         a.setStartOffset(delay*1000);mContinue.setAnimation(a);
         mContinue.setOnClickListener(new View.OnClickListener() {
@@ -186,14 +104,57 @@ public class Introduction extends AppCompatActivity {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH ||actionId == EditorInfo.IME_ACTION_DONE || event != null &&
                                 event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                     if (event == null || !event.isShiftPressed()) {
-
-
+                        int[] introButtonViews = {R.id.student_text,R.id.user_student,R.id.work_text,R.id.user_working
+                                ,R.id.religion_text,R.id.user_religious};
+                        int delay = 1;Animation a = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.introduction);
+                        RadioGroup muserstudent, muserwork, muserreligion;
+                        muserstudent = (RadioGroup) findViewById(R.id.user_student);
+                        muserwork = (RadioGroup) findViewById(R.id.user_working);
+                        muserreligion = (RadioGroup) findViewById(R.id.user_religious);
+                        for (int viewID:introButtonViews){
+                            switch (viewID){
+                                case R.id.student_text:
+                                    setText(a, R.id.student_text, delay);
+                                    break;
+                                case R.id.user_student:
+                                    delay = delay + 5;
+                                    a.setStartOffset(delay * 1000);
+                                    muserstudent.startAnimation(a);
+                                    mUserYesStudent = (RadioButton) findViewById(R.id.yes_student);
+                                    break;
+                                case R.id.work_text:
+                                    setText(a, R.id.work_text, delay);
+                                    break;
+                                case R.id.user_working:
+                                    delay = delay + 5;
+                                    a.setStartOffset(delay * 1000);muserwork.startAnimation(a);
+                                    mUserYesWorked = (RadioButton) findViewById(R.id.yes_worked);
+                                    break;
+                                case R.id.religion_text:
+                                    delay = delay + 5;
+                                    setText(a, R.id.religion_text, delay);
+                                    break;
+                                case R.id.user_religious:
+                                    delay = delay + 5;
+                                    a.setStartOffset(delay * 1000);muserreligion.startAnimation(a);
+                                    mUserYesReligious = (RadioButton) findViewById(R.id.yes_religious);
+                                    break;
+                            }
+                            delay++;
+                        }
+                        if(muserstudent.getCheckedRadioButtonId()!=-1 && muserwork.getCheckedRadioButtonId()!=-1
+                        && muserreligion.getCheckedRadioButtonId()!=-1){
+                            Animation ab = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.introduction);
+                            delay = 1;
+                            setText(a,R.id.thankyou_text,delay);
+                            delay++;
+                            setContinue(a,delay);
+                        }
                         return true;
                     }
                 }
                 return false;
             }
         });
-
-    }
+    }*/
 }
