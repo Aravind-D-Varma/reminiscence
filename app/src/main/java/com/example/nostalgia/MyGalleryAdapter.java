@@ -57,6 +57,7 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
                 MediaController mc = new MediaController(context);
                 ((MyVideoViewHolder)holder).video.setMediaController(mc);
                 ((MyVideoViewHolder)holder).video.requestFocus();
+                ((MyVideoViewHolder)holder).video.setZOrderOnTop(true);
                 ((MyVideoViewHolder)holder).video.setVideoURI(videos.get(position));
                 break;
             case IMAGE:
