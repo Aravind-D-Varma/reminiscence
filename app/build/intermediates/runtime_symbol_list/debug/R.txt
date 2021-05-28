@@ -2185,6 +2185,7 @@ int id yes_student 0x7f0801d0
 int id yes_worked 0x7f0801d1
 int id zero_corner_chip 0x7f0801d2
 int id zoomed_imageView 0x7f0801d3
+int id zoomed_videoView 0x7f0801d4
 int integer abc_config_activityDefaultDur 0x7f090000
 int integer abc_config_activityShortDur 0x7f090001
 int integer app_bar_elevation_anim_duration 0x7f090002
@@ -2346,6 +2347,7 @@ int layout text_view_without_line_height 0x7f0b007d
 int layout userdetails 0x7f0b007e
 int layout videogallery_item 0x7f0b007f
 int layout zoom_image 0x7f0b0080
+int layout zoom_video 0x7f0b0081
 int menu fragment_memory 0x7f0c0000
 int menu fragment_memory_list 0x7f0c0001
 int menu nav_menudrawer 0x7f0c0002

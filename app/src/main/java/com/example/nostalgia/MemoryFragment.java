@@ -113,7 +113,6 @@ public class MemoryFragment extends Fragment {
         setHasOptionsMenu(true);
     }
     //endregion
-
     // region Create and select from Menu
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -297,7 +296,7 @@ public class MemoryFragment extends Fragment {
                 Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.activity_memory_pager);
-                MyImageAdapter adapter = new MyImageAdapter(getActivity(),mMemory.getPhotoPaths().split(","));
+                GalleryViewPagerAdapter adapter = new GalleryViewPagerAdapter(getActivity(),mMemory.getPhotoPaths().split(","));
                 ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
                 pager.setAdapter(adapter);
                 pager.setCurrentItem(position);

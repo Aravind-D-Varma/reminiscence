@@ -57,8 +57,8 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
                 MediaController mc = new MediaController(context);
                 ((MyVideoViewHolder)holder).video.setMediaController(mc);
                 ((MyVideoViewHolder)holder).video.requestFocus();
-                ((MyVideoViewHolder)holder).video.setZOrderOnTop(true);
                 ((MyVideoViewHolder)holder).video.setVideoURI(videos.get(position));
+                ((MyVideoViewHolder)holder).video.setZOrderOnTop(true);
                 break;
             case IMAGE:
                 ((MyImageViewHolder)holder).image.setImageBitmap(photos.get(position));
@@ -118,15 +118,15 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
         return videos;
     }          
                
-    public boolean isImageFile(String path) {
+    public static boolean isImageFile(String path) {
         String mimeType = getMimeType(path);
         return mimeType != null && mimeType.startsWith("image");
     }
-    public boolean isVideoFile(String path) {
+    public static boolean isVideoFile(String path) {
         String mimeType = getMimeType(path);
         return mimeType != null && mimeType.startsWith("video");
     }
-    public String getMimeType(String path) {
+    public static String getMimeType(String path) {
         String mimeType = "";
         String extension = getExtension(path);
         if (MimeTypeMap.getSingleton().hasExtension(extension)) {
@@ -134,7 +134,7 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
         }
         return mimeType;
     }
-    public String getExtension(String fileName){
+    public static String getExtension(String fileName){
         char[] arrayOfFilename = fileName.toCharArray();
         for(int i = arrayOfFilename.length-1; i > 0; i--){
             if(arrayOfFilename[i] == '.'){
