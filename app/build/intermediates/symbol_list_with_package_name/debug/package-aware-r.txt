@@ -1973,6 +1973,7 @@ id memory_solved_preview
 id memory_spinner
 id memory_time
 id memory_title
+id memory_video
 id memory_view_pager
 id message
 id middle
@@ -2344,6 +2345,7 @@ layout text_view_with_line_height_from_style
 layout text_view_with_theme_line_height
 layout text_view_without_line_height
 layout userdetails
+layout videogallery_item
 layout zoom_image
 menu fragment_memory
 menu fragment_memory_list

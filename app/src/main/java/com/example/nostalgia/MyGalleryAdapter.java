@@ -41,7 +41,7 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
         View v;
         switch(viewType){
             case VIDEO:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.photogallery_item, parent, false);
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.videogallery_item, parent, false);
                 return new MyVideoViewHolder(v);
             case IMAGE:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.photogallery_item, parent, false);
@@ -106,7 +106,7 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
         videos = new ArrayList<Uri>();
         for (int i = 0; i < photoPaths.length; i++) {
             if(isVideoFile(photoPaths[i])) {
-                Uri uriVid = FileProvider.getUriForFile(context, context.getPackageName(), new File(photoPaths[i]));
+                Uri uriVid = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", new File(photoPaths[i]));
                 videos.add(uriVid);
             }
         }

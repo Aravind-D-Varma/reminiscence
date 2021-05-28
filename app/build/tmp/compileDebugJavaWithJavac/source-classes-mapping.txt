@@ -6,7 +6,8 @@ com/example/nostalgia/Introduction.java
  com.example.nostalgia.Introduction$2
 com/example/nostalgia/MyGalleryAdapter.java
  com.example.nostalgia.MyGalleryAdapter
- com.example.nostalgia.MyGalleryAdapter$MyViewHolder
+ com.example.nostalgia.MyGalleryAdapter$MyImageViewHolder
+ com.example.nostalgia.MyGalleryAdapter$MyVideoViewHolder
 com/example/nostalgia/PictureUtils.java
  com.example.nostalgia.PictureUtils
 com/example/nostalgia/SingleFragmentActivity.java

@@ -286,8 +286,11 @@ public class MemoryFragment extends Fragment {
         //region PhotoGridView
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
-        MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getPhotoPaths().split(","));
-        mPhotoRecyclerView.setAdapter(customAdapter);
+        try{
+            MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getPhotoPaths().split(","));
+            mPhotoRecyclerView.setAdapter(customAdapter);
+        }
+        catch (NullPointerException e){}
         ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
@@ -318,8 +321,8 @@ public class MemoryFragment extends Fragment {
             TextView mAddphoto = v.findViewById(R.id.addphotos);
             mAddphoto.setVisibility(mMemory.getPhotoPaths()==null? View.GONE:View.VISIBLE);
             Intent getmoreImage = new Intent(Intent.ACTION_GET_CONTENT);
-            getmoreImage.setType("image/*");
-            getmoreImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            getmoreImage.setType("*/*");
+            getmoreImage.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {"image/*", "video/*"});
             mPhotoFAB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
