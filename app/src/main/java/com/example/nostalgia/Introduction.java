@@ -83,7 +83,7 @@ public class Introduction extends AppCompatActivity {
                         break;
                     case R.id.user_working:
                         RadioGroup muserwork = (RadioGroup) findViewById(R.id.user_working);
-                        a.setStartOffset(delay*100);muserwork.startAnimation(a);
+                        a.setStartOffset(delay*1000);muserwork.startAnimation(a);
                         mUserYesWorked = (RadioButton) findViewById(R.id.yes_worked);
                         break;
                     case R.id.religion_text:
@@ -91,14 +91,14 @@ public class Introduction extends AppCompatActivity {
                         break;
                     case R.id.user_religious:
                         RadioGroup muserreligion = (RadioGroup) findViewById(R.id.user_religious);
-                        a.setStartOffset(delay*100);muserreligion.startAnimation(a);
+                        a.setStartOffset(delay*1000);muserreligion.startAnimation(a);
                         mUserYesReligious = (RadioButton) findViewById(R.id.yes_religious);
                         break;
                     case R.id.thankyou_text:
                         setText(a,R.id.thankyou_text,delay);
                         break;
                     case R.id.continue_button:
-                        setContinue(a);
+                        setContinue(a,delay);
                 }
                 delay++;
             }
@@ -110,9 +110,9 @@ public class Introduction extends AppCompatActivity {
         a.setStartOffset(delay*1000);mtextView1.startAnimation(a);
     }
 
-    private void setContinue(Animation a) {
+    private void setContinue(Animation a,int delay) {
         mContinue = (Button) findViewById(R.id.continue_button);
-        mContinue.setAnimation(a);
+        a.setStartOffset(delay*1000);mContinue.setAnimation(a);
         mContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,7 +141,7 @@ public class Introduction extends AppCompatActivity {
 
     private void setgetUsername(Animation a, int delay) {
         mUsername = (EditText) findViewById(R.id.user_name);
-        a.setStartOffset(delay*100);
+        a.setStartOffset(delay*1000);
         mUsername.startAnimation(a);
         mUsername.addTextChangedListener(new TextWatcher() {
             @Override
