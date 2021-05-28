@@ -2043,6 +2043,8 @@ id percent
 id photoGridView
 id photo_fab
 id pin
+id play_button
+id play_button_layout
 id position
 id postLayout
 id progress_circular

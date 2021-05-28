@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -34,11 +36,25 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
         if(MyGalleryAdapter.isVideoFile(allphotoPaths[position])){
             v = inflater.inflate(R.layout.zoom_video,container,false);
             VideoView vv = v.findViewById(R.id.zoomed_videoView);
-            MediaController mc = new MediaController(mContext);
-            vv.setMediaController(mc);
-            vv.requestFocus();
-            vv.setVideoURI(getVideoURI(allphotoPaths).get(position));
-            vv.setZOrderOnTop(true);
+            FrameLayout buttonLayout = v.findViewById(R.id.play_button_layout);
+            ImageButton ib = v.findViewById(R.id.play_button);
+            try {
+                vv.setVideoURI(getVideoURI(allphotoPaths).get(position));
+                vv.seekTo(1);
+                buttonLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (vv.isPlaying()) {
+                            ib.setVisibility(View.VISIBLE);
+                            vv.stopPlayback();
+                        } else {
+                            vv.start();
+                            ib.setVisibility(View.GONE);
+                        }
+                    }
+                });
+            }
+            catch (NullPointerException e){}
         }
         else {
             v = inflater.inflate(R.layout.zoom_image, container, false);
@@ -69,6 +85,8 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
                 Uri uriVid = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", new File(photoPaths[i]));
                 videos.add(uriVid);
             }
+            else
+                videos.add(null);
         }
         return videos;
     }

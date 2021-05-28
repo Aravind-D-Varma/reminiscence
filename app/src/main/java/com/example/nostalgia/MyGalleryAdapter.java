@@ -55,10 +55,13 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
         switch(holder.getItemViewType()){
             case VIDEO:
                 MediaController mc = new MediaController(context);
-                ((MyVideoViewHolder)holder).video.setMediaController(mc);
-                ((MyVideoViewHolder)holder).video.requestFocus();
-                ((MyVideoViewHolder)holder).video.setVideoURI(videos.get(position));
-                ((MyVideoViewHolder)holder).video.setZOrderOnTop(true);
+                VideoView vv = ((MyVideoViewHolder)holder).video;
+                mc.setAnchorView(vv);
+                vv.setMediaController(mc);
+                vv.requestFocus();
+                vv.setVideoURI(videos.get(position));
+                vv.seekTo(1);
+                vv.setZOrderOnTop(true);
                 break;
             case IMAGE:
                 ((MyImageViewHolder)holder).image.setImageBitmap(photos.get(position));
