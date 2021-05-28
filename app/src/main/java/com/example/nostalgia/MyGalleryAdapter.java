@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
@@ -53,6 +54,9 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch(holder.getItemViewType()){
             case VIDEO:
+                MediaController mc = new MediaController(context);
+                ((MyVideoViewHolder)holder).video.setMediaController(mc);
+                ((MyVideoViewHolder)holder).video.requestFocus();
                 ((MyVideoViewHolder)holder).video.setVideoURI(videos.get(position));
                 break;
             case IMAGE:
