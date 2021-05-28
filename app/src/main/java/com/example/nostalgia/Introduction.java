@@ -8,10 +8,13 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +41,7 @@ public class Introduction extends AppCompatActivity {
             Intent intent = MemoryListActivity.newIntent(getApplicationContext());
             startActivity(intent);
         } else {
-
+            final Animation a = AnimationUtils.loadAnimation(this, R.anim.fadein);
             setContentView(R.layout.userdetails);
             allEvents.add("Student Life");
             allEvents.add("Work");
@@ -46,7 +49,10 @@ public class Introduction extends AppCompatActivity {
             allEvents.add("Home");
             allEvents.add("Birthdays");
             allEvents.add("Hangouts");
+            TextView mtextView1 = (TextView) findViewById(R.id.welcome_text);
+            mtextView1.startAnimation(a);
             mUsername = (EditText) findViewById(R.id.user_name);
+            mUsername.startAnimation(a);
             mUsername.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -62,9 +68,15 @@ public class Introduction extends AppCompatActivity {
             });
 
             mUserYesStudent = (RadioButton) findViewById(R.id.yes_student);
+            mUserYesStudent.setAnimation(a);
             mUserYesWorked = (RadioButton) findViewById(R.id.yes_worked);
+            mUserYesWorked.setAnimation(a);
             mUserYesReligious = (RadioButton) findViewById(R.id.yes_religious);
+            mUserYesReligious.setAnimation(a);
+            TextView mtextView2 = findViewById(R.id.thankyou_text);
+            mtextView2.setAnimation(a);
             mContinue = (Button) findViewById(R.id.continue_button);
+            mContinue.setAnimation(a);
             mContinue.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

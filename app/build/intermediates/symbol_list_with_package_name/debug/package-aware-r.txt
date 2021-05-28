@@ -2150,6 +2150,7 @@ id textinput_helper_text
 id textinput_placeholder
 id textinput_prefix_text
 id textinput_suffix_text
+id thankyou_text
 id time
 id title
 id titleDividerNoCustom
@@ -2178,6 +2179,7 @@ id user_student
 id user_working
 id view_offset_helper
 id visible
+id welcome_text
 id withText
 id withinBounds
 id work
