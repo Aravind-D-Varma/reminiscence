@@ -121,7 +121,7 @@ ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\Andr
 	android:parentActivityName
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:30:13-77
 	android:theme
-		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:31:13-66
+		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:31:13-63
 	android:name
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:29:13-62
 activity#com.example.nostalgia.MemoryListActivity

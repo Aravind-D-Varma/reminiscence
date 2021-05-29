@@ -1715,6 +1715,9 @@ drawable share_white
 drawable solved_preview
 drawable spinner_background
 drawable studentlife_white
+drawable tab_indicator_default
+drawable tab_indicator_selected
+drawable tab_selector
 drawable test_custom_background
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
@@ -2127,6 +2130,7 @@ id student_text
 id studentlife
 id submenuarrow
 id submit_area
+id tabDots
 id tabMode
 id tag_accessibility_actions
 id tag_accessibility_clickable_spans

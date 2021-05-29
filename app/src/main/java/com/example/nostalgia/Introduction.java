@@ -5,25 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,6 +32,8 @@ public class Introduction extends AppCompatActivity {
             IntroPagerAdapter introPagerAdapter = new IntroPagerAdapter(getApplicationContext());
             ViewPager pager = findViewById(R.id.pager);
             pager.setAdapter(introPagerAdapter);
+            TabLayout tabLayout = findViewById(R.id.tabDots);
+            tabLayout.setupWithViewPager(pager,true);
         }
 
     }

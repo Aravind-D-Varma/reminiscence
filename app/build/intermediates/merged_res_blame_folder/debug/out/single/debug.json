@@ -52,16 +52,16 @@
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-xhdpi\\ic_menu_delete.png"
     },
     {
-        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\layout_introduction.xml.flat",
-        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\layout\\introduction.xml"
-    },
-    {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\layout_nav_header_main.xml.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\layout\\nav_header_main.xml"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_nostalgia_logo.png.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\mipmap-mdpi\\nostalgia_logo.png"
+    },
+    {
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\layout_introduction.xml.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\layout\\introduction.xml"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_baseline_time_white_20.png.flat",
@@ -100,12 +100,12 @@
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable\\launcherscreen.xml"
     },
     {
-        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_festival_white.png.flat",
-        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-xxhdpi\\festival_white.png"
-    },
-    {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_frontarrow_white.png.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-hdpi\\frontarrow_white.png"
+    },
+    {
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_festival_white.png.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-xxhdpi\\festival_white.png"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_not_solved_preview.png.flat",
@@ -176,6 +176,10 @@
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-xhdpi\\share_white.png"
     },
     {
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable_tab_indicator_selected.xml.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable\\tab_indicator_selected.xml"
+    },
+    {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_contact_white.png.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-xhdpi\\contact_white.png"
     },
@@ -222,6 +226,10 @@
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_studentlife_white.png.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-mdpi\\studentlife_white.png"
+    },
+    {
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable_tab_indicator_default.xml.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable\\tab_indicator_default.xml"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_home_white.png.flat",
@@ -406,6 +414,10 @@
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable_button_border.xml.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable\\button_border.xml"
+    },
+    {
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable_tab_selector.xml.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable\\tab_selector.xml"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-anydpi_birthday_white.xml.flat",
