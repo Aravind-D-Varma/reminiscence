@@ -64,6 +64,7 @@ import java.util.UUID;
 public class MemoryFragment extends Fragment {
 
     // region Declarations
+    public static final String ARG_memory_ID = "memory_id";
     
     private Memory mMemory;
     private SharedPreferences prefs;
@@ -245,9 +246,9 @@ public class MemoryFragment extends Fragment {
         //endregion
         //region Spinner
         mSpinner = (Spinner) v.findViewById(R.id.memory_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.myspinner,paths);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinner.setAdapter(adapter);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), R.layout.myspinner,paths);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinner.setAdapter(spinnerAdapter);
         mSpinner.setSelection(Arrays.asList(paths).indexOf(mMemory.getEvent()),false);
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -267,10 +268,7 @@ public class MemoryFragment extends Fragment {
             if (mMemory.getMediaPaths().length() != 0)
                 mPhotoButton.setText(R.string.photos_reselection);
         }catch (NullPointerException e){}
-        getImage = new Intent(Intent.ACTION_GET_CONTENT);
-        getImage.setType("*/*");
-        getImage.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {"image/*", "video/*"});
-        getImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        getImage = getFromMediaIntent();
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -290,8 +288,8 @@ public class MemoryFragment extends Fragment {
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
         try{
-            MyGalleryAdapter adapter = new MyGalleryAdapter(getContext(), mMemory.getMediaPaths().split(","));
-            mPhotoRecyclerView.setAdapter(adapter);
+            MyGalleryAdapter RVadapter = new MyGalleryAdapter(getContext(), mMemory.getMediaPaths().split(","));
+            mPhotoRecyclerView.setAdapter(RVadapter);
         }
         catch (NullPointerException e){}
         ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
@@ -318,15 +316,10 @@ public class MemoryFragment extends Fragment {
         });
         //endregion
         //region photoFAB
-            mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
-            mPhotoFAB.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
-            mPhotoFAB.setEnabled(mMemory.getMediaPaths()!=null);
-            TextView mAddphoto = v.findViewById(R.id.addphotos);
-            mAddphoto.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
-            Intent getmoreImage = new Intent(Intent.ACTION_GET_CONTENT);
-            getmoreImage.setType("*/*");
-            getmoreImage.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {"image/*", "video/*"});
-            mPhotoFAB.setOnClickListener(new View.OnClickListener() {
+        mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
+        behaviourOfAddingMedia(v);
+        Intent getmoreImage = getFromMediaIntent();
+        mPhotoFAB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startActivityForResult(Intent.createChooser(getmoreImage, "Select Image"), REQUEST_GALLERY_ADDITIONALPHOTO);
@@ -335,6 +328,7 @@ public class MemoryFragment extends Fragment {
         //endregion
         return v;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(resultCode!= Activity.RESULT_OK)
@@ -453,25 +447,18 @@ public class MemoryFragment extends Fragment {
 
     //endregion
     //region User-defined methods
-    private List<Bitmap> setPhotogalleryView(String allPhotoPaths) {
-        if(allPhotoPaths!=null) {
-            String[] photoPaths = allPhotoPaths.split(",");
-            photos = new ArrayList<Bitmap>();
-            for (int i = 0; i < photoPaths.length; i++) {
-                if(!photoPaths[i].equals("")) {
-                    Bitmap bpimg = BitmapFactory.decodeFile(photoPaths[i]);
-                    photos.add(bpimg);
-                }
-            }
-        }
-        try {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean(CURRENT_PHOTOS_ABSENT, (mMemory.getMediaPaths().length() == 0));
-            editor.apply();
-        }
-        catch (NullPointerException e){}
-        return photos;
+    private Intent getFromMediaIntent() {
+        Intent getmoreImage = new Intent(Intent.ACTION_GET_CONTENT);
+        getmoreImage.setType("*/*");
+        getmoreImage.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {"image/*", "video/*"});
+        getmoreImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        return getmoreImage;
+    }
+    private void behaviourOfAddingMedia(View v) {
+        mPhotoFAB.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
+        mPhotoFAB.setEnabled(mMemory.getMediaPaths()!=null);
+        TextView mAddphoto = v.findViewById(R.id.addphotos);
+        mAddphoto.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
     }
     private String getImagePath(Uri mImageUri) {
 
