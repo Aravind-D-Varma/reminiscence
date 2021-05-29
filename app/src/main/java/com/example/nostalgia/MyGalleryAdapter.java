@@ -33,8 +33,8 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
     public MyGalleryAdapter(Context applicationContext, String[] mediaPaths) {
         this.context = applicationContext;
         this.mediaPaths = mediaPaths;
-        this.photos = getPhotoBM(mediaPaths);
-        this.videos = getVideoURI(mediaPaths);
+        this.photos = getPhotoBitmaps(mediaPaths);
+        this.videos = getVideoURIs(mediaPaths);
     }
     @NonNull
     @Override
@@ -100,7 +100,7 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
         }
     }
                 
-    private List<Bitmap> getPhotoBM(String[] photoPaths) {
+    private List<Bitmap> getPhotoBitmaps(String[] photoPaths) {
           
         photos = new ArrayList<Bitmap>();
         for (int i = 0; i < photoPaths.length; i++) {
@@ -113,7 +113,7 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
         return photos;
     }
   
-    private List<Uri> getVideoURI(String[] photoPaths) {
+    private List<Uri> getVideoURIs(String[] photoPaths) {
           
         videos = new ArrayList<Uri>();
         for (int i = 0; i < photoPaths.length; i++) {

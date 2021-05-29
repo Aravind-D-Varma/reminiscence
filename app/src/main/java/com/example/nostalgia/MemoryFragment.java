@@ -5,14 +5,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -65,7 +63,7 @@ public class MemoryFragment extends Fragment {
 
     // region Declarations
     public static final String ARG_memory_ID = "memory_id";
-    
+
     private Memory mMemory;
     private SharedPreferences prefs;
     private String[] paths ={};
@@ -80,22 +78,18 @@ public class MemoryFragment extends Fragment {
     private RecyclerView mPhotoRecyclerView;
     private FloatingActionButton mPhotoFAB;
     
-    
     private boolean discardPhoto = false;
-    
-    
-    private List<Bitmap> photos = new ArrayList<>();
-    
+
     public static final String DIALOG_DATE = "DialogDate";
     public static final String DIALOG_TIME = "DialogTime";
     public static final int REQUEST_DATE = 0;
     public static final int REQUEST_TIME = 1;
     public static final int REQUEST_GALLERY_PHOTO = 2;
     public static final int REQUEST_GALLERY_ADDITIONALPHOTO = 3;
-
     private static final String[] DECLARED_GETPHOTO_PERMISSIONS = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
     private static final int MY_STORAGE_CODE = 102;
     private final String CURRENT_PHOTOS_ABSENT = "Current Memory Photos";
+    public static final String CURRENT_MEMORY = "Current Memory";
     
     //endregion
     //region Fragment+Arguments
@@ -126,7 +120,7 @@ public class MemoryFragment extends Fragment {
         getActivity().setTitle(mMemory.getTitle());
         prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("Current Memory",mMemory.getTitle());
+        editor.putString(CURRENT_MEMORY,mMemory.getTitle());
         try{
             editor.putBoolean(CURRENT_PHOTOS_ABSENT,(mMemory.getMediaPaths().length()==0));
         }
@@ -146,20 +140,10 @@ public class MemoryFragment extends Fragment {
                 startActivity(new Intent(getActivity(), MemoryListActivity.class));
                 return true;
             case R.id.share_memory:
-                ArrayList<Uri> mediaUri = new ArrayList<Uri>();
+
                 try {
-                    for (String path : mMemory.getMediaPaths().split(",")) {
-                        if (!path.equals("")) {
-                            File file = new File(path);
-                            Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
-                            mediaUri.add(uri);
-                        }
-                    }
-                    Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                    share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, mediaUri);
-                    share.setType("image/*");
-                    share.putExtra(Intent.EXTRA_TEXT, mMemory.getTitle());
-                    share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    ArrayList<Uri> mediaUri = getUrisFromPaths();
+                    Intent share = shareMemoryIntent(mediaUri);
                     startActivity(Intent.createChooser(share, "Share Memory"));
                 }
                 catch (NullPointerException e){
@@ -191,7 +175,7 @@ public class MemoryFragment extends Fragment {
                 if (!mMemory.getTitle().trim().equals("")) {
                     SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
                     SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("Current Memory",mMemory.getTitle());
+                    editor.putString(CURRENT_MEMORY,mMemory.getTitle());
                     editor.apply();
                 }
             }
@@ -233,7 +217,7 @@ public class MemoryFragment extends Fragment {
         //endregion
         // region TimeButton
         mTimeButton = (Button) v.findViewById(R.id.memory_time);
-        updateTime(mMemory.getDate());
+        updateTime();
         mTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -272,12 +256,12 @@ public class MemoryFragment extends Fragment {
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(hasPhotoPermission()) {
+                if(hasMediaPermission()) {
                     startActivityForResult(Intent.createChooser(getImage, "Select Images/Videos"), REQUEST_GALLERY_PHOTO);
                 }
                 else{
                     requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE);
-                    if(hasPhotoPermission()){
+                    if(hasMediaPermission()){
                         startActivityForResult(Intent.createChooser(getImage, "Select Images/Videos"), REQUEST_GALLERY_PHOTO);
                     }
                 }
@@ -288,28 +272,19 @@ public class MemoryFragment extends Fragment {
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
         try{
-            MyGalleryAdapter RVadapter = new MyGalleryAdapter(getContext(), mMemory.getMediaPaths().split(","));
-            mPhotoRecyclerView.setAdapter(RVadapter);
+            setMediaRecyclerView();
         }
         catch (NullPointerException e){}
         ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.activity_memory_pager);
-                GalleryViewPagerAdapter adapter = new GalleryViewPagerAdapter(getActivity(),mMemory.getMediaPaths().split(","));
-                ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
-                pager.setAdapter(adapter);
-                pager.setCurrentItem(position);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                dialog.show();
+                displayMediaZoomedIn(position);
             }
         });
         ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemLongClickListener(new ItemClickSupport.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClicked(RecyclerView recyclerView, int position, View v) {
-                AlertDialog diaBox = AskDeletePhoto(mMemory.getMediaPaths().split(",")[position]);
+                AlertDialog diaBox = AskDeleteMedia(mMemory.getMediaPaths().split(",")[position]);
                 diaBox.show();
                 return false;
             }
@@ -341,42 +316,41 @@ public class MemoryFragment extends Fragment {
         else if (requestCode == REQUEST_TIME){
             Date time = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
             mMemory.setDate(time);
-            updateTime(time);
+            updateTime();
         }
         else if (requestCode == REQUEST_GALLERY_PHOTO){
             String joinedFilePaths = "";
             if(data.getData()!=null){
-                Uri mImageUri=data.getData();
-                joinedFilePaths = joinedFilePaths +(getImagePath(mImageUri));
+                Uri mMediaUri=data.getData();
+                joinedFilePaths = joinedFilePaths +(getMediaPath(mMediaUri));
             } else {
                 if (data.getClipData() != null) {
                     ClipData mClipData = data.getClipData();
                     for (int i = 0; i < mClipData.getItemCount(); i++) {
                         ClipData.Item item = mClipData.getItemAt(i);
-                        Uri uri = item.getUri();
+                        Uri mMediaUri = item.getUri();
                         if(joinedFilePaths.equals(""))
-                            joinedFilePaths = joinedFilePaths +(getImagePath(uri));
+                            joinedFilePaths = joinedFilePaths +(getMediaPath(mMediaUri));
                         else
-                            joinedFilePaths = joinedFilePaths + "," + (getImagePath(uri));
+                            joinedFilePaths = joinedFilePaths + "," + (getMediaPath(mMediaUri));
                     }
                 }
             }
             mMemory.setMediaPaths(joinedFilePaths);
-            MyGalleryAdapter adapter = new MyGalleryAdapter(getContext(), mMemory.getMediaPaths().split(","));
-            mPhotoRecyclerView.setAdapter(adapter);
+            setMediaRecyclerView();
             mPhotoFAB.setVisibility(View.VISIBLE);
             mPhotoFAB.setEnabled(true);
         }
         else if (requestCode == REQUEST_GALLERY_ADDITIONALPHOTO){
             String extraFilePaths = mMemory.getMediaPaths();
-            String[] duplicateCheck = extraFilePaths.split(",");
-                if(data.getData()!=null){
-                    Uri mImageUri=data.getData();
-                    String newPhoto = getImagePath(mImageUri);
-                    if(Arrays.asList(duplicateCheck).contains(newPhoto))
+
+            if(data.getData()!=null){
+                    Uri mMediaUri=data.getData();
+                    String newPhoto = getMediaPath(mMediaUri);
+                    if(isDuplicate(newPhoto))
                         discardPhoto = true;
                     else {
-                        extraFilePaths = extraFilePaths + "," + (getImagePath(mImageUri));
+                        extraFilePaths = extraFilePaths + "," + (getMediaPath(mMediaUri));
                         discardPhoto = false;
                     }
                 } else {
@@ -384,9 +358,9 @@ public class MemoryFragment extends Fragment {
                         ClipData mClipData = data.getClipData();
                         for (int i = 0; i < mClipData.getItemCount(); i++) {
                             ClipData.Item item = mClipData.getItemAt(i);
-                            Uri uri = item.getUri();
-                            String newPhoto = getImagePath(uri);
-                            if(Arrays.asList(duplicateCheck).contains(newPhoto))
+                            Uri mMediaUri = item.getUri();
+                            String newPhoto = getMediaPath(mMediaUri);
+                            if(isDuplicate(newPhoto))
                                 discardPhoto = true;
                             else {
                                 extraFilePaths = extraFilePaths + "," + newPhoto;
@@ -396,8 +370,7 @@ public class MemoryFragment extends Fragment {
                     }
                 }
             mMemory.setMediaPaths(extraFilePaths);
-            MyGalleryAdapter adapter = new MyGalleryAdapter(getContext(), mMemory.getMediaPaths().split(","));
-            mPhotoRecyclerView.setAdapter(adapter);
+            setMediaRecyclerView();
         }
     }
     @Override
@@ -421,7 +394,7 @@ public class MemoryFragment extends Fragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                    String title = preferences.getString("Current Memory", "");
+                    String title = preferences.getString(CURRENT_MEMORY, "");
                     boolean photosAbsent = preferences.getBoolean(CURRENT_PHOTOS_ABSENT,true);
                     if (title.equals("")&&photosAbsent) {
                         AskDiscardMemory().show();
@@ -444,9 +417,8 @@ public class MemoryFragment extends Fragment {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
     //endregion
-    //region User-defined methods
+//region User-defined methods
     private Intent getFromMediaIntent() {
         Intent getmoreImage = new Intent(Intent.ACTION_GET_CONTENT);
         getmoreImage.setType("*/*");
@@ -454,25 +426,41 @@ public class MemoryFragment extends Fragment {
         getmoreImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         return getmoreImage;
     }
-    private void behaviourOfAddingMedia(View v) {
-        mPhotoFAB.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
-        mPhotoFAB.setEnabled(mMemory.getMediaPaths()!=null);
-        TextView mAddphoto = v.findViewById(R.id.addphotos);
-        mAddphoto.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
+    private Intent shareMemoryIntent(ArrayList<Uri> mediaUri) {
+        Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);
+        share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, mediaUri);
+        share.setType("*/*");
+        share.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {"image/*", "video/*"});
+        share.putExtra(Intent.EXTRA_TEXT, mMemory.getTitle());
+        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        return share;
     }
-    private String getImagePath(Uri mImageUri) {
+    private ArrayList<Uri> getUrisFromPaths() {
+        ArrayList<Uri> mediaUri = new ArrayList<Uri>();
+        for (String path : mMemory.getMediaPaths().split(",")) {
+            File file = new File(path);
+            Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
+            mediaUri.add(uri);
+        }
+
+        return mediaUri;
+    }
+    private Uri getSpecificContentUri(Uri mImageUri) {
+        if(isImage(mImageUri))
+            return MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        else
+            return MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+    }
+
+    private String getMediaPath(Uri mMediaUri) {
 
         String imageEncoded;
         Uri contentUri;
         String[] filePathColumn = { MediaStore.Images.Media.DATA };
-        String docId = DocumentsContract.getDocumentId(mImageUri);
-        String[] split = docId.split(":");
+        String[] selectionArgs = getSelectionArguments(mMediaUri);
         String selection = "_id=?";
-        String[] selectionArgs = new String[] {split[1]};
-        if(getMimeType(mImageUri).startsWith("image"))
-            contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        else
-            contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+        contentUri = getSpecificContentUri(mMediaUri);
+
         Cursor cursor = getContext().getContentResolver().query(contentUri,filePathColumn, selection, selectionArgs, null);
         cursor.moveToFirst();
         int columnIndex = cursor.getColumnIndexOrThrow(filePathColumn[0]);
@@ -481,7 +469,7 @@ public class MemoryFragment extends Fragment {
 
         return imageEncoded;
     }
-    public String getMimeType(Uri uri) {
+    private String getMimeType(Uri uri) {
         String mimeType = "";
         if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
             ContentResolver cr = getContext().getContentResolver();
@@ -492,16 +480,51 @@ public class MemoryFragment extends Fragment {
         }
         return mimeType;
     }
-    private boolean hasPhotoPermission() {
-        int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
-        return result == PackageManager.PERMISSION_GRANTED;
+    private String[] getSelectionArguments(Uri mImageUri) {
+        String docId = DocumentsContract.getDocumentId(mImageUri);
+        String[] split = docId.split(":");
+        return new String[] {split[1]};
     }
+
     private void updateDate() {
         mDateButton.setText(DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate()));
     }
-    private void updateTime(Date date) {
+    private void updateTime() {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        mTimeButton.setText(sdf.format(date));
+        mTimeButton.setText(sdf.format(mMemory.getDate()));
+    }
+    private void setMediaRecyclerView() {
+        MyGalleryAdapter adapter = new MyGalleryAdapter(getContext(), mMemory.getMediaPaths().split(","));
+        mPhotoRecyclerView.setAdapter(adapter);
+    }
+    private void displayMediaZoomedIn(int position) {
+        Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.activity_memory_pager);
+        GalleryViewPagerAdapter adapter = new GalleryViewPagerAdapter(getActivity(),mMemory.getMediaPaths().split(","));
+        ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
+        pager.setAdapter(adapter);
+        pager.setCurrentItem(position);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+    }
+    private void behaviourOfAddingMedia(View v) {
+        mPhotoFAB.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
+        mPhotoFAB.setEnabled(mMemory.getMediaPaths()!=null);
+        TextView mAddphoto = v.findViewById(R.id.addphotos);
+        mAddphoto.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
+    }
+
+    private boolean isDuplicate(String filePath) {
+        String[] duplicateCheck = mMemory.getMediaPaths().split(",");
+        return Arrays.asList(duplicateCheck).contains(filePath);
+    }
+    private boolean isImage(Uri mImageUri) {
+        return getMimeType(mImageUri).startsWith("image");
+    }
+    private boolean hasMediaPermission() {
+        int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
+        return result == PackageManager.PERMISSION_GRANTED;
     }
 //endregion
     //region AlertDialogs
@@ -526,7 +549,7 @@ public class MemoryFragment extends Fragment {
                 .create();
         return discardMemoryDialogBox;
     }
-    private AlertDialog AskDeletePhoto(String tobedeletedphotopath)
+    private AlertDialog AskDeleteMedia(String toDeleteMediapath)
     {
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext(),R.style.PauseDialog)
                 .setTitle("Deletion")
@@ -536,11 +559,10 @@ public class MemoryFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String[] allPhotoPaths = mMemory.getMediaPaths().split(",");
                         List<String> list = new ArrayList<String>(Arrays.asList(allPhotoPaths));
-                        list.remove(tobedeletedphotopath);
+                        list.remove(toDeleteMediapath);
                         String joined = TextUtils.join(",", list);
                         mMemory.setMediaPaths(joined);
-                        MyGalleryAdapter customAdapter = new MyGalleryAdapter(getContext(), mMemory.getMediaPaths().split(","));
-                        mPhotoRecyclerView.setAdapter(customAdapter);
+                        setMediaRecyclerView();
                         dialog.dismiss();
                     }
                 })
