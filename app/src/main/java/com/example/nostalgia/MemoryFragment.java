@@ -284,7 +284,8 @@ public class MemoryFragment extends Fragment {
         ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemLongClickListener(new ItemClickSupport.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClicked(RecyclerView recyclerView, int position, View v) {
-                AlertDialog diaBox = AskDeleteMedia(mMemory.getMediaPaths().split(",")[position]);
+                String[] filePaths = individualFilePaths(mMemory);
+                AlertDialog diaBox = AskDeleteMedia(filePaths[position]);
                 diaBox.show();
                 return false;
             }
@@ -437,7 +438,7 @@ public class MemoryFragment extends Fragment {
     }
     private ArrayList<Uri> getUrisFromPaths() {
         ArrayList<Uri> mediaUri = new ArrayList<Uri>();
-        for (String path : mMemory.getMediaPaths().split(",")) {
+        for (String path : individualFilePaths(mMemory)) {
             File file = new File(path);
             Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
             mediaUri.add(uri);
@@ -485,6 +486,9 @@ public class MemoryFragment extends Fragment {
         String[] split = docId.split(":");
         return new String[] {split[1]};
     }
+    private String[] individualFilePaths(Memory givenMemory){
+        return givenMemory.getMediaPaths().split(",");
+    }
 
     private void updateDate() {
         mDateButton.setText(DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate()));
@@ -494,14 +498,14 @@ public class MemoryFragment extends Fragment {
         mTimeButton.setText(sdf.format(mMemory.getDate()));
     }
     private void setMediaRecyclerView() {
-        MyGalleryAdapter adapter = new MyGalleryAdapter(getContext(), mMemory.getMediaPaths().split(","));
+        MyGalleryAdapter adapter = new MyGalleryAdapter(getContext(), individualFilePaths(mMemory));
         mPhotoRecyclerView.setAdapter(adapter);
     }
     private void displayMediaZoomedIn(int position) {
         Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.activity_memory_pager);
-        GalleryViewPagerAdapter adapter = new GalleryViewPagerAdapter(getActivity(),mMemory.getMediaPaths().split(","));
+        GalleryViewPagerAdapter adapter = new GalleryViewPagerAdapter(getActivity(),individualFilePaths(mMemory));
         ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
         pager.setAdapter(adapter);
         pager.setCurrentItem(position);
@@ -516,7 +520,7 @@ public class MemoryFragment extends Fragment {
     }
 
     private boolean isDuplicate(String filePath) {
-        String[] duplicateCheck = mMemory.getMediaPaths().split(",");
+        String[] duplicateCheck = individualFilePaths(mMemory);
         return Arrays.asList(duplicateCheck).contains(filePath);
     }
     private boolean isImage(Uri mImageUri) {
@@ -557,7 +561,7 @@ public class MemoryFragment extends Fragment {
                 .setIcon(android.R.drawable.ic_menu_delete)
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        String[] allPhotoPaths = mMemory.getMediaPaths().split(",");
+                        String[] allPhotoPaths = individualFilePaths(mMemory);
                         List<String> list = new ArrayList<String>(Arrays.asList(allPhotoPaths));
                         list.remove(toDeleteMediapath);
                         String joined = TextUtils.join(",", list);
