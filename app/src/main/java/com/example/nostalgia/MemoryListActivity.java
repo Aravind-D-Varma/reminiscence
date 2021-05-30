@@ -3,9 +3,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,11 +17,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.function.IntToDoubleFunction;
 
 public class MemoryListActivity extends SingleFragmentActivity implements MemoryListFragment.Callbacks, NavigationView.OnNavigationItemSelectedListener {
 
@@ -33,7 +28,7 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     public MemoryListFragment MLfragment;
     private TextView mHeaderText;
     private String userName;
-    private String[] allEventpaths={};
+    private String[] applicableEvents = {};
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, MemoryListActivity.class);
@@ -66,11 +61,11 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        GlobalInfo();
+        getGeneralInfo();
 
         mNavigationView = findViewById(R.id.navigation_view);
 
-        headerandmenuSetting(userName,allEventpaths);
+        headerAndMenuSetting(userName, applicableEvents);
 
         drawerAndToggle();
 
@@ -79,45 +74,70 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     @Override
     protected void onResume() {
         super.onResume();
-        GlobalInfo();
-        headerandmenuSetting(userName,allEventpaths);
+        getGeneralInfo();
+        headerAndMenuSetting(userName, applicableEvents);
+    }
+
+    private void headerAndMenuSetting(String userName, String[] availableEvents) {
+
+        showUserName(userName);
+        setMenuItemVisibility(availableEvents);
+    }
+
+    private void showUserName(String userName) {
+        View headerView = mNavigationView.getHeaderView(0);
+        mHeaderText = headerView.findViewById(R.id.nav_header_textView);
+        mHeaderText.setText("Welcome "+userName);
+    }
+
+    private void setMenuItemVisibility(String[] availableEvents) {
+        Menu menuNav = mNavigationView.getMenu();
+        List<String> list = Arrays.asList(availableEvents);
+        MenuItem studentmenuItem = menuNav.findItem(R.id.studentlife);
+        studentmenuItem.setVisible(list.contains(R.string.studentlife));
+        MenuItem workmenuItem = menuNav.findItem(R.id.work);
+        workmenuItem.setVisible(list.contains(R.string.work));
+        MenuItem religionmenuItem = menuNav.findItem(R.id.festival);
+        religionmenuItem.setVisible(list.contains(R.string.festival));
+    }
+
+    private void drawerAndToggle() {
+        mDrawerLayout = findViewById(R.id.main_drawerLayout);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        mABDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.NDopen, R.string.NDclose);
+        mDrawerLayout.addDrawerListener(mABDrawerToggle);
+        mABDrawerToggle.setDrawerIndicatorEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mABDrawerToggle.syncState();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.all:
-                MLfragment.eventFilter(getString(R.string.all));
-                onBackPressed();
-                return true;
+                return filterOnSelected(R.string.all);
             case R.id.studentlife:
-                MLfragment.eventFilter(getString(R.string.studentlife));
-                onBackPressed();
-                return true;
+                return filterOnSelected(R.string.studentlife);
             case R.id.work:
-                MLfragment.eventFilter(getString(R.string.work));
-                onBackPressed();
-                return true;
+                return filterOnSelected(R.string.work);
             case R.id.home:
-                MLfragment.eventFilter(getString(R.string.home));
-                onBackPressed();
-                return true;
+                return filterOnSelected(R.string.home);
             case R.id.birthday:
-                MLfragment.eventFilter(getString(R.string.birthday));
-                onBackPressed();
-                return true;
+                return filterOnSelected(R.string.birthday);
             case R.id.hangouts:
-                MLfragment.eventFilter(getString(R.string.hangouts));
-                onBackPressed();
-                return true;
+                return filterOnSelected(R.string.hangouts);
             case R.id.festival:
-                MLfragment.eventFilter(getString(R.string.festival));
-                onBackPressed();
-                return true;
+                return filterOnSelected(R.string.festival);
             case R.id.user_settings:
                 Intent intent = new Intent(MemoryListActivity.this, UserSettingsActivity.class);
                 startActivity(intent);
         }
+        return true;
+    }
+
+    private boolean filterOnSelected(int NavigationItem) {
+        MLfragment.eventFilter(getString(NavigationItem));
+        onBackPressed();
         return true;
     }
 
@@ -126,14 +146,18 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
 
         switch (item.getItemId()){
             case android.R.id.home:
-                if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
-                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                else
-                    mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
+                return closeAndOpenDrawer();
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private boolean closeAndOpenDrawer() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        else
+            mDrawerLayout.openDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
@@ -145,38 +169,11 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
         }
     }
 
-    private void GlobalInfo() {
+    private void getGeneralInfo() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         userName = preferences.getString(Introduction.SEND_USERNAME,"");
         String userevents = preferences.getString(Introduction.APPLICABLE_EVENTS, "");
-        allEventpaths = userevents.split(",");
-    }
-
-    private void headerandmenuSetting(String userName, String[] availableEvents) {
-
-        List<String> list = Arrays.asList(availableEvents);
-
-        View headerView = mNavigationView.getHeaderView(0);
-        mHeaderText = headerView.findViewById(R.id.nav_header_textView);
-        mHeaderText.setText("Welcome "+userName);
-
-        Menu menuNav = mNavigationView.getMenu();
-        MenuItem studentmenuItem = menuNav.findItem(R.id.studentlife);
-        studentmenuItem.setVisible(list.contains("Student Life"));
-        MenuItem workmenuItem = menuNav.findItem(R.id.work);
-        workmenuItem.setVisible(list.contains("Work"));
-        MenuItem religionmenuItem = menuNav.findItem(R.id.festival);
-        religionmenuItem.setVisible(list.contains("Festivals"));
-    }
-
-    private void drawerAndToggle() {
-        mDrawerLayout = findViewById(R.id.main_drawerLayout);
-        mNavigationView.setNavigationItemSelectedListener(this);
-        mABDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.NDopen, R.string.NDclose);
-        mDrawerLayout.addDrawerListener(mABDrawerToggle);
-        mABDrawerToggle.setDrawerIndicatorEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mABDrawerToggle.syncState();
+        applicableEvents = userevents.split(",");
     }
 
 }

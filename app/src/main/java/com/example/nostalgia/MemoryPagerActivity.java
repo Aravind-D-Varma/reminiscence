@@ -24,7 +24,7 @@ public class MemoryPagerActivity extends AppCompatActivity {
     private static final String EXTRA_memory_ID = "com.example.criminalintent.memory_id";
     private static ViewPager mViewPager;
     private List<Memory> mMemories;
-    public String[] paths;
+    public String[] applicableEvents;
     //endregion
 
     public static Intent newIntent(Context packageContext, UUID memoryId){
@@ -38,8 +38,8 @@ public class MemoryPagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memory_pager);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String userid = preferences.getString(Introduction.APPLICABLE_EVENTS, "");
-        paths = userid.split(",");
+        String combinedEvents= preferences.getString(Introduction.APPLICABLE_EVENTS, "");
+        applicableEvents = combinedEvents.split(",");
         mViewPager = (ViewPager) findViewById(R.id.memory_view_pager);
         mMemories = MemoryLab.get(this).getMemories();
         FragmentManager fragmentManager = getSupportFragmentManager();

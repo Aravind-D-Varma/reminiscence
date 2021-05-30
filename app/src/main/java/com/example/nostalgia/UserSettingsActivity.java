@@ -28,12 +28,12 @@ public class UserSettingsActivity extends AppCompatActivity {
     }
 
     private void gettingUserPreferences() {
-        allEvents.add("Student Life");
-        allEvents.add("Work");
-        allEvents.add("Festivals");
-        allEvents.add("Home");
-        allEvents.add("Birthdays");
-        allEvents.add("Hangouts");
+        allEvents = initializeEvents(allEvents);
+        setUserName();
+        setUserPreferences();
+    }
+
+    private void setUserName() {
         mUsername = (EditText) findViewById(R.id.user_name);
         mUsername.addTextChangedListener(new TextWatcher() {
             @Override
@@ -48,6 +48,9 @@ public class UserSettingsActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+    }
+
+    private void setUserPreferences() {
         mUserYesStudent = (RadioButton) findViewById(R.id.yes_student);
         mUserYesWorked = (RadioButton) findViewById(R.id.yes_worked);
         mUserYesReligious = (RadioButton) findViewById(R.id.yes_religious);
@@ -56,13 +59,60 @@ public class UserSettingsActivity extends AppCompatActivity {
         mUserReligious = findViewById(R.id.user_religious);
     }
 
+    private List<String> initializeEvents(List<String> allEvents) {
+        allEvents.add("Student Life");
+        allEvents.add("Work");
+        allEvents.add("Festivals");
+        allEvents.add("Home");
+        allEvents.add("Birthdays");
+        allEvents.add("Hangouts");
+        return allEvents;
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
-        savingUserPreferences();
+        saveUserPreferences();
     }
 
-    private void savingUserPreferences() {
+    private void saveUserPreferences() {
+        cutInapplicableEvents();
+        if (noActivityInSettings()) {
+            Toast.makeText(getApplicationContext(), "You didnt make any changes. Keeping your previous settings...", Toast.LENGTH_SHORT).show();
+        }
+        else if(onlyChangedName()) {
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+            editor.putString(Introduction.SEND_USERNAME, mUsername.getText().toString());
+            editor.apply();
+        }
+        else{
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+
+                editor.putString(Introduction.APPLICABLE_EVENTS, listOfStringsToString());
+                editor.apply();
+        }
+    }
+
+    private String listOfStringsToString() {
+        String[] applicableEvents = {};
+        applicableEvents = allEvents.toArray(applicableEvents);
+        StringBuilder combinedEvents = new StringBuilder();
+        for (int i = 0; i < applicableEvents.length; i++)
+            combinedEvents.append(applicableEvents[i]).append(",");
+        return combinedEvents.toString();
+    }
+
+    private boolean onlyChangedName() {
+        return mUserStudent.getCheckedRadioButtonId() == -1 && mUserWorked.getCheckedRadioButtonId() == -1
+                && mUserReligious.getCheckedRadioButtonId() == -1;
+    }
+
+    private boolean noActivityInSettings() {
+        return mUserStudent.getCheckedRadioButtonId() == -1 && mUserWorked.getCheckedRadioButtonId() == -1
+                && mUserReligious.getCheckedRadioButtonId() == -1 && mUsername.getText().toString().length() < 1;
+    }
+
+    private void cutInapplicableEvents() {
         if (mUserStudent.getCheckedRadioButtonId() != -1) {
             if (!mUserYesStudent.isChecked())
                 allEvents.remove("Student Life");
@@ -74,26 +124,6 @@ public class UserSettingsActivity extends AppCompatActivity {
         if (mUserReligious.getCheckedRadioButtonId() != -1) {
             if (!mUserYesReligious.isChecked())
                 allEvents.remove("Festivals");
-        }
-        if (mUserStudent.getCheckedRadioButtonId() == -1 && mUserWorked.getCheckedRadioButtonId() == -1
-                && mUserReligious.getCheckedRadioButtonId() == -1 && mUsername.getText().toString().length() < 1) {
-            Toast.makeText(getApplicationContext(), "You didnt make any changes. Keeping your previous settings...", Toast.LENGTH_SHORT).show();
-        }
-        else if(mUserStudent.getCheckedRadioButtonId() == -1 && mUserWorked.getCheckedRadioButtonId() == -1
-                && mUserReligious.getCheckedRadioButtonId() == -1) {
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-            editor.putString(Introduction.SEND_USERNAME, mUsername.getText().toString());
-            editor.apply();
-        }
-        else{
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-                String[] applicableEvents = {};applicableEvents = allEvents.toArray(applicableEvents);
-                StringBuilder combinedEvents = new StringBuilder();
-                for (int i = 0; i < applicableEvents.length; i++)
-                    combinedEvents.append(applicableEvents[i]).append(",");
-
-                editor.putString(Introduction.APPLICABLE_EVENTS, combinedEvents.toString());
-                editor.apply();
         }
     }
 

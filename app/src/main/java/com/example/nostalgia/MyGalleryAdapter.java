@@ -55,7 +55,6 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
         switch(holder.getItemViewType()){
             case VIDEO:
                 try {
-                    MediaController mc = new MediaController(context);
                     VideoView vv = ((MyVideoViewHolder) holder).video;
                     vv.setVideoURI(videos.get(position));
                     vv.seekTo(1);

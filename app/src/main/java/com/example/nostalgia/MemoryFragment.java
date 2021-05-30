@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -66,7 +65,7 @@ public class MemoryFragment extends Fragment {
 
     private Memory mMemory;
     private SharedPreferences prefs;
-    private String[] paths ={};
+    private String[] applicableEvents ={};
     
     private EditText mTitleField;
     private EditText mDetailField;
@@ -160,7 +159,7 @@ public class MemoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_memory, container, false);
         getActivity().setTitle(mMemory.getTitle());
-        paths = ((MemoryPagerActivity)getActivity()).paths;
+        applicableEvents = ((MemoryPagerActivity)getActivity()).applicableEvents;
         // region EditText
         mTitleField = (EditText) v.findViewById(R.id.memory_title);
         mTitleField.setText(mMemory.getTitle());
@@ -230,14 +229,14 @@ public class MemoryFragment extends Fragment {
         //endregion
         //region Spinner
         mSpinner = (Spinner) v.findViewById(R.id.memory_spinner);
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), R.layout.myspinner,paths);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), R.layout.myspinner, applicableEvents);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(spinnerAdapter);
-        mSpinner.setSelection(Arrays.asList(paths).indexOf(mMemory.getEvent()),false);
+        mSpinner.setSelection(Arrays.asList(applicableEvents).indexOf(mMemory.getEvent()),false);
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    mMemory.setEvent(paths[position]);
+                    mMemory.setEvent(applicableEvents[position]);
             }
 
             @Override
