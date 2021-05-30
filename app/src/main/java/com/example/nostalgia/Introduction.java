@@ -29,7 +29,7 @@ public class Introduction extends AppCompatActivity {
             Intent intent = MemoryListActivity.newIntent(getApplicationContext());
             startActivity(intent);
         } else {
-            IntroPagerAdapter introPagerAdapter = new IntroPagerAdapter(getApplicationContext());
+            IntroPagerAdapter introPagerAdapter = new IntroPagerAdapter(this);
             ViewPager pager = findViewById(R.id.pager);
             pager.setAdapter(introPagerAdapter);
             TabLayout tabLayout = findViewById(R.id.tabDots);

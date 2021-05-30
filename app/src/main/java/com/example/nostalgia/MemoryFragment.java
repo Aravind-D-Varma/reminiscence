@@ -292,7 +292,7 @@ public class MemoryFragment extends Fragment {
         //endregion
         //region photoFAB
         mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
-        behaviourOfAddingMedia(v);
+        behaviourBeforeAddingMedia(v);
         Intent getmoreImage = getFromMediaIntent();
         mPhotoFAB.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -337,9 +337,7 @@ public class MemoryFragment extends Fragment {
                 }
             }
             mMemory.setMediaPaths(joinedFilePaths);
-            setMediaRecyclerView();
-            mPhotoFAB.setVisibility(View.VISIBLE);
-            mPhotoFAB.setEnabled(true);
+            behaviourAfterAddingMedia();
         }
         else if (requestCode == REQUEST_GALLERY_ADDITIONALPHOTO){
             String extraFilePaths = mMemory.getMediaPaths();
@@ -373,6 +371,8 @@ public class MemoryFragment extends Fragment {
             setMediaRecyclerView();
         }
     }
+
+
     @Override
     public void onPause() {
         super.onPause();
@@ -511,11 +511,23 @@ public class MemoryFragment extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.show();
     }
-    private void behaviourOfAddingMedia(View v) {
+    private void behaviourBeforeAddingMedia(View v) {
         mPhotoFAB.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
         mPhotoFAB.setEnabled(mMemory.getMediaPaths()!=null);
         TextView mAddphoto = v.findViewById(R.id.addphotos);
         mAddphoto.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
+    }
+    private void behaviourAfterAddingMedia() {
+        setMediaRecyclerView();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editor  = prefs.edit();
+        editor.putBoolean(CURRENT_PHOTOS_ABSENT,false);
+        editor.apply();
+
+        mPhotoButton.setText(R.string.photos_reselection);
+
+        mPhotoFAB.setVisibility(View.VISIBLE);
+        mPhotoFAB.setEnabled(true);
     }
 
     private boolean isDuplicate(String filePath) {

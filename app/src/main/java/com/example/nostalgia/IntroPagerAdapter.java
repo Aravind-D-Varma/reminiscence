@@ -135,6 +135,7 @@ public class IntroPagerAdapter extends PagerAdapter {
                 Intent intent = MemoryListActivity.newIntent(mContext);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
+                ((Activity)mContext).finish();
             }
         });
     }
