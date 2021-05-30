@@ -33,7 +33,6 @@ import static com.example.nostalgia.Introduction.SEND_USERNAME;
 public class IntroPagerAdapter extends PagerAdapter {
 
     Context mContext;
-    private List<String> allEvents = new LinkedList<String>();
     private EditText mUsername;
     private RadioButton mUserYesStudent,mUserYesWorked, mUserYesReligion;
     public IntroPagerAdapter(Context context){
@@ -48,45 +47,64 @@ public class IntroPagerAdapter extends PagerAdapter {
 
         switch(position){
             case 0:
-                Animation a = AnimationUtils.loadAnimation(mContext, R.anim.introduction);
-                Animation b = AnimationUtils.loadAnimation(mContext, R.anim.introduction);
-                LinearLayout welcomLL = v.findViewById(R.id.welcome);
-                if(welcomLL.getParent() != null) {
-                    ((ViewGroup)welcomLL.getParent()).removeView(welcomLL); // <- fix
-                }
-                TextView welcome = (TextView) welcomLL.findViewById(R.id.welcome_text);
-                a.setStartOffset(1000);welcome.startAnimation(a);
-                TextView brief = (TextView) welcomLL.findViewById(R.id.intro);
-                b.setStartOffset(3000);brief.startAnimation(b);
+                LinearLayout welcomLL = getLayoutAndFix(v, R.id.welcome);
+                setText(welcomLL, R.id.welcome_text, 1000);
+                setText(welcomLL, R.id.intro, 3000);
                 container.addView(welcomLL);
                 return welcomLL;
             case 1:
-                LinearLayout questionsLL = v.findViewById(R.id.questions);
-                if(questionsLL.getParent() != null) {
-                    ((ViewGroup)questionsLL.getParent()).removeView(questionsLL); // <- fix
-                }
+                LinearLayout questionsLL = getLayoutAndFix(v, R.id.questions);
                 setUserName(questionsLL);
                 container.addView(questionsLL);
                 return questionsLL;
             case 2:
-                LinearLayout eventsLL = v.findViewById(R.id.event_preferences);
-                if(eventsLL.getParent() != null) {
-                    ((ViewGroup)eventsLL.getParent()).removeView(eventsLL); // <- fix
-                }
+                LinearLayout eventsLL = getLayoutAndFix(v, R.id.event_preferences);
                 setRadioButtons(eventsLL);
                 container.addView(eventsLL);
                 return eventsLL;
 
             case 3:
-                LinearLayout conclusionLL = v.findViewById(R.id.conclusion);
-                if(conclusionLL.getParent() != null) {
-                    ((ViewGroup)conclusionLL.getParent()).removeView(conclusionLL); // <- fix
-                }
+                LinearLayout conclusionLL = getLayoutAndFix(v, R.id.conclusion);
                 setContinuebutton(conclusionLL);
                 container.addView(conclusionLL);
                 return conclusionLL;
         }
         return v;
+    }
+
+    private LinearLayout getLayoutAndFix(View v, int LinearLayoutID) {
+        LinearLayout welcomLL = v.findViewById(LinearLayoutID);
+        if (welcomLL.getParent() != null) {
+            ((ViewGroup) welcomLL.getParent()).removeView(welcomLL); // <- fix
+        }
+        return welcomLL;
+    }
+
+    @Override
+    public int getCount() {
+        return 4;
+    }
+
+    @Override
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+        return view == object;
+    }
+
+    @Override
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+
+    }
+    private void setText(LinearLayout welcomLL, int textViewID, int delay) {
+        Animation a = AnimationUtils.loadAnimation(mContext, R.anim.introduction);
+        TextView welcome = (TextView) welcomLL.findViewById(textViewID);
+        a.setStartOffset(delay);
+        welcome.startAnimation(a);
+    }
+
+    private void setRadioButtons(View v) {
+        mUserYesStudent = (RadioButton) v.findViewById(R.id.yes_student);
+        mUserYesWorked = (RadioButton) v.findViewById(R.id.yes_worked);
+        mUserYesReligion = (RadioButton) v.findViewById(R.id.yes_religious);
     }
 
     private void setUserName(View v) {
@@ -105,33 +123,15 @@ public class IntroPagerAdapter extends PagerAdapter {
     }
 
     private void setContinuebutton(View v) {
-        allEvents.add("Student Life");
-        allEvents.add("Work");
-        allEvents.add("Festivals");
-        allEvents.add("Home");
-        allEvents.add("Birthdays");
-        allEvents.add("Hangouts");
         Button mContinue = (Button)v.findViewById(R.id.continue_button);
         mContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mUserYesStudent.isChecked())
-                    allEvents.remove("Student Life");
-                if (!mUserYesWorked.isChecked())
-                    allEvents.remove("Work");
-                if (!mUserYesReligion.isChecked())
-                    allEvents.remove("Festivals");
+                String combinedEvents = joinAllApplicableEvents();
+                String userName = mUsername.getText().toString();
 
-                String[] applicableEvents = {};
-                applicableEvents = allEvents.toArray(applicableEvents);
-                StringBuilder combinedEvents = new StringBuilder();
-                for (int i = 0; i < applicableEvents.length; i++)
-                    combinedEvents.append(applicableEvents[i]).append(",");
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
-                editor.putBoolean(FIRST_TIME,true);
-                editor.putString(SEND_USERNAME, mUsername.getText().toString());
-                editor.putString(APPLICABLE_EVENTS, combinedEvents.toString());
-                editor.apply();
+                setGeneralInfo(userName, combinedEvents);
+
                 Intent intent = MemoryListActivity.newIntent(mContext);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
@@ -139,24 +139,54 @@ public class IntroPagerAdapter extends PagerAdapter {
         });
     }
 
-    private void setRadioButtons(View v) {
-        mUserYesStudent = (RadioButton) v.findViewById(R.id.yes_student);
-        mUserYesWorked = (RadioButton) v.findViewById(R.id.yes_worked);
-        mUserYesReligion = (RadioButton) v.findViewById(R.id.yes_religious);
+    private void setGeneralInfo(String userName, String combinedEvents) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
+        editor.putBoolean(FIRST_TIME,true);
+        editor.putString(SEND_USERNAME, userName);
+        editor.putString(APPLICABLE_EVENTS, combinedEvents);
+        editor.apply();
     }
 
-    @Override
-    public int getCount() {
-        return 4;
+    private String joinAllApplicableEvents() {
+        List<String> allEvents = new LinkedList<String>();
+
+        allEvents = initializeListOfEvents(allEvents);
+        allEvents = cutUnecessaryEvents(allEvents);
+
+        return stringListToString(allEvents);
     }
 
-    @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view == object;
+    private String stringListToString(List<String> allEvents) {
+        String[] applicableEvents = {};
+        applicableEvents = allEvents.toArray(applicableEvents);
+        StringBuilder combinedEvents = new StringBuilder();
+        for (int i = 0; i < applicableEvents.length; i++)
+            combinedEvents.append(applicableEvents[i]).append(",");
+
+        return combinedEvents.toString();
     }
 
-    @Override
-    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+    private List<String> initializeListOfEvents(List<String> allEvents) {
+        allEvents.add("Student Life");
+        allEvents.add("Work");
+        allEvents.add("Festivals");
+        allEvents.add("Home");
+        allEvents.add("Birthdays");
+        allEvents.add("Hangouts");
 
+        return allEvents;
     }
+
+    private List<String> cutUnecessaryEvents(List<String> allEvents) {
+        if (!mUserYesStudent.isChecked())
+            allEvents.remove("Student Life");
+        if (!mUserYesWorked.isChecked())
+            allEvents.remove("Work");
+        if (!mUserYesReligion.isChecked())
+            allEvents.remove("Festivals");
+
+        return allEvents;
+    }
+
+
 }

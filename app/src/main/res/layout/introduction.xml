@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:layout_marginStart="8dp"
-                android:text="Now, tell a little bit your self:"
+                android:text="Tell a little bit your self:"
                 android:textColor="@color/white"
                 android:textSize="24dp"
                 android:textStyle="bold"/>
