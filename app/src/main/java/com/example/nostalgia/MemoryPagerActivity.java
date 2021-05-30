@@ -18,6 +18,10 @@ import androidx.viewpager.widget.ViewPager;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Contains ViewPager and record of all Memories.
+ * Enables users to swipe left or right for next or before Memory
+ */
 public class MemoryPagerActivity extends AppCompatActivity {
 
     //region Declarations
@@ -61,6 +65,9 @@ public class MemoryPagerActivity extends AppCompatActivity {
         getCurrentPosition();
     }
 
+    /**
+     * Sets the viewPager to show selected Memory. Else, it will show from the first memory every time.
+     */
     public void getCurrentPosition() {
         UUID memoryId = (UUID) getIntent().getSerializableExtra(EXTRA_memory_ID);
         for (int i = 0; i < mMemories.size(); i++) {

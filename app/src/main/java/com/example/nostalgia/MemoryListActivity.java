@@ -20,6 +20,10 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Contains the Navigation Drawer containing a welcome text, event lists and settings to change these two.
+ * Displays the list of memories user has added in its own fragment MemoryListFragment
+ */
 public class MemoryListActivity extends SingleFragmentActivity implements MemoryListFragment.Callbacks, NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout mDrawerLayout;
@@ -80,11 +84,12 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
 
     private void headerAndMenuSetting(String userName, String[] availableEvents) {
 
-        showUserName(userName);
+        setWelcomeUser(userName);
         setMenuItemVisibility(availableEvents);
+
     }
 
-    private void showUserName(String userName) {
+    private void setWelcomeUser(String userName) {
         View headerView = mNavigationView.getHeaderView(0);
         mHeaderText = headerView.findViewById(R.id.nav_header_textView);
         mHeaderText.setText("Welcome "+userName);
@@ -135,6 +140,11 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
         return true;
     }
 
+    /**
+     * Updates list of memories depending on what the user selected in menu of Navigation Drawer
+     * @param NavigationItem
+     * @return
+     */
     private boolean filterOnSelected(int NavigationItem) {
         MLfragment.eventFilter(getString(NavigationItem));
         onBackPressed();
@@ -175,5 +185,7 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
         String userevents = preferences.getString(Introduction.APPLICABLE_EVENTS, "");
         applicableEvents = userevents.split(",");
     }
+
+
 
 }

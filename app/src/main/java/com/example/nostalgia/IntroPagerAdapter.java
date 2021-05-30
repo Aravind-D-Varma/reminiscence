@@ -30,6 +30,11 @@ import static com.example.nostalgia.Introduction.APPLICABLE_EVENTS;
 import static com.example.nostalgia.Introduction.FIRST_TIME;
 import static com.example.nostalgia.Introduction.SEND_USERNAME;
 
+/**
+ * Setup of Introduction viewPager adapter. Shows layout depending on where the user is at.
+ * Finally, gets and saves user details.
+ */
+
 public class IntroPagerAdapter extends PagerAdapter {
 
     Context mContext;
@@ -47,11 +52,11 @@ public class IntroPagerAdapter extends PagerAdapter {
 
         switch(position){
             case 0:
-                LinearLayout welcomLL = getLayoutAndFix(v, R.id.welcome);
-                setText(welcomLL, R.id.welcome_text, 1000);
-                setText(welcomLL, R.id.intro, 3000);
-                container.addView(welcomLL);
-                return welcomLL;
+                LinearLayout welcomeLL = getLayoutAndFix(v, R.id.welcome);
+                setText(welcomeLL, R.id.welcome_text, 1000);
+                setText(welcomeLL, R.id.intro, 3000);
+                container.addView(welcomeLL);
+                return welcomeLL;
             case 1:
                 LinearLayout questionsLL = getLayoutAndFix(v, R.id.questions);
                 setUserName(questionsLL);
@@ -72,6 +77,13 @@ public class IntroPagerAdapter extends PagerAdapter {
         return v;
     }
 
+    /**
+     * Initialises layout depending on where the user is in viewPager.
+     * Fixes IllegalStateException: the child already has parent
+     * @param v
+     * @param LinearLayoutID
+     * @return
+     */
     private LinearLayout getLayoutAndFix(View v, int LinearLayoutID) {
         LinearLayout welcomLL = v.findViewById(LinearLayoutID);
         if (welcomLL.getParent() != null) {
@@ -140,14 +152,10 @@ public class IntroPagerAdapter extends PagerAdapter {
         });
     }
 
-    private void setGeneralInfo(String userName, String combinedEvents) {
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
-        editor.putBoolean(FIRST_TIME,true);
-        editor.putString(SEND_USERNAME, userName);
-        editor.putString(APPLICABLE_EVENTS, combinedEvents);
-        editor.apply();
-    }
-
+    /**
+     * Concatenates all events which are applicable into one string so that it can be stored in SharedPreferences.
+     * @return
+     */
     private String joinAllApplicableEvents() {
         List<String> allEvents = new LinkedList<String>();
 
@@ -157,15 +165,20 @@ public class IntroPagerAdapter extends PagerAdapter {
         return stringListToString(allEvents);
     }
 
-    private String stringListToString(List<String> allEvents) {
-        String[] applicableEvents = {};
-        applicableEvents = allEvents.toArray(applicableEvents);
-        StringBuilder combinedEvents = new StringBuilder();
-        for (int i = 0; i < applicableEvents.length; i++)
-            combinedEvents.append(applicableEvents[i]).append(",");
-
-        return combinedEvents.toString();
+    /**
+     * Sets up the username and applicable events for access across application by using SharedPreferences.
+     * @param userName
+     * @param combinedEvents
+     */
+    private void setGeneralInfo(String userName, String combinedEvents) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
+        editor.putBoolean(FIRST_TIME,true);
+        editor.putString(SEND_USERNAME, userName);
+        editor.putString(APPLICABLE_EVENTS, combinedEvents);
+        editor.apply();
     }
+
+
 
     private List<String> initializeListOfEvents(List<String> allEvents) {
         allEvents.add("Student Life");
@@ -188,6 +201,17 @@ public class IntroPagerAdapter extends PagerAdapter {
 
         return allEvents;
     }
+
+    private String stringListToString(List<String> allEvents) {
+        String[] applicableEvents = {};
+        applicableEvents = allEvents.toArray(applicableEvents);
+        StringBuilder combinedEvents = new StringBuilder();
+        for (int i = 0; i < applicableEvents.length; i++)
+            combinedEvents.append(applicableEvents[i]).append(",");
+
+        return combinedEvents.toString();
+    }
+
 
 
 }

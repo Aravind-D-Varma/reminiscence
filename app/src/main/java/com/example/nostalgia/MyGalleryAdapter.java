@@ -21,6 +21,11 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Setting up the gridLayout: images and videos
+ * Gets images from Bitmap decoder and videos from Uris
+ */
+
 public class MyGalleryAdapter extends RecyclerView.Adapter {
 
     Context context;

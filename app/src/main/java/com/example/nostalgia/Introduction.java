@@ -1,6 +1,4 @@
 package com.example.nostalgia;
-import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,9 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.LinkedList;
-import java.util.List;
-
+/**
+ * Appears when the user visits the app for the first time.
+ * Creates a viewPager to show what the user sees and sets it up to its adapter.
+ * Uses TabLayout to show dots indicating where the user is in the viewPager.
+ */
 public class Introduction extends AppCompatActivity {
 
     public static final String FIRST_TIME = "firsttime";

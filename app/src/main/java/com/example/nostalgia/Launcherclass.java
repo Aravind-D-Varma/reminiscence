@@ -1,5 +1,4 @@
 package com.example.nostalgia;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,6 +7,9 @@ import android.os.SystemClock;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Activity to show logo everytime the app opens
+ */
 public class Launcherclass extends AppCompatActivity {
 
     @Override

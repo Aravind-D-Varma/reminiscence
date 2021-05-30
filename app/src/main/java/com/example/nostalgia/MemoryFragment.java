@@ -58,6 +58,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Hooksup user interface and updates data for a selected Memory depending on user actions.
+ */
 public class MemoryFragment extends Fragment {
 
     // region Declarations
@@ -112,7 +115,12 @@ public class MemoryFragment extends Fragment {
         setHasOptionsMenu(true);
     }
     //endregion
-    // region Create and select from Menu
+
+    /**
+     * Sets the title of memory on action bar. Allows share and delete of memory
+     * @param menu
+     * @param inflater
+     */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -322,7 +330,7 @@ public class MemoryFragment extends Fragment {
             String joinedFilePaths = "";
             if(data.getData()!=null){
                 Uri mMediaUri=data.getData();
-                joinedFilePaths = joinedFilePaths +(getMediaPath(mMediaUri));
+                joinedFilePaths = joinedFilePaths +(getMediaPathFromUri(mMediaUri));
             } else {
                 if (data.getClipData() != null) {
                     ClipData mClipData = data.getClipData();
@@ -330,9 +338,9 @@ public class MemoryFragment extends Fragment {
                         ClipData.Item item = mClipData.getItemAt(i);
                         Uri mMediaUri = item.getUri();
                         if(joinedFilePaths.equals(""))
-                            joinedFilePaths = joinedFilePaths +(getMediaPath(mMediaUri));
+                            joinedFilePaths = joinedFilePaths +(getMediaPathFromUri(mMediaUri));
                         else
-                            joinedFilePaths = joinedFilePaths + "," + (getMediaPath(mMediaUri));
+                            joinedFilePaths = joinedFilePaths + "," + (getMediaPathFromUri(mMediaUri));
                     }
                 }
             }
@@ -344,11 +352,11 @@ public class MemoryFragment extends Fragment {
 
             if(data.getData()!=null){
                     Uri mMediaUri=data.getData();
-                    String newPhoto = getMediaPath(mMediaUri);
+                    String newPhoto = getMediaPathFromUri(mMediaUri);
                     if(isDuplicate(newPhoto))
                         discardPhoto = true;
                     else {
-                        extraFilePaths = extraFilePaths + "," + (getMediaPath(mMediaUri));
+                        extraFilePaths = extraFilePaths + "," + (getMediaPathFromUri(mMediaUri));
                         discardPhoto = false;
                     }
                 } else {
@@ -357,7 +365,7 @@ public class MemoryFragment extends Fragment {
                         for (int i = 0; i < mClipData.getItemCount(); i++) {
                             ClipData.Item item = mClipData.getItemAt(i);
                             Uri mMediaUri = item.getUri();
-                            String newPhoto = getMediaPath(mMediaUri);
+                            String newPhoto = getMediaPathFromUri(mMediaUri);
                             if(isDuplicate(newPhoto))
                                 discardPhoto = true;
                             else {
@@ -378,6 +386,11 @@ public class MemoryFragment extends Fragment {
         super.onPause();
         MemoryLab.get(getActivity()).updateMemory(mMemory);
     }
+
+    /**
+     * Dialog box to discard memory if both title AND photos are not set.
+     * Shows a message if duplicate media files are selected.
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -417,8 +430,11 @@ public class MemoryFragment extends Fragment {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-    //endregion
-//region User-defined methods
+
+    /**
+     * Create intent to allow selection of multiple photos and videos from user personal storage.
+     * @return
+     */
     private Intent getFromMediaIntent() {
         Intent getmoreImage = new Intent(Intent.ACTION_GET_CONTENT);
         getmoreImage.setType("*/*");
@@ -426,6 +442,12 @@ public class MemoryFragment extends Fragment {
         getmoreImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         return getmoreImage;
     }
+
+    /**
+     * Creates an intent which allows user to share the memory: photos/videos and title.
+     * @param mediaUri list of all Uri which contain filepaths of photos and videos of a memory.
+     * @return
+     */
     private Intent shareMemoryIntent(ArrayList<Uri> mediaUri) {
         Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);
         share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, mediaUri);
@@ -445,6 +467,12 @@ public class MemoryFragment extends Fragment {
 
         return mediaUri;
     }
+
+    /**
+     * Depending on the type of file: image/video, decide which Uri to use in cursor query
+     * @param mImageUri
+     * @return
+     */
     private Uri getSpecificContentUri(Uri mImageUri) {
         if(isImage(mImageUri))
             return MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
@@ -452,12 +480,12 @@ public class MemoryFragment extends Fragment {
             return MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
     }
 
-    private String getMediaPath(Uri mMediaUri) {
+    private String getMediaPathFromUri(Uri mMediaUri) {
 
         String imageEncoded;
         Uri contentUri;
         String[] filePathColumn = { MediaStore.Images.Media.DATA };
-        String[] selectionArgs = getSelectionArguments(mMediaUri);
+        String[] selectionArgs = getSelectionArgumentsForCursor(mMediaUri);
         String selection = "_id=?";
         contentUri = getSpecificContentUri(mMediaUri);
 
@@ -480,7 +508,7 @@ public class MemoryFragment extends Fragment {
         }
         return mimeType;
     }
-    private String[] getSelectionArguments(Uri mImageUri) {
+    private String[] getSelectionArgumentsForCursor(Uri mImageUri) {
         String docId = DocumentsContract.getDocumentId(mImageUri);
         String[] split = docId.split(":");
         return new String[] {split[1]};
@@ -541,8 +569,7 @@ public class MemoryFragment extends Fragment {
         int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
         return result == PackageManager.PERMISSION_GRANTED;
     }
-//endregion
-    //region AlertDialogs
+
     public AlertDialog AskDiscardMemory()
     {
         AlertDialog discardMemoryDialogBox = new AlertDialog.Builder(getContext())
@@ -590,5 +617,5 @@ public class MemoryFragment extends Fragment {
         myQuittingDialogBox.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         return myQuittingDialogBox;
     }
-    //endregion
+
 }

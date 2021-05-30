@@ -25,6 +25,9 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contains list layout of RecyclerView and floating action button to show all memories and to add a new one.
+ */
 public class MemoryListFragment extends Fragment {
 
     //region Declarations
@@ -133,7 +136,10 @@ public class MemoryListFragment extends Fragment {
         }
         updateUI();
     }
-    
+
+    /**
+     * Shows how many memories are there on the ActionBar
+     */
     private void updateSubtitle(){
         MemoryLab memoryLab = MemoryLab.get(getActivity());
         int MemoryCount = memoryLab.getMemories().size();
@@ -147,7 +153,11 @@ public class MemoryListFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    //region updateUI (Adapter<->RecyclerView)
+    /**
+     * Deletes null memories to avoid crashes
+     * Deletes all those memories whose title is null and does not contain any photos.
+     * Then, hooks up the adapter and RecyclerView.
+     */
     private void updateUI() {
 
         MemoryLab memoryLab = MemoryLab.get(getActivity());
@@ -179,18 +189,16 @@ public class MemoryListFragment extends Fragment {
         }
         updateSubtitle();
     }
-    //endregion
-    //region MemoryHolder (our ViewHolder)
+
+    /**
+     * ViewHolder which sets up individual items of record of memories.
+     */
     private class MemoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        //region Declarations
         private TextView mTitleTextView;
         private TextView mDateTextView;
-        private ImageView mSolvedImageView;
         private Memory mMemory;
-        //endregion
 
-        // region MemoryHolder constructor
         public MemoryHolder(LayoutInflater inflater, ViewGroup parent) {
                 super(inflater.inflate(R.layout.list_item_memory, parent, false));
                 itemView.setOnClickListener(this);
@@ -198,9 +206,7 @@ public class MemoryListFragment extends Fragment {
                 mTitleTextView = (TextView) itemView.findViewById(R.id.memory_title);
                 mDateTextView = (TextView) itemView.findViewById(R.id.memory_date);
         }
-        //endregion
 
-        //region bind
         public void bind(Memory Memory){
             mMemory = Memory;
             if (mMemory.getTitle()==null)
@@ -213,11 +219,10 @@ public class MemoryListFragment extends Fragment {
             }catch (NullPointerException e){}
             mDateTextView.setText("Noticed on: " + DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate()));
         }
-        //endregion
-        //region onClick
+
         @Override
         public void onClick(View v) {
-            //region notifyItemChanged position
+
             int i = 0;
             for (Memory Memory: MemoryLab.get(getActivity()).getMemories()) {
                 if (mMemory != null) {
@@ -229,36 +234,32 @@ public class MemoryListFragment extends Fragment {
                     i++;
 
             }
-            //endregion
+
             mCallbacks.onMemorySelected(mMemory);
         }
-        //endregion
+
     }
-    //endregion
-    //region MemoryAdapter (our MemoryAdapter)
+
+    /**
+     * Adapter for RecyclerView to contain record of all memories
+     */
     private class MemoryAdapter extends RecyclerView.Adapter<MemoryHolder>{
 
         private List<Memory> mMemories;
-        // region MemoryAdapter constructor
         public MemoryAdapter(List<Memory> Memorys){
             mMemories = Memorys;
         }
-        //endregion
-        //region onCreateViewHolder
         @NonNull
         @Override
         public MemoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             return new MemoryHolder(layoutInflater, parent);
         }
-        //endregion
-        //region onBindViewHolder
         @Override
         public void onBindViewHolder(@NonNull MemoryHolder holder, int position) {
             Memory Memory = mMemories.get(position);
             holder.bind(Memory);
         }
-        //endregion
         @Override
         public int getItemCount() {
             return mMemories.size();
@@ -267,6 +268,10 @@ public class MemoryListFragment extends Fragment {
             mMemories = Memorys;
         }
 
+        /**
+         * Searches through all memories whose title contains the text typed and changes display accordingly
+         * @param text
+         */
         public void searchFilter(String text) {
             List<Memory> searchMemorysList = new ArrayList<>();
             text = text.toLowerCase();
@@ -279,7 +284,12 @@ public class MemoryListFragment extends Fragment {
             notifyDataSetChanged();
         }
     }
-    //endregion
+
+    /**
+     * Updates display of memories depending on the event user has selected in the menu of Navigation Drawer.
+     * Is writtent in fragment code since fragment contains details of memories.
+     * @param event
+     */
     public void eventFilter(String event) {
         List<Memory> searchMemorysList = new ArrayList<>();
 
