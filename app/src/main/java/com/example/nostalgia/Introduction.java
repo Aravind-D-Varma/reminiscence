@@ -10,8 +10,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 /**
- * Appears when the user visits the app for the first time.
- * Creates a viewPager to show what the user sees and sets it up to its adapter.
+ * Appears when the user visits the app for the first time.<br>
+ * Creates a viewPager to show what the user sees and sets it up to its adapter.<br>
  * Uses TabLayout to show dots indicating where the user is in the viewPager.
  */
 public class Introduction extends AppCompatActivity {

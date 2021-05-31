@@ -31,7 +31,7 @@ import static com.example.nostalgia.Introduction.FIRST_TIME;
 import static com.example.nostalgia.Introduction.SEND_USERNAME;
 
 /**
- * Setup of Introduction viewPager adapter. Shows layout depending on where the user is at.
+ * Setup of Introduction viewPager adapter. Shows layout depending on where the user is at.<br>
  * Finally, gets and saves user details.
  */
 

@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Contains the Navigation Drawer containing a welcome text, event lists and settings to change these two.
+ * Contains the Navigation Drawer containing a welcome text, event lists and settings to change these two.<br>
  * Displays the list of memories user has added in its own fragment MemoryListFragment
  */
 public class MemoryListActivity extends SingleFragmentActivity implements MemoryListFragment.Callbacks, NavigationView.OnNavigationItemSelectedListener {

@@ -8,14 +8,12 @@ import java.util.UUID;
  */
 public class Memory {
 
-    //region Declarations
     private UUID mId;
     private String mTitle;
     private String mEvent;
     private Date mDate;
     private String mDetail;
     private String mMediaPaths;
-    //endregion
 
     public Memory() {
         this(UUID.randomUUID());
@@ -29,9 +27,6 @@ public class Memory {
     public UUID getId() {
         return mId;
     }
-
-
-    // region Getters and Setters for Title, Date, Time, isSolved
     public String getMediaPaths() {
         return mMediaPaths;
     }
@@ -62,5 +57,4 @@ public class Memory {
     public void setDate(Date date) {
         mDate = date;
     }
-    //endregion,
 }

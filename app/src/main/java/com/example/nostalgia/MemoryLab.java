@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Stores and retrieves memories in a database.
+ */
 public class MemoryLab {
 
     //region Declarations

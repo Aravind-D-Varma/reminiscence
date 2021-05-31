@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Setting up the gridLayout: images and videos
+ * Setting up the gridLayout: images and videos.<br>
  * Gets images from Bitmap decoder and videos from Uris
  */
 

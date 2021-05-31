@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Contains ViewPager and record of all Memories.
+ * Contains ViewPager and record of all Memories.<br>
  * Enables users to swipe left or right for next or before Memory
  */
 public class MemoryPagerActivity extends AppCompatActivity {

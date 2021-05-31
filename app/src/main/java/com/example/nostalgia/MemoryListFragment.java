@@ -287,7 +287,8 @@ public class MemoryListFragment extends Fragment {
 
     /**
      * Updates display of memories depending on the event user has selected in the menu of Navigation Drawer.
-     * Is writtent in fragment code since fragment contains details of memories.
+     * Is written in fragment code since fragment contains details of memories.
+     * @see com.example.nostalgia.MemoryListActivity
      * @param event
      */
     public void eventFilter(String event) {
