@@ -1,9 +1,11 @@
 package com.example.nostalgia;
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Stores the title, details, event, date & time, and concatenated filePaths of photos and videos seperated by ",".
+ */
 public class Memory {
 
     //region Declarations
@@ -11,8 +13,6 @@ public class Memory {
     private String mTitle;
     private String mEvent;
     private Date mDate;
-    private String mSuspect;
-    private String mNumber;
     private String mDetail;
     private String mMediaPaths;
     //endregion
@@ -30,9 +30,6 @@ public class Memory {
         return mId;
     }
 
-    public String getPhotoFileName(){
-        return "IMG_" + this.getId().toString() + ".jpg";
-    }
 
     // region Getters and Setters for Title, Date, Time, isSolved
     public String getMediaPaths() {
@@ -64,18 +61,6 @@ public class Memory {
     }
     public void setDate(Date date) {
         mDate = date;
-    }
-    public String getSuspect() {
-        return mSuspect;
-    }
-    public void setSuspect(String suspect) {
-        mSuspect = suspect;
-    }
-    public String getNumber() {
-        return mNumber;
-    }
-    public void setNumber(String number) {
-        mNumber = number;
     }
     //endregion,
 }

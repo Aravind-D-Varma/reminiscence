@@ -1,5 +1,4 @@
 package com.example.nostalgia;
-
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -20,20 +19,24 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Sets up the zoom in and swipe left/right of photos and videos in a memory.
+ * Uses isVideoFile(filepath) method of MyGalleryAdapter.
+ */
 public class GalleryViewPagerAdapter extends PagerAdapter {
     private Context mContext;
-    private String[] allphotoPaths;
+    private String[] individualMediaPaths;
 
-    public GalleryViewPagerAdapter(Context context, String[] photoPaths) {
+    public GalleryViewPagerAdapter(Context context, String[] mediaPaths) {
         mContext = context;
-        allphotoPaths = photoPaths;
+        individualMediaPaths = mediaPaths;
     }
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View v;
-        if(MyGalleryAdapter.isVideoFile(allphotoPaths[position])){
+        if(MyGalleryAdapter.isVideoFile(individualMediaPaths[position])){
             v = inflater.inflate(R.layout.zoom_video,container,false);
             VideoView vv = v.findViewById(R.id.zoomed_videoView);
             setVideo(position, v, vv);
@@ -41,7 +44,7 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
         else {
             v = inflater.inflate(R.layout.zoom_image, container, false);
             ImageView iv = v.findViewById(R.id.zoomed_imageView);
-            iv.setImageBitmap(BitmapFactory.decodeFile(allphotoPaths[position]));
+            iv.setImageBitmap(BitmapFactory.decodeFile(individualMediaPaths[position]));
         }
         container.addView(v);
         return v;
@@ -49,7 +52,7 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return allphotoPaths.length;
+        return individualMediaPaths.length;
     }
 
     @Override
@@ -60,6 +63,14 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
 
     }
+
+    /**
+     * Extracts a list of Uris from a memory's filePaths.
+     * A Uri is null at those positions where the filepath is an image.
+     *
+     * @param photoPaths
+     * @return
+     */
     private List<Uri> getVideoURI(String[] photoPaths) {
 
         List<Uri> videos = new ArrayList<Uri>();
@@ -73,37 +84,43 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
         }
         return videos;
     }
+
+    /**
+     * Set the logic for pausing and resuming video. User can click anywhere on the screen to pause/resume.
+     * Play button appears only when paused and disappears when resumed
+     * @param position
+     * @param v
+     * @param vv
+     */
     private void setVideo(int position, View v, VideoView vv) {
         FrameLayout buttonLayout = v.findViewById(R.id.play_button_layout);
         ImageButton ib = v.findViewById(R.id.play_button);
         try {
-            vv.setVideoURI(getVideoURI(allphotoPaths).get(position));
+            vv.setVideoURI(getVideoURI(individualMediaPaths).get(position));
             vv.seekTo(1);
             buttonLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (vv.isPlaying()) {
-                        ib.setVisibility(View.VISIBLE);
-                        vv.pause();
-                    } else {
-                        vv.start();
-                        ib.setVisibility(View.GONE);
-                    }
+                    clickForPauseOrResume(vv, ib);
                 }
             });
             ib.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (vv.isPlaying()) {
-                        ib.setVisibility(View.VISIBLE);
-                        vv.pause();
-                    } else {
-                        vv.start();
-                        ib.setVisibility(View.GONE);
-                    }
+                    clickForPauseOrResume(vv, ib);
                 }
             });
         }
         catch (NullPointerException e){}
+    }
+
+    private void clickForPauseOrResume(VideoView vv, ImageButton ib) {
+        if (vv.isPlaying()) {
+            ib.setVisibility(View.VISIBLE);
+            vv.pause();
+        } else {
+            vv.start();
+            ib.setVisibility(View.GONE);
+        }
     }
 }

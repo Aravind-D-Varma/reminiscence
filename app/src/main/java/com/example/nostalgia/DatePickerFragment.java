@@ -17,6 +17,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/**
+ * Setup of the getting and saving date from the date dialog in memory
+ */
 public class DatePickerFragment extends DialogFragment {
 
     //region Declarations

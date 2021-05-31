@@ -55,11 +55,6 @@ public class MemoryLab {
     }
     //endregion
 
-    public File getPhotoFile(Memory memory){
-        File filesDr = mContext.getFilesDir();
-        return new File(filesDr, memory.getPhotoFileName());
-    }
-
     public void deleteMemory(Memory memory){
 
         List<Memory> memoriess = this.getMemories();
@@ -95,8 +90,6 @@ public class MemoryLab {
         value.put(memoryTable.Columns.DATE, memory.getDate().getTime());
         value.put(memoryTable.Columns.EVENT, memory.getEvent());
         value.put(memoryTable.Columns.TITLE, memory.getTitle());
-        value.put(memoryTable.Columns.SUSPECT, memory.getSuspect());
-        value.put(memoryTable.Columns.NUMBER, memory.getNumber());
         value.put(memoryTable.Columns.DETAIL, memory.getDetail());
         value.put(memoryTable.Columns.MEDIAPATH, memory.getMediaPaths());
 

@@ -17,6 +17,9 @@ import androidx.fragment.app.DialogFragment;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Setup of the getting and saving time from the time dialog in memory
+ */
 public class TimePickerFragment extends DialogFragment {
 
     //region Declarations

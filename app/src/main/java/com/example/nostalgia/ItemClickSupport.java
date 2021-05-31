@@ -2,6 +2,11 @@ package com.example.nostalgia;
 import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * Provides methods to click/long-click items of RecyclerView.
+ * Used for zooming in photo/video when clicked and an option to delete if long clicked.
+ * Copied from stackOverflow code. Inner workings not yet understood.
+ */
 public class ItemClickSupport {
         private final RecyclerView mRecyclerView;
         private OnItemClickListener mOnItemClickListener;

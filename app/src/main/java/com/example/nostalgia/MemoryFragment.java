@@ -419,7 +419,6 @@ public class MemoryFragment extends Fragment {
                 return false;
             }
         });
-
     }
 
     @Override

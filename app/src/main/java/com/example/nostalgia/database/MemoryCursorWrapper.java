@@ -19,8 +19,6 @@ public class MemoryCursorWrapper extends CursorWrapper {
         String detail = getString(getColumnIndex(memoryTable.Columns.DETAIL));
         long date = getLong(getColumnIndex(memoryTable.Columns.DATE));
         String event = getString(getColumnIndex(memoryTable.Columns.EVENT));
-        String suspect = getString(getColumnIndex(memoryTable.Columns.SUSPECT));
-        String number = getString(getColumnIndex(memoryTable.Columns.NUMBER));
         String mediapaths = getString(getColumnIndex(memoryTable.Columns.MEDIAPATH));
 
         Memory memory = new Memory(UUID.fromString(uuid));
@@ -28,8 +26,6 @@ public class MemoryCursorWrapper extends CursorWrapper {
         memory.setDetail(detail);
         memory.setDate(new Date(date));
         memory.setEvent(event);
-        memory.setSuspect(suspect);
-        memory.setNumber(number);
         memory.setMediaPaths(mediapaths);
 
         return memory;

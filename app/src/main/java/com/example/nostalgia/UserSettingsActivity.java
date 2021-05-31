@@ -13,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Setup of allowing users to change their name or their event preferences.
+ */
 public class UserSettingsActivity extends AppCompatActivity {
     private EditText mUsername;
     private RadioButton mUserYesStudent, mUserYesWorked, mUserYesReligious;
@@ -88,12 +91,12 @@ public class UserSettingsActivity extends AppCompatActivity {
         else{
                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
 
-                editor.putString(Introduction.APPLICABLE_EVENTS, listOfStringsToString());
+                editor.putString(Introduction.APPLICABLE_EVENTS, listOfStringsToString(allEvents));
                 editor.apply();
         }
     }
 
-    private String listOfStringsToString() {
+    private String listOfStringsToString(List<String> allEvents) {
         String[] applicableEvents = {};
         applicableEvents = allEvents.toArray(applicableEvents);
         StringBuilder combinedEvents = new StringBuilder();
