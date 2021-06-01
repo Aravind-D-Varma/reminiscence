@@ -40,8 +40,16 @@ public class MemoryListActivity extends SingleFragmentActivity
         MemoryListFragment listFragment = (MemoryListFragment)
                 getSupportFragmentManager()
                         .findFragmentById(R.id.fragment_container);
-        listFragment.updateUI();
+        if(isDeviceTablet())
+            listFragment.updateUIForTablet();
+        else
+            listFragment.updateUI();
     }
+
+    private boolean isDeviceTablet() {
+        return getResources().getBoolean(R.bool.isTablet);
+    }
+
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, MemoryListActivity.class);

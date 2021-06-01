@@ -104,9 +104,12 @@ public class MemoryListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mNewMemory = new Memory();
-                MemoryLab.get(getActivity()).addMemory(mNewMemory);
-                //updateUI();
+                MemoryLab memoryLab = MemoryLab.get(getActivity());
+                memoryLab.addMemory(mNewMemory);
+                if(isDeviceTablet())
+                    updateUIForTablet();
                 mCallbacks.onMemorySelected(mNewMemory);
+
             }
         });
         //endregion
@@ -120,8 +123,9 @@ public class MemoryListFragment extends Fragment {
                 public void onClick(View noMemoryView) {
                     mNewMemory = new Memory();
                     MemoryLab.get(getActivity()).addMemory(mNewMemory);
-                    //updateUI();
                     mCallbacks.onMemorySelected(mNewMemory);
+                    if(isDeviceTablet())
+                        updateUIForTablet();
                 }
             });
             return noMemoryView;
@@ -129,6 +133,27 @@ public class MemoryListFragment extends Fragment {
         //endregion
         updateUI();
         return view;
+    }
+
+    public void updateUIForTablet() {
+        MemoryLab memoryLab = MemoryLab.get(getActivity());
+        List<Memory> Memorys = memoryLab.getMemories();
+        if(mAdapter == null && Memorys.size()!=0) {
+            firstTime = false;
+            mAdapter = new MemoryAdapter(Memorys);
+            mRecyclerView.setAdapter(mAdapter);
+        }
+        else {
+            if (Memorys.size() != 0) {
+                mAdapter.setMemorys(Memorys);
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+        updateSubtitle();
+    }
+
+    private boolean isDeviceTablet() {
+        return getResources().getBoolean(R.bool.isTablet);
     }
 
     @Override
