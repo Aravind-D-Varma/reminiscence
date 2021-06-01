@@ -131,15 +131,15 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
         return videos;
     }          
                
-    public static boolean isImageFile(String path) {
+    private static boolean isImageFile(String path) {
         String mimeType = getMimeType(path);
         return mimeType != null && mimeType.startsWith("image");
     }
-    public static boolean isVideoFile(String path) {
+    private static boolean isVideoFile(String path) {
         String mimeType = getMimeType(path);
         return mimeType != null && mimeType.startsWith("video");
     }
-    public static String getMimeType(String path) {
+    private static String getMimeType(String path) {
         String mimeType = "";
         String extension = getExtension(path);
         if (MimeTypeMap.getSingleton().hasExtension(extension)) {
@@ -147,7 +147,7 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
         }
         return mimeType;
     }
-    public static String getExtension(String fileName){
+    private static String getExtension(String fileName){
         char[] arrayOfFilename = fileName.toCharArray();
         for(int i = arrayOfFilename.length-1; i > 0; i--){
             if(arrayOfFilename[i] == '.'){
