@@ -117,11 +117,11 @@ public class MemoryListActivity extends SingleFragmentActivity
         Menu menuNav = mNavigationView.getMenu();
         List<String> list = Arrays.asList(availableEvents);
         MenuItem studentmenuItem = menuNav.findItem(R.id.studentlife);
-        studentmenuItem.setVisible(list.contains(R.string.studentlife));
+        studentmenuItem.setVisible(list.contains(getString(R.string.studentlife)));
         MenuItem workmenuItem = menuNav.findItem(R.id.work);
-        workmenuItem.setVisible(list.contains(R.string.work));
+        workmenuItem.setVisible(list.contains(getString(R.string.work)));
         MenuItem religionmenuItem = menuNav.findItem(R.id.festival);
-        religionmenuItem.setVisible(list.contains(R.string.festival));
+        religionmenuItem.setVisible(list.contains(getString(R.string.festival)));
     }
 
     private void drawerAndToggle() {
