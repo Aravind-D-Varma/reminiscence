@@ -167,12 +167,8 @@ public class MemoryListFragment extends Fragment {
                 int nullMemoryposition = Memorys.indexOf(null);
                 MemoryLab.get(getActivity()).deleteMemory(Memorys.get(nullMemoryposition));
             }
-            boolean yesPhotos = true;
-            try{
-                yesPhotos = Memorys.get(i).getMediaPaths().length()<1;
-            }
-            catch (NullPointerException e){}
-            if(Memorys.get(i).getTitle()==null && yesPhotos)
+
+            if(noTitleAndPhotos(Memorys, i))
                 MemoryLab.get(getActivity()).deleteMemory(Memorys.get(i));
         }
         Memorys = memoryLab.getMemories();
@@ -188,6 +184,15 @@ public class MemoryListFragment extends Fragment {
             }
         }
         updateSubtitle();
+    }
+
+    private boolean noTitleAndPhotos(List<Memory> memorys, int i) {
+        boolean yesPhotos = true;
+        try{
+            yesPhotos = memorys.get(i).getMediaPaths().length()<1;
+        }
+        catch (NullPointerException e){}
+        return memorys.get(i).getTitle()==null && yesPhotos;
     }
 
     /**
@@ -239,7 +244,6 @@ public class MemoryListFragment extends Fragment {
         }
 
     }
-
     /**
      * Adapter for RecyclerView to contain record of all memories
      */
