@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -79,6 +80,7 @@ public class MemoryFragment extends Fragment {
         private Intent getImage;
     private RecyclerView mPhotoRecyclerView;
     private FloatingActionButton mPhotoFAB;
+    private Callbacks mCallbacks;
     
     private boolean discardPhoto = false;
 
@@ -92,7 +94,27 @@ public class MemoryFragment extends Fragment {
     private static final int MY_STORAGE_CODE = 102;
     private final String CURRENT_PHOTOS_ABSENT = "Current Memory Photos";
     public static final String CURRENT_MEMORY = "Current Memory";
-    
+
+    public interface Callbacks{
+        void onMemoryUpdated(Memory Memory);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+    private void updateMemory() {
+        MemoryLab.get(getActivity()).updateMemory(mMemory);
+        mCallbacks.onMemoryUpdated(mMemory);
+    }
+
     //endregion
     //region Fragment+Arguments
     public static MemoryFragment newInstance(UUID memoryId){
@@ -209,6 +231,7 @@ public class MemoryFragment extends Fragment {
                     editor.putString(CURRENT_MEMORY,mMemory.getTitle());
                     editor.apply();
                 }
+                updateMemory();
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -226,7 +249,7 @@ public class MemoryFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mMemory.setDetail(s.toString());
-
+                updateMemory();
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -269,6 +292,8 @@ public class MemoryFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     mMemory.setEvent(applicableEvents[position]);
+                    updateMemory();
+
             }
 
             @Override
@@ -396,11 +421,13 @@ public class MemoryFragment extends Fragment {
         if(requestCode == REQUEST_DATE){
            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mMemory.setDate(date);
+            updateMemory();
             updateDate();
         }
         else if (requestCode == REQUEST_TIME){
             Date time = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
             mMemory.setDate(time);
+            updateMemory();
             updateTime();
         }
         else if (requestCode == REQUEST_GALLERY_PHOTO){
@@ -422,6 +449,7 @@ public class MemoryFragment extends Fragment {
                 }
             }
             mMemory.setMediaPaths(joinedFilePaths);
+            updateMemory();
             behaviourAfterAddingMedia();
         }
         else if (requestCode == REQUEST_GALLERY_ADDITIONALPHOTO){
@@ -453,6 +481,7 @@ public class MemoryFragment extends Fragment {
                     }
                 }
             mMemory.setMediaPaths(extraFilePaths);
+            updateMemory();
             setMediaRecyclerView();
         }
     }

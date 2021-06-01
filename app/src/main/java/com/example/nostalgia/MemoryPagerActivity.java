@@ -22,13 +22,18 @@ import java.util.UUID;
  * Contains ViewPager and record of all Memories.<br>
  * Enables users to swipe left or right for next or before Memory
  */
-public class MemoryPagerActivity extends AppCompatActivity {
+public class MemoryPagerActivity extends AppCompatActivity implements MemoryFragment.Callbacks {
 
     //region Declarations
     private static final String EXTRA_memory_ID = "com.example.criminalintent.memory_id";
     private static ViewPager mViewPager;
     private List<Memory> mMemories;
     public String[] applicableEvents;
+
+    @Override
+    public void onMemoryUpdated(Memory Memory) {
+
+    }
     //endregion
 
     public static Intent newIntent(Context packageContext, UUID memoryId){
@@ -77,4 +82,6 @@ public class MemoryPagerActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }

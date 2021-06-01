@@ -101,8 +101,8 @@ public class MemoryListFragment extends Fragment {
             public void onClick(View v) {
                 mNewMemory = new Memory();
                 MemoryLab.get(getActivity()).addMemory(mNewMemory);
-                Intent intent = MemoryPagerActivity.newIntent(getActivity(), mNewMemory.getId());
-                startActivity(intent);
+                updateUI();
+                mCallbacks.onMemorySelected(mNewMemory);
             }
         });
         //endregion
@@ -158,7 +158,7 @@ public class MemoryListFragment extends Fragment {
      * Deletes all those memories whose title is null and does not contain any photos.
      * Then, hooks up the adapter and RecyclerView.
      */
-    private void updateUI() {
+    public void updateUI() {
 
         MemoryLab memoryLab = MemoryLab.get(getActivity());
         List<Memory> Memorys = memoryLab.getMemories();

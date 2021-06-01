@@ -24,7 +24,8 @@ import java.util.List;
  * Contains the Navigation Drawer containing a welcome text, event lists and settings to change these two.<br>
  * Displays the list of memories user has added in its own fragment MemoryListFragment
  */
-public class MemoryListActivity extends SingleFragmentActivity implements MemoryListFragment.Callbacks, NavigationView.OnNavigationItemSelectedListener {
+public class MemoryListActivity extends SingleFragmentActivity
+        implements MemoryListFragment.Callbacks, MemoryFragment.Callbacks, NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mABDrawerToggle;
@@ -33,6 +34,14 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
     private TextView mHeaderText;
     private String userName;
     private String[] applicableEvents = {};
+
+    @Override
+    public void onMemoryUpdated(Memory Memory) {
+        MemoryListFragment listFragment = (MemoryListFragment)
+                getSupportFragmentManager()
+                        .findFragmentById(R.id.fragment_container);
+        listFragment.updateUI();
+    }
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, MemoryListActivity.class);
@@ -185,7 +194,5 @@ public class MemoryListActivity extends SingleFragmentActivity implements Memory
         String userevents = preferences.getString(Introduction.APPLICABLE_EVENTS, "");
         applicableEvents = userevents.split(",");
     }
-
-
 
 }
