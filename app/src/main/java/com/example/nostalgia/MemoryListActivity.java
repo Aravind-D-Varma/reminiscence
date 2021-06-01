@@ -49,12 +49,6 @@ public class MemoryListActivity extends SingleFragmentActivity
     }
 
     @Override
-    protected Fragment createFragment() {
-        MLfragment = new MemoryListFragment();
-        return MLfragment;
-    }
-
-    @Override
     protected int getlayoutresID() {
         return R.layout.activity_masterdetail;
     }
@@ -67,9 +61,16 @@ public class MemoryListActivity extends SingleFragmentActivity
         }
         else{
             Fragment newDetail = new MemoryFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.detail_fragment_container, newDetail);
+            getSupportFragmentManager().beginTransaction().replace(R.id.detail_fragment_container, newDetail).commit();
         }
     }
+
+    @Override
+    protected Fragment createFragment() {
+        MLfragment = new MemoryListFragment();
+        return MLfragment;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

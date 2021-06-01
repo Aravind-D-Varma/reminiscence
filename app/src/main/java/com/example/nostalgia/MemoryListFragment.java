@@ -43,6 +43,10 @@ public class MemoryListFragment extends Fragment {
     private boolean firstTime = true;
     //endregion
 
+    /**
+     * MemoryListFragment has a way to call methods on its hosting activity. It does not matter which
+     * activity is the host. As long as the activity implements CrimeListFragment.Callbacks, everything in CrimeListFragment can work the same.
+     */
     public interface Callbacks{
         void onMemorySelected(Memory Memory);
     }
@@ -116,8 +120,8 @@ public class MemoryListFragment extends Fragment {
                 public void onClick(View noMemoryView) {
                     mNewMemory = new Memory();
                     MemoryLab.get(getActivity()).addMemory(mNewMemory);
-                    Intent intent = MemoryPagerActivity.newIntent(getActivity(), mNewMemory.getId());
-                    startActivity(intent);
+                    updateUI();
+                    mCallbacks.onMemorySelected(mNewMemory);
                 }
             });
             return noMemoryView;
@@ -239,7 +243,6 @@ public class MemoryListFragment extends Fragment {
                     i++;
 
             }
-
             mCallbacks.onMemorySelected(mMemory);
         }
 
