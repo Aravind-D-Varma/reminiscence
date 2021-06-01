@@ -200,7 +200,7 @@ public class IntroPagerAdapter extends PagerAdapter {
         return allEvents;
     }
 
-    String stringListToString(List<String> allEvents) {
+    private String stringListToString(List<String> allEvents) {
         String[] applicableEvents = {};
         applicableEvents = allEvents.toArray(applicableEvents);
         StringBuilder combinedEvents = new StringBuilder();
