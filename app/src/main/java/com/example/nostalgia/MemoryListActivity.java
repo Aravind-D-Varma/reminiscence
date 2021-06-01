@@ -33,7 +33,7 @@ public class MemoryListActivity extends SingleFragmentActivity
     public MemoryListFragment MLfragment;
     private TextView mHeaderText;
     private String userName;
-    private String[] applicableEvents = {};
+    public String[] applicableEvents = {};
 
     @Override
     public void onMemoryUpdated(Memory Memory) {
@@ -60,7 +60,7 @@ public class MemoryListActivity extends SingleFragmentActivity
             startActivity(intent);
         }
         else{
-            Fragment newDetail = new MemoryFragment();
+            Fragment newDetail = MemoryFragment.newInstance(memory.getId());
             getSupportFragmentManager().beginTransaction().replace(R.id.detail_fragment_container, newDetail).commit();
         }
     }
