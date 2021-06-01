@@ -178,8 +178,6 @@ public class IntroPagerAdapter extends PagerAdapter {
         editor.apply();
     }
 
-
-
     private List<String> initializeListOfEvents(List<String> allEvents) {
         allEvents.add("Student Life");
         allEvents.add("Work");
@@ -202,7 +200,7 @@ public class IntroPagerAdapter extends PagerAdapter {
         return allEvents;
     }
 
-    private String stringListToString(List<String> allEvents) {
+    String stringListToString(List<String> allEvents) {
         String[] applicableEvents = {};
         applicableEvents = allEvents.toArray(applicableEvents);
         StringBuilder combinedEvents = new StringBuilder();
