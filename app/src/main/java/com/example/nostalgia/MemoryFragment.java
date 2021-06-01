@@ -160,6 +160,30 @@ public class MemoryFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
+    private ArrayList<Uri> getUrisFromPaths() {
+        ArrayList<Uri> mediaUri = new ArrayList<Uri>();
+        for (String path : individualFilePaths(mMemory)) {
+            File file = new File(path);
+            Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
+            mediaUri.add(uri);
+        }
+
+        return mediaUri;
+    }
+    /**
+     * Creates an intent which allows user to share the memory: photos/videos and title.
+     * @param mediaUri list of all Uri which contain filepaths of photos and videos of a memory.
+     * @return
+     */
+    private Intent shareMemoryIntent(ArrayList<Uri> mediaUri) {
+        Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);
+        share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, mediaUri);
+        share.setType("*/*");
+        share.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {"image/*", "video/*"});
+        share.putExtra(Intent.EXTRA_TEXT, mMemory.getTitle());
+        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        return share;
+    }
     //endregion
 
     @Nullable
@@ -311,6 +335,59 @@ public class MemoryFragment extends Fragment {
         //endregion
         return v;
     }
+    private boolean hasMediaPermission() {
+        int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+    private void displayMediaZoomedIn(int position) {
+        Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.activity_memory_pager);
+        GalleryViewPagerAdapter adapter = new GalleryViewPagerAdapter(getActivity(),individualFilePaths(mMemory));
+        ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
+        pager.setAdapter(adapter);
+        pager.setCurrentItem(position);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+    }
+    private AlertDialog AskDeleteMedia(String toDeleteMediapath){
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext(),R.style.PauseDialog)
+                .setTitle("Deletion")
+                .setMessage("Do you want to delete this photo?")
+                .setIcon(android.R.drawable.ic_menu_delete)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String[] allPhotoPaths = individualFilePaths(mMemory);
+                        List<String> list = new ArrayList<String>(Arrays.asList(allPhotoPaths));
+                        list.remove(toDeleteMediapath);
+                        String joined = TextUtils.join(",", list);
+                        mMemory.setMediaPaths(joined);
+                        setMediaRecyclerView();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        myQuittingDialogBox.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        return myQuittingDialogBox;
+    }
+    private void behaviourBeforeAddingMedia(View v) {
+        mPhotoFAB.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
+        mPhotoFAB.setEnabled(mMemory.getMediaPaths()!=null);
+        TextView mAddphoto = v.findViewById(R.id.addphotos);
+        mAddphoto.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
+    }
+    private Intent getFromMediaIntent() {
+        Intent getmoreImage = new Intent(Intent.ACTION_GET_CONTENT);
+        getmoreImage.setType("*/*");
+        getmoreImage.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {"image/*", "video/*"});
+        getmoreImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        return getmoreImage;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -379,7 +456,29 @@ public class MemoryFragment extends Fragment {
             setMediaRecyclerView();
         }
     }
+    private void updateDate() {
+        mDateButton.setText(DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate()));
+    }
+    private void updateTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        mTimeButton.setText(sdf.format(mMemory.getDate()));
+    }
+    private void behaviourAfterAddingMedia() {
+        setMediaRecyclerView();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editor  = prefs.edit();
+        editor.putBoolean(CURRENT_PHOTOS_ABSENT,false);
+        editor.apply();
 
+        mPhotoButton.setText(R.string.photos_reselection);
+
+        mPhotoFAB.setVisibility(View.VISIBLE);
+        mPhotoFAB.setEnabled(true);
+    }
+    private boolean isDuplicate(String filePath) {
+        String[] duplicateCheck = individualFilePaths(mMemory);
+        return Arrays.asList(duplicateCheck).contains(filePath);
+    }
 
     @Override
     public void onPause() {
@@ -420,157 +519,7 @@ public class MemoryFragment extends Fragment {
             }
         });
     }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case MY_STORAGE_CODE:
-                startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    /**
-     * Create intent to allow selection of multiple photos and videos from user personal storage.
-     * @return
-     */
-    private Intent getFromMediaIntent() {
-        Intent getmoreImage = new Intent(Intent.ACTION_GET_CONTENT);
-        getmoreImage.setType("*/*");
-        getmoreImage.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {"image/*", "video/*"});
-        getmoreImage.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        return getmoreImage;
-    }
-
-    /**
-     * Creates an intent which allows user to share the memory: photos/videos and title.
-     * @param mediaUri list of all Uri which contain filepaths of photos and videos of a memory.
-     * @return
-     */
-    private Intent shareMemoryIntent(ArrayList<Uri> mediaUri) {
-        Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);
-        share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, mediaUri);
-        share.setType("*/*");
-        share.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {"image/*", "video/*"});
-        share.putExtra(Intent.EXTRA_TEXT, mMemory.getTitle());
-        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        return share;
-    }
-    private ArrayList<Uri> getUrisFromPaths() {
-        ArrayList<Uri> mediaUri = new ArrayList<Uri>();
-        for (String path : individualFilePaths(mMemory)) {
-            File file = new File(path);
-            Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
-            mediaUri.add(uri);
-        }
-
-        return mediaUri;
-    }
-
-    /**
-     * Depending on the type of file: image/video, decide which Uri to use in cursor query
-     * @param mImageUri
-     * @return
-     */
-    private Uri getSpecificContentUri(Uri mImageUri) {
-        if(isImage(mImageUri))
-            return MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        else
-            return MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-    }
-
-    private String getMediaPathFromUri(Uri mMediaUri) {
-
-        String imageEncoded;
-        Uri contentUri;
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
-        String[] selectionArgs = getSelectionArgumentsForCursor(mMediaUri);
-        String selection = "_id=?";
-        contentUri = getSpecificContentUri(mMediaUri);
-
-        Cursor cursor = getContext().getContentResolver().query(contentUri,filePathColumn, selection, selectionArgs, null);
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndexOrThrow(filePathColumn[0]);
-        imageEncoded  = cursor.getString(columnIndex);
-        cursor.close();
-
-        return imageEncoded;
-    }
-    private String getMimeType(Uri uri) {
-        String mimeType = "";
-        if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
-            ContentResolver cr = getContext().getContentResolver();
-            mimeType = cr.getType(uri);
-        } else {
-            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
-            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
-        }
-        return mimeType;
-    }
-    private String[] getSelectionArgumentsForCursor(Uri mImageUri) {
-        String docId = DocumentsContract.getDocumentId(mImageUri);
-        String[] split = docId.split(":");
-        return new String[] {split[1]};
-    }
-    private String[] individualFilePaths(Memory givenMemory){
-        return givenMemory.getMediaPaths().split(",");
-    }
-
-    private void updateDate() {
-        mDateButton.setText(DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate()));
-    }
-    private void updateTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        mTimeButton.setText(sdf.format(mMemory.getDate()));
-    }
-    private void setMediaRecyclerView() {
-        MyGalleryAdapter adapter = new MyGalleryAdapter(getContext(), individualFilePaths(mMemory));
-        mPhotoRecyclerView.setAdapter(adapter);
-    }
-    private void displayMediaZoomedIn(int position) {
-        Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.activity_memory_pager);
-        GalleryViewPagerAdapter adapter = new GalleryViewPagerAdapter(getActivity(),individualFilePaths(mMemory));
-        ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
-        pager.setAdapter(adapter);
-        pager.setCurrentItem(position);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.show();
-    }
-    private void behaviourBeforeAddingMedia(View v) {
-        mPhotoFAB.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
-        mPhotoFAB.setEnabled(mMemory.getMediaPaths()!=null);
-        TextView mAddphoto = v.findViewById(R.id.addphotos);
-        mAddphoto.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
-    }
-    private void behaviourAfterAddingMedia() {
-        setMediaRecyclerView();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editor  = prefs.edit();
-        editor.putBoolean(CURRENT_PHOTOS_ABSENT,false);
-        editor.apply();
-
-        mPhotoButton.setText(R.string.photos_reselection);
-
-        mPhotoFAB.setVisibility(View.VISIBLE);
-        mPhotoFAB.setEnabled(true);
-    }
-
-    private boolean isDuplicate(String filePath) {
-        String[] duplicateCheck = individualFilePaths(mMemory);
-        return Arrays.asList(duplicateCheck).contains(filePath);
-    }
-    private boolean isImage(Uri mImageUri) {
-        return getMimeType(mImageUri).startsWith("image");
-    }
-    private boolean hasMediaPermission() {
-        int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
-        return result == PackageManager.PERMISSION_GRANTED;
-    }
-
-    public AlertDialog AskDiscardMemory()
-    {
+    public AlertDialog AskDiscardMemory(){
         AlertDialog discardMemoryDialogBox = new AlertDialog.Builder(getContext())
                 .setTitle("Discard Memory")
                 .setMessage("You did not set a title or chosen any photos. Do you want to discard this memory?")
@@ -590,31 +539,65 @@ public class MemoryFragment extends Fragment {
                 .create();
         return discardMemoryDialogBox;
     }
-    private AlertDialog AskDeleteMedia(String toDeleteMediapath)
-    {
-        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext(),R.style.PauseDialog)
-                .setTitle("Deletion")
-                .setMessage("Do you want to delete this photo?")
-                .setIcon(android.R.drawable.ic_menu_delete)
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String[] allPhotoPaths = individualFilePaths(mMemory);
-                        List<String> list = new ArrayList<String>(Arrays.asList(allPhotoPaths));
-                        list.remove(toDeleteMediapath);
-                        String joined = TextUtils.join(",", list);
-                        mMemory.setMediaPaths(joined);
-                        setMediaRecyclerView();
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .create();
-        myQuittingDialogBox.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        return myQuittingDialogBox;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case MY_STORAGE_CODE:
+                startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    private String getMediaPathFromUri(Uri mMediaUri) {
+
+        String imageEncoded;
+        Uri contentUri;
+        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        String[] selectionArgs = getSelectionArgumentsForCursor(mMediaUri);
+        String selection = "_id=?";
+        contentUri = getSpecificContentUri(mMediaUri);
+
+        Cursor cursor = getContext().getContentResolver().query(contentUri,filePathColumn, selection, selectionArgs, null);
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndexOrThrow(filePathColumn[0]);
+        imageEncoded  = cursor.getString(columnIndex);
+        cursor.close();
+
+        return imageEncoded;
+    }
+    private Uri getSpecificContentUri(Uri mImageUri) {
+        if(isImage(mImageUri))
+            return MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        else
+            return MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+    }
+    private boolean isImage(Uri mImageUri) {
+        return getMimeType(mImageUri).startsWith("image");
+    }
+    private String getMimeType(Uri uri) {
+        String mimeType = "";
+        if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
+            ContentResolver cr = getContext().getContentResolver();
+            mimeType = cr.getType(uri);
+        } else {
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
+        }
+        return mimeType;
+    }
+    private String[] getSelectionArgumentsForCursor(Uri mImageUri) {
+        String docId = DocumentsContract.getDocumentId(mImageUri);
+        String[] split = docId.split(":");
+        return new String[] {split[1]};
+    }
+
+    private void setMediaRecyclerView() {
+        MyGalleryAdapter adapter = new MyGalleryAdapter(getContext(), individualFilePaths(mMemory));
+        mPhotoRecyclerView.setAdapter(adapter);
+    }
+
+    private String[] individualFilePaths(Memory givenMemory){
+        return givenMemory.getMediaPaths().split(",");
+    }
 }
