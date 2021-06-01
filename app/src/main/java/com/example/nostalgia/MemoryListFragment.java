@@ -105,7 +105,7 @@ public class MemoryListFragment extends Fragment {
             public void onClick(View v) {
                 mNewMemory = new Memory();
                 MemoryLab.get(getActivity()).addMemory(mNewMemory);
-                updateUI();
+                //updateUI();
                 mCallbacks.onMemorySelected(mNewMemory);
             }
         });
@@ -120,7 +120,7 @@ public class MemoryListFragment extends Fragment {
                 public void onClick(View noMemoryView) {
                     mNewMemory = new Memory();
                     MemoryLab.get(getActivity()).addMemory(mNewMemory);
-                    updateUI();
+                    //updateUI();
                     mCallbacks.onMemorySelected(mNewMemory);
                 }
             });
@@ -280,15 +280,17 @@ public class MemoryListFragment extends Fragment {
          * @param text
          */
         public void searchFilter(String text) {
-            List<Memory> searchMemorysList = new ArrayList<>();
-            text = text.toLowerCase();
-            for(Memory Memory: MemoryLab.get(getActivity()).getMemories()){
-                if(Memory.getTitle().contains(text)){
-                    searchMemorysList.add(Memory);
+            try {
+                List<Memory> searchMemorysList = new ArrayList<>();
+                text = text.toLowerCase();
+                for (Memory Memory : MemoryLab.get(getActivity()).getMemories()) {
+                    if (Memory.getTitle().contains(text)) {
+                        searchMemorysList.add(Memory);
+                    }
                 }
-            }
-            mAdapter.setMemorys(searchMemorysList);
-            notifyDataSetChanged();
+                mAdapter.setMemorys(searchMemorysList);
+                notifyDataSetChanged();
+            }catch (NullPointerException e){}
         }
     }
 
