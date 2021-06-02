@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -139,7 +140,8 @@ public class MemoryListActivity extends SingleFragmentActivity
             case R.id.festival:
                 return filterOnSelected(R.string.festival);
             case R.id.add_custom_event:
-                createEventDialogBox();
+                String newEvent = createEventDialogBox();
+                addEventToMenu(newEvent);
                 return true;
             case R.id.user_settings:
                 goToSettings();
@@ -148,12 +150,17 @@ public class MemoryListActivity extends SingleFragmentActivity
         return true;
     }
 
+    private void addEventToMenu(String newEvent) {
+        Menu eventMenu = mNavigationView.getMenu();
+        eventMenu.add(R.id.events,R.id.,Menu.NONE,newEvent);
+    }
+
     private void goToSettings() {
         Intent intent = new Intent(MemoryListActivity.this, UserSettingsActivity.class);
         startActivity(intent);
     }
 
-    private void createEventDialogBox() {
+    private String createEventDialogBox() {
         AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(this);
         inputEventDialog.setTitle("New Custom Event");
         final EditText input = new EditText(this);
@@ -173,13 +180,14 @@ public class MemoryListActivity extends SingleFragmentActivity
                 })
                 .create();
         inputEventDialog.show();
+        return input.getText().toString();
     }
 
     private void saveNewEvent(EditText input) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
         String currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "");
-        List<String> wordList = Arrays.asList(currentEvents.split(","));
+        List<String> wordList = new ArrayList<String>(Arrays.asList(currentEvents.split(",")));
         wordList.add(input.getText().toString());
         editor.putString(Introduction.APPLICABLE_EVENTS,stringListToString(wordList));
         editor.apply();
