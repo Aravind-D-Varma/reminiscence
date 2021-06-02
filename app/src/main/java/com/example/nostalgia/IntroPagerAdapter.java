@@ -64,7 +64,6 @@ public class IntroPagerAdapter extends PagerAdapter {
                 return questionsLL;
             case 2:
                 LinearLayout eventsLL = getLayoutAndFix(v, R.id.event_preferences);
-                setRadioButtons(eventsLL);
                 container.addView(eventsLL);
                 return eventsLL;
 
@@ -111,12 +110,6 @@ public class IntroPagerAdapter extends PagerAdapter {
         TextView welcome = (TextView) welcomLL.findViewById(textViewID);
         a.setStartOffset(delay);
         welcome.startAnimation(a);
-    }
-
-    private void setRadioButtons(View v) {
-        mUserYesStudent = (RadioButton) v.findViewById(R.id.yes_student);
-        mUserYesWorked = (RadioButton) v.findViewById(R.id.yes_worked);
-        mUserYesReligion = (RadioButton) v.findViewById(R.id.yes_religious);
     }
 
     private void setUserName(View v) {

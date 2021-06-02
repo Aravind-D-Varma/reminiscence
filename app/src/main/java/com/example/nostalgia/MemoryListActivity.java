@@ -87,7 +87,7 @@ public class MemoryListActivity extends SingleFragmentActivity
 
         mNavigationView = findViewById(R.id.navigation_view);
 
-        headerAndMenuSetting(userName, applicableEvents);
+        setHeaderWelcomeUser(userName);
 
         drawerAndToggle();
 
@@ -97,32 +97,15 @@ public class MemoryListActivity extends SingleFragmentActivity
     protected void onResume() {
         super.onResume();
         getGeneralInfo();
-        headerAndMenuSetting(userName, applicableEvents);
+        setHeaderWelcomeUser(userName);
     }
 
-    private void headerAndMenuSetting(String userName, String[] availableEvents) {
-
-        setWelcomeUser(userName);
-        setMenuItemVisibility(availableEvents);
-
-    }
-
-    private void setWelcomeUser(String userName) {
+    private void setHeaderWelcomeUser(String userName) {
         View headerView = mNavigationView.getHeaderView(0);
         mHeaderText = headerView.findViewById(R.id.nav_header_textView);
         mHeaderText.setText("Welcome "+userName);
     }
 
-    private void setMenuItemVisibility(String[] availableEvents) {
-        Menu menuNav = mNavigationView.getMenu();
-        List<String> list = Arrays.asList(availableEvents);
-        MenuItem studentmenuItem = menuNav.findItem(R.id.studentlife);
-        studentmenuItem.setVisible(list.contains(getString(R.string.studentlife)));
-        MenuItem workmenuItem = menuNav.findItem(R.id.work);
-        workmenuItem.setVisible(list.contains(getString(R.string.work)));
-        MenuItem religionmenuItem = menuNav.findItem(R.id.festival);
-        religionmenuItem.setVisible(list.contains(getString(R.string.festival)));
-    }
 
     private void drawerAndToggle() {
         mDrawerLayout = findViewById(R.id.main_drawerLayout);

@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class UserSettingsActivity extends AppCompatActivity {
     private EditText mUsername;
-    private RadioButton mUserYesStudent, mUserYesWorked, mUserYesReligious;
-    private RadioGroup mUserStudent, mUserWorked, mUserReligious;
     private List<String> allEvents = new LinkedList<String>();
 
     @Override
@@ -33,7 +31,6 @@ public class UserSettingsActivity extends AppCompatActivity {
     private void gettingUserPreferences() {
         allEvents = initializeEvents(allEvents);
         setUserName();
-        setUserPreferences();
     }
 
     private void setUserName() {
@@ -53,14 +50,6 @@ public class UserSettingsActivity extends AppCompatActivity {
         });
     }
 
-    private void setUserPreferences() {
-        mUserYesStudent = (RadioButton) findViewById(R.id.yes_student);
-        mUserYesWorked = (RadioButton) findViewById(R.id.yes_worked);
-        mUserYesReligious = (RadioButton) findViewById(R.id.yes_religious);
-        mUserStudent = findViewById(R.id.user_student);
-        mUserWorked = findViewById(R.id.user_working);
-        mUserReligious = findViewById(R.id.user_religious);
-    }
 
     private List<String> initializeEvents(List<String> allEvents) {
         allEvents.add("Student Life");
@@ -79,7 +68,6 @@ public class UserSettingsActivity extends AppCompatActivity {
     }
 
     private void saveUserPreferences() {
-        cutInapplicableEvents();
         if (noActivityInSettings()) {
             Toast.makeText(getApplicationContext(), "You didnt make any changes. Keeping your previous settings...", Toast.LENGTH_SHORT).show();
         }
@@ -106,28 +94,11 @@ public class UserSettingsActivity extends AppCompatActivity {
     }
 
     private boolean onlyChangedName() {
-        return mUserStudent.getCheckedRadioButtonId() == -1 && mUserWorked.getCheckedRadioButtonId() == -1
-                && mUserReligious.getCheckedRadioButtonId() == -1;
+        return true;
     }
 
     private boolean noActivityInSettings() {
-        return mUserStudent.getCheckedRadioButtonId() == -1 && mUserWorked.getCheckedRadioButtonId() == -1
-                && mUserReligious.getCheckedRadioButtonId() == -1 && mUsername.getText().toString().length() < 1;
-    }
-
-    private void cutInapplicableEvents() {
-        if (mUserStudent.getCheckedRadioButtonId() != -1) {
-            if (!mUserYesStudent.isChecked())
-                allEvents.remove("Student Life");
-        }
-        if (mUserWorked.getCheckedRadioButtonId() != -1) {
-            if (!mUserYesWorked.isChecked())
-                allEvents.remove("Work");
-        }
-        if (mUserReligious.getCheckedRadioButtonId() != -1) {
-            if (!mUserYesReligious.isChecked())
-                allEvents.remove("Festivals");
-        }
+        return mUsername.getText().toString().length() < 1;
     }
 
 }

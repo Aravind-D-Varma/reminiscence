@@ -2029,9 +2029,6 @@ id no_memory_button
 id no_memory_text
 id none
 id normal
-id not_religious
-id not_student
-id not_worked
 id notification_background
 id notification_main_column
 id notification_main_column_container
@@ -2064,7 +2061,6 @@ id questions
 id radio
 id ratio
 id rectangles
-id religion_text
 id reverseSawtooth
 id right
 id rightToLeft
@@ -2127,7 +2123,6 @@ id staticLayout
 id staticPostLayout
 id stop
 id stretch
-id student_text
 id studentlife
 id submenuarrow
 id submit_area
@@ -2153,9 +2148,6 @@ id textSpacerNoTitle
 id textStart
 id textTop
 id textView
-id textView2
-id textView3
-id textView5
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon
@@ -2188,10 +2180,7 @@ id unlabeled
 id up
 id useLogo
 id user_name
-id user_religious
 id user_settings
-id user_student
-id user_working
 id view_offset_helper
 id visible
 id welcome
@@ -2199,12 +2188,8 @@ id welcome_text
 id withText
 id withinBounds
 id work
-id work_text
 id wrap
 id wrap_content
-id yes_religious
-id yes_student
-id yes_worked
 id zero_corner_chip
 id zoomed_imageView
 id zoomed_videoView
