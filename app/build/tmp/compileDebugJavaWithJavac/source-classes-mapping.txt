@@ -48,10 +48,19 @@ com/example/nostalgia/MemoryListFragment.java
  com.example.nostalgia.MemoryListFragment$MemoryHolder
 com/example/nostalgia/Memory.java
  com.example.nostalgia.Memory
+com/example/nostalgia/MemoryPagerActivity.java
+ com.example.nostalgia.MemoryPagerActivity
+ com.example.nostalgia.MemoryPagerActivity$1
 com/example/nostalgia/MemoryListActivity.java
  com.example.nostalgia.MemoryListActivity
  com.example.nostalgia.MemoryListActivity$1
  com.example.nostalgia.MemoryListActivity$2
+com/example/nostalgia/Introduction.java
+ com.example.nostalgia.Introduction
+com/example/nostalgia/IntroPagerAdapter.java
+ com.example.nostalgia.IntroPagerAdapter
+ com.example.nostalgia.IntroPagerAdapter$1
+ com.example.nostalgia.IntroPagerAdapter$2
 com/example/nostalgia/MemoryFragment.java
  com.example.nostalgia.MemoryFragment
  com.example.nostalgia.MemoryFragment$1
@@ -69,12 +78,3 @@ com/example/nostalgia/MemoryFragment.java
  com.example.nostalgia.MemoryFragment$8
  com.example.nostalgia.MemoryFragment$9
  com.example.nostalgia.MemoryFragment$Callbacks
-com/example/nostalgia/MemoryPagerActivity.java
- com.example.nostalgia.MemoryPagerActivity
- com.example.nostalgia.MemoryPagerActivity$1
-com/example/nostalgia/Introduction.java
- com.example.nostalgia.Introduction
-com/example/nostalgia/IntroPagerAdapter.java
- com.example.nostalgia.IntroPagerAdapter
- com.example.nostalgia.IntroPagerAdapter$1
- com.example.nostalgia.IntroPagerAdapter$2

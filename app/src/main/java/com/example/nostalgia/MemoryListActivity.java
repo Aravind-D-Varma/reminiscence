@@ -89,13 +89,14 @@ public class MemoryListActivity extends SingleFragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getGeneralInfo();
-
+        String newEvent = getIntent().getStringExtra("Added Event");
         mNavigationView = findViewById(R.id.navigation_view);
 
         setHeaderWelcomeUser(userName);
 
         drawerAndToggle();
-
+        if(newEvent!=null)
+            addEventToMenu(newEvent);
     }
 
     @Override
@@ -103,6 +104,8 @@ public class MemoryListActivity extends SingleFragmentActivity
         super.onResume();
         getGeneralInfo();
         setHeaderWelcomeUser(userName);
+
+
     }
 
     private void setHeaderWelcomeUser(String userName) {
@@ -117,6 +120,7 @@ public class MemoryListActivity extends SingleFragmentActivity
         mNavigationView.setNavigationItemSelectedListener(this);
         mABDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.NDopen, R.string.NDclose);
         mDrawerLayout.addDrawerListener(mABDrawerToggle);
+        mDrawerLayout.openDrawer(GravityCompat.START);
         mABDrawerToggle.setDrawerIndicatorEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mABDrawerToggle.syncState();
@@ -124,6 +128,7 @@ public class MemoryListActivity extends SingleFragmentActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        addEventToMenu("newEvent");
         switch (item.getItemId()){
             case R.id.all:
                 return filterOnSelected(R.string.all);
@@ -141,7 +146,7 @@ public class MemoryListActivity extends SingleFragmentActivity
                 return filterOnSelected(R.string.festival);
             case R.id.add_custom_event:
                 String newEvent = createEventDialogBox();
-                addEventToMenu(newEvent);
+
                 return true;
             case R.id.user_settings:
                 goToSettings();
@@ -152,7 +157,7 @@ public class MemoryListActivity extends SingleFragmentActivity
 
     private void addEventToMenu(String newEvent) {
         Menu eventMenu = mNavigationView.getMenu();
-        eventMenu.add(R.id.events,Menu.NONE,1,newEvent);
+        eventMenu.add(R.id.events,Menu.NONE,1,newEvent).setIcon(R.drawable.hangouts_white);
     }
 
     private void goToSettings() {
@@ -170,6 +175,9 @@ public class MemoryListActivity extends SingleFragmentActivity
         inputEventDialog.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 saveNewEvent(input);
+                Intent intent = new Intent(getApplicationContext(),MemoryListActivity.class);
+                intent.putExtra("Added Event",input.getText().toString());
+                startActivity(intent);
                 dialog.dismiss();
             }
         });
