@@ -4,6 +4,7 @@
 
     <group android:id="@+id/allevents">
         <item
+            android:orderInCategory="0"
             android:id="@+id/all"
             android:icon="@drawable/all_white"
             android:title="@string/all" />
@@ -13,36 +14,44 @@
     <group android:id="@+id/events">
 
     <item
+        android:orderInCategory="1"
         android:id="@+id/studentlife"
         android:icon="@drawable/studentlife_white"
         android:title="@string/studentlife" />
     <item
+        android:orderInCategory="1"
         android:id="@+id/work"
         android:icon="@drawable/work_white"
         android:title="@string/work" />
     <item
+        android:orderInCategory="1"
         android:id="@+id/home"
         android:icon="@drawable/home_white"
         android:title="@string/home" />
     <item
+        android:orderInCategory="1"
         android:id="@+id/birthday"
         android:icon="@drawable/birthday_white"
         android:title="@string/birthday" />
     <item
+        android:orderInCategory="1"
         android:id="@+id/hangouts"
         android:icon="@drawable/hangouts_white"
         android:title="@string/hangouts" />
     <item
+        android:orderInCategory="1"
         android:id="@+id/festival"
         android:icon="@drawable/festival_white"
         android:title="@string/festival" />
     </group>
     <group android:id="@+id/settings">
         <item
+            android:orderInCategory="2"
             android:id="@+id/add_custom_event"
             android:icon="@drawable/add_events_white"
             android:title="@string/add_custom_event"/>
         <item
+            android:orderInCategory="2"
             android:id="@+id/user_settings"
             android:icon="@drawable/settings_white"
             android:title="@string/settings"/>

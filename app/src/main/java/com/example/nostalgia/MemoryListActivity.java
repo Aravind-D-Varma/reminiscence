@@ -152,7 +152,7 @@ public class MemoryListActivity extends SingleFragmentActivity
 
     private void addEventToMenu(String newEvent) {
         Menu eventMenu = mNavigationView.getMenu();
-        eventMenu.add(R.id.events,R.id.,Menu.NONE,newEvent);
+        eventMenu.add(R.id.events,Menu.NONE,1,newEvent);
     }
 
     private void goToSettings() {
@@ -184,7 +184,7 @@ public class MemoryListActivity extends SingleFragmentActivity
     }
 
     private void saveNewEvent(EditText input) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
         String currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "");
         List<String> wordList = new ArrayList<String>(Arrays.asList(currentEvents.split(",")));

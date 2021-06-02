@@ -46,7 +46,7 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memory_pager);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String combinedEvents= preferences.getString(Introduction.APPLICABLE_EVENTS, "");
         applicableEvents = combinedEvents.split(",");
         mViewPager = (ViewPager) findViewById(R.id.memory_view_pager);

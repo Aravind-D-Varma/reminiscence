@@ -39,7 +39,6 @@ public class IntroPagerAdapter extends PagerAdapter {
 
     Context mContext;
     private EditText mUsername;
-    private RadioButton mUserYesStudent,mUserYesWorked, mUserYesReligion;
     public IntroPagerAdapter(Context context){
         this.mContext = context;
     }
@@ -153,7 +152,6 @@ public class IntroPagerAdapter extends PagerAdapter {
         List<String> allEvents = new LinkedList<String>();
 
         allEvents = initializeListOfEvents(allEvents);
-        allEvents = cutUnecessaryEvents(allEvents);
 
         return stringListToString(allEvents);
     }
@@ -182,16 +180,7 @@ public class IntroPagerAdapter extends PagerAdapter {
         return allEvents;
     }
 
-    private List<String> cutUnecessaryEvents(List<String> allEvents) {
-        if (!mUserYesStudent.isChecked())
-            allEvents.remove("Student Life");
-        if (!mUserYesWorked.isChecked())
-            allEvents.remove("Work");
-        if (!mUserYesReligion.isChecked())
-            allEvents.remove("Festivals");
 
-        return allEvents;
-    }
 
     private String stringListToString(List<String> allEvents) {
         String[] applicableEvents = {};
