@@ -59,6 +59,7 @@
     <string name="changesettings">Change your settings: </string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="add_custom_event">Create custom event</string>
 
 
 </resources>

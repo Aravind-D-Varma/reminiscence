@@ -1635,6 +1635,7 @@ drawable abc_textfield_search_activated_mtrl_alpha
 drawable abc_textfield_search_default_mtrl_alpha
 drawable abc_textfield_search_material
 drawable abc_vector_test
+drawable add_events_white
 drawable add_white
 drawable all_white
 drawable avd_hide_password
@@ -1791,6 +1792,7 @@ id action_text
 id actions
 id activity_chooser_view_content
 id add
+id add_custom_event
 id addphotos
 id alertTitle
 id aligned
@@ -2392,6 +2394,7 @@ string abc_searchview_description_voice
 string abc_shareactionprovider_share_with
 string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
+string add_custom_event
 string all
 string app_name
 string appbar_scrolling_view_behavior

@@ -1,12 +1,16 @@
 package com.example.nostalgia;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -134,13 +138,62 @@ public class MemoryListActivity extends SingleFragmentActivity
                 return filterOnSelected(R.string.hangouts);
             case R.id.festival:
                 return filterOnSelected(R.string.festival);
+            case R.id.add_custom_event:
+                createEventDialogBox();
+                return true;
             case R.id.user_settings:
-                Intent intent = new Intent(MemoryListActivity.this, UserSettingsActivity.class);
-                startActivity(intent);
+                goToSettings();
+
         }
         return true;
     }
 
+    private void goToSettings() {
+        Intent intent = new Intent(MemoryListActivity.this, UserSettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void createEventDialogBox() {
+        AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(this);
+        inputEventDialog.setTitle("New Custom Event");
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
+        inputEventDialog.setView(input);
+
+        inputEventDialog.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                saveNewEvent(input);
+                dialog.dismiss();
+            }
+        });
+        inputEventDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .create();
+        inputEventDialog.show();
+    }
+
+    private void saveNewEvent(EditText input) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        String currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "");
+        List<String> wordList = Arrays.asList(currentEvents.split(","));
+        wordList.add(input.getText().toString());
+        editor.putString(Introduction.APPLICABLE_EVENTS,stringListToString(wordList));
+        editor.apply();
+    }
+
+    private String stringListToString(List<String> allEvents) {
+        String[] applicableEvents = {};
+        applicableEvents = allEvents.toArray(applicableEvents);
+        StringBuilder combinedEvents = new StringBuilder();
+        for (int i = 0; i < applicableEvents.length; i++)
+            combinedEvents.append(applicableEvents[i]).append(",");
+
+        return combinedEvents.toString();
+    }
     /**
      * Updates list of memories depending on what the user selected in menu of Navigation Drawer
      * @param NavigationItem

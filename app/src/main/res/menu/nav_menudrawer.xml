@@ -39,6 +39,10 @@
     </group>
     <group android:id="@+id/settings">
         <item
+            android:id="@+id/add_custom_event"
+            android:icon="@drawable/add_events_white"
+            android:title="@string/add_custom_event"/>
+        <item
             android:id="@+id/user_settings"
             android:icon="@drawable/settings_white"
             android:title="@string/settings"/>
