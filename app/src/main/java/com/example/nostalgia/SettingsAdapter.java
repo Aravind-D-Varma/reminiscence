@@ -1,18 +1,20 @@
 package com.example.nostalgia;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SettingsAdapter extends BaseExpandableListAdapter{
 
-    private static final int TEXT_CHILD_TYPE_1 = 0;
-    private static final int EDITTEXT_CHILD_TYPE_2 = 1;
-    private static final int RV_CHILD_TYPE_3 = 2;
-    private static final int CHILD_TYPE_UNDEFINED = 3;
+    private static final int EDITTEXT_CHILD_TYPE_0 = 0;
+    private static final int RV_CHILD_TYPE_1 = 1;
+    private static final int TEXT_CHILD_TYPE_2 = 2;
 
     // 3 Group types
     private static final int USERNAME_GROUP = 0;
@@ -31,7 +33,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter{
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -65,49 +67,23 @@ public class SettingsAdapter extends BaseExpandableListAdapter{
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
         Integer groupType = getGroupType(groupPosition);
 
-        if (convertView == null || convertView.getTag() != groupType) {
-            switch (groupType) {
-                case USERNAME_GROUP :
-                    convertView = inflater.inflate(R.layout.settings_myself, null);
-                    break;
-                case EVENTS_GROUP:
-                    // Am using the same layout cause am lasy and don't wanna create other ones but theses should be different
-                    // or the group type shouldnt exist
-                    convertView = inflater.inflate(R.layout.settings_myself, null);
-                    break;
-                case ABOUT_GROUP:
-                    // Am using the same layout cause am lasy and don't wanna create other ones but theses should be different
-                    // or the group type shouldnt exist
-                    convertView = inflater.inflate(R.layout.settings_myself, null);
-                    break;
-                default:
-                    // Maybe we should implement a default behaviour but it should be ok we know there are 3 group types right?
-                    break;
-            }
-        }
-        // We'll reuse the existing one
-        else {
-            // There is nothing to do here really we just need to set the content of view which we do in both cases
-        }
+        if (convertView == null || convertView.getTag() != groupType)
+            convertView = inflater.inflate(R.layout.settings_groupnames, null);
 
         switch (groupType) {
             case USERNAME_GROUP :
-                TextView item = (TextView) convertView.findViewById(R.id.textView);
+                TextView item = (TextView) convertView.findViewById(R.id.groupnames);
                 item.setText("Change name (getGroupView)");
                 break;
             case EVENTS_GROUP:
-                TextView item2 = (TextView) convertView.findViewById(R.id.textView);
+                TextView item2 = (TextView) convertView.findViewById(R.id.groupnames);
                 item2.setText("Add/Delete Events (getGroupView)");
                 break;
             case ABOUT_GROUP:
-                TextView item3 = (TextView) convertView.findViewById(R.id.textView);
+                TextView item3 = (TextView) convertView.findViewById(R.id.groupnames);
                 item3.setText("About me (getGroupView)");
                 break;
-            default:
-                // Maybe we should implement a default behaviour but it should be ok we know there are 3 group types right?
-                break;
         }
-
         return convertView;
     }
 
@@ -117,52 +93,38 @@ public class SettingsAdapter extends BaseExpandableListAdapter{
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
         Integer childType = getChildType(groupPosition, childPosition);
 
-        // We need to create a new "cell container"
         if (convertView == null || convertView.getTag() != childType) {
             switch (childType) {
-                case TEXT_CHILD_TYPE_1:
+                case EDITTEXT_CHILD_TYPE_0:
                     convertView = inflater.inflate(R.layout.settings_username, null);
                     convertView.setTag(childType);
                     break;
-                case EDITTEXT_CHILD_TYPE_2:
-                    convertView = inflater.inflate(R.layout.settings_myself, null);
+                case RV_CHILD_TYPE_1:
+                    convertView = inflater.inflate(R.layout.settings_event, null);
                     convertView.setTag(childType);
                     break;
-                case RV_CHILD_TYPE_3:
-                    convertView = inflater.inflate(R.layout.settings_myself, null);
-                    convertView.setTag(childType);
-                    break;
-                case CHILD_TYPE_UNDEFINED:
+                case TEXT_CHILD_TYPE_2:
                     convertView = inflater.inflate(R.layout.settings_myself, null);
                     convertView.setTag(childType);
                     break;
                 default:
-                    // Maybe we should implement a default behaviour but it should be ok we know there are 4 child types right?
                     break;
             }
         }
-        // We'll reuse the existing one
-        else {
-            // There is nothing to do here really we just need to set the content of view which we do in both cases
-        }
-
         switch (childType) {
-            case TEXT_CHILD_TYPE_1:
-                TextView item = (TextView) convertView.findViewById(R.id.textView);
-                item.setText("texview of USERNAME_GROUP in getChildView");
+            case EDITTEXT_CHILD_TYPE_0:
+                EditText item = (EditText) convertView.findViewById(R.id.user_name);
+                Toast.makeText(mContext,"Input is "+item.getText().toString(),Toast.LENGTH_SHORT).show();
                 break;
-            case EDITTEXT_CHILD_TYPE_2:
+            case RV_CHILD_TYPE_1:
                 //Define how to render the data on the CHILD_TYPE_2 layout
-                TextView item2 = (TextView) convertView.findViewById(R.id.textView);
-                item2.setText("texview of EVENTS_GROUP in getChildView");
+                /*TextView item2 = (TextView) convertView.findViewById(R.id.textView);
+                item2.setText("texview of EVENTS_GROUP in getChildView");*/
                 break;
-            case RV_CHILD_TYPE_3:
+            case TEXT_CHILD_TYPE_2:
                 //Define how to render the data on the CHILD_TYPE_3 layout
                 TextView item3 = (TextView) convertView.findViewById(R.id.textView);
-                item3.setText("texview of ABOUT_GROUP in getGroupView");
-                break;
-            case CHILD_TYPE_UNDEFINED:
-                //Define how to render the data on the CHILD_TYPE_UNDEFINED layout
+                item3.setText(Resources.getSystem().getString(R.string.aboutme));
                 break;
         }
 
@@ -180,34 +142,25 @@ public class SettingsAdapter extends BaseExpandableListAdapter{
             case USERNAME_GROUP:
                 switch (childPosition) {
                     case 0:
-                        return TEXT_CHILD_TYPE_1;
-                    case 1:
-                        return EDITTEXT_CHILD_TYPE_2;
-                    case 2:
-                        return CHILD_TYPE_UNDEFINED;
+                        return EDITTEXT_CHILD_TYPE_0;
+
                 }
                 break;
             case EVENTS_GROUP:
                 switch (childPosition) {
                     case 0:
-                        return TEXT_CHILD_TYPE_1;
-                    case 1:
-                        return RV_CHILD_TYPE_3;
-                    case 2:
-                        return CHILD_TYPE_UNDEFINED;
+                        return RV_CHILD_TYPE_1;
                 }
                 break;
             case ABOUT_GROUP:
                 switch (childPosition) {
                     case 0:
-                        return TEXT_CHILD_TYPE_1;
-                    default:
-                        return CHILD_TYPE_UNDEFINED;
+                        return TEXT_CHILD_TYPE_2;
+
                 }
-            default:
-                return CHILD_TYPE_UNDEFINED;
+                break;
         }
-        return CHILD_TYPE_UNDEFINED;
+        return TEXT_CHILD_TYPE_2;
     }
 
     @Override

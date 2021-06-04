@@ -60,6 +60,16 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="add_custom_event">Create custom event</string>
+    <string name="aboutme">Hi! I am an application designed to make people store and retrieve their favourite memories
+        at one place. I continuously improve myself to be as convenient and functional as possible. <br/><br/>I am
+        created by a student who does not have any degree/certificate in computers but solely learned by reading books
+        and taking help from internet. If you are a fellow software developer, you can take a look at my source code
+        at https://github.com/Aravind-D-Varma/reminiscence. Perhaps, if you are interested, you can even get in touch
+        with him through LinkedIn at https://www.linkedin.com/in/aravinddvarma/<br/><br/>Lastly, you could tell my
+        parent how I behaved (Playstore rating). You do not have to give me a good rating but all I ask is to give
+        your reason, detailed if possible. That way, I will try to be understand and refine myself continuously.
+        <br/><br/> Hope I have been helpful in some way! Have a good day!!
+ </string>
 
 
 </resources>
