@@ -144,10 +144,6 @@ public class MemoryListActivity extends SingleFragmentActivity
                 return filterOnSelected(R.string.hangouts);
             case R.id.festival:
                 return filterOnSelected(R.string.festival);
-            case R.id.add_custom_event:
-                String newEvent = createEventDialogBox();
-
-                return true;
             case R.id.user_settings:
                 goToSettings();
 
@@ -165,51 +161,6 @@ public class MemoryListActivity extends SingleFragmentActivity
         startActivity(intent);
     }
 
-    private String createEventDialogBox() {
-        AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(this);
-        inputEventDialog.setTitle("New Custom Event");
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
-        inputEventDialog.setView(input);
-
-        inputEventDialog.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                saveNewEvent(input);
-                Intent intent = new Intent(getApplicationContext(),MemoryListActivity.class);
-                intent.putExtra("Added Event",input.getText().toString());
-                startActivity(intent);
-                dialog.dismiss();
-            }
-        });
-        inputEventDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .create();
-        inputEventDialog.show();
-        return input.getText().toString();
-    }
-
-    private void saveNewEvent(EditText input) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = prefs.edit();
-        String currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "");
-        List<String> wordList = new ArrayList<String>(Arrays.asList(currentEvents.split(",")));
-        wordList.add(input.getText().toString());
-        editor.putString(Introduction.APPLICABLE_EVENTS,stringListToString(wordList));
-        editor.apply();
-    }
-
-    private String stringListToString(List<String> allEvents) {
-        String[] applicableEvents = {};
-        applicableEvents = allEvents.toArray(applicableEvents);
-        StringBuilder combinedEvents = new StringBuilder();
-        for (int i = 0; i < applicableEvents.length; i++)
-            combinedEvents.append(applicableEvents[i]).append(",");
-
-        return combinedEvents.toString();
-    }
     /**
      * Updates list of memories depending on what the user selected in menu of Navigation Drawer
      * @param NavigationItem

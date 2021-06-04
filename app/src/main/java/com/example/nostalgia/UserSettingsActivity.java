@@ -23,8 +23,8 @@ public class UserSettingsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.settings));
         setContentView(R.layout.settings_all);
         mListView = (ExpandableListView) findViewById(R.id.expandable_listview);
-        SettingsAdapter mSettingsAdapter = new SettingsAdapter(this);
-        mListView.setAdapter((ExpandableListAdapter) mSettingsAdapter);
+        UserSettingsAdapter mUserSettingsAdapter = new UserSettingsAdapter(this);
+        mListView.setAdapter((ExpandableListAdapter) mUserSettingsAdapter);
 
         mListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 

@@ -1891,7 +1891,6 @@ id endToStart
 id enterAlways
 id enterAlwaysCollapsed
 id entername_text
-id eventListView
 id event_preferences
 id events
 id exitUntilCollapsed
@@ -2096,6 +2095,14 @@ id select_dialog_listview
 id selected
 id selection_type
 id settings
+id settings_birthdays
+id settings_events
+id settings_festivals
+id settings_hangouts
+id settings_home
+id settings_studentlife
+id settings_text
+id settings_work
 id share_memory
 id shortcut
 id showCustom
