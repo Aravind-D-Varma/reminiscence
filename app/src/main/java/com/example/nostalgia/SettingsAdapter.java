@@ -1,7 +1,9 @@
 package com.example.nostalgia;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import static com.example.nostalgia.Introduction.SEND_USERNAME;
+import static com.example.nostalgia.MemoryFragment.CURRENT_MEMORY;
 
 public class SettingsAdapter extends BaseExpandableListAdapter{
 
@@ -20,7 +25,9 @@ public class SettingsAdapter extends BaseExpandableListAdapter{
     private static final int USERNAME_GROUP = 0;
     private static final int EVENTS_GROUP = 1;
     private static final int  ABOUT_GROUP = 2;
+
     private final Context mContext;
+    private EditText mUserName;
 
     public SettingsAdapter(Context context){
         this.mContext = context;
@@ -33,7 +40,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter{
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return 4;
+        return 1;
     }
 
     @Override
@@ -113,8 +120,8 @@ public class SettingsAdapter extends BaseExpandableListAdapter{
         }
         switch (childType) {
             case EDITTEXT_CHILD_TYPE_0:
-                EditText item = (EditText) convertView.findViewById(R.id.user_name);
-                Toast.makeText(mContext,"Input is "+item.getText().toString(),Toast.LENGTH_SHORT).show();
+                mUserName = (EditText) convertView.findViewById(R.id.user_name);
+                Toast.makeText(mContext,"Input is "+mUserName.getText().toString(),Toast.LENGTH_SHORT).show();
                 break;
             case RV_CHILD_TYPE_1:
                 //Define how to render the data on the CHILD_TYPE_2 layout
@@ -124,10 +131,16 @@ public class SettingsAdapter extends BaseExpandableListAdapter{
             case TEXT_CHILD_TYPE_2:
                 //Define how to render the data on the CHILD_TYPE_3 layout
                 TextView item3 = (TextView) convertView.findViewById(R.id.textView);
-                item3.setText(Resources.getSystem().getString(R.string.aboutme));
                 break;
         }
-
+        if(mUserName!=null){
+            if (mUserName.getText().toString().length() > 1) {
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString(SEND_USERNAME, mUserName.getText().toString());
+                editor.apply();
+            }
+        }
         return convertView;
     }
 
@@ -178,7 +191,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter{
 
     @Override
     public int getChildTypeCount() {
-        return super.getChildTypeCount();
+        return 3;
     }
 
     @Override
