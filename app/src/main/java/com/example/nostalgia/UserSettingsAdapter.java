@@ -6,8 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.text.InputType;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,11 +142,7 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
                 addCustomEvent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String newEvent = createEventDialogBox();
-                        TextView mTextView = new TextView(mContext);
-                        mTextView.setText(newEvent);
-                        LinearLayout mLLayout = (LinearLayout) finalConvertView.findViewById(R.id.settings_events);
-                        mLLayout.addView(mTextView);
+                        getAndSetNewEvent(finalConvertView);
                     }
                 });
                 break;
@@ -153,6 +151,12 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
                 TextView item3 = (TextView) convertView.findViewById(R.id.textView);
                 break;
         }
+        putNewEventGlobal();
+
+        return convertView;
+    }
+
+    private void putNewEventGlobal() {
         if(mUserName!=null){
             if (mUserName.getText().toString().length() > 1) {
                 SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -161,8 +165,8 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
                 editor.apply();
             }
         }
-        return convertView;
     }
+
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
@@ -219,7 +223,8 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
         return super.getGroupTypeCount();
     }
 
-    private String createEventDialogBox() {
+    private void getAndSetNewEvent(View finalConvertView) {
+        final String[] toBeReturnedEvent = new String[1];
         AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(mContext);
         inputEventDialog.setTitle("New Custom Event");
         final EditText input = new EditText(mContext);
@@ -229,6 +234,9 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
         inputEventDialog.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 saveNewEvent(input);
+                toBeReturnedEvent[0] = input.getText().toString();
+                if(toBeReturnedEvent[0].length()>1)
+                    addNewEvent(toBeReturnedEvent[0], finalConvertView);
                 dialog.dismiss();
             }
         });
@@ -238,7 +246,32 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
             }
         }).create();
         inputEventDialog.show();
-        return input.getText().toString();
+    }
+    private void addNewEvent(String newEvent, View finalConvertView) {
+        TextView mTextView = newTextAppearanceSettings(newEvent);
+        LinearLayout mLLayout = (LinearLayout) finalConvertView.findViewById(R.id.settings_events);
+        mLLayout.addView(mTextView);
+    }
+
+    private TextView newTextAppearanceSettings(String newEvent) {
+        TextView mTextView = new TextView(mContext);
+        mTextView.setText(newEvent);
+        mTextView.setTextColor(mContext.getResources().getColor(R.color.white));
+        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
+        mTextView.setTypeface(null, Typeface.BOLD);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(pixelFromDP(8f),pixelFromDP(32f),0,0);
+        mTextView.setLayoutParams(params);
+        return mTextView;
+    }
+    public int pixelFromDP(float dip) {
+        Resources r = mContext.getResources();
+        float px = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dip,
+                r.getDisplayMetrics()
+        );
+        return (int) px;
     }
 
     private void saveNewEvent(EditText input) {
