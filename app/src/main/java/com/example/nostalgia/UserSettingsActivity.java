@@ -2,23 +2,19 @@ package com.example.nostalgia;
 
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.nostalgia.SettingsAdapter;
-import java.util.LinkedList;
-import java.util.List;
+
 
 /**
  * Setup of allowing users to change their name or their event preferences.
  */
 public class UserSettingsActivity extends AppCompatActivity {
     private EditText mUsername;
-    private ListView mListView;
-    private SettingsAdapter mSettingsAdapter;
+    private ExpandableListView mListView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,8 +22,8 @@ public class UserSettingsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.settings));
         setContentView(R.layout.settings_all);
         mListView = (ExpandableListView) findViewById(R.id.expandable_listview);
-        mSettingsAdapter = new SettingsAdapter(this);
-        mListView.setAdapter((ListAdapter) mSettingsAdapter);
+        SettingsAdapter mSettingsAdapter = new SettingsAdapter(this);
+        mListView.setAdapter((ExpandableListAdapter) mSettingsAdapter);
     }
 
 }

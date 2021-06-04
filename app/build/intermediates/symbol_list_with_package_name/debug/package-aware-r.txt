@@ -1891,10 +1891,12 @@ id endToStart
 id enterAlways
 id enterAlwaysCollapsed
 id entername_text
+id eventListView
 id event_preferences
 id events
 id exitUntilCollapsed
 id expand_activities_button
+id expandable_listview
 id expanded_menu
 id fade
 id festival
@@ -1915,6 +1917,7 @@ id graph
 id graph_wrap
 id group_divider
 id grouping
+id groupnames
 id groups
 id guideline
 id hangouts
@@ -1932,7 +1935,6 @@ id image
 id info
 id intro
 id intro2
-id intro_settings
 id invisible
 id inward
 id italic
@@ -2339,7 +2341,11 @@ layout photogallery_item
 layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
-layout settings
+layout settings_all
+layout settings_event
+layout settings_groupnames
+layout settings_myself
+layout settings_username
 layout support_simple_spinner_dropdown_item
 layout test_action_chip
 layout test_chip_zero_corner_radius

@@ -7,10 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ListAdapter;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-public class SettingsAdapter extends BaseExpandableListAdapter {
+public class SettingsAdapter extends BaseExpandableListAdapter{
 
     private static final int TEXT_CHILD_TYPE_1 = 0;
     private static final int EDITTEXT_CHILD_TYPE_2 = 1;
@@ -56,6 +57,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
     public long getChildId(int groupPosition, int childPosition) {
         return childPosition;
     }
+
 
     @Override
     public boolean hasStableIds() {
