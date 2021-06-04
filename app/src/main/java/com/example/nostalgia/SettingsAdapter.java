@@ -1,14 +1,10 @@
 package com.example.nostalgia;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ListAdapter;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 public class SettingsAdapter extends BaseExpandableListAdapter{
@@ -35,7 +31,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter{
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return 4;
+        return 3;
     }
 
     @Override
@@ -72,12 +68,12 @@ public class SettingsAdapter extends BaseExpandableListAdapter{
         if (convertView == null || convertView.getTag() != groupType) {
             switch (groupType) {
                 case USERNAME_GROUP :
-                    convertView = inflater.inflate(R.layout.settings_username, null);
+                    convertView = inflater.inflate(R.layout.settings_myself, null);
                     break;
                 case EVENTS_GROUP:
                     // Am using the same layout cause am lasy and don't wanna create other ones but theses should be different
                     // or the group type shouldnt exist
-                    convertView = inflater.inflate(R.layout.settings_event, null);
+                    convertView = inflater.inflate(R.layout.settings_myself, null);
                     break;
                 case ABOUT_GROUP:
                     // Am using the same layout cause am lasy and don't wanna create other ones but theses should be different
@@ -97,15 +93,15 @@ public class SettingsAdapter extends BaseExpandableListAdapter{
         switch (groupType) {
             case USERNAME_GROUP :
                 TextView item = (TextView) convertView.findViewById(R.id.textView);
-                item.setText("Texview of USERNAME_GROUP in getGroupView");
+                item.setText("Change name (getGroupView)");
                 break;
             case EVENTS_GROUP:
                 TextView item2 = (TextView) convertView.findViewById(R.id.textView);
-                item2.setText("texview of EVENTS_GROUP in getGroupView");
+                item2.setText("Add/Delete Events (getGroupView)");
                 break;
             case ABOUT_GROUP:
                 TextView item3 = (TextView) convertView.findViewById(R.id.textView);
-                item3.setText("texview of ABOUT_GROUP in getGroupView");
+                item3.setText("About me (getGroupView)");
                 break;
             default:
                 // Maybe we should implement a default behaviour but it should be ok we know there are 3 group types right?

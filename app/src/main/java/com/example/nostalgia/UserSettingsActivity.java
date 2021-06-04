@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,15 @@ public class UserSettingsActivity extends AppCompatActivity {
         mListView = (ExpandableListView) findViewById(R.id.expandable_listview);
         SettingsAdapter mSettingsAdapter = new SettingsAdapter(this);
         mListView.setAdapter((ExpandableListAdapter) mSettingsAdapter);
+
+        mListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                Toast.makeText(getApplicationContext()," Expanded",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

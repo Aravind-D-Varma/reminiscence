@@ -77,5 +77,6 @@ com/example/nostalgia/MemoryListActivity.java
  com.example.nostalgia.MemoryListActivity$2
 com/example/nostalgia/UserSettingsActivity.java
  com.example.nostalgia.UserSettingsActivity
+ com.example.nostalgia.UserSettingsActivity$1
 com/example/nostalgia/SettingsAdapter.java
  com.example.nostalgia.SettingsAdapter
