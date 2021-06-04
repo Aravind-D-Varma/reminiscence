@@ -5,6 +5,8 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -18,13 +20,16 @@ import java.util.List;
  */
 public class UserSettingsActivity extends AppCompatActivity {
     private EditText mUsername;
+    private ListView mListView;
     private List<String> allEvents = new LinkedList<String>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle(getString(R.string.settings));
-        setContentView(R.layout.settings);
+        setContentView(R.layout.all_settings);
+        mListView = (ExpandableListView) findViewById(R.id.expandable_listview);
+        SettingsAdapter settingsAdapter = new SettingsAdapter();
         gettingUserPreferences();
     }
 
