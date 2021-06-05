@@ -1,17 +1,12 @@
 package com.example.nostalgia;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,10 +16,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Contains the Navigation Drawer containing a welcome text, event lists and settings to change these two.<br>
@@ -121,24 +112,17 @@ public class MemoryListActivity extends SingleFragmentActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        addEventToMenu("newEvent");
-        switch (item.getItemId()){
-            case R.id.all:
-                return filterOnSelected(R.string.all);
-            case R.id.studentlife:
-                return filterOnSelected(R.string.studentlife);
-            case R.id.work:
-                return filterOnSelected(R.string.work);
-            case R.id.home:
-                return filterOnSelected(R.string.home);
-            case R.id.birthday:
-                return filterOnSelected(R.string.birthday);
-            case R.id.hangouts:
-                return filterOnSelected(R.string.hangouts);
-            case R.id.festival:
-                return filterOnSelected(R.string.festival);
-            case R.id.user_settings:
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String[] currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "").split(",");
+
+        if(item.getItemId() == R.id.all )
+            return filterOnSelected(R.string.all);
+        else if (item.getItemId() == R.id.user_settings )
                 goToSettings();
+        else {
+            MLfragment.eventFilter(currentEvents[item.getItemId()]);
+            onBackPressed();
+            return true;
         }
         return true;
     }
@@ -147,14 +131,16 @@ public class MemoryListActivity extends SingleFragmentActivity
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String[] currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "").split(",");
         mNavigationView.getMenu().removeGroup(R.id.events);
+        int menuID = 0;
         for (String string:currentEvents){
-            addEventToMenu(string);
+            addEventToMenu(string,menuID);
+            menuID++;
         }
     }
 
-    private void addEventToMenu(String newEvent) {
+    private void addEventToMenu(String newEvent, int menuID) {
         Menu eventMenu = mNavigationView.getMenu();
-        eventMenu.add(R.id.events,Menu.NONE,1,newEvent).setIcon(R.drawable.hangouts_white);
+        eventMenu.add(R.id.events,menuID,1,newEvent).setIcon(R.drawable.hangouts_white);
     }
 
     private void goToSettings() {
@@ -207,5 +193,4 @@ public class MemoryListActivity extends SingleFragmentActivity
         String userevents = preferences.getString(Introduction.APPLICABLE_EVENTS, "");
         applicableEvents = userevents.split(",");
     }
-
 }

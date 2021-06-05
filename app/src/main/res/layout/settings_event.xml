@@ -33,7 +33,9 @@
     android:orientation="vertical"
     android:id="@+id/settings_events"
     android:clickable="false"
-    android:layout_marginTop="20dp">
+    android:layout_marginTop="40dp"
+    android:divider="@color/white"
+    android:showDividers="middle">
 
 </LinearLayout>
 

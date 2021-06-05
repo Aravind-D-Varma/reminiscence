@@ -1,3 +1,6 @@
+com/example/nostalgia/UserSettingsActivity.java
+ com.example.nostalgia.UserSettingsActivity
+ com.example.nostalgia.UserSettingsActivity$1
 com/example/nostalgia/UserSettingsAdapter.java
  com.example.nostalgia.UserSettingsAdapter
  com.example.nostalgia.UserSettingsAdapter$1
@@ -6,9 +9,6 @@ com/example/nostalgia/UserSettingsAdapter.java
  com.example.nostalgia.UserSettingsAdapter$4
  com.example.nostalgia.UserSettingsAdapter$5
  com.example.nostalgia.UserSettingsAdapter$6
-com/example/nostalgia/UserSettingsActivity.java
- com.example.nostalgia.UserSettingsActivity
- com.example.nostalgia.UserSettingsActivity$1
 com/example/nostalgia/MyGalleryAdapter.java
  com.example.nostalgia.MyGalleryAdapter
  com.example.nostalgia.MyGalleryAdapter$MyImageViewHolder
