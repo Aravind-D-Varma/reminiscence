@@ -65,8 +65,8 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
     }
 
     /**
-     * Extracts a list of Uris from a memory's filePaths.<br>
-     * A Uri is null at those positions where the filepath is an image.
+     * Extracts a list of Uris to set video from a memory's filePaths.<br>
+     * The Uri is null at those positions where the filepath is an image.
      *
      * @param photoPaths
      * @return
