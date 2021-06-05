@@ -1738,6 +1738,7 @@ id SHOW_PROGRESS
 id SYM
 id TOP_END
 id TOP_START
+id aboutme_text
 id accelerate
 id accessibility_action_clickable_span
 id accessibility_custom_action_0
@@ -2152,7 +2153,6 @@ id textSpacerNoButtons
 id textSpacerNoTitle
 id textStart
 id textTop
-id textView
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon

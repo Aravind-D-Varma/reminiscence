@@ -131,35 +131,16 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
         switch (childType) {
             case EDITTEXT_CHILD_TYPE_0:
                 mUserName = (EditText) convertView.findViewById(R.id.user_name);
-                Toast.makeText(mContext,"Input is "+mUserName.getText().toString(),Toast.LENGTH_SHORT).show();
                 break;
             case RV_CHILD_TYPE_1:
                 View finalConvertView = convertView;
                 showCurrentEvents(finalConvertView);
                 addEventButtonSetup(finalConvertView);
                 LinearLayout mLLayout = (LinearLayout) convertView.findViewById(R.id.settings_events);
-                final boolean[] hasLongClicked = {false};
-                for(int i = 0; i < mLLayout.getChildCount(); i++){
-                    View child = mLLayout.getChildAt(i);
-                    int finalI = i;
-                    child.setOnLongClickListener(new View.OnLongClickListener(){
-                        @Override
-                        public boolean onLongClick(View v) {
-                            askDiscardEvent(mLLayout, finalI).show();
-                            hasLongClicked[0] = true;
-                            return false;
-                        }
-                    });
-                    if(hasLongClicked[0]) {
-                        i = 0;
-                        int m = mLLayout.getChildCount();
-                        m = m;
-                    }
-                }
+
+                discardEvents(mLLayout);
                 break;
             case TEXT_CHILD_TYPE_2:
-                //Define how to render the data on the CHILD_TYPE_3 layout
-                TextView item3 = (TextView) convertView.findViewById(R.id.textView);
                 break;
         }
         putNewNameGlobal();
@@ -167,10 +148,27 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
         return convertView;
     }
 
+    private void discardEvents(LinearLayout mLLayout) {
+        for(int i = 0; i < mLLayout.getChildCount(); i++){
+            View child = mLLayout.getChildAt(i);
+            int finalI = i;
+            child.setOnLongClickListener(new View.OnLongClickListener(){
+                @Override
+                public boolean onLongClick(View v) {
+                    askDiscardEvent(mLLayout, finalI).show();
+                    discardEvents(mLLayout);
+                    return false;
+                }
+            });
+        }
+    }
+
     private void showCurrentEvents(View finalConvertView) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = prefs.edit();
         String[] currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "").split(",");
+        LinearLayout mLL = (LinearLayout) finalConvertView.findViewById(R.id.settings_events);
+        mLL.removeAllViews();
         for (String string:currentEvents){
             addNewEvent(string,finalConvertView);
         }
