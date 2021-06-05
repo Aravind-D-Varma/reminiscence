@@ -63,11 +63,10 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Hooksup user interface and updates data for a selected Memory depending on user actions.
+ * Viewing of data. Updates data and responds to user interaction for a selected Memory depending on user actions.
  */
 public class MemoryFragment extends Fragment {
 
-    // region Declarations
     public static final String ARG_memory_ID = "memory_id";
 
     private Memory mMemory;
@@ -98,10 +97,17 @@ public class MemoryFragment extends Fragment {
     private final String CURRENT_PHOTOS_ABSENT = "Current Memory Photos";
     public static final String CURRENT_MEMORY = "Current Memory";
 
+    /**
+     * Used to update UI for a given fragment. Function depends on whether device is tablet or phone.
+     * @see MemoryListActivity#onMemoryUpdated(Memory)
+     */
     public interface Callbacks{
         void onMemoryUpdated(Memory Memory);
     }
-
+    private void updateMemory() {
+        MemoryLab.get(getActivity()).updateMemory(mMemory);
+        mCallbacks.onMemoryUpdated(mMemory);
+    }
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -113,13 +119,14 @@ public class MemoryFragment extends Fragment {
         super.onDetach();
         mCallbacks = null;
     }
-    private void updateMemory() {
-        MemoryLab.get(getActivity()).updateMemory(mMemory);
-        mCallbacks.onMemoryUpdated(mMemory);
-    }
 
-    //endregion
-    //region Fragment+Arguments
+    /**
+     * Create a new MemoryFragment either from MemoryListActivity or MemoryPagerActivity depending on Tablet/Phone
+     * @see MemoryListActivity#onMemorySelected(Memory)
+     * @see MemoryPagerActivity
+     * @param memoryId
+     * @return
+     */
     public static MemoryFragment newInstance(UUID memoryId){
         Bundle args = new Bundle();
         args.putSerializable(ARG_memory_ID, memoryId);
@@ -128,10 +135,7 @@ public class MemoryFragment extends Fragment {
 
         return fragment;
     }
-    //endregion
-    //region OverRidden methods
 
-    //region onCreate
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,6 +167,12 @@ public class MemoryFragment extends Fragment {
         inflater.inflate(R.menu.fragment_memory, menu);
     }
 
+    /**
+     * @see #getUrisFromPaths()
+     * @see #shareMemoryIntent(ArrayList)
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -209,7 +219,6 @@ public class MemoryFragment extends Fragment {
         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         return share;
     }
-    //endregion
 
     @Nullable
     @Override
@@ -585,6 +594,14 @@ public class MemoryFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    /**
+     * @see #getSpecificContentUri(Uri)
+     * @see #getSelectionArgumentsForCursor(Uri)
+     * @see #isImage(Uri)
+     * @see #getMimeType(Uri)
+     * @param mMediaUri
+     * @return String containing filepath
+     */
     private String getMediaPathFromUri(Uri mMediaUri) {
 
         String imageEncoded;
