@@ -204,6 +204,7 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
                 .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         mLLayout.removeViewAt(finalI);
+                        updateCurrentEvents(finalI);
                         dialog.dismiss();
                     }
                 })
@@ -214,6 +215,16 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
                 })
                 .create();
         return discardMemoryDialogBox;
+    }
+
+    private void updateCurrentEvents(int finalI) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        SharedPreferences.Editor editor = prefs.edit();
+        String currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "");
+        List<String> wordList = new ArrayList<String>(Arrays.asList(currentEvents.split(",")));
+        wordList.remove(finalI);
+        editor.putString(Introduction.APPLICABLE_EVENTS,stringListToString(wordList));
+        editor.apply();
     }
 
     @Override
@@ -304,7 +315,7 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
         TextView mTextView = new TextView(mContext);
         mTextView.setText(newEvent);
         mTextView.setTextColor(mContext.getResources().getColor(R.color.white));
-        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f);
+        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f);
         mTextView.setTypeface(null, Typeface.BOLD);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(pixelFromDP(8f),pixelFromDP(32f),0,0);

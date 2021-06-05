@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="25dp">
 
     <TextView
         android:id="@+id/settings_text"
@@ -12,7 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:text="Long press to delete an event"
-        android:textColor="@color/white"
+        android:textColor="@color/grey"
         android:textSize="14sp"
         android:textStyle="bold"
         android:layout_alignParentTop="true" />
@@ -31,7 +32,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:id="@+id/settings_events"
-    android:clickable="false">
+    android:clickable="false"
+    android:layout_marginTop="20dp">
 
 </LinearLayout>
 
