@@ -9,9 +9,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 /**
- * Setup of allowing users to change their name or their event preferences.
+ * Setup of allowing users to change their name, their event preferences and tells about me.
  */
 public class UserSettingsActivity extends AppCompatActivity {
     private EditText mUsername;
@@ -25,15 +24,5 @@ public class UserSettingsActivity extends AppCompatActivity {
         mListView = (ExpandableListView) findViewById(R.id.expandable_listview);
         UserSettingsAdapter mUserSettingsAdapter = new UserSettingsAdapter(this);
         mListView.setAdapter((ExpandableListAdapter) mUserSettingsAdapter);
-
-        mListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext()," Expanded",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
     }
-
 }

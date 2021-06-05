@@ -36,6 +36,10 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
     }
     //endregion
 
+    /**
+     * Starts this ViewPager activity from MemoryListActivity if device is phone
+     * @see MemoryListActivity#onMemorySelected(Memory)
+     */
     public static Intent newIntent(Context packageContext, UUID memoryId){
         Intent intent = new Intent(packageContext, MemoryPagerActivity.class);
         intent.putExtra(EXTRA_memory_ID, memoryId);
