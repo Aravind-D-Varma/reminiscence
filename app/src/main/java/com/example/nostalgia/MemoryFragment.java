@@ -555,7 +555,7 @@ public class MemoryFragment extends Fragment {
             }
         });
     }
-    public AlertDialog AskDiscardMemory(){
+    private AlertDialog AskDiscardMemory(){
         AlertDialog discardMemoryDialogBox = new AlertDialog.Builder(getContext())
                 .setTitle("Discard Memory")
                 .setMessage("You did not set a title or chosen any photos. Do you want to discard this memory?")

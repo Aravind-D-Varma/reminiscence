@@ -3,7 +3,6 @@ package com.example.nostalgia;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -17,7 +16,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.example.nostalgia.Introduction.SEND_USERNAME;
-import static com.example.nostalgia.MemoryFragment.CURRENT_MEMORY;
 
 public class UserSettingsAdapter extends BaseExpandableListAdapter{
 
@@ -93,15 +90,15 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
         switch (groupType) {
             case USERNAME_GROUP :
                 TextView item = (TextView) convertView.findViewById(R.id.groupnames);
-                item.setText("Change name (getGroupView)");
+                item.setText("Change name: ");
                 break;
             case EVENTS_GROUP:
                 TextView item2 = (TextView) convertView.findViewById(R.id.groupnames);
-                item2.setText("Add/Delete Events (getGroupView)");
+                item2.setText("Add/Delete Events");
                 break;
             case ABOUT_GROUP:
                 TextView item3 = (TextView) convertView.findViewById(R.id.groupnames);
-                item3.setText("About me (getGroupView)");
+                item3.setText("About me");
                 break;
         }
         return convertView;
@@ -137,26 +134,59 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
                 Toast.makeText(mContext,"Input is "+mUserName.getText().toString(),Toast.LENGTH_SHORT).show();
                 break;
             case RV_CHILD_TYPE_1:
-                Button addCustomEvent = (Button) convertView.findViewById(R.id.add_custom_event);
                 View finalConvertView = convertView;
-                addCustomEvent.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getAndSetNewEvent(finalConvertView);
+                showCurrentEvents(finalConvertView);
+                addEventButtonSetup(finalConvertView);
+                LinearLayout mLLayout = (LinearLayout) convertView.findViewById(R.id.settings_events);
+                final boolean[] hasLongClicked = {false};
+                for(int i = 0; i < mLLayout.getChildCount(); i++){
+                    View child = mLLayout.getChildAt(i);
+                    int finalI = i;
+                    child.setOnLongClickListener(new View.OnLongClickListener(){
+                        @Override
+                        public boolean onLongClick(View v) {
+                            askDiscardEvent(mLLayout, finalI).show();
+                            hasLongClicked[0] = true;
+                            return false;
+                        }
+                    });
+                    if(hasLongClicked[0]) {
+                        i = 0;
+                        int m = mLLayout.getChildCount();
+                        m = m;
                     }
-                });
+                }
                 break;
             case TEXT_CHILD_TYPE_2:
                 //Define how to render the data on the CHILD_TYPE_3 layout
                 TextView item3 = (TextView) convertView.findViewById(R.id.textView);
                 break;
         }
-        putNewEventGlobal();
+        putNewNameGlobal();
 
         return convertView;
     }
 
-    private void putNewEventGlobal() {
+    private void showCurrentEvents(View finalConvertView) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        SharedPreferences.Editor editor = prefs.edit();
+        String[] currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "").split(",");
+        for (String string:currentEvents){
+            addNewEvent(string,finalConvertView);
+        }
+    }
+
+    private void addEventButtonSetup(View finalConvertView) {
+        Button addCustomEvent = (Button) finalConvertView.findViewById(R.id.add_custom_event);
+        addCustomEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAndSetNewEvent(finalConvertView);
+            }
+        });
+    }
+
+    private void putNewNameGlobal() {
         if(mUserName!=null){
             if (mUserName.getText().toString().length() > 1) {
                 SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -166,7 +196,25 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
             }
         }
     }
-
+    private AlertDialog askDiscardEvent(ViewGroup mLLayout, int finalI){
+        AlertDialog discardMemoryDialogBox = new AlertDialog.Builder(mContext)
+                .setTitle("Discard Event")
+                .setMessage("Do you want to discard this event?")
+                .setIcon(android.R.drawable.ic_menu_delete)
+                .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        mLLayout.removeViewAt(finalI);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        return discardMemoryDialogBox;
+    }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
@@ -252,12 +300,11 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
         LinearLayout mLLayout = (LinearLayout) finalConvertView.findViewById(R.id.settings_events);
         mLLayout.addView(mTextView);
     }
-
     private TextView newTextAppearanceSettings(String newEvent) {
         TextView mTextView = new TextView(mContext);
         mTextView.setText(newEvent);
         mTextView.setTextColor(mContext.getResources().getColor(R.color.white));
-        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
+        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f);
         mTextView.setTypeface(null, Typeface.BOLD);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(pixelFromDP(8f),pixelFromDP(32f),0,0);
@@ -273,7 +320,6 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
         );
         return (int) px;
     }
-
     private void saveNewEvent(EditText input) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = prefs.edit();
@@ -283,7 +329,6 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
         editor.putString(Introduction.APPLICABLE_EVENTS,stringListToString(wordList));
         editor.apply();
     }
-
     private String stringListToString(List<String> allEvents) {
         String[] applicableEvents = {};
         applicableEvents = allEvents.toArray(applicableEvents);

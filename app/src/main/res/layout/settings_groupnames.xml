@@ -12,6 +12,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="@string/changeName"
+        android:textSize="24dp"
         android:textColor="@color/white"
         android:textStyle="bold" />
 

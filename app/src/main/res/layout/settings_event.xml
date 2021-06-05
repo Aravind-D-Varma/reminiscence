@@ -30,68 +30,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:id="@+id/settings_events">
-    <TextView
-        android:id="@+id/settings_studentlife"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="52dp"
-        android:text="@string/studentlife"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-    <TextView
-        android:id="@+id/settings_work"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/work"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-    <TextView
-        android:id="@+id/settings_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/home"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
-    <TextView
-        android:id="@+id/settings_birthdays"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/birthday"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
-    <TextView
-        android:id="@+id/settings_hangouts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/hangouts"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/settings_festivals"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/festival"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+    android:id="@+id/settings_events"
+    android:clickable="false">
 
 </LinearLayout>
 

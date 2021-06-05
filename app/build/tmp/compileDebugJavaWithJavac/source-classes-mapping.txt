@@ -81,3 +81,6 @@ com/example/nostalgia/UserSettingsAdapter.java
  com.example.nostalgia.UserSettingsAdapter$1
  com.example.nostalgia.UserSettingsAdapter$2
  com.example.nostalgia.UserSettingsAdapter$3
+ com.example.nostalgia.UserSettingsAdapter$4
+ com.example.nostalgia.UserSettingsAdapter$5
+ com.example.nostalgia.UserSettingsAdapter$6
