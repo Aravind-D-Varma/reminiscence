@@ -25,6 +25,9 @@ import java.util.List;
 
 import static com.example.nostalgia.Introduction.SEND_USERNAME;
 
+/**
+ * Sets up Adapter for user settings
+ */
 public class UserSettingsAdapter extends BaseExpandableListAdapter{
 
     private static final int EDITTEXT_CHILD_TYPE_0 = 0;
@@ -104,6 +107,14 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
         return convertView;
     }
 
+    /**
+     * Responsible for inflating different layouts depending on what user selected.
+     * Saves user name, adds/deletes event and shows about me
+     * @see #putNewNameGlobal()
+     * @see #showCurrentEvents(View)
+     * @see #addEventButtonSetup(View)
+     * @see #discardEvents(LinearLayout)
+     */
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
@@ -137,7 +148,6 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
                 showCurrentEvents(finalConvertView);
                 addEventButtonSetup(finalConvertView);
                 LinearLayout mLLayout = (LinearLayout) convertView.findViewById(R.id.settings_events);
-
                 discardEvents(mLLayout);
                 break;
             case TEXT_CHILD_TYPE_2:
@@ -148,6 +158,10 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
         return convertView;
     }
 
+    /**
+     * Gives option to delete an event if user long presses it. Refreshes if user deletes an event.
+     * @see #askDiscardEvent(ViewGroup, int)
+     */
     private void discardEvents(LinearLayout mLLayout) {
         for(int i = 0; i < mLLayout.getChildCount(); i++){
             View child = mLLayout.getChildAt(i);
@@ -163,6 +177,12 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
         }
     }
 
+    /**
+     *Clears all views and adds new item to the Linear Layout
+     * @see #addNewEvent(String, View)
+     * @see #newTextAppearanceSettings(String)
+     * @see #pixelFromDP(float)
+     */
     private void showCurrentEvents(View finalConvertView) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = prefs.edit();
@@ -174,6 +194,12 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
         }
     }
 
+    /**
+     * @see #getAndSetNewEvent(View)
+     * @see #addNewEvent(String, View)
+     * @see #saveNewEvent(EditText)
+     * @param finalConvertView
+     */
     private void addEventButtonSetup(View finalConvertView) {
         Button addCustomEvent = (Button) finalConvertView.findViewById(R.id.add_custom_event);
         addCustomEvent.setOnClickListener(new View.OnClickListener() {
@@ -194,6 +220,11 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
             }
         }
     }
+
+    /**
+     * Asks to dicard event. If yes, removes it and updates the list
+     * @see #updateCurrentEvents(int)
+     */
     private AlertDialog askDiscardEvent(ViewGroup mLLayout, int finalI){
         AlertDialog discardMemoryDialogBox = new AlertDialog.Builder(mContext)
                 .setTitle("Discard Event")

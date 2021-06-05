@@ -135,6 +135,9 @@ public class MemoryListFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Binds RecyclerView to its adapter
+     */
     public void updateUIForTablet() {
         MemoryLab memoryLab = MemoryLab.get(getActivity());
         List<Memory> Memorys = memoryLab.getMemories();
@@ -186,6 +189,7 @@ public class MemoryListFragment extends Fragment {
      * Deletes null memories to avoid crashes
      * Deletes all those memories whose title is null and does not contain any photos.
      * Then, hooks up the adapter and RecyclerView.
+     * @see #noTitleAndPhotos(List, int)
      */
     public void updateUI() {
 

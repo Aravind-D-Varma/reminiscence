@@ -84,14 +84,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/event_preferences"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/conclusion"
             android:orientation="vertical"
             android:gravity="center"

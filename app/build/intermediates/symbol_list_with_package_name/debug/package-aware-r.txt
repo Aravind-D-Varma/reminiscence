@@ -1892,7 +1892,6 @@ id endToStart
 id enterAlways
 id enterAlwaysCollapsed
 id entername_text
-id event_preferences
 id events
 id exitUntilCollapsed
 id expand_activities_button

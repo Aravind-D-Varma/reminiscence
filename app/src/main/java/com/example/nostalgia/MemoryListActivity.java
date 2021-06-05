@@ -57,6 +57,12 @@ public class MemoryListActivity extends SingleFragmentActivity
         return R.layout.activity_masterdetail;
     }
 
+    /**
+     * If device is phone, start new intent when a memory is selected. Else, show it on right part of Tablet
+     * Declared from MemoryListFragment only.
+     * @see MemoryListFragment
+     * @param memory
+     */
     @Override
     public void onMemorySelected(Memory memory) {
         if(findViewById(R.id.detail_fragment_container) == null){
@@ -127,20 +133,20 @@ public class MemoryListActivity extends SingleFragmentActivity
         return true;
     }
 
+    /**
+     * Gets a string array of applicable Events and adds them as menu items.
+     * These items have ids starting from zero and increment till size of array.
+     */
     private void showMenuEvents() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String[] currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "").split(",");
-        mNavigationView.getMenu().removeGroup(R.id.events);
+        Menu eventMenu = mNavigationView.getMenu();
+        eventMenu.removeGroup(R.id.events);
         int menuID = 0;
         for (String string:currentEvents){
-            addEventToMenu(string,menuID);
+            eventMenu.add(R.id.events,menuID,1,string).setIcon(R.drawable.hangouts_white);
             menuID++;
         }
-    }
-
-    private void addEventToMenu(String newEvent, int menuID) {
-        Menu eventMenu = mNavigationView.getMenu();
-        eventMenu.add(R.id.events,menuID,1,newEvent).setIcon(R.drawable.hangouts_white);
     }
 
     private void goToSettings() {

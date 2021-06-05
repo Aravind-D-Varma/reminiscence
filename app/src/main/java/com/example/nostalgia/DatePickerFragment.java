@@ -18,16 +18,17 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * Setup of the getting and saving date from the date dialog in memory
+ * Setup of getting and saving date from the date dialog in memory
  */
 public class DatePickerFragment extends DialogFragment {
 
-    //region Declarations
     private static final String ARG_DATE = "date_id";
     public static final String EXTRA_DATE = "com.example.criminalintent.date";
     private DatePicker mDatePicker;
-    //endregion
-    //region DatePickerFragment argument bundle
+    
+    /**
+    * Creating a new DialogFragment from MemoryFragment. Gets memory's date if present, else current date as default and shows in dialog.
+    */
     public static DatePickerFragment newInstance(Date date){
         Bundle args = new Bundle();
         args.putSerializable(ARG_DATE, date);
@@ -67,6 +68,9 @@ public class DatePickerFragment extends DialogFragment {
                 }).create();
     }
 
+    /**
+     * When OK has been clicked, go back to memory with new date (if selected, else default is current date)
+     */
     private void sendResult(int resultCode, Date date){
         if(getTargetFragment() == null)
             return;

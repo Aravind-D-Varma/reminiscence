@@ -22,12 +22,13 @@ import java.util.Date;
  */
 public class TimePickerFragment extends DialogFragment {
 
-    //region Declarations
     private static final String ARG_TIME = "dialog_time_arg";
     public static final String EXTRA_TIME = "dialog_time_extra";
     private TimePicker mTimePicker;
-    //
-
+    
+    /**
+    * Creating a new DialogFragment from MemoryFragment. Gets memory's time if present, else current time as default and shows in dialog.
+    */
     public static TimePickerFragment newInstance( Date date){
         Bundle args = new Bundle();
         args.putSerializable(ARG_TIME, date);
@@ -74,7 +75,9 @@ public class TimePickerFragment extends DialogFragment {
                 })
                 .create();
     }
-
+    /**
+     * When OK has been clicked, go back to memory with new time (if selected, else default is current time)
+     */
     private void sendResult(int resultCode, Date time){
         if(getTargetFragment() == null)
             return;

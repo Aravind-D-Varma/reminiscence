@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Stores the title, details, event, date & time, and concatenated filePaths of photos and videos seperated by ",".
+ * Stores the title, details, event type, date & time, and concatenated filePaths of photos and videos seperated by ",".
  */
 public class Memory {
 

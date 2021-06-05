@@ -1,14 +1,22 @@
-com/example/nostalgia/UserSettingsActivity.java
- com.example.nostalgia.UserSettingsActivity
- com.example.nostalgia.UserSettingsActivity$1
-com/example/nostalgia/UserSettingsAdapter.java
- com.example.nostalgia.UserSettingsAdapter
- com.example.nostalgia.UserSettingsAdapter$1
- com.example.nostalgia.UserSettingsAdapter$2
- com.example.nostalgia.UserSettingsAdapter$3
- com.example.nostalgia.UserSettingsAdapter$4
- com.example.nostalgia.UserSettingsAdapter$5
- com.example.nostalgia.UserSettingsAdapter$6
+com/example/nostalgia/MemoryListActivity.java
+ com.example.nostalgia.MemoryListActivity
+com/example/nostalgia/MemoryFragment.java
+ com.example.nostalgia.MemoryFragment
+ com.example.nostalgia.MemoryFragment$1
+ com.example.nostalgia.MemoryFragment$10
+ com.example.nostalgia.MemoryFragment$11
+ com.example.nostalgia.MemoryFragment$12
+ com.example.nostalgia.MemoryFragment$13
+ com.example.nostalgia.MemoryFragment$14
+ com.example.nostalgia.MemoryFragment$2
+ com.example.nostalgia.MemoryFragment$3
+ com.example.nostalgia.MemoryFragment$4
+ com.example.nostalgia.MemoryFragment$5
+ com.example.nostalgia.MemoryFragment$6
+ com.example.nostalgia.MemoryFragment$7
+ com.example.nostalgia.MemoryFragment$8
+ com.example.nostalgia.MemoryFragment$9
+ com.example.nostalgia.MemoryFragment$Callbacks
 com/example/nostalgia/MyGalleryAdapter.java
  com.example.nostalgia.MyGalleryAdapter
  com.example.nostalgia.MyGalleryAdapter$MyImageViewHolder
@@ -30,13 +38,19 @@ com/example/nostalgia/GalleryViewPagerAdapter.java
  com.example.nostalgia.GalleryViewPagerAdapter$2
 com/example/nostalgia/database/MemoryCursorWrapper.java
  com.example.nostalgia.database.MemoryCursorWrapper
+com/example/nostalgia/UserSettingsAdapter.java
+ com.example.nostalgia.UserSettingsAdapter
+ com.example.nostalgia.UserSettingsAdapter$1
+ com.example.nostalgia.UserSettingsAdapter$2
+ com.example.nostalgia.UserSettingsAdapter$3
+ com.example.nostalgia.UserSettingsAdapter$4
+ com.example.nostalgia.UserSettingsAdapter$5
+ com.example.nostalgia.UserSettingsAdapter$6
+com/example/nostalgia/MemoryLab.java
+ com.example.nostalgia.MemoryLab
 com/example/nostalgia/TimePickerFragment.java
  com.example.nostalgia.TimePickerFragment
  com.example.nostalgia.TimePickerFragment$1
-com/example/nostalgia/MemoryLab.java
- com.example.nostalgia.MemoryLab
-com/example/nostalgia/Launcherclass.java
- com.example.nostalgia.Launcherclass
 com/example/nostalgia/ItemClickSupport.java
  com.example.nostalgia.ItemClickSupport
  com.example.nostalgia.ItemClickSupport$1
@@ -59,28 +73,13 @@ com/example/nostalgia/MemoryPagerActivity.java
  com.example.nostalgia.MemoryPagerActivity$1
 com/example/nostalgia/Memory.java
  com.example.nostalgia.Memory
-com/example/nostalgia/MemoryListActivity.java
- com.example.nostalgia.MemoryListActivity
+com/example/nostalgia/UserSettingsActivity.java
+ com.example.nostalgia.UserSettingsActivity
+ com.example.nostalgia.UserSettingsActivity$1
+com/example/nostalgia/Launcherclass.java
+ com.example.nostalgia.Launcherclass
 com/example/nostalgia/Introduction.java
  com.example.nostalgia.Introduction
 com/example/nostalgia/IntroPagerAdapter.java
  com.example.nostalgia.IntroPagerAdapter
  com.example.nostalgia.IntroPagerAdapter$1
- com.example.nostalgia.IntroPagerAdapter$2
-com/example/nostalgia/MemoryFragment.java
- com.example.nostalgia.MemoryFragment
- com.example.nostalgia.MemoryFragment$1
- com.example.nostalgia.MemoryFragment$10
- com.example.nostalgia.MemoryFragment$11
- com.example.nostalgia.MemoryFragment$12
- com.example.nostalgia.MemoryFragment$13
- com.example.nostalgia.MemoryFragment$14
- com.example.nostalgia.MemoryFragment$2
- com.example.nostalgia.MemoryFragment$3
- com.example.nostalgia.MemoryFragment$4
- com.example.nostalgia.MemoryFragment$5
- com.example.nostalgia.MemoryFragment$6
- com.example.nostalgia.MemoryFragment$7
- com.example.nostalgia.MemoryFragment$8
- com.example.nostalgia.MemoryFragment$9
- com.example.nostalgia.MemoryFragment$Callbacks

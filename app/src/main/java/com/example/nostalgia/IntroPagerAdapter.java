@@ -58,15 +58,10 @@ public class IntroPagerAdapter extends PagerAdapter {
                 return welcomeLL;
             case 1:
                 LinearLayout questionsLL = getLayoutAndFix(v, R.id.questions);
-                setUserName(questionsLL);
+                mUsername = (EditText) questionsLL.findViewById(R.id.user_name);
                 container.addView(questionsLL);
                 return questionsLL;
             case 2:
-                LinearLayout eventsLL = getLayoutAndFix(v, R.id.event_preferences);
-                container.addView(eventsLL);
-                return eventsLL;
-
-            case 3:
                 LinearLayout conclusionLL = getLayoutAndFix(v, R.id.conclusion);
                 setContinuebutton(conclusionLL);
                 container.addView(conclusionLL);
@@ -92,7 +87,7 @@ public class IntroPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 
     @Override
@@ -109,21 +104,6 @@ public class IntroPagerAdapter extends PagerAdapter {
         TextView welcome = (TextView) welcomLL.findViewById(textViewID);
         a.setStartOffset(delay);
         welcome.startAnimation(a);
-    }
-
-    private void setUserName(View v) {
-        mUsername = (EditText) v.findViewById(R.id.user_name);
-        mUsername.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
     }
 
     private void setContinuebutton(View v) {
@@ -180,8 +160,6 @@ public class IntroPagerAdapter extends PagerAdapter {
         return allEvents;
     }
 
-
-
     private String stringListToString(List<String> allEvents) {
         String[] applicableEvents = {};
         applicableEvents = allEvents.toArray(applicableEvents);
@@ -191,7 +169,5 @@ public class IntroPagerAdapter extends PagerAdapter {
 
         return combinedEvents.toString();
     }
-
-
 
 }

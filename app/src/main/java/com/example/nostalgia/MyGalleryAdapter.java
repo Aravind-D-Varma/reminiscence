@@ -35,6 +35,10 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
     private static final int IMAGE = 0;
     private static final int VIDEO = 1;
 
+    /**
+     * Upon initialisation, sets video uris and image bitmaps from a memory's videopaths.
+     * @param mediaPaths
+     */
     public MyGalleryAdapter(Context applicationContext, String[] mediaPaths) {
         this.context = applicationContext;
         this.mediaPaths = mediaPaths;
@@ -55,6 +59,12 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
         }
         return null;
     }
+
+    /**
+     * Binds video or image depending on what type of item it is.
+     * If video, sets video using its Uri. If image, uses Bitmap to set from filepath.
+     * @see #getItemViewType(int)
+     */
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch(holder.getItemViewType()){
@@ -80,7 +90,14 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return photos.size();
     }
-    
+
+    /**
+     * @see #isImageFile(String)
+     * @see #isVideoFile(String)
+     * @see #getMimeType(String)
+     * @see #getExtension(String)
+     * @return constant depending on whether item is video or image.
+     */
     @Override
     public int getItemViewType(int position) {
        if(isVideoFile(mediaPaths[position]))
