@@ -315,7 +315,7 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
         mTextView.setTextColor(mContext.getResources().getColor(R.color.white));
         mTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f);
         mTextView.setTypeface(null, Typeface.BOLD);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(pixelFromDP(8f),pixelFromDP(32f),0,0);
         mTextView.setLayoutParams(params);
         return mTextView;

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,7 +56,6 @@ public class MemoryListActivity extends SingleFragmentActivity
         return getResources().getBoolean(R.bool.isTablet);
     }
 
-
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, MemoryListActivity.class);
         return intent;
@@ -84,19 +84,15 @@ public class MemoryListActivity extends SingleFragmentActivity
         return MLfragment;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getGeneralInfo();
-        String newEvent = getIntent().getStringExtra("Added Event");
         mNavigationView = findViewById(R.id.navigation_view);
 
         setHeaderWelcomeUser(userName);
-
+        showMenuEvents();
         drawerAndToggle();
-        if(newEvent!=null)
-            addEventToMenu(newEvent);
     }
 
     @Override
@@ -104,8 +100,7 @@ public class MemoryListActivity extends SingleFragmentActivity
         super.onResume();
         getGeneralInfo();
         setHeaderWelcomeUser(userName);
-
-
+        showMenuEvents();
     }
 
     private void setHeaderWelcomeUser(String userName) {
@@ -114,13 +109,11 @@ public class MemoryListActivity extends SingleFragmentActivity
         mHeaderText.setText("Welcome "+userName);
     }
 
-
     private void drawerAndToggle() {
         mDrawerLayout = findViewById(R.id.main_drawerLayout);
         mNavigationView.setNavigationItemSelectedListener(this);
         mABDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.NDopen, R.string.NDclose);
         mDrawerLayout.addDrawerListener(mABDrawerToggle);
-        mDrawerLayout.openDrawer(GravityCompat.START);
         mABDrawerToggle.setDrawerIndicatorEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mABDrawerToggle.syncState();
@@ -146,9 +139,17 @@ public class MemoryListActivity extends SingleFragmentActivity
                 return filterOnSelected(R.string.festival);
             case R.id.user_settings:
                 goToSettings();
-
         }
         return true;
+    }
+
+    private void showMenuEvents() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String[] currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "").split(",");
+        mNavigationView.getMenu().removeGroup(R.id.events);
+        for (String string:currentEvents){
+            addEventToMenu(string);
+        }
     }
 
     private void addEventToMenu(String newEvent) {
