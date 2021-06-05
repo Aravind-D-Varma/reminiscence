@@ -17,9 +17,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Contains the Navigation Drawer containing a welcome text, event lists and settings to change these two.<br>
  * Displays the list of memories user has added in its own fragment MemoryListFragment
@@ -50,7 +47,6 @@ public class MemoryListActivity extends SingleFragmentActivity
         return getResources().getBoolean(R.bool.isTablet);
     }
 
-
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, MemoryListActivity.class);
         return intent;
@@ -79,49 +75,29 @@ public class MemoryListActivity extends SingleFragmentActivity
         return MLfragment;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getGeneralInfo();
-
         mNavigationView = findViewById(R.id.navigation_view);
 
-        headerAndMenuSetting(userName, applicableEvents);
-
+        setHeaderWelcomeUser(userName);
+        showMenuEvents();
         drawerAndToggle();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         getGeneralInfo();
-        headerAndMenuSetting(userName, applicableEvents);
+        setHeaderWelcomeUser(userName);
+        showMenuEvents();
     }
 
-    private void headerAndMenuSetting(String userName, String[] availableEvents) {
-
-        setWelcomeUser(userName);
-        setMenuItemVisibility(availableEvents);
-
-    }
-
-    private void setWelcomeUser(String userName) {
+    private void setHeaderWelcomeUser(String userName) {
         View headerView = mNavigationView.getHeaderView(0);
         mHeaderText = headerView.findViewById(R.id.nav_header_textView);
         mHeaderText.setText("Welcome "+userName);
-    }
-
-    private void setMenuItemVisibility(String[] availableEvents) {
-        Menu menuNav = mNavigationView.getMenu();
-        List<String> list = Arrays.asList(availableEvents);
-        MenuItem studentmenuItem = menuNav.findItem(R.id.studentlife);
-        studentmenuItem.setVisible(list.contains(getString(R.string.studentlife)));
-        MenuItem workmenuItem = menuNav.findItem(R.id.work);
-        workmenuItem.setVisible(list.contains(getString(R.string.work)));
-        MenuItem religionmenuItem = menuNav.findItem(R.id.festival);
-        religionmenuItem.setVisible(list.contains(getString(R.string.festival)));
     }
 
     private void drawerAndToggle() {
@@ -136,26 +112,40 @@ public class MemoryListActivity extends SingleFragmentActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.all:
-                return filterOnSelected(R.string.all);
-            case R.id.studentlife:
-                return filterOnSelected(R.string.studentlife);
-            case R.id.work:
-                return filterOnSelected(R.string.work);
-            case R.id.home:
-                return filterOnSelected(R.string.home);
-            case R.id.birthday:
-                return filterOnSelected(R.string.birthday);
-            case R.id.hangouts:
-                return filterOnSelected(R.string.hangouts);
-            case R.id.festival:
-                return filterOnSelected(R.string.festival);
-            case R.id.user_settings:
-                Intent intent = new Intent(MemoryListActivity.this, UserSettingsActivity.class);
-                startActivity(intent);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String[] currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "").split(",");
+
+        if(item.getItemId() == R.id.all )
+            return filterOnSelected(R.string.all);
+        else if (item.getItemId() == R.id.user_settings )
+                goToSettings();
+        else {
+            MLfragment.eventFilter(currentEvents[item.getItemId()]);
+            onBackPressed();
+            return true;
         }
         return true;
+    }
+
+    private void showMenuEvents() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String[] currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "").split(",");
+        mNavigationView.getMenu().removeGroup(R.id.events);
+        int menuID = 0;
+        for (String string:currentEvents){
+            addEventToMenu(string,menuID);
+            menuID++;
+        }
+    }
+
+    private void addEventToMenu(String newEvent, int menuID) {
+        Menu eventMenu = mNavigationView.getMenu();
+        eventMenu.add(R.id.events,menuID,1,newEvent).setIcon(R.drawable.hangouts_white);
+    }
+
+    private void goToSettings() {
+        Intent intent = new Intent(MemoryListActivity.this, UserSettingsActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -203,5 +193,4 @@ public class MemoryListActivity extends SingleFragmentActivity
         String userevents = preferences.getString(Introduction.APPLICABLE_EVENTS, "");
         applicableEvents = userevents.split(",");
     }
-
 }

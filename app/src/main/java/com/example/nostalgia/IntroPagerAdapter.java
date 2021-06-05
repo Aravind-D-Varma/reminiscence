@@ -39,7 +39,6 @@ public class IntroPagerAdapter extends PagerAdapter {
 
     Context mContext;
     private EditText mUsername;
-    private RadioButton mUserYesStudent,mUserYesWorked, mUserYesReligion;
     public IntroPagerAdapter(Context context){
         this.mContext = context;
     }
@@ -64,7 +63,6 @@ public class IntroPagerAdapter extends PagerAdapter {
                 return questionsLL;
             case 2:
                 LinearLayout eventsLL = getLayoutAndFix(v, R.id.event_preferences);
-                setRadioButtons(eventsLL);
                 container.addView(eventsLL);
                 return eventsLL;
 
@@ -113,12 +111,6 @@ public class IntroPagerAdapter extends PagerAdapter {
         welcome.startAnimation(a);
     }
 
-    private void setRadioButtons(View v) {
-        mUserYesStudent = (RadioButton) v.findViewById(R.id.yes_student);
-        mUserYesWorked = (RadioButton) v.findViewById(R.id.yes_worked);
-        mUserYesReligion = (RadioButton) v.findViewById(R.id.yes_religious);
-    }
-
     private void setUserName(View v) {
         mUsername = (EditText) v.findViewById(R.id.user_name);
         mUsername.addTextChangedListener(new TextWatcher() {
@@ -160,7 +152,6 @@ public class IntroPagerAdapter extends PagerAdapter {
         List<String> allEvents = new LinkedList<String>();
 
         allEvents = initializeListOfEvents(allEvents);
-        allEvents = cutUnecessaryEvents(allEvents);
 
         return stringListToString(allEvents);
     }
@@ -189,16 +180,7 @@ public class IntroPagerAdapter extends PagerAdapter {
         return allEvents;
     }
 
-    private List<String> cutUnecessaryEvents(List<String> allEvents) {
-        if (!mUserYesStudent.isChecked())
-            allEvents.remove("Student Life");
-        if (!mUserYesWorked.isChecked())
-            allEvents.remove("Work");
-        if (!mUserYesReligion.isChecked())
-            allEvents.remove("Festivals");
 
-        return allEvents;
-    }
 
     private String stringListToString(List<String> allEvents) {
         String[] applicableEvents = {};

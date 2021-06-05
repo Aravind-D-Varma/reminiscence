@@ -1635,6 +1635,7 @@ drawable abc_textfield_search_activated_mtrl_alpha
 drawable abc_textfield_search_default_mtrl_alpha
 drawable abc_textfield_search_material
 drawable abc_vector_test
+drawable add_events_white
 drawable add_white
 drawable all_white
 drawable avd_hide_password
@@ -1737,6 +1738,7 @@ id SHOW_PROGRESS
 id SYM
 id TOP_END
 id TOP_START
+id aboutme_text
 id accelerate
 id accessibility_action_clickable_span
 id accessibility_custom_action_0
@@ -1791,6 +1793,7 @@ id action_text
 id actions
 id activity_chooser_view_content
 id add
+id add_custom_event
 id addphotos
 id alertTitle
 id aligned
@@ -1893,6 +1896,7 @@ id event_preferences
 id events
 id exitUntilCollapsed
 id expand_activities_button
+id expandable_listview
 id expanded_menu
 id fade
 id festival
@@ -1913,6 +1917,7 @@ id graph
 id graph_wrap
 id group_divider
 id grouping
+id groupnames
 id groups
 id guideline
 id hangouts
@@ -1930,7 +1935,6 @@ id image
 id info
 id intro
 id intro2
-id intro_settings
 id invisible
 id inward
 id italic
@@ -2029,9 +2033,6 @@ id no_memory_button
 id no_memory_text
 id none
 id normal
-id not_religious
-id not_student
-id not_worked
 id notification_background
 id notification_main_column
 id notification_main_column_container
@@ -2064,7 +2065,6 @@ id questions
 id radio
 id ratio
 id rectangles
-id religion_text
 id reverseSawtooth
 id right
 id rightToLeft
@@ -2096,6 +2096,8 @@ id select_dialog_listview
 id selected
 id selection_type
 id settings
+id settings_events
+id settings_text
 id share_memory
 id shortcut
 id showCustom
@@ -2127,7 +2129,6 @@ id staticLayout
 id staticPostLayout
 id stop
 id stretch
-id student_text
 id studentlife
 id submenuarrow
 id submit_area
@@ -2152,10 +2153,6 @@ id textSpacerNoButtons
 id textSpacerNoTitle
 id textStart
 id textTop
-id textView
-id textView2
-id textView3
-id textView5
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon
@@ -2188,10 +2185,7 @@ id unlabeled
 id up
 id useLogo
 id user_name
-id user_religious
 id user_settings
-id user_student
-id user_working
 id view_offset_helper
 id visible
 id welcome
@@ -2199,12 +2193,8 @@ id welcome_text
 id withText
 id withinBounds
 id work
-id work_text
 id wrap
 id wrap_content
-id yes_religious
-id yes_student
-id yes_worked
 id zero_corner_chip
 id zoomed_imageView
 id zoomed_videoView
@@ -2352,7 +2342,11 @@ layout photogallery_item
 layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
-layout settings
+layout settings_all
+layout settings_event
+layout settings_groupnames
+layout settings_myself
+layout settings_username
 layout support_simple_spinner_dropdown_item
 layout test_action_chip
 layout test_chip_zero_corner_radius
@@ -2407,6 +2401,8 @@ string abc_searchview_description_voice
 string abc_shareactionprovider_share_with
 string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
+string aboutme
+string add_custom_event
 string all
 string app_name
 string appbar_scrolling_view_behavior
