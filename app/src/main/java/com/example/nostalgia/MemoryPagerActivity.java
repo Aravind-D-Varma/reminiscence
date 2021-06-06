@@ -1,12 +1,9 @@
 package com.example.nostalgia;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,7 +48,7 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memory_pager);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String combinedEvents= preferences.getString(Introduction.APPLICABLE_EVENTS, "");
+        String combinedEvents= preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "");
         applicableEvents = combinedEvents.split(",");
         mViewPager = (ViewPager) findViewById(R.id.memory_view_pager);
         mMemories = MemoryLab.get(this).getMemories();

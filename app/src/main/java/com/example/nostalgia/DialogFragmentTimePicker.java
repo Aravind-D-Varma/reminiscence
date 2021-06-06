@@ -20,7 +20,7 @@ import java.util.Date;
 /**
  * Setup of the getting and saving time from the time dialog in memory
  */
-public class TimePickerFragment extends DialogFragment {
+public class DialogFragmentTimePicker extends DialogFragment {
 
     private static final String ARG_TIME = "dialog_time_arg";
     public static final String EXTRA_TIME = "dialog_time_extra";
@@ -29,10 +29,10 @@ public class TimePickerFragment extends DialogFragment {
     /**
     * Creating a new DialogFragment from MemoryFragment. Gets memory's time if present, else current time as default and shows in dialog.
     */
-    public static TimePickerFragment newInstance( Date date){
+    public static DialogFragmentTimePicker newInstance(Date date){
         Bundle args = new Bundle();
         args.putSerializable(ARG_TIME, date);
-        TimePickerFragment tp = new TimePickerFragment();
+        DialogFragmentTimePicker tp = new DialogFragmentTimePicker();
         tp.setArguments(args);
 
         return tp;

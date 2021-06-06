@@ -1,13 +1,9 @@
 package com.example.nostalgia;
-import android.animation.Animator;
-import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +12,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,20 +20,20 @@ import androidx.viewpager.widget.PagerAdapter;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.example.nostalgia.Introduction.APPLICABLE_EVENTS;
-import static com.example.nostalgia.Introduction.FIRST_TIME;
-import static com.example.nostalgia.Introduction.SEND_USERNAME;
+import static com.example.nostalgia.IntroductionActivity.APPLICABLE_EVENTS;
+import static com.example.nostalgia.IntroductionActivity.FIRST_TIME;
+import static com.example.nostalgia.IntroductionActivity.SEND_USERNAME;
 
 /**
- * Setup of Introduction viewPager adapter. Shows layout depending on where the user is at.<br>
+ * Setup of IntroductionActivity viewPager adapter. Shows layout depending on where the user is at.<br>
  * Finally, gets and saves user details.
  */
 
-public class IntroPagerAdapter extends PagerAdapter {
+public class PagerAdapterIntroduction extends PagerAdapter {
 
     Context mContext;
     private EditText mUsername;
-    public IntroPagerAdapter(Context context){
+    public PagerAdapterIntroduction(Context context){
         this.mContext = context;
     }
 

@@ -20,7 +20,7 @@ import java.util.GregorianCalendar;
 /**
  * Setup of getting and saving date from the date dialog in memory
  */
-public class DatePickerFragment extends DialogFragment {
+public class DialogFragmentDatePicker extends DialogFragment {
 
     private static final String ARG_DATE = "date_id";
     public static final String EXTRA_DATE = "com.example.criminalintent.date";
@@ -29,10 +29,10 @@ public class DatePickerFragment extends DialogFragment {
     /**
     * Creating a new DialogFragment from MemoryFragment. Gets memory's date if present, else current date as default and shows in dialog.
     */
-    public static DatePickerFragment newInstance(Date date){
+    public static DialogFragmentDatePicker newInstance(Date date){
         Bundle args = new Bundle();
         args.putSerializable(ARG_DATE, date);
-        DatePickerFragment dpfragment = new DatePickerFragment();
+        DialogFragmentDatePicker dpfragment = new DialogFragmentDatePicker();
         dpfragment.setArguments(args);
 
         return dpfragment;

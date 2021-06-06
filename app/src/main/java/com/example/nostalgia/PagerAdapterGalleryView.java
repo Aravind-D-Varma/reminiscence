@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
@@ -21,13 +20,13 @@ import java.util.List;
 
 /**
  * Sets up the zoom in and swipe left/right of photos and videos in a memory.
- * Uses isVideoFile(filepath) method of MyGalleryAdapter.
+ * Uses isVideoFile(filepath) method of RecyclerViewAdapterGallery.
  */
-public class GalleryViewPagerAdapter extends PagerAdapter {
+public class PagerAdapterGalleryView extends PagerAdapter {
     private Context mContext;
     private String[] individualMediaPaths;
 
-    public GalleryViewPagerAdapter(Context context, String[] mediaPaths) {
+    public PagerAdapterGalleryView(Context context, String[] mediaPaths) {
         mContext = context;
         individualMediaPaths = mediaPaths;
     }
@@ -36,7 +35,7 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View v;
-        if(MyGalleryAdapter.isVideoFile(individualMediaPaths[position])){
+        if(RecyclerViewAdapterGallery.isVideoFile(individualMediaPaths[position])){
             v = inflater.inflate(R.layout.zoom_video,container,false);
             VideoView vv = v.findViewById(R.id.zoomed_videoView);
             setVideo(position, v, vv);
@@ -75,7 +74,7 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
 
         List<Uri> videos = new ArrayList<Uri>();
         for (int i = 0; i < photoPaths.length; i++) {
-            if(MyGalleryAdapter.isVideoFile(photoPaths[i])) {
+            if(RecyclerViewAdapterGallery.isVideoFile(photoPaths[i])) {
                 Uri uriVid = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", new File(photoPaths[i]));
                 videos.add(uriVid);
             }

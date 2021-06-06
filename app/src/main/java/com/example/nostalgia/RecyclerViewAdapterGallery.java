@@ -26,7 +26,7 @@ import java.util.List;
  * Gets images from Bitmap decoder and videos from Uris
  */
 
-public class MyGalleryAdapter extends RecyclerView.Adapter {
+public class RecyclerViewAdapterGallery extends RecyclerView.Adapter {
 
     Context context;
     List<Bitmap> photos;
@@ -39,7 +39,7 @@ public class MyGalleryAdapter extends RecyclerView.Adapter {
      * Upon initialisation, sets video uris and image bitmaps from a memory's videopaths.
      * @param mediaPaths
      */
-    public MyGalleryAdapter(Context applicationContext, String[] mediaPaths) {
+    public RecyclerViewAdapterGallery(Context applicationContext, String[] mediaPaths) {
         this.context = applicationContext;
         this.mediaPaths = mediaPaths;
         this.photos = getPhotoBitmaps(mediaPaths);
