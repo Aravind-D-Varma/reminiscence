@@ -33,7 +33,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +44,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -279,7 +277,7 @@ public class MemoryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
-                DatePickerFragment dp = DatePickerFragment.newInstance(mMemory.getDate());
+                DialogFragmentDatePicker dp = DialogFragmentDatePicker.newInstance(mMemory.getDate());
                 dp.setTargetFragment(MemoryFragment.this, REQUEST_DATE);
                 dp.show(manager, DIALOG_DATE);
             }
@@ -292,7 +290,7 @@ public class MemoryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
-                TimePickerFragment tp = TimePickerFragment.newInstance(mMemory.getDate());
+                DialogFragmentTimePicker tp = DialogFragmentTimePicker.newInstance(mMemory.getDate());
                 tp.setTargetFragment(MemoryFragment.this, REQUEST_TIME);
                 tp.show(fm, DIALOG_TIME);
             }
@@ -347,13 +345,13 @@ public class MemoryFragment extends Fragment {
             setMediaRecyclerView();
         }
         catch (NullPointerException e){}
-        ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+        ItemClickRecyclerView.addTo(mPhotoRecyclerView).setOnItemClickListener(new ItemClickRecyclerView.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 displayMediaZoomedIn(position);
             }
         });
-        ItemClickSupport.addTo(mPhotoRecyclerView).setOnItemLongClickListener(new ItemClickSupport.OnItemLongClickListener() {
+        ItemClickRecyclerView.addTo(mPhotoRecyclerView).setOnItemLongClickListener(new ItemClickRecyclerView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClicked(RecyclerView recyclerView, int position, View v) {
                 String[] filePaths = individualFilePaths(mMemory);
@@ -384,7 +382,7 @@ public class MemoryFragment extends Fragment {
         Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.activity_memory_pager);
-        GalleryViewPagerAdapter adapter = new GalleryViewPagerAdapter(getActivity(),individualFilePaths(mMemory));
+        PagerAdapterGalleryView adapter = new PagerAdapterGalleryView(getActivity(),individualFilePaths(mMemory));
         ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
         pager.setAdapter(adapter);
         pager.setCurrentItem(position);
@@ -435,13 +433,13 @@ public class MemoryFragment extends Fragment {
         if(resultCode!= Activity.RESULT_OK)
             return;
         if(requestCode == REQUEST_DATE){
-           Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+           Date date = (Date) data.getSerializableExtra(DialogFragmentDatePicker.EXTRA_DATE);
             mMemory.setDate(date);
             updateMemory();
             updateDate();
         }
         else if (requestCode == REQUEST_TIME){
-            Date time = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
+            Date time = (Date) data.getSerializableExtra(DialogFragmentTimePicker.EXTRA_TIME);
             mMemory.setDate(time);
             updateMemory();
             updateTime();
@@ -646,7 +644,7 @@ public class MemoryFragment extends Fragment {
     }
 
     private void setMediaRecyclerView() {
-        MyGalleryAdapter adapter = new MyGalleryAdapter(getContext(), individualFilePaths(mMemory));
+        RecyclerViewAdapterGallery adapter = new RecyclerViewAdapterGallery(getContext(), individualFilePaths(mMemory));
         mPhotoRecyclerView.setAdapter(adapter);
     }
 

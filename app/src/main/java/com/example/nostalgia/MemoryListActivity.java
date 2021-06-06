@@ -119,7 +119,7 @@ public class MemoryListActivity extends SingleFragmentActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String[] currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "").split(",");
+        String[] currentEvents = prefs.getString(IntroductionActivity.APPLICABLE_EVENTS, "").split(",");
 
         if(item.getItemId() == R.id.all )
             return filterOnSelected(R.string.all);
@@ -139,7 +139,7 @@ public class MemoryListActivity extends SingleFragmentActivity
      */
     private void showMenuEvents() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String[] currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "").split(",");
+        String[] currentEvents = prefs.getString(IntroductionActivity.APPLICABLE_EVENTS, "").split(",");
         Menu eventMenu = mNavigationView.getMenu();
         eventMenu.removeGroup(R.id.events);
         int menuID = 0;
@@ -195,8 +195,8 @@ public class MemoryListActivity extends SingleFragmentActivity
 
     private void getGeneralInfo() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        userName = preferences.getString(Introduction.SEND_USERNAME,"");
-        String userevents = preferences.getString(Introduction.APPLICABLE_EVENTS, "");
+        userName = preferences.getString(IntroductionActivity.SEND_USERNAME,"");
+        String userevents = preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "");
         applicableEvents = userevents.split(",");
     }
 }

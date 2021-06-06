@@ -35,7 +35,8 @@
     android:clickable="false"
     android:layout_marginTop="40dp"
     android:divider="@color/white"
-    android:showDividers="middle">
+    android:showDividers="middle"
+    android:dividerPadding="3dp">
 
 </LinearLayout>
 

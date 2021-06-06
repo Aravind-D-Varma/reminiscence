@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * Used for zooming in photo/video when clicked and an option to delete if long clicked.<br>
  * Copied from stackOverflow code. Inner workings not yet understood.
  */
-public class ItemClickSupport {
+public class ItemClickRecyclerView {
         private final RecyclerView mRecyclerView;
         private OnItemClickListener mOnItemClickListener;
         private OnItemLongClickListener mOnItemLongClickListener;
@@ -50,39 +50,39 @@ public class ItemClickSupport {
             }
         };
 
-        private ItemClickSupport(RecyclerView recyclerView) {
+        private ItemClickRecyclerView(RecyclerView recyclerView) {
             mRecyclerView = recyclerView;
             // the ID must be declared in XML, used to avoid
-            // replacing the ItemClickSupport without removing
+            // replacing the ItemClickRecyclerView without removing
             // the old one from the RecyclerView
             mRecyclerView.setTag(R.id.item_click_support, this);
             mRecyclerView.addOnChildAttachStateChangeListener(mAttachListener);
         }
 
-        public static ItemClickSupport addTo(RecyclerView view) {
-            // if there's already an ItemClickSupport attached
+        public static ItemClickRecyclerView addTo(RecyclerView view) {
+            // if there's already an ItemClickRecyclerView attached
             // to this RecyclerView do not replace it, use it
-            ItemClickSupport support = (ItemClickSupport) view.getTag(R.id.item_click_support);
+            ItemClickRecyclerView support = (ItemClickRecyclerView) view.getTag(R.id.item_click_support);
             if (support == null) {
-                support = new ItemClickSupport(view);
+                support = new ItemClickRecyclerView(view);
             }
             return support;
         }
 
-        public static ItemClickSupport removeFrom(RecyclerView view) {
-            ItemClickSupport support = (ItemClickSupport) view.getTag(R.id.item_click_support);
+        public static ItemClickRecyclerView removeFrom(RecyclerView view) {
+            ItemClickRecyclerView support = (ItemClickRecyclerView) view.getTag(R.id.item_click_support);
             if (support != null) {
                 support.detach(view);
             }
             return support;
         }
 
-        public ItemClickSupport setOnItemClickListener(OnItemClickListener listener) {
+        public ItemClickRecyclerView setOnItemClickListener(OnItemClickListener listener) {
             mOnItemClickListener = listener;
             return this;
         }
 
-        public ItemClickSupport setOnItemLongClickListener(OnItemLongClickListener listener) {
+        public ItemClickRecyclerView setOnItemLongClickListener(OnItemLongClickListener listener) {
             mOnItemLongClickListener = listener;
             return this;
         }

@@ -17,13 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.example.nostalgia.Introduction.SEND_USERNAME;
+import static com.example.nostalgia.IntroductionActivity.SEND_USERNAME;
 
 /**
  * Sets up Adapter for user settings
@@ -102,6 +101,7 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
             case ABOUT_GROUP:
                 TextView item3 = (TextView) convertView.findViewById(R.id.groupnames);
                 item3.setText("About me");
+                item3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f);
                 break;
         }
         return convertView;
@@ -133,12 +133,14 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
                     break;
                 case TEXT_CHILD_TYPE_2:
                     convertView = inflater.inflate(R.layout.settings_myself, null);
+                    convertView.setPadding(0,40,0,0);
                     convertView.setTag(childType);
                     break;
                 default:
                     break;
             }
         }
+
         switch (childType) {
             case EDITTEXT_CHILD_TYPE_0:
                 mUserName = (EditText) convertView.findViewById(R.id.user_name);
@@ -186,7 +188,7 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
     private void showCurrentEvents(View finalConvertView) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = prefs.edit();
-        String[] currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "").split(",");
+        String[] currentEvents = prefs.getString(IntroductionActivity.APPLICABLE_EVENTS, "").split(",");
         LinearLayout mLL = (LinearLayout) finalConvertView.findViewById(R.id.settings_events);
         mLL.removeAllViews();
         for (String string:currentEvents){
@@ -228,7 +230,7 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
     private AlertDialog askDiscardEvent(ViewGroup mLLayout, int finalI){
         AlertDialog discardMemoryDialogBox = new AlertDialog.Builder(mContext)
                 .setTitle("Discard Event")
-                .setMessage("Do you want to discard this event?")
+                .setMessage("Do you want to discard this event: "+"?")
                 .setIcon(android.R.drawable.ic_menu_delete)
                 .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -249,10 +251,10 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
     private void updateCurrentEvents(int finalI) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = prefs.edit();
-        String currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "");
+        String currentEvents = prefs.getString(IntroductionActivity.APPLICABLE_EVENTS, "");
         List<String> wordList = new ArrayList<String>(Arrays.asList(currentEvents.split(",")));
         wordList.remove(finalI);
-        editor.putString(Introduction.APPLICABLE_EVENTS,stringListToString(wordList));
+        editor.putString(IntroductionActivity.APPLICABLE_EVENTS,stringListToString(wordList));
         editor.apply();
     }
 
@@ -363,10 +365,10 @@ public class UserSettingsAdapter extends BaseExpandableListAdapter{
     private void saveNewEvent(EditText input) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = prefs.edit();
-        String currentEvents = prefs.getString(Introduction.APPLICABLE_EVENTS, "");
+        String currentEvents = prefs.getString(IntroductionActivity.APPLICABLE_EVENTS, "");
         List<String> wordList = new ArrayList<String>(Arrays.asList(currentEvents.split(",")));
         wordList.add(input.getText().toString());
-        editor.putString(Introduction.APPLICABLE_EVENTS,stringListToString(wordList));
+        editor.putString(IntroductionActivity.APPLICABLE_EVENTS,stringListToString(wordList));
         editor.apply();
     }
     private String stringListToString(List<String> allEvents) {

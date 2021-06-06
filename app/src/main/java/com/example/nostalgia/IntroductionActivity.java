@@ -14,7 +14,7 @@ import com.google.android.material.tabs.TabLayout;
  * Creates a viewPager to show what the user sees and sets it up to its adapter.<br>
  * Uses TabLayout to show dots indicating where the user is in the viewPager.
  */
-public class Introduction extends AppCompatActivity {
+public class IntroductionActivity extends AppCompatActivity {
 
     public static final String FIRST_TIME = "firsttime";
     public static final String SEND_USERNAME= "username";
@@ -29,9 +29,9 @@ public class Introduction extends AppCompatActivity {
             Intent intent = MemoryListActivity.newIntent(getApplicationContext());
             startActivity(intent);
         } else {
-            IntroPagerAdapter introPagerAdapter = new IntroPagerAdapter(this);
+            PagerAdapterIntroduction pagerAdapterIntroduction = new PagerAdapterIntroduction(this);
             ViewPager pager = findViewById(R.id.pager);
-            pager.setAdapter(introPagerAdapter);
+            pager.setAdapter(pagerAdapterIntroduction);
             TabLayout tabLayout = findViewById(R.id.tabDots);
             tabLayout.setupWithViewPager(pager,true);
         }

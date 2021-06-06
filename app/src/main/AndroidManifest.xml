@@ -18,7 +18,7 @@
         android:fullBackupContent="false">
 
         <activity
-            android:name="com.example.nostalgia.Launcherclass"
+            android:name="com.example.nostalgia.LauncherClassActivity"
             android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,8 +26,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.nostalgia.Introduction"
-            android:parentActivityName="com.example.nostalgia.Launcherclass"
+            android:name="com.example.nostalgia.IntroductionActivity"
+            android:parentActivityName="com.example.nostalgia.LauncherClassActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
         <activity
