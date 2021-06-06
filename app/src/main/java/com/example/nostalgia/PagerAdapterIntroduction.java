@@ -145,11 +145,9 @@ public class PagerAdapterIntroduction extends PagerAdapter {
 
     private List<String> initializeListOfEvents(List<String> allEvents) {
         allEvents.add("Student Life");
-        allEvents.add("Work");
-        allEvents.add("Festivals");
         allEvents.add("Home");
         allEvents.add("Birthdays");
-        allEvents.add("Hangouts");
+        allEvents.add("Celebrations");
 
         return allEvents;
     }

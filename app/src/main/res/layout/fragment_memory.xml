@@ -152,7 +152,7 @@
             android:backgroundTint="@color/purple_700"
             android:contentDescription="@string/photo_add"
             android:elevation="20dp"
-            android:src="@drawable/add_white" />
+            android:src="@drawable/ic_menu_add" />
         <TextView
             style="?android:listSeparatorTextViewStyle"
             android:id="@+id/addphotos"

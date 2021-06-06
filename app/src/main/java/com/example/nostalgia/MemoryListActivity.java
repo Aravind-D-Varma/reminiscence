@@ -144,7 +144,7 @@ public class MemoryListActivity extends SingleFragmentActivity
         eventMenu.removeGroup(R.id.events);
         int menuID = 0;
         for (String string:currentEvents){
-            eventMenu.add(R.id.events,menuID,1,string).setIcon(R.drawable.hangouts_white);
+            eventMenu.add(R.id.events,menuID,1,string);
             menuID++;
         }
     }

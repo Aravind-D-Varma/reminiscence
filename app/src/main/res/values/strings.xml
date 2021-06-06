@@ -12,47 +12,28 @@
         <string name="Delete">Delete</string>
         <string name="no_memorys_display">There are no memories to display</string>
         <string name="no_memory_add">Add a memory?</string>
-        <string name="memory_contact_text">Choose Contact</string>
-        <string name="memory_report_text">Send Report</string>
     <plurals name="subtitle_plural">
                 <item quantity="one">%1$d memory</item>
                 <item quantity="other">%1$d memories</item>
     </plurals>
-        <string name="memory_report">%1$s! The memory was discovered on %2$s. %3$s</string>
-        <string name="memory_report_solved">The case is solved</string>
-        <string name="memory_report_unsolved">The case is not solved</string>
-        <string name="memory_report_no_suspect">there is no suspect.</string>
-        <string name="memory_report_suspect">the suspect is %s.</string>
-        <string name="memory_report_subject">CriminalIntent memory Report</string>
-        <string name="send_report">Send memory report via</string>
-        <string name="call_suspect">Call suspect</string>
-        <string name="go_to_last_memory">Last memory</string>
-        <string name="go_to_first_memory">First memory</string>
-        <string name="memory_photo_button_description">Take photo of memory scene</string>
-        <string name="memory_photo_no_image_description">memory scene photo (not set)</string>
-        <string name="memory_photo_image_description">memory scene photo (set)</string>
-        <string name="memory_details_hint">Enter memory details</string>
+    <string name="memory_photo_button_description">Take photo of memory scene</string>
+    <string name="memory_photo_no_image_description">memory scene photo (not set)</string>
+    <string name="memory_photo_image_description">memory scene photo (set)</string>
+    <string name="memory_details_hint">Enter memory details</string>
     <string name="search">Search</string>
     <string name="memory_search_hint">Search memory</string>
-    <string name="studentlife">Student Life</string>
-    <string name="work">Work</string>
-    <string name="home">Home</string>
-    <string name="birthday">Birthdays</string>
-    <string name="hangouts">Hangouts</string>
-    <string name="festival">Festivals</string>
-    <string name="NDopen">open</string>
-    <string name="NDclose">close</string>
     <string name="all">All Events</string>
     <string name="choose_photos">Choose Photos</string>
     <string name="photo_add">Add photo</string>
     <string name="welcome">Welcome!</string>
     <string name="enterName">Enter your name:</string>
-    <string name="userisstudent">Do you attend or have you attended academia (college/university/institute) as a student?</string>
-    <string name="useremployed">Are you or have you been a working professional?</string>
-    <string name="userreligion">Do you consider yourself to be a religious person?</string>
     <string name="intro">Tell a little bit about yourself!</string>
     <string name="ctd">Continue</string>
-    <string name="thanks">Thank you for sharing!</string>
+    <string name="thanks">You can add a sweet memory to your personal collection of events. Student Life, Home,
+        <br></br>Birthdays and Celebrations are examples of events which are added as default. You
+        <br></br>can discard them and add your own choice in settings
+
+        Thank you for sharing!</string>
     <string name="photos_reselection">Re-select Photos</string>
     <string name="settings">Settings</string>
     <string name="changeName">Change Name: </string>
@@ -70,6 +51,6 @@
         your reason, detailed if possible. That way, I will try to be understand and refine myself continuously.
         <br/><br/> Hope I have been helpful in some way! Have a good day!!
  </string>
-
-
+    <string name="NDopen">open</string>
+    <string name="NDclose">close</string>
 </resources>

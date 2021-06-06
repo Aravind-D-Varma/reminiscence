@@ -15,6 +15,7 @@
         android:inputType="text"
         android:imeOptions="actionDone"
         android:padding="5dp"
+        android:hint="@string/enterName"
         android:textColor="@color/white" />
 
 </LinearLayout>

@@ -51,8 +51,8 @@
 30-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:16:9-50
 31        <activity
 31-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:20:9-27:20
-32            android:name="com.example.nostalgia.Launcherclass"
-32-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:21:13-63
+32            android:name="com.example.nostalgia.LauncherClassActivity"
+32-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:21:13-71
 33            android:theme="@style/LaunchTheme" >
 33-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:22:13-47
 34            <intent-filter>
@@ -68,10 +68,10 @@
 39        </activity>
 40        <activity
 40-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:28:9-32:20
-41            android:name="com.example.nostalgia.Introduction"
-41-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:29:13-62
-42            android:parentActivityName="com.example.nostalgia.Launcherclass"
-42-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:30:13-77
+41            android:name="com.example.nostalgia.IntroductionActivity"
+41-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:29:13-70
+42            android:parentActivityName="com.example.nostalgia.LauncherClassActivity"
+42-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:30:13-85
 43            android:theme="@style/Theme.AppCompat.NoActionBar" >
 43-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:31:13-63
 44        </activity>
