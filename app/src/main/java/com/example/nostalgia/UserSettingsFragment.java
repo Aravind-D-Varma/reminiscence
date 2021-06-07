@@ -23,15 +23,18 @@ import java.util.List;
 
 import static com.example.nostalgia.IntroductionActivity.SEND_USERNAME;
 
-public class UserSettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener {
+public class UserSettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener{
 
     private PreferenceScreen mScreen;
     private PreferenceCategory mChoices;
-
+    private DropDownPreference mEvents;
+    private int calls;
 
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+
+        calls = 0;
 
         mScreen = getPreferenceManager().createPreferenceScreen(getActivity());
         setPreferenceScreen(mScreen);
@@ -51,30 +54,30 @@ public class UserSettingsFragment extends PreferenceFragmentCompat implements Pr
     }
 
     private DropDownPreference getDropDownPreference(PreferenceScreen screen) {
-        String[] userevents = getEntries();
-        String[] entryValues = getEntryValues(userevents);
 
-        DropDownPreference events = new DropDownPreference(screen.getContext());
-        events.setTitle("Events");
-        events.setSummary("Tap on event to delete it. Click Add to add a customized event");
-        events.setEntries(userevents);
-        events.setEntryValues(entryValues);
-        events.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        mEvents = new DropDownPreference(screen.getContext());
+        mEvents.setTitle("Events");
+        mEvents.setSummary("Tap on event to delete it. Click Add to add a customized event");
+        updateDropDownEvents();
+        mEvents.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                int index = events.findIndexOfValue(newValue.toString());
-                if(events.getEntries()[index].equals("Add Event"))
+                int index = mEvents.findIndexOfValue(newValue.toString());
+                if(mEvents.getEntries()[index].equals("Add Event"))
                     getAndSetNewEvent();
                 else{
-                    askDiscardEvent(index).show();
+                    if(calls == 0){
+                        calls = 1;
+                        return false;
+                    }
+                    else
+                        askDiscardEvent(index).show();
                 }
                 return true;
             }
         });
-
-        return events;
+        return mEvents;
     }
-
     private AlertDialog askDiscardEvent(int finalI){
         AlertDialog discardMemoryDialogBox = new AlertDialog.Builder(getContext())
                 .setTitle("Discard Event")
@@ -83,6 +86,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat implements Pr
                 .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         removeFromEvents(finalI);
+                        updateDropDownEvents();
                         dialog.dismiss();
                     }
                 })
@@ -94,6 +98,13 @@ public class UserSettingsFragment extends PreferenceFragmentCompat implements Pr
                 .create();
         return discardMemoryDialogBox;
     }
+    private void updateDropDownEvents() {
+        String[] userevents = getEntries();
+        String[] entryValues = getEntryValues(userevents);
+        mEvents.setEntries(userevents);
+        mEvents.setEntryValues(entryValues);
+    }
+
     private void removeFromEvents(int finalI) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = prefs.edit();
@@ -103,14 +114,12 @@ public class UserSettingsFragment extends PreferenceFragmentCompat implements Pr
         editor.putString(IntroductionActivity.APPLICABLE_EVENTS,stringListToString(wordList));
         editor.apply();
     }
-
     private String[] getEntryValues(String[] userevents) {
         List<String> stringList = new ArrayList<String>();
         for(int i = 0; i < userevents.length; i++)
             stringList.add(String.valueOf(i));
         return stringList.toArray( new String[0] );
     }
-
     private String[] getEntries() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String[] userevents = preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "").split(",");
@@ -119,7 +128,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat implements Pr
         userevents = usereventsList.toArray(userevents);
         return userevents;
     }
-
     @Override
     public boolean onPreferenceClick(Preference preference) {
         return false;
@@ -137,6 +145,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat implements Pr
 
                 if(input.getText().toString().length()>1){
                     saveNewEvent(input);
+                    updateDropDownEvents();
                 }
                 dialog.dismiss();
             }
@@ -148,10 +157,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat implements Pr
         }).create();
         inputEventDialog.show();
     }
-
-    private void addNewEvent(String s) {
-    }
-
     private void saveNewEvent(EditText input) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = prefs.edit();
@@ -170,4 +175,5 @@ public class UserSettingsFragment extends PreferenceFragmentCompat implements Pr
 
         return combinedEvents.toString();
     }
+
 }
