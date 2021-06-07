@@ -1,11 +1,11 @@
 [
     {
-        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\xml_files.xml.flat",
-        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\xml\\files.xml"
-    },
-    {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_fragment.xml.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\layout\\activity_fragment.xml"
+    },
+    {
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\xml_files.xml.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\xml\\files.xml"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_ic_menu_delete.png.flat",
@@ -78,6 +78,10 @@
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_baseline_time_white_20.png.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-hdpi\\baseline_time_white_20.png"
+    },
+    {
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\menu_edit_delete_event.xml.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\menu\\edit_delete_event.xml"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-anydpi_frontarrow_white.xml.flat",

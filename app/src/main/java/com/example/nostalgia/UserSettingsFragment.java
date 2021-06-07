@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DropDownPreference;
 import androidx.preference.EditTextPreference;
-import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
@@ -22,40 +20,43 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static com.example.nostalgia.IntroductionActivity.SEND_USERNAME;
 
 public class UserSettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener {
+
+    private PreferenceScreen mScreen;
+    private PreferenceCategory mChoices;
+
+
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
-        PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(getActivity());
-        setPreferenceScreen(screen);
+        mScreen = getPreferenceManager().createPreferenceScreen(getActivity());
+        setPreferenceScreen(mScreen);
 
-        PreferenceCategory choices = new PreferenceCategory(screen.getContext());
-        choices.setTitle("Personal Settings");
-        screen.addPreference(choices);
+        mChoices = new PreferenceCategory(mScreen.getContext());
+        mChoices.setTitle("Personal Settings");
+        mScreen.addPreference(mChoices);
 
-        EditTextPreference username = new EditTextPreference(screen.getContext());
+        EditTextPreference username = new EditTextPreference(mScreen.getContext());
         username.setKey(SEND_USERNAME);
         username.setTitle("Name");
         username.setSummary("Change your name");
-        choices.addPreference(username);
+        mChoices.addPreference(username);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String[] userevents = preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "").split(",");
-        List<String> usereventsList = new LinkedList<String>(Arrays.asList(userevents));
-        usereventsList.add("Add Event");
-        userevents = usereventsList.toArray(userevents);
-        List<String> stringList = new ArrayList<String>();
-        for(int i = 0; i < userevents.length; i++)
-            stringList.add(String.valueOf(i));
-        String[] entryValues = stringList.toArray( new String[0] );
+        DropDownPreference events = getDropDownPreference(mScreen);
+        mChoices.addPreference(events);
+    }
+
+    private DropDownPreference getDropDownPreference(PreferenceScreen screen) {
+        String[] userevents = getEntries();
+        String[] entryValues = getEntryValues(userevents);
 
         DropDownPreference events = new DropDownPreference(screen.getContext());
         events.setTitle("Events");
-        events.setSummary("Tap on event to edit/delete it. Click Add to add a customized event");
+        events.setSummary("Tap on event to delete it. Click Add to add a customized event");
         events.setEntries(userevents);
         events.setEntryValues(entryValues);
         events.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -64,20 +65,67 @@ public class UserSettingsFragment extends PreferenceFragmentCompat implements Pr
                 int index = events.findIndexOfValue(newValue.toString());
                 if(events.getEntries()[index].equals("Add Event"))
                     getAndSetNewEvent();
-                Toast.makeText(getContext(), events.getEntries()[index]+" clicked", Toast.LENGTH_LONG).show();
+                else{
+                    askDiscardEvent(index).show();
+                }
                 return true;
             }
         });
-        choices.addPreference(events);
+
+        return events;
+    }
+
+    private AlertDialog askDiscardEvent(int finalI){
+        AlertDialog discardMemoryDialogBox = new AlertDialog.Builder(getContext())
+                .setTitle("Discard Event")
+                .setMessage("Do you want to discard this event?")
+                .setIcon(android.R.drawable.ic_menu_delete)
+                .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        removeFromEvents(finalI);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        return discardMemoryDialogBox;
+    }
+    private void removeFromEvents(int finalI) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        String currentEvents = prefs.getString(IntroductionActivity.APPLICABLE_EVENTS, "");
+        List<String> wordList = new ArrayList<String>(Arrays.asList(currentEvents.split(",")));
+        wordList.remove(finalI);
+        editor.putString(IntroductionActivity.APPLICABLE_EVENTS,stringListToString(wordList));
+        editor.apply();
+    }
+
+    private String[] getEntryValues(String[] userevents) {
+        List<String> stringList = new ArrayList<String>();
+        for(int i = 0; i < userevents.length; i++)
+            stringList.add(String.valueOf(i));
+        return stringList.toArray( new String[0] );
+    }
+
+    private String[] getEntries() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String[] userevents = preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "").split(",");
+        List<String> usereventsList = new LinkedList<String>(Arrays.asList(userevents));
+        usereventsList.add("Add Event");
+        userevents = usereventsList.toArray(userevents);
+        return userevents;
     }
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-
         return false;
     }
     private void getAndSetNewEvent() {
-        final String[] toBeReturnedEvent = new String[1];
+
         AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(getContext());
         inputEventDialog.setTitle("New Custom Event");
         final EditText input = new EditText(getContext());
@@ -86,10 +134,10 @@ public class UserSettingsFragment extends PreferenceFragmentCompat implements Pr
 
         inputEventDialog.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                saveNewEvent(input);
-                toBeReturnedEvent[0] = input.getText().toString();
-                if(toBeReturnedEvent[0].length()>1)
-                    addNewEvent(toBeReturnedEvent[0]);
+
+                if(input.getText().toString().length()>1){
+                    saveNewEvent(input);
+                }
                 dialog.dismiss();
             }
         });

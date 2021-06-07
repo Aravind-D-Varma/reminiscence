@@ -1912,6 +1912,7 @@ id decelerate
 id decelerateAndComplete
 id decor_content_parent
 id default_activity_button
+id delete_event
 id delete_memory
 id deltaRelative
 id dependency_ordering
@@ -1941,6 +1942,7 @@ id dropdown_menu
 id easeIn
 id easeInOut
 id easeOut
+id edit_event
 id edit_query
 id elastic
 id end
@@ -2442,6 +2444,7 @@ layout text_view_without_line_height
 layout videogallery_item
 layout zoom_image
 layout zoom_video
+menu edit_delete_event
 menu fragment_memory
 menu fragment_memory_list
 menu nav_menudrawer
