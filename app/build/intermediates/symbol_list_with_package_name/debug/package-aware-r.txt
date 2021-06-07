@@ -1704,6 +1704,7 @@ drawable abc_textfield_search_activated_mtrl_alpha
 drawable abc_textfield_search_default_mtrl_alpha
 drawable abc_textfield_search_material
 drawable abc_vector_test
+drawable aboutme_white
 drawable all_white
 drawable avd_hide_password
 drawable avd_show_password
@@ -1724,6 +1725,7 @@ drawable design_ic_visibility
 drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
+drawable feedback_white
 drawable frontarrow_white
 drawable ic_arrow_down_24dp
 drawable ic_baseline_list_24
@@ -1758,7 +1760,6 @@ drawable mtrl_popupmenu_background
 drawable mtrl_popupmenu_background_dark
 drawable mtrl_tabs_default_indicator
 drawable navigation_empty_icon
-drawable not_solved_preview
 drawable notification_action_background
 drawable notification_bg
 drawable notification_bg_low
@@ -1781,6 +1782,7 @@ drawable tab_selector
 drawable test_custom_background
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
+drawable username_white
 id ALT
 id BOTTOM_END
 id BOTTOM_START
@@ -1795,7 +1797,6 @@ id SHOW_PROGRESS
 id SYM
 id TOP_END
 id TOP_START
-id aboutme_text
 id accelerate
 id accessibility_action_clickable_span
 id accessibility_custom_action_0
@@ -1850,7 +1851,6 @@ id action_text
 id actions
 id activity_chooser_view_content
 id add
-id add_custom_event
 id addphotos
 id alertTitle
 id aligned
@@ -1953,7 +1953,6 @@ id entername_text
 id events
 id exitUntilCollapsed
 id expand_activities_button
-id expandable_listview
 id expanded_menu
 id fade
 id fill
@@ -1974,7 +1973,6 @@ id graph
 id graph_wrap
 id group_divider
 id grouping
-id groupnames
 id groups
 id guideline
 id header_title
@@ -2156,8 +2154,6 @@ id select_dialog_listview
 id selected
 id selection_type
 id settings
-id settings_events
-id settings_text
 id share_memory
 id shortcut
 id showCustom
@@ -2422,10 +2418,6 @@ layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout settings_all
-layout settings_event
-layout settings_groupnames
-layout settings_myself
-layout settings_username
 layout support_simple_spinner_dropdown_item
 layout test_action_chip
 layout test_chip_zero_corner_radius

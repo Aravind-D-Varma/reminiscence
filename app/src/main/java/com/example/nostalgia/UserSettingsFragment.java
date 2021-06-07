@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DropDownPreference;
 import androidx.preference.EditTextPreference;
@@ -30,9 +31,16 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     private int calls;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
         calls = 0;
+
         PreferenceScreen mScreen = getPreferenceManager().createPreferenceScreen(getActivity());
         setPreferenceScreen(mScreen);
         PreferenceCategory mChoices = new PreferenceCategory(mScreen.getContext());
@@ -41,6 +49,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
 
         EditTextPreference username = new EditTextPreference(mScreen.getContext());
         username.setKey(SEND_USERNAME);
+        username.setIcon(R.drawable.username_white);
         username.setTitle("Name");
         username.setSummary("Change your name");
         mChoices.addPreference(username);
@@ -54,6 +63,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
 
         Preference sendFeedback = new Preference(mScreen.getContext());
         sendFeedback.setTitle("Send Feedback");
+        sendFeedback.setIcon(R.drawable.feedback_white);
         sendFeedback.setSummary("Report an issue or suggest a new feature");
         sendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -65,6 +75,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
 
         Preference aboutMe = new Preference(mScreen.getContext());
         aboutMe.setTitle("About me");
+        aboutMe.setIcon(R.drawable.aboutme_white);
         aboutMe.setSummary("A brief description of this application");
         aboutMe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -98,6 +109,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         mEvents = new DropDownPreference(screen.getContext());
         mEvents.setTitle("Events");
         mEvents.setSummary("Tap on event to delete it. Click Add to add a customized event");
+        mEvents.setIcon(R.drawable.ic_menu_delete);
         updateDropDownEvents();
         mEvents.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
