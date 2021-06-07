@@ -84,3 +84,6 @@ com/example/nostalgia/UserSettingsActivity.java
  com.example.nostalgia.UserSettingsActivity
 com/example/nostalgia/UserSettingsFragment.java
  com.example.nostalgia.UserSettingsFragment
+ com.example.nostalgia.UserSettingsFragment$1
+ com.example.nostalgia.UserSettingsFragment$2
+ com.example.nostalgia.UserSettingsFragment$3
