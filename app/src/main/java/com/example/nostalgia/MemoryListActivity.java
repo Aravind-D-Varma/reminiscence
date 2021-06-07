@@ -2,6 +2,8 @@ package com.example.nostalgia;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -82,11 +84,21 @@ public class MemoryListActivity extends SingleFragmentActivity
     }
 
     @Override
+    public Resources.Theme getTheme() {
+        Resources.Theme theme = super.getTheme();
+       // theme.applyStyle(R.style.Theme_Reminiscence_Light, true);
+        return theme;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getGeneralInfo();
         mNavigationView = findViewById(R.id.navigation_view);
-
+        int colorInt = getResources().getColor(R.color.black);
+        ColorStateList csl = ColorStateList.valueOf(colorInt);
+//        mNavigationView.setItemTextColor(csl);
+        mNavigationView.setItemIconTintList(csl);
         setHeaderWelcomeUser(userName);
         showMenuEvents();
         drawerAndToggle();
@@ -102,8 +114,10 @@ public class MemoryListActivity extends SingleFragmentActivity
 
     private void setHeaderWelcomeUser(String userName) {
         View headerView = mNavigationView.getHeaderView(0);
+        headerView.setBackgroundColor(getResources().getColor(R.color.purple_200));
         mHeaderText = headerView.findViewById(R.id.nav_header_textView);
         mHeaderText.setText("Welcome "+userName);
+        mHeaderText.setTextColor(getResources().getColor(R.color.black));
     }
 
     private void drawerAndToggle() {

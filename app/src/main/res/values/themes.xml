@@ -30,4 +30,35 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <!-- Light application theme. -->
+    <style name="Theme.Reminiscence.Light" parent="Theme.AppCompat">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:colorBackground">@color/white</item>
+
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryDark</item>
+
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorPrimary">@color/black</item>
+
+        <item name = "actionBarStyle">@style/myActionbarLight</item>
+    </style>
+
+
+    <style name="myActionbarLight" parent ="Widget.AppCompat.ActionBar">
+        <item name ="background">@color/purple_200</item>
+        <item name="titleTextStyle">@style/myActionbar.TitleTextStyleLight</item>
+        <item name="subtitleTextStyle">@style/myActionbar.SubtitleTextStyleLight</item>
+    </style>
+    <style name="myActionbar.TitleTextStyleLight" parent="Widget.AppCompat.ActionBar">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="myActionbar.SubtitleTextStyleLight" parent="Widget.AppCompat.ActionBar">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
 </resources>

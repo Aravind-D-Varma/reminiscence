@@ -61,9 +61,10 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 int index = themes.findIndexOfValue(newValue.toString());
-                //if (index == 0)
-                    //getContext().setTheme();
-                    //
+                if (themes.getEntries()[index].equals("Light"))
+                    getContext().setTheme(R.style.Theme_Reminiscence_Light);
+                else
+                    getContext().setTheme(R.style.Theme_Reminiscence);
                 return false;
             }
         });

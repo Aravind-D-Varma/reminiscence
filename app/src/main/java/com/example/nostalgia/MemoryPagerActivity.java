@@ -2,6 +2,7 @@ package com.example.nostalgia;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
@@ -84,5 +85,10 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
         }
     }
 
-
+    @Override
+    public Resources.Theme getTheme() {
+        Resources.Theme theme = super.getTheme();
+        //theme.applyStyle(R.style.Theme_Reminiscence_Light, true);
+        return theme;
+    }
 }

@@ -1,4 +1,5 @@
 package com.example.nostalgia;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.widget.EditText;
@@ -28,4 +29,10 @@ public class UserSettingsActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle("Settings");
     }
 
+    @Override
+    public Resources.Theme getTheme() {
+        Resources.Theme theme = super.getTheme();
+        //theme.applyStyle(R.style.Theme_Reminiscence_Light, true);
+        return theme;
+    }
 }
