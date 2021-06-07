@@ -1,6 +1,7 @@
 package com.example.nostalgia;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -62,9 +63,10 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 int index = themes.findIndexOfValue(newValue.toString());
                 if (themes.getEntries()[index].equals("Light"))
-                    getContext().setTheme(R.style.Theme_Reminiscence_Light);
+                    themes.setValue("Light");
                 else
-                    getContext().setTheme(R.style.Theme_Reminiscence);
+                    themes.setValue("Dark");
+                startActivity(new Intent(getContext(), UserSettingsActivity.class));
                 return false;
             }
         });

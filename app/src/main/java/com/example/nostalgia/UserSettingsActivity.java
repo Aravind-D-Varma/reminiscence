@@ -1,4 +1,5 @@
 package com.example.nostalgia;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -13,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroupAdapter;
+import androidx.preference.PreferenceManager;
 
 import java.util.Objects;
 
@@ -32,7 +34,15 @@ public class UserSettingsActivity extends AppCompatActivity {
     @Override
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
-        //theme.applyStyle(R.style.Theme_Reminiscence_Light, true);
+        SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+
+        if (themeValues.equals("Dark"))
+            theme.applyStyle(R.style.Theme_Reminiscence, true);
+
+        if (themeValues.equals("Light"))
+            theme.applyStyle(R.style.Theme_Reminiscence_Light, true);
+
         return theme;
     }
 }

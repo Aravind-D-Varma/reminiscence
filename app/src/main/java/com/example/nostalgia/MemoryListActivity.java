@@ -86,7 +86,15 @@ public class MemoryListActivity extends SingleFragmentActivity
     @Override
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
-       // theme.applyStyle(R.style.Theme_Reminiscence_Light, true);
+        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+
+        if (themeValues.equals("Dark"))
+            theme.applyStyle(R.style.Theme_Reminiscence, true);
+
+        if (themeValues.equals("Light"))
+            theme.applyStyle(R.style.Theme_Reminiscence_Light, true);
+
         return theme;
     }
 
