@@ -89,3 +89,4 @@ com/example/nostalgia/UserSettingsFragment.java
  com.example.nostalgia.UserSettingsFragment$3
  com.example.nostalgia.UserSettingsFragment$4
  com.example.nostalgia.UserSettingsFragment$5
+ com.example.nostalgia.UserSettingsFragment$6

@@ -23,23 +23,18 @@ import java.util.List;
 
 import static com.example.nostalgia.IntroductionActivity.SEND_USERNAME;
 
-public class UserSettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener{
+public class UserSettingsFragment extends PreferenceFragmentCompat{
 
-    private PreferenceScreen mScreen;
-    private PreferenceCategory mChoices;
     private DropDownPreference mEvents;
     private int calls;
-
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
         calls = 0;
-
-        mScreen = getPreferenceManager().createPreferenceScreen(getActivity());
+        PreferenceScreen mScreen = getPreferenceManager().createPreferenceScreen(getActivity());
         setPreferenceScreen(mScreen);
-
-        mChoices = new PreferenceCategory(mScreen.getContext());
+        PreferenceCategory mChoices = new PreferenceCategory(mScreen.getContext());
         mChoices.setTitle("Personal Settings");
         mScreen.addPreference(mChoices);
 
@@ -51,6 +46,27 @@ public class UserSettingsFragment extends PreferenceFragmentCompat implements Pr
 
         DropDownPreference events = getDropDownPreference(mScreen);
         mChoices.addPreference(events);
+
+        PreferenceCategory help = new PreferenceCategory(mScreen.getContext());
+        help.setTitle("Help");
+        mScreen.addPreference(help);
+
+        Preference sendFeedback = new Preference(mScreen.getContext());
+        sendFeedback.setTitle("Send Feedback");
+        sendFeedback.setSummary("Report an issue or suggest a new feature");
+        sendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                return false;
+            }
+        });
+        help.addPreference(sendFeedback);
+
+        Preference aboutMe = new Preference(mScreen.getContext());
+        aboutMe.setTitle("About me");
+        aboutMe.setSummary("A brief description of this application");
+        help.addPreference(aboutMe);
+
     }
 
     private DropDownPreference getDropDownPreference(PreferenceScreen screen) {
@@ -104,7 +120,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat implements Pr
         mEvents.setEntries(userevents);
         mEvents.setEntryValues(entryValues);
     }
-
     private void removeFromEvents(int finalI) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = prefs.edit();
@@ -127,10 +142,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat implements Pr
         usereventsList.add("Add Event");
         userevents = usereventsList.toArray(userevents);
         return userevents;
-    }
-    @Override
-    public boolean onPreferenceClick(Preference preference) {
-        return false;
     }
     private void getAndSetNewEvent() {
 
