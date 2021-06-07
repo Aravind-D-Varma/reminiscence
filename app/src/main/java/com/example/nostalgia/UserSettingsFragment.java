@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DropDownPreference;
 import androidx.preference.EditTextPreference;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
@@ -31,48 +32,56 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     private int calls;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
         calls = 0;
-
         PreferenceScreen mScreen = getPreferenceManager().createPreferenceScreen(getActivity());
         setPreferenceScreen(mScreen);
+
         PreferenceCategory mChoices = new PreferenceCategory(mScreen.getContext());
         mChoices.setTitle("Personal Settings");
         mScreen.addPreference(mChoices);
 
-        EditTextPreference username = new EditTextPreference(mScreen.getContext());
-        username.setKey(SEND_USERNAME);
-        username.setIcon(R.drawable.username_white);
-        username.setTitle("Name");
-        username.setSummary("Change your name");
+        EditTextPreference username = setUserName(mScreen);
         mChoices.addPreference(username);
 
         DropDownPreference events = getDropDownPreference(mScreen);
         mChoices.addPreference(events);
 
+        ListPreference themes = new ListPreference(mScreen.getContext());
+        themes.setKey("GlobalTheme");
+        themes.setTitle("Themes");
+        themes.setSummary("Change app themes");
+        CharSequence[] entries = {"Light","Dark"};
+        CharSequence[] entryValues = {"Light","Dark"};
+        themes.setEntries(entries);
+        themes.setEntryValues(entryValues);
+        themes.setIcon(R.drawable.settingstheme_white);
+        themes.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                int index = themes.findIndexOfValue(newValue.toString());
+                //if (index == 0)
+                    //getContext().setTheme();
+                    //
+                return false;
+            }
+        });
+        mChoices.addPreference(themes);
+
         PreferenceCategory help = new PreferenceCategory(mScreen.getContext());
         help.setTitle("Help");
         mScreen.addPreference(help);
 
-        Preference sendFeedback = new Preference(mScreen.getContext());
-        sendFeedback.setTitle("Send Feedback");
-        sendFeedback.setIcon(R.drawable.feedback_white);
-        sendFeedback.setSummary("Report an issue or suggest a new feature");
-        sendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                return false;
-            }
-        });
+        Preference sendFeedback = sendFeedbackPref(mScreen);
         help.addPreference(sendFeedback);
 
+        Preference aboutMe = myselfPref(mScreen);
+        help.addPreference(aboutMe);
+
+    }
+
+    private Preference myselfPref(PreferenceScreen mScreen) {
         Preference aboutMe = new Preference(mScreen.getContext());
         aboutMe.setTitle("About me");
         aboutMe.setIcon(R.drawable.aboutme_white);
@@ -84,8 +93,28 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 return true;
             }
         });
-        help.addPreference(aboutMe);
-
+        return aboutMe;
+    }
+    private Preference sendFeedbackPref(PreferenceScreen mScreen) {
+        Preference sendFeedback = new Preference(mScreen.getContext());
+        sendFeedback.setTitle("Send Feedback");
+        sendFeedback.setIcon(R.drawable.feedback_white);
+        sendFeedback.setSummary("Report an issue or suggest a new feature");
+        sendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                return false;
+            }
+        });
+        return sendFeedback;
+    }
+    private EditTextPreference setUserName(PreferenceScreen mScreen) {
+        EditTextPreference username = new EditTextPreference(mScreen.getContext());
+        username.setKey(SEND_USERNAME);
+        username.setIcon(R.drawable.username_white);
+        username.setTitle("Name");
+        username.setSummary("Change your name");
+        return username;
     }
 
     private void aboutMeAlertDialog() {
@@ -103,7 +132,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 .create();
         infoDialog.show();
     }
-
     private DropDownPreference getDropDownPreference(PreferenceScreen screen) {
 
         mEvents = new DropDownPreference(screen.getContext());

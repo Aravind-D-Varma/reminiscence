@@ -39,6 +39,7 @@ com/example/nostalgia/UserSettingsFragment.java
  com.example.nostalgia.UserSettingsFragment$6
  com.example.nostalgia.UserSettingsFragment$7
  com.example.nostalgia.UserSettingsFragment$8
+ com.example.nostalgia.UserSettingsFragment$9
 com/example/nostalgia/IntroductionActivity.java
  com.example.nostalgia.IntroductionActivity
 com/example/nostalgia/database/MemoryCursorWrapper.java

@@ -13,6 +13,8 @@ import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroupAdapter;
 
+import java.util.Objects;
+
 /**
  * Setup of allowing users to change their name, their event preferences and tells about me.
  */
@@ -23,6 +25,7 @@ public class UserSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new UserSettingsFragment()).commit();
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Settings");
     }
 
 }

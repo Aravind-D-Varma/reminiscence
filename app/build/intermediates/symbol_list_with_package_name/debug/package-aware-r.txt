@@ -1774,6 +1774,7 @@ drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable preference_list_divider_material
 drawable settings_white
+drawable settingstheme_white
 drawable share_white
 drawable spinner_background
 drawable tab_indicator_default
@@ -3086,7 +3087,6 @@ style Theme_MaterialComponents_Light_NoActionBar_Bridge
 style Theme_MaterialComponents_NoActionBar
 style Theme_MaterialComponents_NoActionBar_Bridge
 style Theme_Reminiscence
-style Theme_Reminiscence_NoActionBar
 style ThemeOverlay_AppCompat
 style ThemeOverlay_AppCompat_ActionBar
 style ThemeOverlay_AppCompat_Dark
