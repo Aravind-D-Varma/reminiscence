@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -65,8 +66,31 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         Preference aboutMe = new Preference(mScreen.getContext());
         aboutMe.setTitle("About me");
         aboutMe.setSummary("A brief description of this application");
+        aboutMe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                aboutMeAlertDialog();
+                return true;
+            }
+        });
         help.addPreference(aboutMe);
 
+    }
+
+    private void aboutMeAlertDialog() {
+        AlertDialog.Builder infoDialog = new AlertDialog.Builder(getContext())
+                .setTitle("About me");
+        final TextView info = new EditText(getContext());
+        info.setText(R.string.aboutme);
+        info.setFocusable(false);
+        infoDialog.setView(info)
+                .setPositiveButton("Got it!", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        infoDialog.show();
     }
 
     private DropDownPreference getDropDownPreference(PreferenceScreen screen) {
