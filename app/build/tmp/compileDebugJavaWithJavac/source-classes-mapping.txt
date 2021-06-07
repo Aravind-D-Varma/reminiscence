@@ -29,18 +29,20 @@ com/example/nostalgia/database/MemoryDbSchema.java
  com.example.nostalgia.database.MemoryDbSchema
  com.example.nostalgia.database.MemoryDbSchema$memoryTable
  com.example.nostalgia.database.MemoryDbSchema$memoryTable$Columns
+com/example/nostalgia/UserSettingsFragment.java
+ com.example.nostalgia.UserSettingsFragment
+ com.example.nostalgia.UserSettingsFragment$1
+ com.example.nostalgia.UserSettingsFragment$2
+ com.example.nostalgia.UserSettingsFragment$3
+ com.example.nostalgia.UserSettingsFragment$4
+ com.example.nostalgia.UserSettingsFragment$5
+ com.example.nostalgia.UserSettingsFragment$6
+ com.example.nostalgia.UserSettingsFragment$7
+ com.example.nostalgia.UserSettingsFragment$8
 com/example/nostalgia/IntroductionActivity.java
  com.example.nostalgia.IntroductionActivity
 com/example/nostalgia/database/MemoryCursorWrapper.java
  com.example.nostalgia.database.MemoryCursorWrapper
-com/example/nostalgia/UserSettingsAdapter.java
- com.example.nostalgia.UserSettingsAdapter
- com.example.nostalgia.UserSettingsAdapter$1
- com.example.nostalgia.UserSettingsAdapter$2
- com.example.nostalgia.UserSettingsAdapter$3
- com.example.nostalgia.UserSettingsAdapter$4
- com.example.nostalgia.UserSettingsAdapter$5
- com.example.nostalgia.UserSettingsAdapter$6
 com/example/nostalgia/MemoryLab.java
  com.example.nostalgia.MemoryLab
 com/example/nostalgia/BuildConfig.java

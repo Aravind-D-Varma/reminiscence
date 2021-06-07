@@ -4,12 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ExpandableListView
-        android:id="@+id/expandable_listview"
+    <ListView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_margin="10dp"
-        android:dividerHeight="5dp">
-    </ExpandableListView>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
