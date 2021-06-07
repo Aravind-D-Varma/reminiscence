@@ -6,8 +6,9 @@
         android:title="Change choices">
 
         <EditTextPreference
-            android:key="name_preference"
-            android:title="Change Name"/>
+            android:key=""
+            android:title="Name"
+            android:summary="Change your name"/>
         <ListPreference
             android:key="events_preference"
             android:title="Add/Delete Event"/>
