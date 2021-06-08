@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -54,10 +55,15 @@ public class DialogFragmentTimePicker extends DialogFragment {
             mTimePicker.setHour(hour);
             mTimePicker.setMinute(minute);
         }
+        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+        androidx.appcompat.app.AlertDialog.Builder dialogBuilder;
+        if(themeValues.equals("Light"))
+            dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getActivity(), R.style.LightDialog);
+        else
+            dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getActivity(), R.style.DarkDialog);
 
-        return new AlertDialog.Builder(getActivity())
-                .setView(v)
-                .setTitle("Enter Time")
+        dialogBuilder.setView(v)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -72,8 +78,8 @@ public class DialogFragmentTimePicker extends DialogFragment {
                             sendResult(Activity.RESULT_OK, time);
                         }
                     }
-                })
-                .create();
+                });
+        return dialogBuilder.create();
     }
     /**
      * When OK has been clicked, go back to memory with new time (if selected, else default is current time)

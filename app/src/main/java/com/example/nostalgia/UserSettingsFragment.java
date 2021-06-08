@@ -141,8 +141,15 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     }
 
     private void aboutMeAlertDialog() {
-        AlertDialog.Builder infoDialog = new AlertDialog.Builder(getContext())
-                .setTitle("About me");
+        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+        AlertDialog.Builder infoDialog;
+        if(themeValues.equals("Light"))
+            infoDialog = new AlertDialog.Builder(getContext(), R.style.LightDialog);
+        else
+            infoDialog = new AlertDialog.Builder(getContext(), R.style.DarkDialog);
+
+        infoDialog.setTitle("About me");
         final TextView info = new EditText(getContext());
         info.setText(R.string.aboutme);
         info.setFocusable(false);
@@ -174,18 +181,26 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                         return false;
                     }
                     else
-                        askDiscardEvent(index).show();
+                        askDiscardEvent(index);
                 }
                 return true;
             }
         });
         return mEvents;
     }
-    private AlertDialog askDiscardEvent(int finalI){
-        AlertDialog discardMemoryDialogBox = new AlertDialog.Builder(getContext())
-                .setTitle("Discard Event")
+    private void askDiscardEvent(int finalI){
+        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+        AlertDialog.Builder discardMemoryDialogBox;
+        if(themeValues.equals("Light"))
+            discardMemoryDialogBox = new AlertDialog.Builder(getContext(), R.style.LightDialog)
+                    .setIcon(R.drawable.ic_menu_delete_black);
+        else
+            discardMemoryDialogBox = new AlertDialog.Builder(getContext(), R.style.DarkDialog)
+                    .setIcon(R.drawable.ic_menu_delete);
+
+         discardMemoryDialogBox.setTitle("Discard Event")
                 .setMessage("Do you want to discard this event?")
-                .setIcon(android.R.drawable.ic_menu_delete)
                 .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         removeFromEvents(finalI);
@@ -199,7 +214,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                     }
                 })
                 .create();
-        return discardMemoryDialogBox;
+        discardMemoryDialogBox.show();
     }
     private void updateDropDownEvents() {
         String[] userevents = getEntries();

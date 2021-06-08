@@ -3,6 +3,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,9 +54,17 @@ public class DialogFragmentDatePicker extends DialogFragment {
 
         mDatePicker = (DatePicker) v.findViewById(R.id.dialog_date_picker);
         mDatePicker.init(year, month, day, null);
-        return new AlertDialog.Builder(getActivity())
-                .setView(v)
-                .setTitle(R.string.date_picker_title)
+
+        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+        AlertDialog.Builder dialogBuilder;
+        if(themeValues.equals("Light"))
+            dialogBuilder = new AlertDialog.Builder(getActivity(), R.style.LightDialog);
+
+        else
+            dialogBuilder = new AlertDialog.Builder(getActivity(), R.style.DarkDialog);
+
+                dialogBuilder.setView(v)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -65,7 +74,8 @@ public class DialogFragmentDatePicker extends DialogFragment {
                         Date calendarDate = new GregorianCalendar(year, month, day, calendar.get(Calendar.HOUR),calendar.get(Calendar.MINUTE)).getTime();
                         sendResult(Activity.RESULT_OK, calendarDate);
                     }
-                }).create();
+                });
+        return dialogBuilder.create();
     }
 
     /**
