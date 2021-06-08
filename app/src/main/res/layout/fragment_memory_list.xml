@@ -20,7 +20,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="25dp"
         android:elevation="20dp"
-        android:backgroundTint="@color/purple_700"
+        android:background="@drawable/button_border"
         android:src="@drawable/ic_menu_add"
         android:contentDescription="@string/no_memory_add" />
 

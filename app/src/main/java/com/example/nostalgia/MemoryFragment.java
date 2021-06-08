@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -95,6 +94,7 @@ public class MemoryFragment extends Fragment {
     private static final int MY_STORAGE_CODE = 102;
     private final String CURRENT_PHOTOS_ABSENT = "Current Memory Photos";
     public static final String CURRENT_MEMORY = "Current Memory";
+    private String mThemeValues;
 
     /**
      * Used to update UI for a given fragment. Function depends on whether device is tablet or phone.
@@ -235,6 +235,8 @@ public class MemoryFragment extends Fragment {
         }catch (ClassCastException c){
             applicableEvents = ((MemoryListActivity) getActivity()).applicableEvents;
         }
+        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+        mThemeValues = getData.getString("GlobalTheme", "Dark");
         // region EditText
         mTitleField = (EditText) v.findViewById(R.id.memory_title);
         mTitleField.setText(mMemory.getTitle());
@@ -289,6 +291,7 @@ public class MemoryFragment extends Fragment {
                 dp.show(manager, DIALOG_DATE);
             }
         });
+        setBackgroundTheme(mDateButton);
         //endregion
         // region TimeButton
         mTimeButton = (Button) v.findViewById(R.id.memory_time);
@@ -302,6 +305,7 @@ public class MemoryFragment extends Fragment {
                 tp.show(fm, DIALOG_TIME);
             }
         });
+        setBackgroundTheme(mTimeButton);
         //endregion
         //region Spinner
         mSpinner = (Spinner) v.findViewById(R.id.memory_spinner);
@@ -321,6 +325,7 @@ public class MemoryFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        setBackgroundTheme(mSpinner);
         //endregion
         PackageManager pM = getActivity().getPackageManager();
         //region PhotoButton
@@ -344,6 +349,7 @@ public class MemoryFragment extends Fragment {
                 }
             }
         });
+        setBackgroundTheme(mPhotoButton);
         //endregion
         //region PhotoGridView
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
@@ -378,9 +384,18 @@ public class MemoryFragment extends Fragment {
                     startActivityForResult(Intent.createChooser(getmoreImage, "Select Image"), REQUEST_GALLERY_ADDITIONALPHOTO);
                 }
             });
+        setBackgroundTheme(mPhotoFAB);
         //endregion
         return v;
     }
+
+    private void setBackgroundTheme(View v) {
+        if (mThemeValues.equals("Dark"))
+            v.setBackgroundResource(R.drawable.button_border);
+        else if (mThemeValues.equals("Light"))
+            v.setBackgroundResource(R.drawable.button_border_light);
+    }
+
     private boolean hasMediaPermission() {
         int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
         return result == PackageManager.PERMISSION_GRANTED;
@@ -658,4 +673,5 @@ public class MemoryFragment extends Fragment {
     private String[] individualFilePaths(Memory givenMemory){
         return givenMemory.getMediaPaths().split(",");
     }
+
 }

@@ -1,6 +1,7 @@
 package com.example.nostalgia;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -240,11 +241,19 @@ public class MemoryListFragment extends Fragment {
         public MemoryHolder(LayoutInflater inflater, ViewGroup parent) {
                 super(inflater.inflate(R.layout.list_item_memory, parent, false));
                 itemView.setOnClickListener(this);
-
+                setLayoutTheme(itemView);
                 mTitleTextView = (TextView) itemView.findViewById(R.id.memory_title);
                 mDateTextView = (TextView) itemView.findViewById(R.id.memory_date);
         }
+        private void setLayoutTheme(View v){
+            SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+            String themeValues = getData.getString("GlobalTheme", "Dark");
 
+            if (themeValues.equals("Light"))
+                v.setBackground(getResources().getDrawable(R.drawable.layout_border_light));
+            else if (themeValues.equals("Dark"))
+                v.setBackground(getResources().getDrawable(R.drawable.layout_border));
+        }
         public void bind(Memory Memory){
             mMemory = Memory;
             if (mMemory.getTitle()==null)

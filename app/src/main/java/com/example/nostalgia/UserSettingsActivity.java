@@ -1,4 +1,5 @@
 package com.example.nostalgia;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -44,5 +45,12 @@ public class UserSettingsActivity extends AppCompatActivity {
             theme.applyStyle(R.style.Theme_Reminiscence_Light, true);
 
         return theme;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MemoryListActivity.class);
+        startActivity(intent);
+        super.onBackPressed();
     }
 }

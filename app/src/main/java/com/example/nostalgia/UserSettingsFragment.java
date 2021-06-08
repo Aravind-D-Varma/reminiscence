@@ -66,8 +66,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                     themes.setValue("Light");
                 else
                     themes.setValue("Dark");
-                startActivity(new Intent(getContext(), UserSettingsActivity.class));
-                getActivity().finish();
+                Intent intent = new Intent(getContext(), UserSettingsActivity.class);
+                startActivity(intent);
                 return false;
             }
         });
