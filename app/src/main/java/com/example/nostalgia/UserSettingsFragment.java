@@ -57,7 +57,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         CharSequence[] entryValues = {"Light","Dark"};
         themes.setEntries(entries);
         themes.setEntryValues(entryValues);
-        themes.setIcon(R.drawable.settingstheme_white);
+
         themes.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -67,6 +67,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 else
                     themes.setValue("Dark");
                 startActivity(new Intent(getContext(), UserSettingsActivity.class));
+                getActivity().finish();
                 return false;
             }
         });
@@ -82,12 +83,31 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         Preference aboutMe = myselfPref(mScreen);
         help.addPreference(aboutMe);
 
+        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+        if (themeValues.equals("Dark")) {
+            aboutMe.setIcon(R.drawable.aboutme_white);
+            themes.setIcon(R.drawable.settingstheme_white);
+            sendFeedback.setIcon(R.drawable.feedback_white);
+            username.setIcon(R.drawable.username_white);
+            mEvents.setIcon(R.drawable.ic_menu_delete);
+
+        }
+        else if (themeValues.equals("Light")) {
+            themes.setIcon(R.drawable.settingstheme_black);
+            aboutMe.setIcon(R.drawable.aboutme_black);
+            sendFeedback.setIcon(R.drawable.feedback_black);
+            username.setIcon(R.drawable.username_black);
+            mEvents.setIcon(R.drawable.ic_menu_delete);
+        }
+
+
     }
 
     private Preference myselfPref(PreferenceScreen mScreen) {
         Preference aboutMe = new Preference(mScreen.getContext());
         aboutMe.setTitle("About me");
-        aboutMe.setIcon(R.drawable.aboutme_white);
+
         aboutMe.setSummary("A brief description of this application");
         aboutMe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -101,7 +121,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     private Preference sendFeedbackPref(PreferenceScreen mScreen) {
         Preference sendFeedback = new Preference(mScreen.getContext());
         sendFeedback.setTitle("Send Feedback");
-        sendFeedback.setIcon(R.drawable.feedback_white);
+
         sendFeedback.setSummary("Report an issue or suggest a new feature");
         sendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -114,7 +134,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     private EditTextPreference setUserName(PreferenceScreen mScreen) {
         EditTextPreference username = new EditTextPreference(mScreen.getContext());
         username.setKey(SEND_USERNAME);
-        username.setIcon(R.drawable.username_white);
+
         username.setTitle("Name");
         username.setSummary("Change your name");
         return username;
@@ -140,7 +160,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         mEvents = new DropDownPreference(screen.getContext());
         mEvents.setTitle("Events");
         mEvents.setSummary("Tap on event to delete it. Click Add to add a customized event");
-        mEvents.setIcon(R.drawable.ic_menu_delete);
+
         updateDropDownEvents();
         mEvents.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override

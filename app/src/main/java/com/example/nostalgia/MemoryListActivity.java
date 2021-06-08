@@ -103,10 +103,17 @@ public class MemoryListActivity extends SingleFragmentActivity
         super.onCreate(savedInstanceState);
         getGeneralInfo();
         mNavigationView = findViewById(R.id.navigation_view);
-        int colorInt = getResources().getColor(R.color.black);
+
+        int colorInt;
+        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+        if (themeValues.equals("Dark"))
+            colorInt = getResources().getColor(R.color.white);
+        else
+            colorInt = getResources().getColor(R.color.black);
         ColorStateList csl = ColorStateList.valueOf(colorInt);
-//        mNavigationView.setItemTextColor(csl);
         mNavigationView.setItemIconTintList(csl);
+
         setHeaderWelcomeUser(userName);
         showMenuEvents();
         drawerAndToggle();
@@ -122,10 +129,21 @@ public class MemoryListActivity extends SingleFragmentActivity
 
     private void setHeaderWelcomeUser(String userName) {
         View headerView = mNavigationView.getHeaderView(0);
-        headerView.setBackgroundColor(getResources().getColor(R.color.purple_200));
+
         mHeaderText = headerView.findViewById(R.id.nav_header_textView);
         mHeaderText.setText("Welcome "+userName);
-        mHeaderText.setTextColor(getResources().getColor(R.color.black));
+        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+
+        if (themeValues.equals("Dark")){
+            headerView.setBackgroundColor(getResources().getColor(R.color.purple_700));
+            mHeaderText.setTextColor(getResources().getColor(R.color.white));
+        }
+
+        if (themeValues.equals("Light")) {
+            headerView.setBackgroundColor(getResources().getColor(R.color.purple_200));
+            mHeaderText.setTextColor(getResources().getColor(R.color.black));
+        }
     }
 
     private void drawerAndToggle() {
