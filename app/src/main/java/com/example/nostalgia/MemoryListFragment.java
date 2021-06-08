@@ -2,6 +2,8 @@ package com.example.nostalgia;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,13 +72,12 @@ public class MemoryListFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_memory_list, menu);
         MenuItem searchItem = menu.findItem(R.id.memory_search_menu);
-/*        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
 
-        if (themeValues.equals("Light"))
-            searchItem.setIcon(android.R.drawable.ic_menu_search);
-        else if (themeValues.equals("Dark"))
-            searchItem.setIcon(R.drawable.ic_search_black_24dp);*/
+        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+        if (themeValues.equals("Dark")) {
+            searchItem.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.search_black));
+        }
 
         final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint(getString(R.string.memory_search_hint));

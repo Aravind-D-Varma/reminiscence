@@ -2,6 +2,8 @@ package com.example.nostalgia;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.widget.EditText;
@@ -30,6 +32,12 @@ public class UserSettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fragment);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new UserSettingsFragment()).commit();
         Objects.requireNonNull(getSupportActionBar()).setTitle("Settings");
+
+        SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+
+        if (themeValues.equals("Dark"))
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_black);
     }
 
     @Override

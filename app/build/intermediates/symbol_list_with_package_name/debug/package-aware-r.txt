@@ -1709,6 +1709,7 @@ drawable aboutme_white
 drawable all_white
 drawable avd_hide_password
 drawable avd_show_password
+drawable back_black
 drawable baseline_date_range_white_20
 drawable baseline_time_white_20
 drawable btn_checkbox_checked_mtrl
@@ -1741,7 +1742,6 @@ drawable ic_mtrl_checked_circle
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
-drawable ic_search_black_24dp
 drawable launcherscreen
 drawable layout_border
 drawable layout_border_light
@@ -1778,6 +1778,7 @@ drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable preference_list_divider_material
+drawable search_black
 drawable settings_white
 drawable settingstheme_black
 drawable settingstheme_white
@@ -3150,7 +3151,6 @@ style ThemeOverlay_MaterialComponents_TimePicker_Display
 style ThemeOverlay_MaterialComponents_Toolbar_Primary
 style ThemeOverlay_MaterialComponents_Toolbar_Surface
 style ThemeOverlayColorAccentRed
-style WhiteDrawerIconStyle
 style Widget_AppCompat_ActionBar
 style Widget_AppCompat_ActionBar_Solid
 style Widget_AppCompat_ActionBar_TabBar

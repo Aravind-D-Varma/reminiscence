@@ -4016,7 +4016,7 @@
     <item name="windowActionBar">false</item>
     <item name="windowNoTitle">true</item>
   </style>
-    <style name="Theme.Reminiscence" parent="Theme.AppCompat">
+    <style name="Theme.Reminiscence" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_700</item>
         <item name="colorPrimaryVariant">@color/purple_500</item>
@@ -4036,14 +4036,12 @@
         <item name="android:textColorSecondary">@color/grey</item>
 
     </style>
-    <style name="Theme.Reminiscence.Light" parent="Theme.AppCompat">
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:colorBackground">@color/white</item>
+    <style name="Theme.Reminiscence.Light" parent="Theme.AppCompat.Light.DarkActionBar">
 
         <item name="colorOnPrimary">@color/black</item>
         <item name="colorPrimaryDark">@color/black</item>
         <item name="android:statusBarColor" ns2:targetApi="l">?attr/colorPrimaryDark</item>
-        <item name="drawerArrowStyle">@style/WhiteDrawerIconStyle</item>
+
 
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorPrimary">@color/black</item>
@@ -4232,9 +4230,6 @@
     <style name="ThemeOverlayColorAccentRed" ns2:ignore="NewApi">
     <item name="android:colorAccent">#FFFF0000</item>
   </style>
-    <style name="WhiteDrawerIconStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@android:color/white</item>
-    </style>
     <style name="Widget.AppCompat.ActionBar" parent="Base.Widget.AppCompat.ActionBar">
     </style>
     <style name="Widget.AppCompat.ActionBar.Solid" parent="Base.Widget.AppCompat.ActionBar.Solid">
