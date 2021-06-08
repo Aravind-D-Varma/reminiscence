@@ -167,6 +167,10 @@ public class MemoryFragment extends Fragment {
         SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
         String themeValues = getData.getString("GlobalTheme", "Dark");
         if (themeValues.equals("Light")){
+            menu.findItem(R.id.delete_memory).setIcon(R.drawable.ic_menu_delete);
+            menu.findItem(R.id.share_memory).setIcon(R.drawable.share_white);
+        }
+        else if (themeValues.equals("Dark")){
             menu.findItem(R.id.delete_memory).setIcon(R.drawable.ic_menu_delete_black);
             menu.findItem(R.id.share_memory).setIcon(R.drawable.share_black);
         }
@@ -318,7 +322,6 @@ public class MemoryFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     mMemory.setEvent(applicableEvents[position]);
                     updateMemory();
-
             }
 
             @Override
@@ -390,10 +393,24 @@ public class MemoryFragment extends Fragment {
     }
 
     private void setBackgroundTheme(View v) {
-        if (mThemeValues.equals("Dark"))
+        if (mThemeValues.equals("Dark")) {
             v.setBackgroundResource(R.drawable.button_border);
-        else if (mThemeValues.equals("Light"))
+            if(v instanceof Button)
+                ((Button) v).setTextColor(getResources().getColor(R.color.black));
+            else if (v instanceof Spinner){
+                TextView oTextView = (TextView)(((Spinner) v).getChildAt(0));
+                oTextView.setTextColor(getResources().getColor(R.color.black));
+            }
+        }
+        else if (mThemeValues.equals("Light")) {
             v.setBackgroundResource(R.drawable.button_border_light);
+            if(v instanceof Button)
+                ((Button) v).setTextColor(getResources().getColor(R.color.white));
+            else if (v instanceof Spinner){
+                TextView oTextView = (TextView)(((Spinner) v).getChildAt(0));
+                oTextView.setTextColor(getResources().getColor(R.color.white));
+            }
+        }
     }
 
     private boolean hasMediaPermission() {

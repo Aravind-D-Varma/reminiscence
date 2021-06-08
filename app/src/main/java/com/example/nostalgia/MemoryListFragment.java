@@ -68,7 +68,15 @@ public class MemoryListFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_memory_list, menu);
-        final MenuItem searchItem = menu.findItem(R.id.memory_search_menu);
+        MenuItem searchItem = menu.findItem(R.id.memory_search_menu);
+/*        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+
+        if (themeValues.equals("Light"))
+            searchItem.setIcon(android.R.drawable.ic_menu_search);
+        else if (themeValues.equals("Dark"))
+            searchItem.setIcon(R.drawable.ic_search_black_24dp);*/
+
         final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint(getString(R.string.memory_search_hint));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
