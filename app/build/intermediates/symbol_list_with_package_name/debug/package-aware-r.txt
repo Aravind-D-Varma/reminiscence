@@ -1735,6 +1735,7 @@ drawable ic_clock_black_24dp
 drawable ic_keyboard_black_24dp
 drawable ic_menu_add
 drawable ic_menu_delete
+drawable ic_menu_delete_black
 drawable ic_mtrl_checked_circle
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
@@ -1778,6 +1779,7 @@ drawable preference_list_divider_material
 drawable settings_white
 drawable settingstheme_black
 drawable settingstheme_white
+drawable share_black
 drawable share_white
 drawable spinner_background
 drawable tab_indicator_default

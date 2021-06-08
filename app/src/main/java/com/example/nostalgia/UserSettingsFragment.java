@@ -98,7 +98,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             aboutMe.setIcon(R.drawable.aboutme_black);
             sendFeedback.setIcon(R.drawable.feedback_black);
             username.setIcon(R.drawable.username_black);
-            mEvents.setIcon(R.drawable.ic_menu_delete);
+            mEvents.setIcon(R.drawable.ic_menu_delete_black);
         }
 
 

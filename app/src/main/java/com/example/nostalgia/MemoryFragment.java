@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -163,6 +164,12 @@ public class MemoryFragment extends Fragment {
         }
         editor.apply();
         inflater.inflate(R.menu.fragment_memory, menu);
+        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+        if (themeValues.equals("Light")){
+            menu.findItem(R.id.delete_memory).setIcon(R.drawable.ic_menu_delete_black);
+            menu.findItem(R.id.share_memory).setIcon(R.drawable.share_black);
+        }
     }
 
     /**
