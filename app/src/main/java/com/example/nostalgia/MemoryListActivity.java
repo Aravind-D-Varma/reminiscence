@@ -135,11 +135,14 @@ public class MemoryListActivity extends SingleFragmentActivity
         SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         String themeValues = getData.getString("GlobalTheme", "Dark");
 
-        if (themeValues.equals("Dark"))
+        if (themeValues.equals("Dark")) {
             headerView.setBackgroundColor(getResources().getColor(R.color.purple_700));
-
-        if (themeValues.equals("Light"))
+            mHeaderText.setTextColor(getResources().getColor(R.color.black));
+        }
+        if (themeValues.equals("Light")){
             headerView.setBackgroundColor(getResources().getColor(R.color.purple_200));
+            mHeaderText.setTextColor(getResources().getColor(R.color.white));
+        }
     }
 
     private void drawerAndToggle() {

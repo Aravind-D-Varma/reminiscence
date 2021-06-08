@@ -134,7 +134,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     private EditTextPreference setUserName(PreferenceScreen mScreen) {
         EditTextPreference username = new EditTextPreference(mScreen.getContext());
         username.setKey(SEND_USERNAME);
-
         username.setTitle("Name");
         username.setSummary("Change your name");
         return username;

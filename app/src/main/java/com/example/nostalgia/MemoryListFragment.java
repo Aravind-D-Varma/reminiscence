@@ -243,7 +243,9 @@ public class MemoryListFragment extends Fragment {
                 itemView.setOnClickListener(this);
                 setLayoutTheme(itemView);
                 mTitleTextView = (TextView) itemView.findViewById(R.id.memory_title);
+                setTextTheme(mTitleTextView);
                 mDateTextView = (TextView) itemView.findViewById(R.id.memory_date);
+            setTextTheme(mDateTextView);
         }
         private void setLayoutTheme(View v){
             SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -253,6 +255,17 @@ public class MemoryListFragment extends Fragment {
                 v.setBackground(getResources().getDrawable(R.drawable.layout_border_light));
             else if (themeValues.equals("Dark"))
                 v.setBackground(getResources().getDrawable(R.drawable.layout_border));
+        }
+
+        private void setTextTheme(TextView tv) {
+            SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+            String themeValues = getData.getString("GlobalTheme", "Dark");
+
+            if (themeValues.equals("Light"))
+                tv.setTextColor(getResources().getColor(R.color.black));
+            else if (themeValues.equals("Dark"))
+                tv.setTextColor(getResources().getColor(R.color.white));
+
         }
         public void bind(Memory Memory){
             mMemory = Memory;
@@ -264,7 +277,7 @@ public class MemoryListFragment extends Fragment {
                 else
                     mTitleTextView.setText(mMemory.getTitle());
             }catch (NullPointerException e){}
-            mDateTextView.setText("Noticed on: " + DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate()));
+            mDateTextView.setText("Noted on: " + DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate()));
         }
 
         @Override
@@ -279,12 +292,13 @@ public class MemoryListFragment extends Fragment {
                     }
                 }
                     i++;
-
             }
             mCallbacks.onMemorySelected(mMemory);
         }
 
     }
+
+
     /**
      * Adapter for RecyclerView to contain record of all memories
      */

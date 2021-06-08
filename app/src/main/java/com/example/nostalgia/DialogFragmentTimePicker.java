@@ -44,7 +44,6 @@ public class DialogFragmentTimePicker extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_time, null);
-
         mTimePicker = (TimePicker) v.findViewById(R.id.dialog_time_picker);
         Date date = (Date) getArguments().getSerializable(ARG_TIME);
         Calendar dateCalendar = Calendar.getInstance();
@@ -58,8 +57,9 @@ public class DialogFragmentTimePicker extends DialogFragment {
         SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
         String themeValues = getData.getString("GlobalTheme", "Dark");
         androidx.appcompat.app.AlertDialog.Builder dialogBuilder;
-        if(themeValues.equals("Light"))
-            dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getActivity(), R.style.LightDialog);
+        if(themeValues.equals("Light")) {
+            dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getActivity(), R.style.LightDialogTime);
+        }
         else
             dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getActivity(), R.style.DarkDialog);
 
