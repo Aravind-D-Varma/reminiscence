@@ -73,11 +73,6 @@ public class MemoryListFragment extends Fragment {
         inflater.inflate(R.menu.fragment_memory_list, menu);
         MenuItem searchItem = menu.findItem(R.id.memory_search_menu);
 
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
-        if (themeValues.equals("Dark")) {
-            searchItem.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.search_black));
-        }
 
         final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint(getString(R.string.memory_search_hint));
@@ -274,7 +269,7 @@ public class MemoryListFragment extends Fragment {
             if (themeValues.equals("Light"))
                 tv.setTextColor(getResources().getColor(R.color.black));
             else if (themeValues.equals("Dark"))
-                tv.setTextColor(getResources().getColor(R.color.white));
+                tv.setTextColor(getResources().getColor(R.color.light_purple));
 
         }
         public void bind(Memory Memory){

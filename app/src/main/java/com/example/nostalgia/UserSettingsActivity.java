@@ -33,11 +33,6 @@ public class UserSettingsActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new UserSettingsFragment()).commit();
         Objects.requireNonNull(getSupportActionBar()).setTitle("Settings");
 
-        SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
-
-        if (themeValues.equals("Dark"))
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_black);
     }
 
     @Override

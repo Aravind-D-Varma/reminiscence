@@ -8,9 +8,7 @@ import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DropDownPreference;
 import androidx.preference.EditTextPreference;
@@ -94,7 +92,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             sendFeedback.setIcon(R.drawable.feedback_white);
             invitePeople.setIcon(R.drawable.invite_white);
             username.setIcon(R.drawable.username_white);
-            mEvents.setIcon(R.drawable.ic_menu_delete);
+            mEvents.setIcon(R.drawable.delete_white);
         }
         else if (themeValues.equals("Light")) {
             themes.setIcon(R.drawable.settingstheme_black);
@@ -102,7 +100,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             sendFeedback.setIcon(R.drawable.feedback_black);
             invitePeople.setIcon(R.drawable.invite_black);
             username.setIcon(R.drawable.username_black);
-            mEvents.setIcon(R.drawable.ic_menu_delete_black);
+            mEvents.setIcon(R.drawable.delete_black);
         }
 
     }
@@ -209,10 +207,10 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         AlertDialog.Builder discardMemoryDialogBox;
         if(themeValues.equals("Light"))
             discardMemoryDialogBox = new AlertDialog.Builder(getContext(), R.style.LightDialog)
-                    .setIcon(R.drawable.ic_menu_delete_black);
+                    .setIcon(R.drawable.delete_black);
         else
             discardMemoryDialogBox = new AlertDialog.Builder(getContext(), R.style.DarkDialog)
-                    .setIcon(R.drawable.ic_menu_delete);
+                    .setIcon(R.drawable.delete_purple);
 
          discardMemoryDialogBox.setTitle("Discard Event")
                 .setMessage("Do you want to discard this event?")

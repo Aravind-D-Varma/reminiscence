@@ -4,14 +4,8 @@
 
     <!-- View background color -->
     <solid
-        android:color="@color/purple_700">
+        android:color="@color/medium_black">
     </solid>
-
-    <!-- View border color and width -->
-    <stroke
-        android:width="1dp"
-        android:color="@color/cardview_light_background" >
-    </stroke>
 
     <!-- The radius makes the corners rounded -->
     <corners

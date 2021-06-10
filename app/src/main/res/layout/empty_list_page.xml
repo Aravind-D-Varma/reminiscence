@@ -32,7 +32,7 @@
         android:background="@drawable/button_border"
         android:elevation="10dp"
         android:padding="5dp"
-        android:backgroundTint="@color/purple_700"
+        android:backgroundTint="@color/light_purple"
         android:text="@string/no_memory_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.849"

@@ -136,11 +136,11 @@ public class MemoryListActivity extends SingleFragmentActivity
         String themeValues = getData.getString("GlobalTheme", "Dark");
 
         if (themeValues.equals("Dark")) {
-            headerView.setBackgroundColor(getResources().getColor(R.color.purple_700));
-            mHeaderText.setTextColor(getResources().getColor(R.color.black));
+            headerView.setBackgroundColor(getResources().getColor(R.color.light_black));
+            //mHeaderText.setTextColor(getResources().getColor(R.color.black));
         }
         if (themeValues.equals("Light")){
-            headerView.setBackgroundColor(getResources().getColor(R.color.purple_200));
+            headerView.setBackgroundColor(getResources().getColor(R.color.dark_purple));
             mHeaderText.setTextColor(getResources().getColor(R.color.white));
         }
     }

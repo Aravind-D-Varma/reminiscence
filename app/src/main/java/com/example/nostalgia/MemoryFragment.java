@@ -167,12 +167,12 @@ public class MemoryFragment extends Fragment {
         SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
         String themeValues = getData.getString("GlobalTheme", "Dark");
         if (themeValues.equals("Light")){
-            menu.findItem(R.id.delete_memory).setIcon(R.drawable.ic_menu_delete);
+            menu.findItem(R.id.delete_memory).setIcon(R.drawable.delete_white);
             menu.findItem(R.id.share_memory).setIcon(R.drawable.share_white);
         }
         else if (themeValues.equals("Dark")){
-            menu.findItem(R.id.delete_memory).setIcon(R.drawable.ic_menu_delete_black);
-            menu.findItem(R.id.share_memory).setIcon(R.drawable.share_black);
+            menu.findItem(R.id.delete_memory).setIcon(R.drawable.delete_purple);
+            menu.findItem(R.id.share_memory).setIcon(R.drawable.share_purple);
         }
     }
 
@@ -264,6 +264,7 @@ public class MemoryFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
+        setBackgroundTheme(mTitleField);
         //endregion
         //region EditText Details
         mDetailField = (EditText) v.findViewById(R.id.memory_details);
@@ -282,6 +283,7 @@ public class MemoryFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
+        setBackgroundTheme(mDetailField);
         //endregion
         //region DateButton
         mDateButton = (Button) v.findViewById(R.id.memory_date);
@@ -397,10 +399,13 @@ public class MemoryFragment extends Fragment {
             if (mThemeValues.equals("Dark")) {
                 v.setBackgroundResource(R.drawable.button_border);
                 if (v instanceof Button)
-                    ((Button) v).setTextColor(getResources().getColor(R.color.black));
+                    ((Button) v).setTextColor(getResources().getColor(R.color.light_purple));
                 else if (v instanceof Spinner) {
                     TextView oTextView = (TextView) (((Spinner) v).getChildAt(0));
-                    oTextView.setTextColor(getResources().getColor(R.color.black));
+                    oTextView.setTextColor(getResources().getColor(R.color.light_purple));
+                }
+                else if (v instanceof EditText){
+                    ((EditText) v).setTextColor(getResources().getColor(R.color.white));
                 }
             } else if (mThemeValues.equals("Light")) {
                 v.setBackgroundResource(R.drawable.button_border_light);

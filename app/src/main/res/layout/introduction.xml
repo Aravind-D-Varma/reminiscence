@@ -109,7 +109,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/button_border"
-                android:backgroundTint="@color/purple_700"
+                android:backgroundTint="@color/light_purple"
                 android:drawableRight="@drawable/frontarrow_white"
                 android:padding="10dp"
                 android:text="@string/ctd"
