@@ -140,6 +140,7 @@ public class PagerAdapterIntroduction extends PagerAdapter {
         editor.putBoolean(FIRST_TIME,true);
         editor.putString(SEND_USERNAME, userName);
         editor.putString(APPLICABLE_EVENTS, combinedEvents);
+        editor.putString(USER_ID, UUID.randomUUID().toString())
         editor.apply();
     }
 
