@@ -173,7 +173,6 @@ public class MemoryFragment extends Fragment {
         else if (themeValues.equals("Dark")){
             menu.findItem(R.id.delete_memory).setIcon(R.drawable.delete_purple);
             menu.findItem(R.id.share_memory).setIcon(R.drawable.share_purple);
-            menu.findItem(R.id.connect_memory).setIcon(R.drawable.connect_purple);
         }
     }
 

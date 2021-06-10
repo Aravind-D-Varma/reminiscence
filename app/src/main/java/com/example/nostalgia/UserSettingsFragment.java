@@ -44,70 +44,9 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         EditTextPreference username = setUserName(mScreen);
         mChoices.addPreference(username);
 
-        Preference connections = editConnectionsPref(mScreen);
-        mChoices.addPreference(connections);
-
         DropDownPreference events = getDropDownPreference(mScreen);
         mChoices.addPreference(events);
 
-        ListPreference themes = setThemePreference(mScreen);
-        mChoices.addPreference(themes);
-
-
-        PreferenceCategory help = new PreferenceCategory(mScreen.getContext());
-        help.setTitle("Help");
-        mScreen.addPreference(help);
-
-        Preference sendFeedback = sendFeedbackPref(mScreen);
-        help.addPreference(sendFeedback);
-        
-        Preference invitePeople = invitePeoplePref(mScreen);
-        help.addPreference(invitePeople);
-
-        Preference aboutMe = myselfPref(mScreen);
-        help.addPreference(aboutMe);
-
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
-        if (themeValues.equals("Dark")) {
-            username.setIcon(R.drawable.username_white);
-            connections.setIcon(R.drawable.group_white);
-            mEvents.setIcon(R.drawable.change_white);
-            themes.setIcon(R.drawable.settingstheme_white);
-
-            sendFeedback.setIcon(R.drawable.feedback_white);
-            invitePeople.setIcon(R.drawable.invite_white);
-            aboutMe.setIcon(R.drawable.aboutme_white);
-
-        }
-        else if (themeValues.equals("Light")) {
-            username.setIcon(R.drawable.username_black);
-            connections.setIcon(R.drawable.group_black);
-            mEvents.setIcon(R.drawable.change_black);
-            themes.setIcon(R.drawable.settingstheme_black);
-
-            sendFeedback.setIcon(R.drawable.feedback_black);
-            invitePeople.setIcon(R.drawable.invite_black);
-            aboutMe.setIcon(R.drawable.aboutme_black);
-        }
-
-    }
-
-    private Preference editConnectionsPref(PreferenceScreen mScreen) {
-        Preference pref = new Preference(mScreen.getContext());
-        pref.setTitle("Connections");
-
-        pref.setSummary("Add or change your connections");
-        pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                return false;
-            }
-        });
-        return pref;
-    }
-
-    private ListPreference setThemePreference(PreferenceScreen mScreen) {
         ListPreference themes = new ListPreference(mScreen.getContext());
         themes.setKey("GlobalTheme");
         themes.setTitle("Themes");
@@ -130,7 +69,40 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 return false;
             }
         });
-        return themes;
+        mChoices.addPreference(themes);
+
+        PreferenceCategory help = new PreferenceCategory(mScreen.getContext());
+        help.setTitle("Help");
+        mScreen.addPreference(help);
+
+        Preference sendFeedback = sendFeedbackPref(mScreen);
+        help.addPreference(sendFeedback);
+        
+        Preference invitePeople = invitePeoplePref(mScreen);
+        help.addPreference(invitePeople);
+
+        Preference aboutMe = myselfPref(mScreen);
+        help.addPreference(aboutMe);
+
+        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+        if (themeValues.equals("Dark")) {
+            aboutMe.setIcon(R.drawable.aboutme_white);
+            themes.setIcon(R.drawable.settingstheme_white);
+            sendFeedback.setIcon(R.drawable.feedback_white);
+            invitePeople.setIcon(R.drawable.invite_white);
+            username.setIcon(R.drawable.username_white);
+            mEvents.setIcon(R.drawable.delete_white);
+        }
+        else if (themeValues.equals("Light")) {
+            themes.setIcon(R.drawable.settingstheme_black);
+            aboutMe.setIcon(R.drawable.aboutme_black);
+            sendFeedback.setIcon(R.drawable.feedback_black);
+            invitePeople.setIcon(R.drawable.invite_black);
+            username.setIcon(R.drawable.username_black);
+            mEvents.setIcon(R.drawable.delete_black);
+        }
+
     }
 
     private Preference myselfPref(PreferenceScreen mScreen) {

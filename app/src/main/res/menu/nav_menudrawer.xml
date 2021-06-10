@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Events"
-        android:id="@+id/general_events">
+    <item android:title="General"
+        android:id="@+id/general">
         <menu>
             <group android:id="@+id/allevents">
                 <item
@@ -16,21 +16,8 @@
 
         </menu>
     </item>
-    <item android:title="Connections"
-        android:id="@+id/general_connections">
-        <menu>
-            <group android:id="@+id/allconnections">
-                <item
-                    android:orderInCategory="0"
-                    android:id="@+id/all_cnct"
-                    android:icon="@drawable/all_white"
-                    android:title="All Connections" />
-            </group>
-            <group android:id="@+id/connections">
-            </group>
 
-        </menu>
-    </item>
+
     <group android:id="@+id/settings">
         <item
             android:orderInCategory="2"
