@@ -19,10 +19,12 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import static com.example.nostalgia.IntroductionActivity.APPLICABLE_EVENTS;
 import static com.example.nostalgia.IntroductionActivity.FIRST_TIME;
 import static com.example.nostalgia.IntroductionActivity.SEND_USERNAME;
+import static com.example.nostalgia.IntroductionActivity.USER_ID;
 
 /**
  * Setup of IntroductionActivity viewPager adapter. Shows layout depending on where the user is at.<br>
@@ -140,6 +142,7 @@ public class PagerAdapterIntroduction extends PagerAdapter {
         editor.putBoolean(FIRST_TIME,true);
         editor.putString(SEND_USERNAME, userName);
         editor.putString(APPLICABLE_EVENTS, combinedEvents);
+        editor.putString(USER_ID, UUID.randomUUID().toString());
         editor.apply();
     }
 
