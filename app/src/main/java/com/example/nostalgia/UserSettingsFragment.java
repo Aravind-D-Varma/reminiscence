@@ -79,6 +79,9 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
 
         Preference sendFeedback = sendFeedbackPref(mScreen);
         help.addPreference(sendFeedback);
+        
+        Preference invitePeople = invitePeoplePref(mScreen);
+        help.addPreference(invitePeople);
 
         Preference aboutMe = myselfPref(mScreen);
         help.addPreference(aboutMe);
@@ -89,18 +92,18 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             aboutMe.setIcon(R.drawable.aboutme_white);
             themes.setIcon(R.drawable.settingstheme_white);
             sendFeedback.setIcon(R.drawable.feedback_white);
+            invitePeople.setIcon(R.drawable.invite_white);
             username.setIcon(R.drawable.username_white);
             mEvents.setIcon(R.drawable.ic_menu_delete);
-
         }
         else if (themeValues.equals("Light")) {
             themes.setIcon(R.drawable.settingstheme_black);
             aboutMe.setIcon(R.drawable.aboutme_black);
             sendFeedback.setIcon(R.drawable.feedback_black);
+            invitePeople.setIcon(R.drawable.invite_black);
             username.setIcon(R.drawable.username_black);
             mEvents.setIcon(R.drawable.ic_menu_delete_black);
         }
-
 
     }
 
@@ -130,6 +133,19 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             }
         });
         return sendFeedback;
+    }
+    private Preference invitePeoplePref(PreferenceScreen mScreen) {
+        Preference pref = new Preference(mScreen.getContext());
+        pref.setTitle("Invite Someone");
+
+        pref.setSummary("Have collective memories with someone? Invite them and they can reminisce them!");
+        pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                return false;
+            }
+        });
+        return pref;
     }
     private EditTextPreference setUserName(PreferenceScreen mScreen) {
         EditTextPreference username = new EditTextPreference(mScreen.getContext());
