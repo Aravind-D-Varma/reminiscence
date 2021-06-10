@@ -21,8 +21,7 @@ out/
 local.properties
 
 #debug files
-*app/build/intermediates/incremental
-*app/build/intermediates/merged_res_blame_folder/debug
+app/build/intermediates/*
 
 # Log Files
 *.log
