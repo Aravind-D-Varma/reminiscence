@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.TextView;
 
@@ -136,8 +137,7 @@ public class MemoryListActivity extends SingleFragmentActivity
         String themeValues = getData.getString("GlobalTheme", "Dark");
 
         if (themeValues.equals("Dark")) {
-            headerView.setBackgroundColor(getResources().getColor(R.color.light_black));
-            //mHeaderText.setTextColor(getResources().getColor(R.color.black));
+            headerView.setBackgroundColor(getResources().getColor(R.color.medium_black));
         }
         if (themeValues.equals("Light")){
             headerView.setBackgroundColor(getResources().getColor(R.color.dark_purple));
@@ -180,10 +180,11 @@ public class MemoryListActivity extends SingleFragmentActivity
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String[] currentEvents = prefs.getString(IntroductionActivity.APPLICABLE_EVENTS, "").split(",");
         Menu eventMenu = mNavigationView.getMenu();
-        eventMenu.removeGroup(R.id.events);
+        SubMenu subMenu = eventMenu.getItem(0).getSubMenu();
+        subMenu.removeGroup(R.id.events);
         int menuID = 0;
         for (String string:currentEvents){
-            eventMenu.add(R.id.events,menuID,1,string);
+            subMenu.add(R.id.events,menuID,1,string);
             menuID++;
         }
     }
