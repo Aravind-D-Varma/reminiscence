@@ -393,24 +393,26 @@ public class MemoryFragment extends Fragment {
     }
 
     private void setBackgroundTheme(View v) {
-        if (mThemeValues.equals("Dark")) {
-            v.setBackgroundResource(R.drawable.button_border);
-            if(v instanceof Button)
-                ((Button) v).setTextColor(getResources().getColor(R.color.black));
-            else if (v instanceof Spinner){
-                TextView oTextView = (TextView)(((Spinner) v).getChildAt(0));
-                oTextView.setTextColor(getResources().getColor(R.color.black));
+        try {
+            if (mThemeValues.equals("Dark")) {
+                v.setBackgroundResource(R.drawable.button_border);
+                if (v instanceof Button)
+                    ((Button) v).setTextColor(getResources().getColor(R.color.black));
+                else if (v instanceof Spinner) {
+                    TextView oTextView = (TextView) (((Spinner) v).getChildAt(0));
+                    oTextView.setTextColor(getResources().getColor(R.color.black));
+                }
+            } else if (mThemeValues.equals("Light")) {
+                v.setBackgroundResource(R.drawable.button_border_light);
+                if (v instanceof Button)
+                    ((Button) v).setTextColor(getResources().getColor(R.color.white));
+                else if (v instanceof Spinner) {
+                    TextView oTextView = (TextView) (((Spinner) v).getChildAt(0));
+                    oTextView.setTextColor(getResources().getColor(R.color.white));
+                }
             }
         }
-        else if (mThemeValues.equals("Light")) {
-            v.setBackgroundResource(R.drawable.button_border_light);
-            if(v instanceof Button)
-                ((Button) v).setTextColor(getResources().getColor(R.color.white));
-            else if (v instanceof Spinner){
-                TextView oTextView = (TextView)(((Spinner) v).getChildAt(0));
-                oTextView.setTextColor(getResources().getColor(R.color.white));
-            }
-        }
+        catch (NullPointerException e){}
     }
 
     private boolean hasMediaPermission() {
