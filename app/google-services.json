@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "25493816746",
+    "project_id": "reminiscence-6373b",
+    "storage_bucket": "reminiscence-6373b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25493816746:android:dba7f6b90d2807750617d3",
+        "android_client_info": {
+          "package_name": "com.example.nostalgia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "25493816746-i8ta4kqms26a0brbhjbmje6pke5918lc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjmpE95A_sHWzsUwMujyKdQZUV04aTtds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "25493816746-i8ta4kqms26a0brbhjbmje6pke5918lc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
