@@ -1742,6 +1742,8 @@ drawable ic_mtrl_checked_circle
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
+drawable invite_black
+drawable invite_white
 drawable launcherscreen
 drawable layout_border
 drawable layout_border_light
