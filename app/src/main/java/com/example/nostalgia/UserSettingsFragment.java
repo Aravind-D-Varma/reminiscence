@@ -5,11 +5,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.text.HtmlCompat;
 import androidx.preference.DropDownPreference;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
@@ -230,8 +236,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         discardMemoryDialogBox.show();
     }
     private void updateDropDownEvents() {
-        String[] userevents = getEntries();
-        String[] entryValues = getEntryValues(userevents);
+        CharSequence[] userevents = getEntries();
+        CharSequence[] entryValues = getEntryValues(userevents);
         mEvents.setEntries(userevents);
         mEvents.setEntryValues(entryValues);
     }
@@ -244,19 +250,24 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         editor.putString(IntroductionActivity.APPLICABLE_EVENTS,stringListToString(wordList));
         editor.apply();
     }
-    private String[] getEntryValues(String[] userevents) {
+    private String[] getEntryValues(CharSequence[] userevents) {
         List<String> stringList = new ArrayList<String>();
         for(int i = 0; i < userevents.length; i++)
             stringList.add(String.valueOf(i));
         return stringList.toArray( new String[0] );
     }
-    private String[] getEntries() {
+    private CharSequence[] getEntries() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String[] userevents = preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "").split(",");
-        List<String> usereventsList = new LinkedList<String>(Arrays.asList(userevents));
-        usereventsList.add("Add Event");
-        userevents = usereventsList.toArray(userevents);
-        return userevents;
+        CharSequence[] userevents = preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "").split(",");
+        List<CharSequence> usereventsList = new LinkedList<CharSequence>(Arrays.asList(userevents));
+
+        String addEvent = "Add EVent";
+        Spannable summary = new SpannableString(addEvent);
+        summary.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.dark_purple)), 0, summary.length(), 0);
+        usereventsList.add(summary);
+        CharSequence[] cs = usereventsList.toArray(new CharSequence[usereventsList.size()]);
+        //userevents = usereventsList.toArray(userevents);
+        return cs;
     }
     private void getAndSetNewEvent() {
 
