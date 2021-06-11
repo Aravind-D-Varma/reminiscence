@@ -16,16 +16,16 @@
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-xhdpi\\settingstheme_black.png"
     },
     {
-        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-anydpi_settings_white.xml.flat",
-        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-anydpi\\settings_white.xml"
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_ic_menu_add.png.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-hdpi\\ic_menu_add.png"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_nostalgia_logo.png.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\mipmap-hdpi\\nostalgia_logo.png"
     },
     {
-        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_ic_menu_add.png.flat",
-        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-hdpi\\ic_menu_add.png"
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-anydpi_settings_white.xml.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-anydpi\\settings_white.xml"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_nostalgia_logo.png.flat",
@@ -40,12 +40,12 @@
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\xml\\settings_main.xml"
     },
     {
-        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_back_black.png.flat",
-        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-mdpi\\back_black.png"
-    },
-    {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_language_black.png.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-hdpi\\language_black.png"
+    },
+    {
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_back_black.png.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-mdpi\\back_black.png"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable_button_border_light.xml.flat",
@@ -56,20 +56,20 @@
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-hdpi\\swap_black.png"
     },
     {
-        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_aboutme_black.png.flat",
-        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-xhdpi\\aboutme_black.png"
-    },
-    {
-        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\layout_introduction.xml.flat",
-        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\layout\\introduction.xml"
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\layout_nav_header_main.xml.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\layout\\nav_header_main.xml"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_nostalgia_logo.png.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\mipmap-mdpi\\nostalgia_logo.png"
     },
     {
-        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\layout_nav_header_main.xml.flat",
-        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\layout\\nav_header_main.xml"
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\layout_introduction.xml.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\layout\\introduction.xml"
+    },
+    {
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_aboutme_black.png.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-xhdpi\\aboutme_black.png"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_username_black.png.flat",
@@ -324,12 +324,12 @@
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-xxhdpi\\frontarrow_white.png"
     },
     {
-        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_feedback_white.png.flat",
-        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-mdpi\\feedback_white.png"
-    },
-    {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_language_white.png.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-hdpi\\language_white.png"
+    },
+    {
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_feedback_white.png.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-mdpi\\feedback_white.png"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_settingstheme_white.png.flat",
@@ -536,12 +536,12 @@
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-mdpi\\feedback_black.png"
     },
     {
-        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_baseline_date_range_white_20.png.flat",
-        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-xxhdpi\\baseline_date_range_white_20.png"
-    },
-    {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_swap_white.png.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-mdpi\\swap_white.png"
+    },
+    {
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_baseline_date_range_white_20.png.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-xxhdpi\\baseline_date_range_white_20.png"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\menu_fragment_memory_list.xml.flat",
@@ -592,12 +592,12 @@
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-hdpi\\swap_white.png"
     },
     {
-        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-anydpi_username_white.xml.flat",
-        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-anydpi\\username_white.xml"
-    },
-    {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_language_white.png.flat",
         "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-xxhdpi\\language_white.png"
+    },
+    {
+        "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-anydpi_username_white.xml.flat",
+        "source": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\src\\main\\res\\drawable-anydpi\\username_white.xml"
     },
     {
         "merged": "C:\\Users\\Aravind\\AndroidStudioProjects\\Reminiscence\\app\\build\\intermediates\\res\\merged\\debug\\drawable-anydpi_aboutme_white.xml.flat",

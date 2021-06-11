@@ -1,8 +1,0 @@
-com/example/nostalgia/test/BuildConfig.java
- com.example.nostalgia.test.BuildConfig
-com/example/nostalgia/ExampleInstrumentedTest.java
- com.example.nostalgia.ExampleInstrumentedTest
-com/example/nostalgia/IntroPagerAdapterTest.java
- com.example.nostalgia.IntroPagerAdapterTest
-com/example/nostalgia/MyGalleryAdapterTest.java
- com.example.nostalgia.MyGalleryAdapterTest

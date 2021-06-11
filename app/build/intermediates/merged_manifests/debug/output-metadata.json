@@ -4,7 +4,7 @@
     "type": "MERGED_MANIFESTS",
     "kind": "Directory"
   },
-  "applicationId": "com.example.nostalgia",
+  "applicationId": "my.project.nostalgia",
   "variantName": "debug",
   "elements": [
     {

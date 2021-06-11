@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.nostalgia">
+    package="my.project.nostalgia">
 
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.CAMERA" />
@@ -18,7 +18,7 @@
         android:fullBackupContent="false">
 
         <activity
-            android:name="com.example.nostalgia.activities.LauncherClassActivity"
+            android:name="my.project.nostalgia.activities.LauncherClassActivity"
             android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,12 +26,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.nostalgia.activities.IntroductionActivity"
-            android:parentActivityName="com.example.nostalgia.activities.LauncherClassActivity"
+            android:name="my.project.nostalgia.activities.IntroductionActivity"
+            android:parentActivityName="my.project.nostalgia.activities.LauncherClassActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
         <activity
-            android:name="com.example.nostalgia.activities.MemoryListActivity"
+            android:name="my.project.nostalgia.activities.MemoryListActivity"
             android:theme="@style/Theme.Reminiscence"
             android:configChanges="screenSize|orientation|keyboardHidden">
             <intent-filter>
@@ -41,18 +41,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.nostalgia.activities.UserSettingsActivity"
-            android:parentActivityName="com.example.nostalgia.activities.MemoryListActivity"
+            android:name="my.project.nostalgia.activities.UserSettingsActivity"
+            android:parentActivityName="my.project.nostalgia.activities.MemoryListActivity"
             android:configChanges="screenSize|orientation|keyboardHidden">
         </activity>
         <activity
-            android:name="com.example.nostalgia.activities.MemoryPagerActivity"
-            android:parentActivityName="com.example.nostalgia.activities.MemoryListActivity"
+            android:name="my.project.nostalgia.activities.MemoryPagerActivity"
+            android:parentActivityName="my.project.nostalgia.activities.MemoryListActivity"
             android:configChanges="screenSize|orientation|keyboardHidden">
         </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.nostalgia.fileprovider"
+            android:authorities="my.project.nostalgia.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

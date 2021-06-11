@@ -4,7 +4,7 @@
     "type": "PROCESSED_RES",
     "kind": "Directory"
   },
-  "applicationId": "com.example.nostalgia",
+  "applicationId": "my.project.nostalgia",
   "variantName": "processDebugResources",
   "elements": [
     {
