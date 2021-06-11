@@ -400,10 +400,6 @@ public class MemoryFragment extends Fragment {
                 v.setBackgroundResource(R.drawable.button_border);
                 if (v instanceof Button)
                     ((Button) v).setTextColor(getResources().getColor(R.color.light_purple));
-                else if (v instanceof Spinner) {
-                    TextView oTextView = (TextView) (((Spinner) v).getChildAt(0));
-                    oTextView.setTextColor(getResources().getColor(R.color.light_purple));
-                }
                 else if (v instanceof EditText){
                     ((EditText) v).setTextColor(getResources().getColor(R.color.white));
                 }
@@ -412,7 +408,7 @@ public class MemoryFragment extends Fragment {
                 if (v instanceof Button)
                     ((Button) v).setTextColor(getResources().getColor(R.color.white));
                 else if (v instanceof Spinner) {
-                    TextView oTextView = (TextView) (((Spinner) v).getChildAt(0));
+                    TextView oTextView = (TextView) ((Spinner)v).getChildAt(0);
                     oTextView.setTextColor(getResources().getColor(R.color.white));
                 }
             }

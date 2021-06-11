@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Nostalgie</string>
+    <string name="memory_title_hint">Geef een naam aan dit souvenir!</string>
+    <string name="memory_title_label">Titel</string>
+    <string name="memory_details_label">Details</string>
+    <string name="Delete">Verwijderen</string>
+    <string name="no_memorys_display">Er zijn geen herinneringen om weer te geven</string>
+    <string name="no_memory_add">Een herinnering toevoegen?</string>
+    <plurals name="subtitle_plural">
+        <item quantity="one">%1$d geheugen</item>
+        <item quantity="other">%1$d herinneringen</item>
+    </plurals>
+    <string name="memory_photo_button_description">Maak een foto van een herinneringsscène</string>
+    <string name="memory_photo_no_image_description">geheugenscène foto (niet ingesteld)</string>
+    <string name="memory_photo_image_description">geheugenscène foto (set)</string>
+    <string name="memory_details_hint">Beschrijf uw herinnering in detail</string>
+    <string name="search">Zoeken</string>
+    <string name="memory_search_hint">Zoek geheugen</string>
+    <string name="all">Alle evenementen</string>
+    <string name="choose_photos">Kies Fotos</string>
+    <string name="photo_add">Voeg foto toe</string>
+    <string name="welcome">Welkom!</string>
+    <string name="enterName">Vul uw naam in:</string>
+    <string name="ctd">Doorgaan met</string>
+    <string name="thanks">Deze app is in twee maanden ontwikkeld en bevindt zich nog in de bètafase.
+        Het ondersteunt (en een belangrijke) functie (Verbindingen) is nog niet toegevoegd.
+        Ondertussen kunt u een zoete herinnering toevoegen aan uw persoonlijke verzameling evenementen.
+        Studentenleven, Thuis, Verjaardagen en Feesten zijn voorbeelden van gebeurtenissen die
+        standaard worden toegevoegd. U kunt ze weggooien en uw eigen keuze toevoegen in instellingen.</string>
+    <string name="photos_reselection">Fotos opnieuw selecteren</string>
+    <string name="settings">Instellingen</string>
+    <string name="changeName">Naam veranderen: </string>
+    <string name="changesettings">Wijzig uw instellingen: </string>
+    <string name="yes">Ja</string>
+    <string name="no">Nee</string>
+    <string name="add_custom_event">Aangepaste gebeurtenis maken</string>
+    <string name="NDopen">open</string>
+    <string name="NDclose">dichtbij</string>
+    <string name="welcome_second">Verzamel al je favoriete herinneringen op één plek. Geef een naam, beschrijf ze,
+        voeg fotos/videos toe in je persoonlijke app! Deel, update en blaas ze nieuw leven in!</string>
+    <string name="tell_us">Vertel iets over jezelf!</string>
+    <string name="add_photos_videos">Fotos/videos toevoegen</string>
+    <string name="thank_downloading">Bedankt voor het downloaden van deze app</string>
+    <string name="header_ND">Geheugengebeurtenissen</string>
+</resources>
