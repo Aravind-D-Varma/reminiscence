@@ -122,8 +122,14 @@ public class MemoryListFragment extends Fragment {
         //region EmptyRecyclerView
         if(MemoryLab.get(getActivity()).getMemories().size()==0){
             View noMemoryView = inflater.inflate(R.layout.empty_list_page, container, false);
+            SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+            String themeValues = getData.getString("GlobalTheme", "Dark");
             mNoMemoryTextView = (TextView) noMemoryView.findViewById(R.id.no_memory_text);
             mNoMemoryButton = (Button) noMemoryView.findViewById(R.id.no_memory_button);
+            if (themeValues.equals("Light")) {
+                mNoMemoryButton.setBackgroundResource(R.drawable.button_border_light);
+                mNoMemoryButton.setTextColor(getResources().getColor(R.color.white));
+            }
             mNoMemoryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View noMemoryView) {

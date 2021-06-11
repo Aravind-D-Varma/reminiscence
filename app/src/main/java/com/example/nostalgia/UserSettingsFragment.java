@@ -3,6 +3,7 @@ package com.example.nostalgia;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
@@ -114,12 +115,12 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     private Preference myselfPref(PreferenceScreen mScreen) {
         Preference aboutMe = new Preference(mScreen.getContext());
         aboutMe.setTitle("About me");
-
-        aboutMe.setSummary("A brief description of this application");
+        aboutMe.setSummary("View my source code and my developers profile");
         aboutMe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                aboutMeAlertDialog();
+                Intent browse = new Intent( Intent.ACTION_VIEW , Uri.parse("https://github.com/Aravind-D-Varma"));
+                startActivity( browse );
                 return true;
             }
         });
@@ -159,28 +160,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         return username;
     }
 
-    private void aboutMeAlertDialog() {
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
-        AlertDialog.Builder infoDialog;
-        if(themeValues.equals("Light"))
-            infoDialog = new AlertDialog.Builder(getContext(), R.style.LightDialog);
-        else
-            infoDialog = new AlertDialog.Builder(getContext(), R.style.DarkDialog);
-
-        infoDialog.setTitle("About me");
-        final TextView info = new EditText(getContext());
-        info.setText(R.string.aboutme);
-        info.setFocusable(false);
-        infoDialog.setView(info)
-                .setPositiveButton("Got it!", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.dismiss();
-                    }
-                })
-                .create();
-        infoDialog.show();
-    }
     private DropDownPreference getDropDownPreference(PreferenceScreen screen) {
 
         mEvents = new DropDownPreference(screen.getContext());
