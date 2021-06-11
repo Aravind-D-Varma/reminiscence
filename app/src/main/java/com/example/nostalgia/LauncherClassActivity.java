@@ -15,6 +15,7 @@ public class LauncherClassActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.LaunchTheme);
+        getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.black));
         SystemClock.sleep(1000);
         Intent intent = new Intent(LauncherClassActivity.this, IntroductionActivity.class);
         startActivity(intent);
