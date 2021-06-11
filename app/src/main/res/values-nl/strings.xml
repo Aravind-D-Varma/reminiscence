@@ -43,4 +43,21 @@
     <string name="add_photos_videos">Fotos/videos toevoegen</string>
     <string name="thank_downloading">Bedankt voor het downloaden van deze app</string>
     <string name="header_ND">Geheugengebeurtenissen</string>
+
+    <string name="personal_settings">Persoonlijke instellingen</string>
+    <string name="themes">Themas</string>
+    <string name="themes_summary">App-thema wijzigen</string>
+    <string name="settings_name">Naam</string>
+    <string name="settings_name_summary">Verander je naam</string>
+    <string name="settings_events">Evenementen</string>
+    <string name="settings_events_summary">Tik op een evenement om het te verwijderen.
+        Klik op Toevoegen om een aangepast evenement toe te voegen</string>
+
+    <string name="settings_aboutme">Over mij</string>
+    <string name="settings_aboutme_summary">Bekijk mijn broncode en mijn ontwikkelaarsprofiel</string>
+    <string name="settings_feedback">Feedback verzenden</string>
+    <string name="settings_feedback_summary">Een probleem melden of een nieuwe functie voorstellen</string>
+    <string name="settings_invite">Iemand uitnodigen</string>
+    <string name="settings_invite_summary">Heb je collectieve herinneringen met iemand? Nodig ze uit en ze kunnen er herinneringen aan ophalen!</string>
+
 </resources>

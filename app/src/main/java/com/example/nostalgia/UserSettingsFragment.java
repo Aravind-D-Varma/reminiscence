@@ -1,5 +1,4 @@
 package com.example.nostalgia;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,7 +44,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         setPreferenceScreen(mScreen);
 
         PreferenceCategory mChoices = new PreferenceCategory(mScreen.getContext());
-        mChoices.setTitle("Personal Settings");
+        mChoices.setTitle(getResources().getString(R.string.personal_settings));
         mScreen.addPreference(mChoices);
 
         EditTextPreference username = setUserName(mScreen);
@@ -56,8 +55,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
 
         ListPreference themes = new ListPreference(mScreen.getContext());
         themes.setKey("GlobalTheme");
-        themes.setTitle("Themes");
-        themes.setSummary("Change app themes");
+        themes.setTitle(getResources().getString(R.string.themes));
+        themes.setSummary(getResources().getString(R.string.themes_summary));
         CharSequence[] entries = {"Light","Dark"};
         CharSequence[] entryValues = {"Light","Dark"};
         themes.setEntries(entries);
@@ -114,8 +113,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
 
     private Preference myselfPref(PreferenceScreen mScreen) {
         Preference aboutMe = new Preference(mScreen.getContext());
-        aboutMe.setTitle("About me");
-        aboutMe.setSummary("View my source code and my developers profile");
+        aboutMe.setTitle(getResources().getString(R.string.settings_aboutme));
+        aboutMe.setSummary(getResources().getString(R.string.settings_aboutme_summary));
         aboutMe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -128,9 +127,9 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     }
     private Preference sendFeedbackPref(PreferenceScreen mScreen) {
         Preference sendFeedback = new Preference(mScreen.getContext());
-        sendFeedback.setTitle("Send Feedback");
+        sendFeedback.setTitle(getResources().getString(R.string.settings_feedback));
 
-        sendFeedback.setSummary("Report an issue or suggest a new feature");
+        sendFeedback.setSummary(getResources().getString(R.string.settings_feedback_summary));
         sendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -141,9 +140,9 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     }
     private Preference invitePeoplePref(PreferenceScreen mScreen) {
         Preference pref = new Preference(mScreen.getContext());
-        pref.setTitle("Invite Someone");
+        pref.setTitle(getResources().getString(R.string.settings_invite));
 
-        pref.setSummary("Have collective memories with someone? Invite them and they can reminisce them!");
+        pref.setSummary(getResources().getString(R.string.settings_invite_summary));
         pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -155,16 +154,16 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     private EditTextPreference setUserName(PreferenceScreen mScreen) {
         EditTextPreference username = new EditTextPreference(mScreen.getContext());
         username.setKey(SEND_USERNAME);
-        username.setTitle("Name");
-        username.setSummary("Change your name");
+        username.setTitle(getResources().getString(R.string.settings_name));
+        username.setSummary(getResources().getString(R.string.settings_name_summary));
         return username;
     }
 
     private DropDownPreference getDropDownPreference(PreferenceScreen screen) {
 
         mEvents = new DropDownPreference(screen.getContext());
-        mEvents.setTitle("Events");
-        mEvents.setSummary("Tap on event to delete it. Click Add to add a customized event");
+        mEvents.setTitle(getResources().getString(R.string.settings_events));
+        mEvents.setSummary(getResources().getString(R.string.settings_events_summary));
 
         updateDropDownEvents();
         mEvents.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -240,7 +239,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         CharSequence[] userevents = preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "").split(",");
         List<CharSequence> usereventsList = new LinkedList<CharSequence>(Arrays.asList(userevents));
 
-        String addEvent = "Add EVent";
+        String addEvent = "Add Event";
         Spannable summary = new SpannableString(addEvent);
         summary.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.dark_purple)), 0, summary.length(), 0);
         usereventsList.add(summary);
