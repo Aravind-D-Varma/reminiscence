@@ -3,6 +3,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -19,6 +20,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Locale;
+import java.util.stream.IntStream;
 
 /**
  * Contains the Navigation Drawer containing a welcome text, event lists and settings to change these two.<br>
@@ -102,6 +106,7 @@ public class MemoryListActivity extends SingleFragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getGeneralInfo();
         mNavigationView = findViewById(R.id.navigation_view);
 
@@ -234,9 +239,26 @@ public class MemoryListActivity extends SingleFragmentActivity
     }
 
     private void getGeneralInfo() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        userName = preferences.getString(IntroductionActivity.SEND_USERNAME,"");
-        String userevents = preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "");
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        userName = pref.getString(IntroductionActivity.SEND_USERNAME,"");
+        String userevents = pref.getString(IntroductionActivity.APPLICABLE_EVENTS, "");
         applicableEvents = userevents.split(",");
+        String languages = pref.getString(IntroductionActivity.LANGUAGE, "English");
+        if (languages.equals("English")){
+            Locale locale = new Locale("en");
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().
+                    updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+        else{
+            Locale locale = new Locale("nl");
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().
+                    updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
     }
 }

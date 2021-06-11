@@ -19,6 +19,7 @@ public class IntroductionActivity extends AppCompatActivity {
     public static final String FIRST_TIME = "firsttime";
     public static final String USER_ID = "userid";
     public static final String SEND_USERNAME= "username";
+    public static final String LANGUAGE = "GlobalLanguage";
     public static final String APPLICABLE_EVENTS = "true_events";
 
     @Override

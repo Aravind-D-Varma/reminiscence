@@ -29,9 +29,10 @@ public class UserSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_fragment);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new UserSettingsFragment()).commit();
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Settings");
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getResources().getString(R.string.settings));
 
     }
 

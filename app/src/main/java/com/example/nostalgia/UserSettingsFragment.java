@@ -1,7 +1,9 @@
 package com.example.nostalgia;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -28,7 +30,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
+import static com.example.nostalgia.IntroductionActivity.LANGUAGE;
 import static com.example.nostalgia.IntroductionActivity.SEND_USERNAME;
 
 public class UserSettingsFragment extends PreferenceFragmentCompat{
@@ -53,6 +57,89 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         DropDownPreference events = getDropDownPreference(mScreen);
         mChoices.addPreference(events);
 
+        ListPreference themes = setThemePref(mScreen);
+        mChoices.addPreference(themes);
+
+        ListPreference language = setLanguagePref(mScreen);
+        mChoices.addPreference(language);
+
+        PreferenceCategory help = new PreferenceCategory(mScreen.getContext());
+        help.setTitle("Help");
+        mScreen.addPreference(help);
+
+        Preference sendFeedback = sendFeedbackPref(mScreen);
+        help.addPreference(sendFeedback);
+        
+        Preference invitePeople = invitePeoplePref(mScreen);
+        help.addPreference(invitePeople);
+
+        Preference aboutMe = myselfPref(mScreen);
+        help.addPreference(aboutMe);
+
+        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+        String themeValues = getData.getString("GlobalTheme", "Dark");
+        if (themeValues.equals("Dark")) {
+            aboutMe.setIcon(R.drawable.aboutme_white);
+            themes.setIcon(R.drawable.settingstheme_white);
+            language.setIcon(R.drawable.language_white);
+            sendFeedback.setIcon(R.drawable.feedback_white);
+            invitePeople.setIcon(R.drawable.invite_white);
+            username.setIcon(R.drawable.username_white);
+            mEvents.setIcon(R.drawable.swap_white);
+        }
+        else if (themeValues.equals("Light")) {
+            themes.setIcon(R.drawable.settingstheme_black);
+            language.setIcon(R.drawable.language_black);
+            aboutMe.setIcon(R.drawable.aboutme_black);
+            sendFeedback.setIcon(R.drawable.feedback_black);
+            invitePeople.setIcon(R.drawable.invite_black);
+            username.setIcon(R.drawable.username_black);
+            mEvents.setIcon(R.drawable.swap_black);
+        }
+    }
+
+    private ListPreference setLanguagePref(PreferenceScreen mScreen) {
+        ListPreference languages = new ListPreference(mScreen.getContext());
+        languages.setKey(LANGUAGE);
+        languages.setTitle(getResources().getString(R.string.language));
+        languages.setSummary(getResources().getString(R.string.language_summary));
+        CharSequence[] entries = {"English","Dutch"};
+        CharSequence[] entryValues = {"English","Dutch"};
+        languages.setEntries(entries);
+        languages.setEntryValues(entryValues);
+
+        languages.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                int index = languages.findIndexOfValue(newValue.toString());
+                if (languages.getEntries()[index].equals("English")){
+                    languages.setValue("English");
+                    Locale locale = new Locale("en");
+                    Locale.setDefault(locale);
+                    Configuration config = new Configuration();
+                    config.locale = locale;
+                    getContext().getResources().
+                            updateConfiguration(config, getContext().getResources().getDisplayMetrics());
+                }
+                else{
+                    languages.setValue("Dutch");
+                    Locale locale = new Locale("nl");
+                    Locale.setDefault(locale);
+                    Configuration config = new Configuration();
+                    config.locale = locale;
+                    getContext().getResources().
+                            updateConfiguration(config, getContext().getResources().getDisplayMetrics());
+                }
+                Intent intent = new Intent(getContext(), UserSettingsActivity.class);
+                getActivity().finish();
+                startActivity(intent);
+                return false;
+            }
+        });
+        return languages;
+    }
+
+    private ListPreference setThemePref(PreferenceScreen mScreen) {
         ListPreference themes = new ListPreference(mScreen.getContext());
         themes.setKey("GlobalTheme");
         themes.setTitle(getResources().getString(R.string.themes));
@@ -75,40 +162,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 return false;
             }
         });
-        mChoices.addPreference(themes);
-
-        PreferenceCategory help = new PreferenceCategory(mScreen.getContext());
-        help.setTitle("Help");
-        mScreen.addPreference(help);
-
-        Preference sendFeedback = sendFeedbackPref(mScreen);
-        help.addPreference(sendFeedback);
-        
-        Preference invitePeople = invitePeoplePref(mScreen);
-        help.addPreference(invitePeople);
-
-        Preference aboutMe = myselfPref(mScreen);
-        help.addPreference(aboutMe);
-
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
-        if (themeValues.equals("Dark")) {
-            aboutMe.setIcon(R.drawable.aboutme_white);
-            themes.setIcon(R.drawable.settingstheme_white);
-            sendFeedback.setIcon(R.drawable.feedback_white);
-            invitePeople.setIcon(R.drawable.invite_white);
-            username.setIcon(R.drawable.username_white);
-            mEvents.setIcon(R.drawable.delete_white);
-        }
-        else if (themeValues.equals("Light")) {
-            themes.setIcon(R.drawable.settingstheme_black);
-            aboutMe.setIcon(R.drawable.aboutme_black);
-            sendFeedback.setIcon(R.drawable.feedback_black);
-            invitePeople.setIcon(R.drawable.invite_black);
-            username.setIcon(R.drawable.username_black);
-            mEvents.setIcon(R.drawable.delete_black);
-        }
-
+        return themes;
     }
 
     private Preference myselfPref(PreferenceScreen mScreen) {

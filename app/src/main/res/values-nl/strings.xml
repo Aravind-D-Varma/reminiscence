@@ -76,5 +76,7 @@
     <string name="hangouts">Hangout en chill</string>
     <string name="celebrations">Vieringen</string>
     <string name="add_event">Voeg evenement toe</string>
+    <string name="language">Taal</string>
+    <string name="language_summary">App-taal wijzigen</string>
 
 </resources>
