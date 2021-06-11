@@ -29,7 +29,7 @@
         android:testOnly="true"
         android:theme="@style/Theme.Reminiscence" >
         <activity
-            android:name="com.example.nostalgia.LauncherClassActivity"
+            android:name="com.example.nostalgia.activities.LauncherClassActivity"
             android:theme="@style/LaunchTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,12 +38,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.nostalgia.IntroductionActivity"
-            android:parentActivityName="com.example.nostalgia.LauncherClassActivity"
+            android:name="com.example.nostalgia.activities.IntroductionActivity"
+            android:parentActivityName="com.example.nostalgia.activities.LauncherClassActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" >
         </activity>
         <activity
-            android:name="com.example.nostalgia.MemoryListActivity"
+            android:name="com.example.nostalgia.activities.MemoryListActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:theme="@style/Theme.Reminiscence" >
             <intent-filter>
@@ -54,14 +54,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.nostalgia.UserSettingsActivity"
+            android:name="com.example.nostalgia.activities.UserSettingsActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
-            android:parentActivityName="com.example.nostalgia.MemoryListActivity" >
+            android:parentActivityName="com.example.nostalgia.activities.MemoryListActivity" >
         </activity>
         <activity
-            android:name="com.example.nostalgia.MemoryPagerActivity"
+            android:name="com.example.nostalgia.activities.MemoryPagerActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
-            android:parentActivityName="com.example.nostalgia.MemoryListActivity" >
+            android:parentActivityName="com.example.nostalgia.activities.MemoryListActivity" >
         </activity>
 
         <provider

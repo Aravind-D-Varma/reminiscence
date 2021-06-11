@@ -102,12 +102,12 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\Ar
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:16:9-50
 	android:fullBackupOnly
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:17:9-39
-activity#com.example.nostalgia.LauncherClassActivity
+activity#com.example.nostalgia.activities.LauncherClassActivity
 ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:20:9-27:20
 	android:theme
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:22:13-47
 	android:name
-		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:21:13-71
+		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:21:13-82
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
 ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:23:13-26:29
 action#android.intent.action.MAIN
@@ -118,22 +118,22 @@ category#android.intent.category.LAUNCHER
 ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:25:17-77
 	android:name
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:25:27-74
-activity#com.example.nostalgia.IntroductionActivity
+activity#com.example.nostalgia.activities.IntroductionActivity
 ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:28:9-32:20
 	android:parentActivityName
-		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:30:13-85
+		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:30:13-96
 	android:theme
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:31:13-63
 	android:name
-		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:29:13-70
-activity#com.example.nostalgia.MemoryListActivity
+		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:29:13-81
+activity#com.example.nostalgia.activities.MemoryListActivity
 ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:33:9-42:20
 	android:configChanges
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:36:13-74
 	android:theme
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:35:13-54
 	android:name
-		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:34:13-68
+		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:34:13-79
 intent-filter#action:name:android.intent.action.MAIN+action:name:android.intent.action.SEARCH+category:name:android.intent.category.DEFAULT
 ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:37:13-41:29
 action#android.intent.action.SEARCH
@@ -144,22 +144,22 @@ category#android.intent.category.DEFAULT
 ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:40:17-76
 	android:name
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:40:27-73
-activity#com.example.nostalgia.UserSettingsActivity
+activity#com.example.nostalgia.activities.UserSettingsActivity
 ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:43:9-47:20
 	android:parentActivityName
-		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:45:13-82
+		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:45:13-93
 	android:configChanges
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:46:13-74
 	android:name
-		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:44:13-70
-activity#com.example.nostalgia.MemoryPagerActivity
+		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:44:13-81
+activity#com.example.nostalgia.activities.MemoryPagerActivity
 ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:48:9-52:20
 	android:parentActivityName
-		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:50:13-82
+		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:50:13-93
 	android:configChanges
 		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:51:13-74
 	android:name
-		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:49:13-69
+		ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:49:13-80
 provider#androidx.core.content.FileProvider
 ADDED from C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:53:9-61:20
 	android:grantUriPermissions

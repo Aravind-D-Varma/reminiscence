@@ -1,10 +1,9 @@
 package com.example.nostalgia.database;
 import android.database.Cursor;
 import android.database.CursorWrapper;
-import com.example.nostalgia.Memory;
+import com.example.nostalgia.models.Memory;
 import com.example.nostalgia.database.MemoryDbSchema.memoryTable;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 public class MemoryCursorWrapper extends CursorWrapper {
