@@ -294,11 +294,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         List<CharSequence> usereventsList = new LinkedList<CharSequence>(Arrays.asList(userevents));
 
         String addEvent = getResources().getString(R.string.add_event);
-        Spannable summary = new SpannableString(addEvent);
-        summary.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.dark_purple)), 0, summary.length(), 0);
-        usereventsList.add(summary);
-        CharSequence[] cs = usereventsList.toArray(new CharSequence[usereventsList.size()]);
-        //userevents = usereventsList.toArray(userevents);
+        usereventsList.add(addEvent);
+        CharSequence[] cs = usereventsList.toArray(new CharSequence[0]);
         return cs;
     }
     private void getAndSetNewEvent() {
