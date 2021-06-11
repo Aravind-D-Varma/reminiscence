@@ -433,10 +433,10 @@ public class MemoryFragment extends Fragment {
     }
     private AlertDialog AskDeleteMedia(String toDeleteMediapath){
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext(),R.style.PauseDialog)
-                .setTitle("Deletion")
-                .setMessage("Do you want to delete this photo?")
+                .setTitle(getResources().getString(R.string.delete_file))
+                .setMessage(getResources().getString(R.string.deletion_confirm))
                 .setIcon(android.R.drawable.ic_menu_delete)
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.discard), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String[] allPhotoPaths = individualFilePaths(mMemory);
                         List<String> list = new ArrayList<String>(Arrays.asList(allPhotoPaths));
@@ -447,7 +447,7 @@ public class MemoryFragment extends Fragment {
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }

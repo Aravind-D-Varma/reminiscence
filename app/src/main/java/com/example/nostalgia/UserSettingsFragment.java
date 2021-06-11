@@ -196,16 +196,16 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             discardMemoryDialogBox = new AlertDialog.Builder(getContext(), R.style.DarkDialog)
                     .setIcon(R.drawable.delete_purple);
 
-         discardMemoryDialogBox.setTitle("Discard Event")
-                .setMessage("Do you want to discard this event?")
-                .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+        discardMemoryDialogBox.setTitle(getResources().getString(R.string.discard_event))
+                .setMessage(getResources().getString(R.string.discard_event_confirm))
+                .setPositiveButton(getResources().getString(R.string.discard), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         removeFromEvents(finalI);
                         updateDropDownEvents();
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
@@ -239,7 +239,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         CharSequence[] userevents = preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "").split(",");
         List<CharSequence> usereventsList = new LinkedList<CharSequence>(Arrays.asList(userevents));
 
-        String addEvent = "Add Event";
+        String addEvent = getResources().getString(R.string.add_event);
         Spannable summary = new SpannableString(addEvent);
         summary.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.dark_purple)), 0, summary.length(), 0);
         usereventsList.add(summary);

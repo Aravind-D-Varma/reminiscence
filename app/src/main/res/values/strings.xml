@@ -1,36 +1,41 @@
 <resources>
+    <string name="app_name">Nostalgia</string>
+
     <string name="welcome">Welcome!</string>
-    <string name="enterName">Enter your name:</string>
     <string name="welcome_second">Gather all your favorite memories in one place. Give a name, describe them,
         add photos/videos in your personal app! Share, update and revive them!</string>
     <string name="tell_us">Tell a little bit your self:</string>
-    <string name="thank_downloading">Thank you for downloading this app</string>
-    <string name="ctd">Continue</string>
+    <string name="enterName">Enter your name:</string>
     <string name="thanks">This app has been developed in two months and is still in its beta phase.
         Its supporting (and a significant) feature (Connections) has not yet been added. Meanwhile,
         you can add a sweet memory to your personal collection of events. Student Life, Home,
-        Birthdays, and Celebrations are examples of events that are added as default. You can
+        Hangouts and Celebrations are examples of events that are added as default. You can
         discard them and add your own choice in settings.</string>
+    <string name="thank_downloading">Thank you for downloading this app</string>
+    <string name="continue_toMain">Continue</string>
 
-
-    <string name="app_name">Nostalgia</string>
-        <string name="memory_title_hint">Give a name to this souvenir!</string>
-        <string name="memory_title_label">Title</string>
-        <string name="memory_details_label">Details</string>
-        <string name="Delete">Delete</string>
-        <string name="no_memorys_display">There are no memories to display</string>
-        <string name="no_memory_add">Add a memory?</string>
+    <string name="NDopen">open</string>
+    <string name="NDclose">close</string>
+    <string name="header_ND">Memory Events</string>
+    <string name="search">Search</string>
+    <string name="memory_search_hint">Search memory</string>
+    <string name="all">All Events</string>
     <plurals name="subtitle_plural">
-                <item quantity="one">%1$d memory</item>
-                <item quantity="other">%1$d memories</item>
+        <item quantity="one">%1$d memory</item>
+        <item quantity="other">%1$d memories</item>
     </plurals>
+
+    <string name="memory_title_hint">Give a name to this souvenir!</string>
+    <string name="memory_title_label">Title</string>
+    <string name="memory_details_label">Details</string>
+    <string name="Delete">Delete</string>
+    <string name="no_memorys_display">There are no memories to display</string>
+    <string name="no_memory_add">Add a memory?</string>
     <string name="memory_photo_button_description">Take photo of memory scene</string>
     <string name="memory_photo_no_image_description">memory scene photo (not set)</string>
     <string name="memory_photo_image_description">memory scene photo (set)</string>
     <string name="memory_details_hint">Describe your recollection in detail</string>
-    <string name="search">Search</string>
-    <string name="memory_search_hint">Search memory</string>
-    <string name="all">All Events</string>
+    <string name="add_photos_videos">Add photos/videos</string>
     <string name="choose_photos">Choose Photos/Videos</string>
     <string name="photo_add">Add photo</string>
     <string name="photos_reselection">Re-select Photos</string>
@@ -40,11 +45,14 @@
     <string name="changesettings">Change your settings: </string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="add_custom_event">Create custom event</string>
-    <string name="NDopen">open</string>
-    <string name="NDclose">close</string>
-    <string name="add_photos_videos">Add photos/videos</string>
-    <string name="header_ND">Memory Events</string>
+    <string name="create_custom_event">Create custom event</string>
+
+    <string name="delete_file">Delete File</string>
+    <string name="deletion_confirm">Do you want to delete this file?</string>
+    <string name="discard_event">Discard Event</string>
+    <string name="cancel">Cancel</string>
+    <string name="discard">Discard</string>
+    <string name="discard_event_confirm">Do you want to discard this event?</string>
 
     <string name="personal_settings">Personal Settings</string>
     <string name="themes">Themes</string>
@@ -59,5 +67,11 @@
     <string name="settings_feedback_summary">Report an issue or suggest a new feature</string>
     <string name="settings_invite">Invite someone</string>
     <string name="settings_invite_summary">Have collective memories with someone? Invite them and they can reminisce about them!</string>
+
+    <string name="student_life">Student Life</string>
+    <string name="home">Home Sweet Home!</string>
+    <string name="hangouts">Hangout and chill</string>
+    <string name="celebrations">Celebrations</string>
+    <string name="add_event">Add Event</string>
 
 </resources>
