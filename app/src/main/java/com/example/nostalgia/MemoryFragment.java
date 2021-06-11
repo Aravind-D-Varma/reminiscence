@@ -629,7 +629,8 @@ public class MemoryFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode){
             case MY_STORAGE_CODE:
-                startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
+                if(hasMediaPermission())
+                    startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
