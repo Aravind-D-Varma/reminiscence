@@ -120,8 +120,8 @@
 67-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:53:9-61:20
 68            android:name="androidx.core.content.FileProvider"
 68-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:54:13-62
-69            android:authorities="com.example.nostalgia.fileprovider"
-69-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:55:13-69
+69            android:authorities="my.project.nostalgia.fileprovider"
+69-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:55:13-68
 70            android:exported="false"
 70-->C:\Users\Aravind\AndroidStudioProjects\Reminiscence\app\src\main\AndroidManifest.xml:56:13-37
 71            android:grantUriPermissions="true" >

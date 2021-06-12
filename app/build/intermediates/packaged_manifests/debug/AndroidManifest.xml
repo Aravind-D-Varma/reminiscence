@@ -66,7 +66,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.nostalgia.fileprovider"
+            android:authorities="my.project.nostalgia.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true" >
             <meta-data
