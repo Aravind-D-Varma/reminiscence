@@ -434,6 +434,9 @@ public class MemoryFragment extends Fragment {
         dialog.setContentView(R.layout.activity_memory_pager);
         GalleryViewPagerAdapter adapter = new GalleryViewPagerAdapter(getActivity(),individualFilePaths(mMemory));
         ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
+        pager.setClipToPadding(false);
+        pager.setPadding(60,0,60,0);
+        pager.setPageMargin(20);
         pager.setAdapter(adapter);
         pager.setCurrentItem(position);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
