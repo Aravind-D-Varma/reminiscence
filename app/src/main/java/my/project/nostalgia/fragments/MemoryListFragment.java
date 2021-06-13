@@ -372,7 +372,9 @@ public class MemoryListFragment extends Fragment {
                 searchMemorysList.add(Memory);
             }
         }
-        mAdapter.setMemorys(searchMemorysList);
+        try {
+            mAdapter.setMemorys(searchMemorysList);
+        }catch (NullPointerException e){}
         mAdapter.notifyDataSetChanged();
     }
 
