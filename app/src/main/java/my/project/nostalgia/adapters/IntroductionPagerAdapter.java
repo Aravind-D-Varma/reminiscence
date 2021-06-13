@@ -115,7 +115,7 @@ public class IntroductionPagerAdapter extends PagerAdapter {
 
                 setGeneralInfo(userName, combinedEvents);
 
-                Intent intent = MemoryListActivity.newIntent(mContext);
+                Intent intent = new Intent(mContext, MemoryListActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
                 ((Activity)mContext).finish();

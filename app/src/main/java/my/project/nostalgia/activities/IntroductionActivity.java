@@ -31,7 +31,7 @@ public class IntroductionActivity extends AppCompatActivity {
         setContentView(R.layout.introduction);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sp.getBoolean(FIRST_TIME, false)) {
-            Intent intent = MemoryListActivity.newIntent(getApplicationContext());
+            Intent intent = new Intent(this, MemoryListActivity.class);
             startActivity(intent);
         } else {
             IntroductionPagerAdapter introductionPagerAdapter = new IntroductionPagerAdapter(this);
