@@ -44,6 +44,7 @@
     <string name="delete_memory">Geheugen verwijderen</string>
     <string name="delete_memory_confirm">Je hebt geen titel ingesteld of fotos gekozen.
         Wilt u deze herinnering weggooien?</string>
+    <string name="share_warning">Geen fotos/videos bijgevoegd!</string>
 
     <string name="settings">Instellingen</string>
     <string name="changeName">Naam veranderen: </string>
