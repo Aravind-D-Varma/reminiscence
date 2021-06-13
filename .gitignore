@@ -21,8 +21,9 @@ out/
 local.properties
 
 #debug files
-/app/build/intermediates/*
 /app/build/intermediates/
+app/build/intermediates/
+/app/build/intermediates
 
 # Log Files
 *.log
