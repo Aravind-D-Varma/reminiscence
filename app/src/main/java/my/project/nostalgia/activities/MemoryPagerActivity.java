@@ -29,14 +29,16 @@ import java.util.UUID;
 public class MemoryPagerActivity extends AppCompatActivity implements MemoryFragment.Callbacks {
 
     //region Declarations
-    private static final String EXTRA_memory_ID = "com.example.criminalintent.memory_id";
+    private static final String EXTRA_memory_ID = "my.project.memory_id";
     private static ViewPager mViewPager;
     private List<Memory> mMemories;
     public String[] applicableEvents;
 
+    /**
+     * Not sure. To be inspected
+     */
     @Override
     public void onMemoryUpdated(Memory Memory) {
-
     }
     //endregion
 

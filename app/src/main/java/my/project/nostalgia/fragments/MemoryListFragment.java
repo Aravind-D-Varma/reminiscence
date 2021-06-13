@@ -342,7 +342,7 @@ public class MemoryListFragment extends Fragment {
          * @param text
          */
         public void searchFilter(String text) {
-            try {
+
                 List<Memory> searchMemorysList = new ArrayList<>();
                 text = text.toLowerCase();
                 for (Memory Memory : MemoryLab.get(getActivity()).getMemories()) {
@@ -350,6 +350,7 @@ public class MemoryListFragment extends Fragment {
                         searchMemorysList.add(Memory);
                     }
                 }
+            try {
                 mAdapter.setMemorys(searchMemorysList);
                 notifyDataSetChanged();
             }catch (NullPointerException e){}

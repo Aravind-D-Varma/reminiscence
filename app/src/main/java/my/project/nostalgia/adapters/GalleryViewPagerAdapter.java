@@ -32,6 +32,11 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
         mContext = context;
         individualMediaPaths = mediaPaths;
     }
+
+    /**
+     * Inflate video through defined method setVideo or inflates image simply through Bitmap
+     * @see #setVideo(int, View, VideoView)
+     */
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
@@ -50,7 +55,9 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
         container.addView(v);
         return v;
     }
-
+    /**
+     * Includes videso and images. So should return total count of media files
+     */
     @Override
     public int getCount() {
         return individualMediaPaths.length;
@@ -60,24 +67,23 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return (view==object);
     }
+    /**
+     * Important to remove the super.destoryItem
+     */
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-
     }
-
     /**
      * Extracts a list of Uris to set video from a memory's filePaths.<br>
      * The Uri is null at those positions where the filepath is an image.
-     *
-     * @param photoPaths
-     * @return
+     * @param mediaPaths all media paths including images
      */
-    private List<Uri> getVideoURI(String[] photoPaths) {
+    private List<Uri> getVideoURI(String[] mediaPaths) {
 
         List<Uri> videos = new ArrayList<Uri>();
-        for (int i = 0; i < photoPaths.length; i++) {
-            if(RecyclerViewGalleryAdapter.isVideoFile(photoPaths[i])) {
-                Uri uriVid = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", new File(photoPaths[i]));
+        for (int i = 0; i < mediaPaths.length; i++) {
+            if(RecyclerViewGalleryAdapter.isVideoFile(mediaPaths[i])) {
+                Uri uriVid = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", new File(mediaPaths[i]));
                 videos.add(uriVid);
             }
             else
@@ -85,13 +91,9 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
         }
         return videos;
     }
-
     /**
      * Set the logic for pausing and resuming video. User can click anywhere on the screen to pause/resume.
      * Play button appears only when paused and disappears when resumed
-     * @param position
-     * @param v
-     * @param vv
      */
     private void setVideo(int position, View v, VideoView vv) {
         FrameLayout buttonLayout = v.findViewById(R.id.play_button_layout);
@@ -114,7 +116,6 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
         }
         catch (NullPointerException e){}
     }
-
     private void clickForPauseOrResume(VideoView vv, ImageButton ib) {
         if (vv.isPlaying()) {
             ib.setVisibility(View.VISIBLE);

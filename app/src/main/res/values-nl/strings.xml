@@ -41,6 +41,9 @@
     <string name="photo_add">Voeg foto toe</string>
     <string name="photos_reselection">Fotos opnieuw selecteren</string>
     <string name="add_photos_videos">Fotos/videos toevoegen</string>
+    <string name="delete_memory">Geheugen verwijderen</string>
+    <string name="delete_memory_confirm">Je hebt geen titel ingesteld of fotos gekozen.
+        Wilt u deze herinnering weggooien?</string>
 
     <string name="settings">Instellingen</string>
     <string name="changeName">Naam veranderen: </string>
@@ -68,7 +71,8 @@
     <string name="settings_feedback">Feedback verzenden</string>
     <string name="settings_feedback_summary">Een probleem melden of een nieuwe functie voorstellen</string>
     <string name="settings_invite">Iemand uitnodigen</string>
-    <string name="settings_invite_summary">Heb je collectieve herinneringen met iemand? Nodig ze uit en ze kunnen er herinneringen aan ophalen!</string>
+    <string name="settings_invite_summary">Heb je collectieve herinneringen met iemand? Nodig ze uit en ze
+        kunnen er herinneringen aan ophalen!</string>
 
 
     <string name="student_life">Studentenleven</string>

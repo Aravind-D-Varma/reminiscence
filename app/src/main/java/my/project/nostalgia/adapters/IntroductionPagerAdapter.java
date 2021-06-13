@@ -41,7 +41,9 @@ public class IntroductionPagerAdapter extends PagerAdapter {
     public IntroductionPagerAdapter(Context context){
         this.mContext = context;
     }
-
+    /**
+     * Inflate three layouts depending on where the user is at.
+     */
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
@@ -51,8 +53,8 @@ public class IntroductionPagerAdapter extends PagerAdapter {
         switch(position){
             case 0:
                 LinearLayout welcomeLL = getLayoutAndFix(v, R.id.welcome);
-                setText(welcomeLL, R.id.welcome_text, 1000);
-                setText(welcomeLL, R.id.intro, 3000);
+                setTextAnimation(welcomeLL, R.id.welcome_text, 1000);
+                setTextAnimation(welcomeLL, R.id.intro, 3000);
                 container.addView(welcomeLL);
                 return welcomeLL;
             case 1:
@@ -68,13 +70,9 @@ public class IntroductionPagerAdapter extends PagerAdapter {
         }
         return v;
     }
-
     /**
      * Initialises layout depending on where the user is in viewPager.
      * Fixes IllegalStateException: the child already has parent
-     * @param v
-     * @param LinearLayoutID
-     * @return
      */
     private LinearLayout getLayoutAndFix(View v, int LinearLayoutID) {
         LinearLayout welcomLL = v.findViewById(LinearLayoutID);
@@ -83,7 +81,10 @@ public class IntroductionPagerAdapter extends PagerAdapter {
         }
         return welcomLL;
     }
-
+    /**
+     * Three layouts: welcome, username and continue
+     * @return
+     */
     @Override
     public int getCount() {
         return 3;
@@ -93,18 +94,18 @@ public class IntroductionPagerAdapter extends PagerAdapter {
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
-
+    /**
+     * important to remove the super.destoryItem method
+     */
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-
     }
-    private void setText(LinearLayout welcomLL, int textViewID, int delay) {
+    private void setTextAnimation(LinearLayout welcomLL, int textViewID, int delay) {
         Animation a = AnimationUtils.loadAnimation(mContext, R.anim.introduction);
         TextView welcome = (TextView) welcomLL.findViewById(textViewID);
         a.setStartOffset(delay);
         welcome.startAnimation(a);
     }
-
     private void setContinuebutton(View v) {
         Button mContinue = (Button)v.findViewById(R.id.continue_button);
         mContinue.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +123,6 @@ public class IntroductionPagerAdapter extends PagerAdapter {
             }
         });
     }
-
     /**
      * Concatenates all events which are applicable into one string so that it can be stored in SharedPreferences.
      * @return
@@ -134,7 +134,6 @@ public class IntroductionPagerAdapter extends PagerAdapter {
 
         return stringListToString(allEvents);
     }
-
     /**
      * Sets up the username and applicable events for access across application by using SharedPreferences.
      * @param userName
@@ -148,7 +147,6 @@ public class IntroductionPagerAdapter extends PagerAdapter {
         editor.putString(USER_ID, UUID.randomUUID().toString());
         editor.apply();
     }
-
     private List<String> initializeListOfEvents(List<String> allEvents) {
         allEvents.add(mContext.getResources().getString(R.string.student_life));
         allEvents.add(mContext.getResources().getString(R.string.home));
@@ -157,7 +155,6 @@ public class IntroductionPagerAdapter extends PagerAdapter {
 
         return allEvents;
     }
-
     private String stringListToString(List<String> allEvents) {
         String[] applicableEvents = {};
         applicableEvents = allEvents.toArray(applicableEvents);
