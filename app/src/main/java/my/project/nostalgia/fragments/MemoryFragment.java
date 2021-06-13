@@ -76,8 +76,8 @@ public class MemoryFragment extends Fragment {
     public static final String ARG_memory_ID = "memory_id";
 
     private Memory mMemory;
-    private SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-    private SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mEditor;
     private String[] applicableEvents ={};
     
     private EditText mTitleField;
@@ -148,6 +148,9 @@ public class MemoryFragment extends Fragment {
         UUID recievedID = (UUID) getArguments().getSerializable(ARG_memory_ID);
         mMemory = MemoryLab.get(getActivity()).getMemory(recievedID);
         setHasOptionsMenu(true);
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mEditor = mSharedPreferences.edit();
     }
     /**
      * Sets the title of memory on action bar. Allows share and delete of memory
@@ -201,7 +204,7 @@ public class MemoryFragment extends Fragment {
                     startActivity(Intent.createChooser(share, "Share Memory"));
                 }
                 catch (NullPointerException e){
-                    Toast.makeText(getContext(), "No photos attached!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.share_warning),Toast.LENGTH_SHORT).show();
                 }
             default:
                 return super.onOptionsItemSelected(item);

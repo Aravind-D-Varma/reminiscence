@@ -42,6 +42,7 @@
     <string name="delete_memory">Discard Memory</string>
     <string name="delete_memory_confirm">You did not set a title or chosen any photos.
         Do you want to discard this memory?</string>
+    <string name="share_warning">No photos/videos attached!</string>
 
     <string name="settings">Settings</string>
     <string name="changeName">Change Name: </string>
@@ -79,4 +80,5 @@
     <string name="add_event">Add Event</string>
     <string name="language">Language</string>
     <string name="language_summary">Change app language</string>
+
 </resources>
