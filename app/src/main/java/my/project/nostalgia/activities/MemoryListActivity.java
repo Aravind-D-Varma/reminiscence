@@ -30,6 +30,7 @@ import java.util.Locale;
 /**
  * Contains the Navigation Drawer containing a welcome text, event lists and settings to change these two.<br>
  * Displays the list of memories user has added in its own fragment MemoryListFragment
+ * @see MemoryListFragment
  */
 public class MemoryListActivity extends SingleFragmentActivity
         implements MemoryListFragment.Callbacks, MemoryFragment.Callbacks, NavigationView.OnNavigationItemSelectedListener {
@@ -41,7 +42,15 @@ public class MemoryListActivity extends SingleFragmentActivity
     private TextView mHeaderText;
     private String userName;
     public String[] applicableEvents = {};
+    private String mThemeValues = "Dark";
 
+    /**
+     * Create a fragment which contains a list of memories (using recycler view).
+     * Updates UI (displays all memories and if its a tablet shows additional memory if about to be added).
+     * @see MemoryListFragment
+     * @see MemoryListFragment#updateUI()
+     * @see MemoryListFragment#updateUIForTablet()
+     */
     @Override
     public void onMemoryUpdated(Memory Memory) {
         MemoryListFragment listFragment = (MemoryListFragment)
@@ -55,11 +64,6 @@ public class MemoryListActivity extends SingleFragmentActivity
 
     private boolean isDeviceTablet() {
         return getResources().getBoolean(R.bool.isTablet);
-    }
-
-    public static Intent newIntent(Context context) {
-        Intent intent = new Intent(context, MemoryListActivity.class);
-        return intent;
     }
 
     @Override
@@ -94,13 +98,10 @@ public class MemoryListActivity extends SingleFragmentActivity
     @Override
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
-
-        if (themeValues.equals("Dark"))
+        if (mThemeValues.equals("Dark"))
             theme.applyStyle(R.style.Theme_Reminiscence, true);
 
-        if (themeValues.equals("Light"))
+        if (mThemeValues.equals("Light"))
             theme.applyStyle(R.style.Theme_Reminiscence_Light, true);
 
         return theme;
@@ -113,21 +114,24 @@ public class MemoryListActivity extends SingleFragmentActivity
         getGeneralInfo();
         mNavigationView = findViewById(R.id.navigation_view);
 
-        int colorInt;
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
-        if (themeValues.equals("Dark"))
-            colorInt = getResources().getColor(R.color.white);
-        else
-            colorInt = getResources().getColor(R.color.black);
-        ColorStateList csl = ColorStateList.valueOf(colorInt);
-        mNavigationView.setItemIconTintList(csl);
+        setColorToIcons();
 
         setHeaderWelcomeUser(userName);
         showMenuEvents();
         drawerAndToggle();
     }
 
+    private void setColorToIcons() {
+        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        mThemeValues = getData.getString("GlobalTheme", "Dark");
+        int colorInt;
+        if (mThemeValues.equals("Dark"))
+            colorInt = getResources().getColor(R.color.white);
+        else
+            colorInt = getResources().getColor(R.color.black);
+        ColorStateList csl = ColorStateList.valueOf(colorInt);
+        mNavigationView.setItemIconTintList(csl);
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -141,18 +145,15 @@ public class MemoryListActivity extends SingleFragmentActivity
 
         mHeaderText = headerView.findViewById(R.id.nav_header_textView);
         mHeaderText.setText("Welcome "+userName);
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
 
-        if (themeValues.equals("Dark")) {
+        if (mThemeValues.equals("Dark")) {
             headerView.setBackgroundColor(getResources().getColor(R.color.medium_black));
         }
-        if (themeValues.equals("Light")){
+        if (mThemeValues.equals("Light")){
             headerView.setBackgroundColor(getResources().getColor(R.color.dark_purple));
             mHeaderText.setTextColor(getResources().getColor(R.color.white));
         }
     }
-
     private void drawerAndToggle() {
         mDrawerLayout = findViewById(R.id.main_drawerLayout);
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -179,7 +180,6 @@ public class MemoryListActivity extends SingleFragmentActivity
         }
         return true;
     }
-
     /**
      * Gets a string array of applicable Events and adds them as menu items.
      * These items have ids starting from zero and increment till size of array.
@@ -196,12 +196,10 @@ public class MemoryListActivity extends SingleFragmentActivity
             menuID++;
         }
     }
-
     private void goToSettings() {
         Intent intent = new Intent(MemoryListActivity.this, UserSettingsActivity.class);
         startActivity(intent);
     }
-
     /**
      * Updates list of memories depending on what the user selected in menu of Navigation Drawer
      * @param NavigationItem
@@ -231,7 +229,6 @@ public class MemoryListActivity extends SingleFragmentActivity
             mDrawerLayout.openDrawer(GravityCompat.START);
         return true;
     }
-
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -240,7 +237,6 @@ public class MemoryListActivity extends SingleFragmentActivity
             super.onBackPressed();
         }
     }
-
     private void getGeneralInfo() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         userName = pref.getString(IntroductionActivity.SEND_USERNAME,"");
@@ -248,20 +244,18 @@ public class MemoryListActivity extends SingleFragmentActivity
         applicableEvents = userevents.split(",");
         String languages = pref.getString(IntroductionActivity.LANGUAGE, "English");
         if (languages.equals("English")){
-            Locale locale = new Locale("en");
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().
-                    updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+            setLanguage("en");
         }
         else{
-            Locale locale = new Locale("nl");
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().
-                    updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+            setLanguage("nl");
         }
+    }
+    private void setLanguage(String en) {
+        Locale locale = new Locale(en);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().
+                updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 }

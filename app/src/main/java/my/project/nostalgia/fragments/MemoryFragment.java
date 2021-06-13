@@ -76,7 +76,8 @@ public class MemoryFragment extends Fragment {
     public static final String ARG_memory_ID = "memory_id";
 
     private Memory mMemory;
-    private SharedPreferences prefs;
+    private SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+    private SharedPreferences.Editor mEditor = mSharedPreferences.edit();
     private String[] applicableEvents ={};
     
     private EditText mTitleField;
@@ -131,8 +132,6 @@ public class MemoryFragment extends Fragment {
      * Create a new MemoryFragment either from MemoryListActivity or MemoryPagerActivity depending on Tablet/Phone
      * @see MemoryListActivity#onMemorySelected(Memory)
      * @see MemoryPagerActivity
-     * @param memoryId
-     * @return
      */
     public static MemoryFragment newInstance(UUID memoryId){
         Bundle args = new Bundle();
@@ -150,30 +149,27 @@ public class MemoryFragment extends Fragment {
         mMemory = MemoryLab.get(getActivity()).getMemory(recievedID);
         setHasOptionsMenu(true);
     }
-    //endregion
-
     /**
      * Sets the title of memory on action bar. Allows share and delete of memory
-     * @param menu
-     * @param inflater
      */
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         getActivity().setTitle(mMemory.getTitle());
-        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(CURRENT_MEMORY,mMemory.getTitle());
+        mEditor.putString(CURRENT_MEMORY,mMemory.getTitle());
         try{
-            editor.putBoolean(CURRENT_PHOTOS_ABSENT,(mMemory.getMediaPaths().length()==0));
+            mEditor.putBoolean(CURRENT_PHOTOS_ABSENT,(mMemory.getMediaPaths().length()==0));
         }
         catch (NullPointerException e){
-            editor.putBoolean(CURRENT_PHOTOS_ABSENT,true);
+            mEditor.putBoolean(CURRENT_PHOTOS_ABSENT,true);
         }
-        editor.apply();
+        mEditor.apply();
         inflater.inflate(R.menu.fragment_memory, menu);
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
+        setColorToIcon(menu);
+
+    }
+    private void setColorToIcon(@NonNull Menu menu) {
+        String themeValues = mSharedPreferences.getString("GlobalTheme", "Dark");
         if (themeValues.equals("Light")){
             menu.findItem(R.id.delete_memory).setIcon(R.drawable.delete_white);
             menu.findItem(R.id.share_memory).setIcon(R.drawable.share_white);
@@ -185,10 +181,9 @@ public class MemoryFragment extends Fragment {
     }
 
     /**
+     * Does actions on selecting delete or share
      * @see #getUrisFromPaths()
      * @see #shareMemoryIntent(ArrayList)
-     * @param item
-     * @return
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -219,7 +214,6 @@ public class MemoryFragment extends Fragment {
             Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
             mediaUri.add(uri);
         }
-
         return mediaUri;
     }
     /**
@@ -247,8 +241,7 @@ public class MemoryFragment extends Fragment {
         }catch (ClassCastException c){
             applicableEvents = ((MemoryListActivity) getActivity()).applicableEvents;
         }
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
-        mThemeValues = getData.getString("GlobalTheme", "Dark");
+        mThemeValues = mSharedPreferences.getString("GlobalTheme", "Dark");
         // region EditText
         mTitleField = (EditText) v.findViewById(R.id.memory_title);
         mTitleField.setText(mMemory.getTitle());
@@ -261,10 +254,8 @@ public class MemoryFragment extends Fragment {
                 mMemory.setTitle(s.toString());
                 getActivity().setTitle(mMemory.getTitle());
                 if (!mMemory.getTitle().trim().equals("")) {
-                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putString(CURRENT_MEMORY,mMemory.getTitle());
-                    editor.apply();
+                    mEditor.putString(CURRENT_MEMORY,mMemory.getTitle());
+                    mEditor.apply();
                 }
                 updateMemory();
             }
@@ -340,7 +331,6 @@ public class MemoryFragment extends Fragment {
         });
         setBackgroundTheme(mSpinner);
         //endregion
-        PackageManager pM = getActivity().getPackageManager();
         //region PhotoButton
         mPhotoButton = (Button)v.findViewById(R.id.memory_selectphotos);
         try {
@@ -561,10 +551,8 @@ public class MemoryFragment extends Fragment {
     }
     private void behaviourAfterAddingMedia() {
         setMediaRecyclerView();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editor  = prefs.edit();
-        editor.putBoolean(CURRENT_PHOTOS_ABSENT,false);
-        editor.apply();
+        mEditor.putBoolean(CURRENT_PHOTOS_ABSENT,false);
+        mEditor.apply();
 
         mPhotoButton.setText(R.string.photos_reselection);
 
@@ -601,9 +589,8 @@ public class MemoryFragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                    String title = preferences.getString(CURRENT_MEMORY, "");
-                    boolean photosAbsent = preferences.getBoolean(CURRENT_PHOTOS_ABSENT,true);
+                    String title = mSharedPreferences.getString(CURRENT_MEMORY, "");
+                    boolean photosAbsent = mSharedPreferences.getBoolean(CURRENT_PHOTOS_ABSENT,true);
                     if (title.equals("")&&photosAbsent) {
                         AskDiscardMemory().show();
                         return true;
@@ -617,17 +604,17 @@ public class MemoryFragment extends Fragment {
     }
     private AlertDialog AskDiscardMemory(){
         AlertDialog discardMemoryDialogBox = new AlertDialog.Builder(getContext())
-                .setTitle("Discard Memory")
-                .setMessage("You did not set a title or chosen any photos. Do you want to discard this memory?")
+                .setTitle(getResources().getString(R.string.delete_memory))
+                .setMessage(getResources().getString(R.string.delete_memory_confirm))
                 .setIcon(android.R.drawable.ic_menu_delete)
-                .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.discard), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Intent intent = new Intent(getActivity(), MemoryListActivity.class);
                         startActivity(intent);
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }

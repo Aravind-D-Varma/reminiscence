@@ -31,6 +31,9 @@ import java.util.Locale;
 import static my.project.nostalgia.activities.IntroductionActivity.LANGUAGE;
 import static my.project.nostalgia.activities.IntroductionActivity.SEND_USERNAME;
 
+/**
+ * Creates and sets application according to choices made here.
+ */
 public class UserSettingsFragment extends PreferenceFragmentCompat{
 
     private DropDownPreference mEvents;
@@ -93,48 +96,13 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             mEvents.setIcon(R.drawable.swap_black);
         }
     }
-
-    private ListPreference setLanguagePref(PreferenceScreen mScreen) {
-        ListPreference languages = new ListPreference(mScreen.getContext());
-        languages.setKey(LANGUAGE);
-        languages.setTitle(getResources().getString(R.string.language));
-        languages.setSummary(getResources().getString(R.string.language_summary));
-        CharSequence[] entries = {"English","Dutch"};
-        CharSequence[] entryValues = {"English","Dutch"};
-        languages.setEntries(entries);
-        languages.setEntryValues(entryValues);
-
-        languages.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                int index = languages.findIndexOfValue(newValue.toString());
-                if (languages.getEntries()[index].equals("English")){
-                    languages.setValue("English");
-                    Locale locale = new Locale("en");
-                    Locale.setDefault(locale);
-                    Configuration config = new Configuration();
-                    config.locale = locale;
-                    getContext().getResources().
-                            updateConfiguration(config, getContext().getResources().getDisplayMetrics());
-                }
-                else{
-                    languages.setValue("Dutch");
-                    Locale locale = new Locale("nl");
-                    Locale.setDefault(locale);
-                    Configuration config = new Configuration();
-                    config.locale = locale;
-                    getContext().getResources().
-                            updateConfiguration(config, getContext().getResources().getDisplayMetrics());
-                }
-                Intent intent = new Intent(getContext(), UserSettingsActivity.class);
-                getActivity().finish();
-                startActivity(intent);
-                return false;
-            }
-        });
-        return languages;
+    private EditTextPreference setUserName(PreferenceScreen mScreen) {
+        EditTextPreference username = new EditTextPreference(mScreen.getContext());
+        username.setKey(SEND_USERNAME);
+        username.setTitle(getResources().getString(R.string.settings_name));
+        username.setSummary(getResources().getString(R.string.settings_name_summary));
+        return username;
     }
-
     private ListPreference setThemePref(PreferenceScreen mScreen) {
         ListPreference themes = new ListPreference(mScreen.getContext());
         themes.setKey("GlobalTheme");
@@ -161,20 +129,44 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         return themes;
     }
 
-    private Preference myselfPref(PreferenceScreen mScreen) {
-        Preference aboutMe = new Preference(mScreen.getContext());
-        aboutMe.setTitle(getResources().getString(R.string.settings_aboutme));
-        aboutMe.setSummary(getResources().getString(R.string.settings_aboutme_summary));
-        aboutMe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+    private ListPreference setLanguagePref(PreferenceScreen mScreen) {
+        ListPreference languages = new ListPreference(mScreen.getContext());
+        languages.setKey(LANGUAGE);
+        languages.setTitle(getResources().getString(R.string.language));
+        languages.setSummary(getResources().getString(R.string.language_summary));
+        CharSequence[] entries = {"English","Dutch"};
+        CharSequence[] entryValues = {"English","Dutch"};
+        languages.setEntries(entries);
+        languages.setEntryValues(entryValues);
+
+        languages.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent browse = new Intent( Intent.ACTION_VIEW , Uri.parse("https://github.com/Aravind-D-Varma"));
-                startActivity( browse );
-                return true;
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                int index = languages.findIndexOfValue(newValue.toString());
+                if (languages.getEntries()[index].equals("English")){
+                    setLanguage(languages, "English", "en");
+                }
+                else{
+                    setLanguage(languages, "Dutch", "nl");
+                }
+                Intent intent = new Intent(getContext(), UserSettingsActivity.class);
+                getActivity().finish();
+                startActivity(intent);
+                return false;
             }
         });
-        return aboutMe;
+        return languages;
     }
+    private void setLanguage(ListPreference languages, String language, String lang) {
+        languages.setValue(language);
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getContext().getResources().
+                updateConfiguration(config, getContext().getResources().getDisplayMetrics());
+    }
+
     private Preference sendFeedbackPref(PreferenceScreen mScreen) {
         Preference sendFeedback = new Preference(mScreen.getContext());
         sendFeedback.setTitle(getResources().getString(R.string.settings_feedback));
@@ -201,13 +193,21 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         });
         return pref;
     }
-    private EditTextPreference setUserName(PreferenceScreen mScreen) {
-        EditTextPreference username = new EditTextPreference(mScreen.getContext());
-        username.setKey(SEND_USERNAME);
-        username.setTitle(getResources().getString(R.string.settings_name));
-        username.setSummary(getResources().getString(R.string.settings_name_summary));
-        return username;
+    private Preference myselfPref(PreferenceScreen mScreen) {
+        Preference aboutMe = new Preference(mScreen.getContext());
+        aboutMe.setTitle(getResources().getString(R.string.settings_aboutme));
+        aboutMe.setSummary(getResources().getString(R.string.settings_aboutme_summary));
+        aboutMe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent browse = new Intent( Intent.ACTION_VIEW , Uri.parse("https://github.com/Aravind-D-Varma"));
+                startActivity( browse );
+                return true;
+            }
+        });
+        return aboutMe;
     }
+
 
     private DropDownPreference getDropDownPreference(PreferenceScreen screen) {
 

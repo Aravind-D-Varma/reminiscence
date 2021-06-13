@@ -19,12 +19,10 @@ import my.project.nostalgia.R;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Setting up the gridLayout: images and videos.<br>
  * Gets images from Bitmap decoder and videos from Uris
  */
-
 public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
 
     Context context;
@@ -33,10 +31,8 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
     List<Uri> videos;
     private static final int IMAGE = 0;
     private static final int VIDEO = 1;
-
     /**
      * Upon initialisation, sets video uris and image bitmaps from a memory's videopaths.
-     * @param mediaPaths
      */
     public RecyclerViewGalleryAdapter(Context applicationContext, String[] mediaPaths) {
         this.context = applicationContext;
@@ -58,7 +54,6 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
         }
         return null;
     }
-
     /**
      * Binds video or image depending on what type of item it is.
      * If video, sets video using its Uri. If image, uses Bitmap to set from filepath.
@@ -87,7 +82,7 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
     
     @Override
     public int getItemCount() {
-        return photos.size();
+        return mediaPaths.length;
     }
 
     /**
@@ -119,13 +114,11 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
             video = (VideoView) itemView.findViewById(R.id.memory_video);
         }
     }
-                
-    private List<Bitmap> getPhotoBitmaps(String[] photoPaths) {
-          
+    private List<Bitmap> getPhotoBitmaps(String[] mediaPaths) {
         photos = new ArrayList<Bitmap>();
-        for (int i = 0; i < photoPaths.length; i++) {
-            if(isImageFile(photoPaths[i])) {
-                Bitmap bpimg = BitmapFactory.decodeFile(photoPaths[i]);
+        for (int i = 0; i < mediaPaths.length; i++) {
+            if(isImageFile(mediaPaths[i])) {
+                Bitmap bpimg = BitmapFactory.decodeFile(mediaPaths[i]);
                 photos.add(bpimg);
             }
             else photos.add(null);
@@ -133,12 +126,11 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
         return photos;
     }
   
-    private List<Uri> getVideoURIs(String[] photoPaths) {
-          
+    private List<Uri> getVideoURIs(String[] mediaPaths) {
         videos = new ArrayList<Uri>();
-        for (int i = 0; i < photoPaths.length; i++) {
-            if(isVideoFile(photoPaths[i])) {
-                Uri uriVid = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", new File(photoPaths[i]));
+        for (int i = 0; i < mediaPaths.length; i++) {
+            if(isVideoFile(mediaPaths[i])) {
+                Uri uriVid = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", new File(mediaPaths[i]));
                 videos.add(uriVid);
             }
             else

@@ -44,6 +44,10 @@ public class UserSettingsActivity extends AppCompatActivity {
         return theme;
     }
 
+    /**
+     * Refreshes previous activity so that if the user changes theme/language, it is reflected.
+     * If not refreshed, it will show previous theme/language
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MemoryListActivity.class);

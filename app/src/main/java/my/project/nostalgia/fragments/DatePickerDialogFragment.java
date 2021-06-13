@@ -26,9 +26,8 @@ import java.util.GregorianCalendar;
 public class DatePickerDialogFragment extends DialogFragment {
 
     private static final String ARG_DATE = "date_id";
-    public static final String EXTRA_DATE = "com.example.criminalintent.date";
+    public static final String EXTRA_DATE = "my.project.criminalintent.date";
     private DatePicker mDatePicker;
-    
     /**
     * Creating a new DialogFragment from MemoryFragment. Gets memory's date if present, else current date as default and shows in dialog.
     */
@@ -40,8 +39,6 @@ public class DatePickerDialogFragment extends DialogFragment {
 
         return dpfragment;
     }
-    //endregion
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
