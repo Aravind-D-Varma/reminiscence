@@ -2,18 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="20dp">
 
         <LinearLayout
             android:id="@+id/welcome"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:background="@drawable/layout_border"
             android:gravity="center">
             <TextView
                 android:id="@+id/welcome_text"
@@ -26,7 +29,6 @@
                 android:textColor="@color/light_purple"
                 android:textSize="36sp"
                 android:textStyle="bold"/>
-
             <TextView
                 android:id="@+id/intro"
                 android:layout_width="match_parent"
@@ -45,8 +47,9 @@
             android:id="@+id/questions"
             android:orientation="vertical"
             android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:background="@drawable/layout_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/intro2"
                 android:layout_width="match_parent"
@@ -83,42 +86,49 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/conclusion"
             android:orientation="vertical"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:background="@drawable/layout_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/thankyou_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="20dp"
                 android:padding="20dp"
+                app:layout_constraintStart_toStartOf="parent"
                 android:text="@string/thanks"
-                android:textAlignment="center"
-                android:textColor="@color/light_purple"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textColor="@color/teal_200"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/thankyou_text"
+                app:layout_constraintStart_toStartOf="parent"
                 android:text="@string/thank_downloading"
-                android:textAlignment="center"
                 android:textColor="@color/light_purple"
                 android:textSize="26sp"
-                android:textStyle="bold" />
+                android:layout_alignBottom="@id/thankyou_text"
+                android:textStyle="bold"
+                />
 
             <Button
                 android:id="@+id/continue_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
+                android:layout_alignParentEnd="true"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:background="@drawable/button_border"
                 android:drawableRight="@drawable/frontarrow_white"
                 android:padding="10dp"
@@ -126,7 +136,7 @@
                 android:textColor="@color/light_purple"
                 android:textSize="26sp"
                 android:textStyle="bold" />
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.viewpager.widget.ViewPager>
 

@@ -12,9 +12,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.PagerAdapter;
 
 import my.project.nostalgia.activities.MemoryListActivity;
@@ -53,8 +55,6 @@ public class IntroductionPagerAdapter extends PagerAdapter {
         switch(position){
             case 0:
                 LinearLayout welcomeLL = getLayoutAndFix(v, R.id.welcome);
-                setTextAnimation(welcomeLL, R.id.welcome_text, 1000);
-                setTextAnimation(welcomeLL, R.id.intro, 3000);
                 container.addView(welcomeLL);
                 return welcomeLL;
             case 1:
@@ -63,13 +63,17 @@ public class IntroductionPagerAdapter extends PagerAdapter {
                 container.addView(questionsLL);
                 return questionsLL;
             case 2:
-                LinearLayout conclusionLL = getLayoutAndFix(v, R.id.conclusion);
+                ConstraintLayout conclusionLL = v.findViewById(R.id.conclusion);
+                if (conclusionLL.getParent() != null) {
+                    ((ViewGroup) conclusionLL.getParent()).removeView(conclusionLL); // <- fix
+                }
                 setContinuebutton(conclusionLL);
                 container.addView(conclusionLL);
                 return conclusionLL;
         }
         return v;
     }
+
     /**
      * Initialises layout depending on where the user is in viewPager.
      * Fixes IllegalStateException: the child already has parent
@@ -100,12 +104,7 @@ public class IntroductionPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
     }
-    private void setTextAnimation(LinearLayout welcomLL, int textViewID, int delay) {
-        Animation a = AnimationUtils.loadAnimation(mContext, R.anim.introduction);
-        TextView welcome = (TextView) welcomLL.findViewById(textViewID);
-        a.setStartOffset(delay);
-        welcome.startAnimation(a);
-    }
+
     private void setContinuebutton(View v) {
         Button mContinue = (Button)v.findViewById(R.id.continue_button);
         mContinue.setOnClickListener(new View.OnClickListener() {
