@@ -24,11 +24,11 @@ import java.util.List;
  * Sets up the zoom in and swipe left/right of photos and videos in a memory.
  * Uses isVideoFile(filepath) method of RecyclerViewGalleryAdapter.
  */
-public class GalleryViewPagerAdapter extends PagerAdapter {
+public class ZoomViewPagerAdapter extends PagerAdapter {
     private Context mContext;
     private String[] individualMediaPaths;
 
-    public GalleryViewPagerAdapter(Context context, String[] mediaPaths) {
+    public ZoomViewPagerAdapter(Context context, String[] mediaPaths) {
         mContext = context;
         individualMediaPaths = mediaPaths;
     }

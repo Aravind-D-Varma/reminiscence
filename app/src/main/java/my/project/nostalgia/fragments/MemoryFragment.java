@@ -55,9 +55,10 @@ import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.activities.MemoryListActivity;
 import my.project.nostalgia.activities.MemoryPagerActivity;
 import my.project.nostalgia.R;
-import my.project.nostalgia.adapters.GalleryViewPagerAdapter;
+import my.project.nostalgia.adapters.ZoomViewPagerAdapter;
 import my.project.nostalgia.adapters.RecyclerViewGalleryAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -426,13 +427,20 @@ public class MemoryFragment extends Fragment {
         Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.activity_memory_pager);
-        GalleryViewPagerAdapter adapter = new GalleryViewPagerAdapter(getActivity(),individualFilePaths(mMemory));
+        ZoomViewPagerAdapter adapter = new ZoomViewPagerAdapter(getActivity(),individualFilePaths(mMemory));
         ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
-        pager.setClipToPadding(false);
-        pager.setPadding(60,0,60,0);
-        pager.setPageMargin(20);
         pager.setAdapter(adapter);
+        pager.setPageTransformer(false, new ViewPager.PageTransformer() {
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                final float normalizedposition = Math.abs(Math.abs(position) - 1);
+                page.setScaleX(normalizedposition / 2 + 0.5f);
+                page.setScaleY(normalizedposition / 2 + 0.5f);
+            }
+        });
         pager.setCurrentItem(position);
+        TabLayout tabLayout = dialog.findViewById(R.id.tabDots);
+        tabLayout.setupWithViewPager(pager,true);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.show();
     }
