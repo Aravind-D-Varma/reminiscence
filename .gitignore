@@ -18,6 +18,7 @@ local.properties
 #debug files
 /app/build/intermediates/
 app/build/intermediates/
+app/build/outputs/apk/debug/
 /app/build/intermediates
 **/build/intermediates
 

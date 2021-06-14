@@ -70,7 +70,6 @@ public class MemoryListActivity extends SingleFragmentActivity
     protected int getlayoutresID() {
         return R.layout.activity_masterdetail;
     }
-
     /**
      * If device is phone, start new intent when a memory is selected. Else, show it on right part of Tablet
      * Declared from MemoryListFragment only.

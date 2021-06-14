@@ -195,6 +195,7 @@ public class MemoryFragment extends Fragment {
             case R.id.delete_memory:
                 MemoryLab.get(getActivity()).deleteMemory(mMemory);
                 startActivity(new Intent(getActivity(), MemoryListActivity.class));
+                getActivity().finish();
                 return true;
             case R.id.share_memory:
 

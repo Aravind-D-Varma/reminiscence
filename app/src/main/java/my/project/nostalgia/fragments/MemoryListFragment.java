@@ -39,9 +39,6 @@ public class MemoryListFragment extends Fragment {
     //region Declarations
     private static final String SAVE_SUBTITLE = "save_subtitle";
     private RecyclerView mRecyclerView;
-    private FloatingActionButton mFloatingActionButton;
-    private Button mNoMemoryButton;
-    private TextView mNoMemoryTextView;
     private Memory mNewMemory;
     private MemoryAdapter mAdapter;
     private Callbacks mCallbacks;
@@ -99,7 +96,8 @@ public class MemoryListFragment extends Fragment {
                     mAdapter.searchFilter(newText);
                 }
                 catch (NullPointerException e){
-                    Toast.makeText(getContext(),getResources().getString(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
+                    if(newText.length()>=1)
+                        Toast.makeText(getContext(),getResources().getString(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
@@ -116,52 +114,57 @@ public class MemoryListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_memory_list, container, false);
-        //region RV and FAB
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.memory_recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.memory_fab);
-        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mNewMemory = new Memory();
-                MemoryLab memoryLab = MemoryLab.get(getActivity());
-                memoryLab.addMemory(mNewMemory);
-                if(isDeviceTablet())
-                    updateUIForTablet();
-                mCallbacks.onMemorySelected(mNewMemory);
-
-            }
-        });
-        //endregion
-        //region EmptyRecyclerView
         if(MemoryLab.get(getActivity()).getMemories().size()==0){
             View noMemoryView = inflater.inflate(R.layout.empty_list_page, container, false);
             SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
             String themeValues = getData.getString("GlobalTheme", "Dark");
-            mNoMemoryTextView = (TextView) noMemoryView.findViewById(R.id.no_memory_text);
-            mNoMemoryButton = (Button) noMemoryView.findViewById(R.id.no_memory_button);
+            Button noMemoryButton = (Button) noMemoryView.findViewById(R.id.no_memory_button);
             if (themeValues.equals("Light")) {
-                mNoMemoryButton.setBackgroundResource(R.drawable.button_border_light);
-                mNoMemoryButton.setTextColor(getResources().getColor(R.color.white));
+                noMemoryButton.setBackgroundResource(R.drawable.button_border_light);
+                noMemoryButton.setTextColor(getResources().getColor(R.color.white));
             }
-            mNoMemoryButton.setOnClickListener(new View.OnClickListener() {
+            noMemoryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View noMemoryView) {
                     mNewMemory = new Memory();
                     MemoryLab.get(getActivity()).addMemory(mNewMemory);
-                    mCallbacks.onMemorySelected(mNewMemory);
-                    if(isDeviceTablet())
+                    if(isDeviceTablet()) {
+                        container.removeAllViews();
+                        noMemoryView = inflater.inflate(R.layout.fragment_memory_list, container, false);
+                        container.addView(noMemoryView);
+                        setListAndAddButton(noMemoryView);
                         updateUIForTablet();
+                    }
+                    mCallbacks.onMemorySelected(mNewMemory);
                 }
             });
+            updateByDevice();
             return noMemoryView;
         }
-        //endregion
+
+        View view = inflater.inflate(R.layout.fragment_memory_list, container, false);
+        setListAndAddButton(view);
         updateByDevice();
         return view;
     }
+
+    private void setListAndAddButton(View view) {
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.memory_recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.memory_fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNewMemory = new Memory();
+                MemoryLab.get(getActivity()).addMemory(mNewMemory);
+                if(isDeviceTablet())
+                    updateUIForTablet();
+                mCallbacks.onMemorySelected(mNewMemory);
+            }
+        });
+    }
+
     /**
      * Binds RecyclerView to its adapter
      */
