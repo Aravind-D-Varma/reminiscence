@@ -355,7 +355,6 @@ public class MemoryListFragment extends Fragment {
         public void searchFilter(String text) {
 
                 List<Memory> searchMemorysList = new ArrayList<>();
-                text = text.toLowerCase();
                 for (Memory Memory : MemoryLab.get(getActivity()).getMemories()) {
                     if (Memory.getTitle().contains(text)) {
                         searchMemorysList.add(Memory);

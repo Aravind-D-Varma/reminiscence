@@ -67,7 +67,6 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
                     VideoView vv = ((MyVideoViewHolder) holder).video;
                     vv.setVideoURI(videos.get(position));
                     vv.seekTo(1);
-                    vv.setZOrderOnTop(true);
                 }
                 catch(NullPointerException e){}
                 break;
