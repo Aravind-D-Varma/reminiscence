@@ -162,7 +162,6 @@ public class MemoryListFragment extends Fragment {
         updateByDevice();
         return view;
     }
-
     /**
      * Binds RecyclerView to its adapter
      */
