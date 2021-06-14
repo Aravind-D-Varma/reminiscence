@@ -18,17 +18,12 @@
         android:fullBackupContent="false">
 
         <activity
-            android:name="my.project.nostalgia.activities.LauncherClassActivity"
-            android:theme="@style/LaunchTheme">
+            android:name="my.project.nostalgia.activities.IntroductionActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="my.project.nostalgia.activities.IntroductionActivity"
-            android:parentActivityName="my.project.nostalgia.activities.LauncherClassActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
         <activity
             android:name="my.project.nostalgia.activities.MemoryListActivity"

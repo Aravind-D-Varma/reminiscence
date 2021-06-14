@@ -83,5 +83,8 @@
     <string name="add_event">Voeg evenement toe</string>
     <string name="language">Taal</string>
     <string name="language_summary">App-taal wijzigen</string>
+    <string name="emptyfilter">Geen geheugen gevonden!</string>
+    <string name="no_title_set">(Geen titel ingesteld)</string>
+    <string name="noted_on">Genoteerd op: </string>
 
 </resources>

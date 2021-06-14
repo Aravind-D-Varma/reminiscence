@@ -96,39 +96,35 @@ public class MemoryListActivity extends SingleFragmentActivity
     }
 
     @Override
-    public Resources.Theme getTheme() {
-        Resources.Theme theme = super.getTheme();
-        if (mThemeValues.equals("Dark"))
-            theme.applyStyle(R.style.Theme_Reminiscence, true);
-
-        if (mThemeValues.equals("Light"))
-            theme.applyStyle(R.style.Theme_Reminiscence_Light, true);
-
-        return theme;
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setUserTheme();
         super.onCreate(savedInstanceState);
 
-        getGeneralInfo();
         mNavigationView = findViewById(R.id.navigation_view);
-
         setColorToIcons();
 
+        getGeneralInfo();
         setHeaderWelcomeUser(userName);
         showMenuEvents();
         drawerAndToggle();
     }
 
-    private void setColorToIcons() {
+    private void setUserTheme() {
         SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         mThemeValues = getData.getString("GlobalTheme", "Dark");
+        if (mThemeValues.equals("Dark"))
+            setTheme(R.style.Theme_Reminiscence);
+        else
+            setTheme(R.style.Theme_Reminiscence_Light);
+    }
+
+    private void setColorToIcons() {
         int colorInt;
         if (mThemeValues.equals("Dark"))
             colorInt = getResources().getColor(R.color.white);
         else
             colorInt = getResources().getColor(R.color.black);
+
         ColorStateList csl = ColorStateList.valueOf(colorInt);
         mNavigationView.setItemIconTintList(csl);
     }
@@ -202,8 +198,6 @@ public class MemoryListActivity extends SingleFragmentActivity
     }
     /**
      * Updates list of memories depending on what the user selected in menu of Navigation Drawer
-     * @param NavigationItem
-     * @return
      */
     private boolean filterOnSelected(int NavigationItem) {
         MLfragment.eventFilter(getString(NavigationItem));

@@ -1,2 +1,7 @@
-com.example.nostalgia
-com.example.nostalgia.database
+my.project.nostalgia
+my.project.nostalgia.activities
+my.project.nostalgia.adapters
+my.project.nostalgia.database
+my.project.nostalgia.fragments
+my.project.nostalgia.models
+my.project.nostalgia.supplementary

@@ -80,5 +80,8 @@
     <string name="add_event">Add Event</string>
     <string name="language">Language</string>
     <string name="language_summary">Change app language</string>
+    <string name="emptyfilter">No memory found!</string>
+    <string name="no_title_set">(No Title set)</string>
+    <string name="noted_on">\"Noted on: \"</string>
 
 </resources>

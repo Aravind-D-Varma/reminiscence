@@ -29,8 +29,8 @@ public class IntroductionActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.introduction);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (sp.getBoolean(FIRST_TIME, false)) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (prefs.getBoolean(FIRST_TIME, false)) {
             Intent intent = new Intent(this, MemoryListActivity.class);
             startActivity(intent);
         } else {
@@ -40,6 +40,5 @@ public class IntroductionActivity extends AppCompatActivity {
             TabLayout tabLayout = findViewById(R.id.tabDots);
             tabLayout.setupWithViewPager(pager,true);
         }
-
     }
 }

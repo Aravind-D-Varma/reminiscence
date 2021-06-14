@@ -1,5 +1,6 @@
 package my.project.nostalgia.fragments;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,24 +69,38 @@ public class MemoryListFragment extends Fragment {
         mCallbacks = null;
     }
 
+    private boolean isDeviceTablet() {
+        return getResources().getBoolean(R.bool.isTablet);
+    }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_memory_list, menu);
         MenuItem searchItem = menu.findItem(R.id.memory_search_menu);
 
-
         final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint(getString(R.string.memory_search_hint));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                mAdapter.searchFilter(query);
+                try {
+                    mAdapter.searchFilter(query);
+                }
+                catch (NullPointerException e){
+                    Toast.makeText(getContext(),getResources().getString(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
+                }
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
-                mAdapter.searchFilter(newText);
+                try {
+                    mAdapter.searchFilter(newText);
+                }
+                catch (NullPointerException e){
+                    Toast.makeText(getContext(),getResources().getString(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
+                }
                 return false;
             }
         });
@@ -142,7 +159,7 @@ public class MemoryListFragment extends Fragment {
             return noMemoryView;
         }
         //endregion
-        updateUI();
+        updateByDevice();
         return view;
     }
 
@@ -165,21 +182,22 @@ public class MemoryListFragment extends Fragment {
         }
         updateSubtitle();
     }
-
-    private boolean isDeviceTablet() {
-        return getResources().getBoolean(R.bool.isTablet);
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         if(MemoryLab.get(getActivity()).getMemories().size()!=0 && firstTime) {
             MemoryListFragment fragment = new MemoryListFragment();
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+            getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+            startActivity(new Intent(getContext(), MemoryListActivity.class));
         }
-        updateUI();
+        updateByDevice();
     }
-
+    private void updateByDevice() {
+        if (isDeviceTablet())
+            updateUIForTablet();
+        else
+            updateUI();
+    }
     /**
      * Shows how many memories are there on the ActionBar
      */
@@ -190,12 +208,6 @@ public class MemoryListFragment extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.getSupportActionBar().setSubtitle(subtitle);
     }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
     /**
      * Deletes null memories to avoid crashes
      * Deletes all those memories whose title is null and does not contain any photos.
@@ -238,7 +250,6 @@ public class MemoryListFragment extends Fragment {
         catch (NullPointerException e){}
         return memorys.get(i).getTitle()==null && yesPhotos;
     }
-
     /**
      * ViewHolder which sets up individual items of record of memories.
      */
@@ -280,14 +291,14 @@ public class MemoryListFragment extends Fragment {
         public void bind(Memory Memory){
             mMemory = Memory;
             if (mMemory.getTitle()==null)
-                mTitleTextView.setText("(No Title set)");
+                mTitleTextView.setText(R.string.no_title_set);
             try{
                 if (mMemory.getTitle().equals(""))
-                    mTitleTextView.setText("(No Title set)");
+                    mTitleTextView.setText(R.string.no_title_set);
                 else
                     mTitleTextView.setText(mMemory.getTitle());
             }catch (NullPointerException e){}
-            mDateTextView.setText("Noted on: " + DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate()));
+            mDateTextView.setText(String.format("%s%s", getString(R.string.noted_on), DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate())));
         }
 
         @Override
@@ -307,8 +318,6 @@ public class MemoryListFragment extends Fragment {
         }
 
     }
-
-
     /**
      * Adapter for RecyclerView to contain record of all memories
      */
@@ -353,15 +362,15 @@ public class MemoryListFragment extends Fragment {
             try {
                 mAdapter.setMemorys(searchMemorysList);
                 notifyDataSetChanged();
-            }catch (NullPointerException e){}
+            }catch (NullPointerException e){
+                Toast.makeText(getContext(),getResources().getString(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
+            }
         }
     }
-
     /**
      * Updates display of memories depending on the event user has selected in the menu of Navigation Drawer.
      * Is written in fragment code since fragment contains details of memories.
      * @see MemoryListActivity
-     * @param event
      */
     public void eventFilter(String event) {
         List<Memory> searchMemorysList = new ArrayList<>();
@@ -376,7 +385,9 @@ public class MemoryListFragment extends Fragment {
         try {
             mAdapter.setMemorys(searchMemorysList);
             mAdapter.notifyDataSetChanged();
-        }catch (NullPointerException e){}
+        }catch (NullPointerException e){
+            Toast.makeText(getContext(),getResources().getString(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
+        }
 
     }
 
