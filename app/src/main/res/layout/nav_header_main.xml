@@ -3,11 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
-    android:focusable="true"
     android:gravity="bottom"
-    android:padding="12dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:padding="12dp">
     <ImageView
         android:id="@+id/nav_header_imageView"
         android:layout_width="64dp"
@@ -17,9 +14,7 @@
     <TextView
         android:id="@+id/nav_header_textView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/header_ND"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_height="match_parent"
         android:textSize="24sp"
         android:textStyle="bold" />
 

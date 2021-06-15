@@ -83,5 +83,6 @@
     <string name="add_event">Add Event</string>
     <string name="language">Language</string>
     <string name="language_summary">Change app language</string>
+    <string name="general">General</string>
 
 </resources>

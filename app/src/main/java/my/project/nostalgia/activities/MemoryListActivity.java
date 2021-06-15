@@ -139,7 +139,8 @@ public class MemoryListActivity extends SingleFragmentActivity
         View headerView = mNavigationView.getHeaderView(0);
 
         mHeaderText = headerView.findViewById(R.id.nav_header_textView);
-        mHeaderText.setText(String.format("%s%s", getResources().getString(R.string.welcome), userName));
+        mHeaderText.setText(String.format("%s %s!",
+                getResources().getString(R.string.welcome).substring(0,7), userName));
 
         if (mThemeValues.equals("Dark")) {
             headerView.setBackgroundColor(getResources().getColor(R.color.medium_black));

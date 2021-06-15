@@ -85,11 +85,13 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
      */
     public void getCurrentPosition() {
         UUID memoryId = (UUID) getIntent().getSerializableExtra(EXTRA_memory_ID);
-        for (int i = 0; i < mMemories.size(); i++) {
-            if (mMemories.get(i).getId().equals(memoryId)) {
+        int i = 0;
+        for (Memory memory:mMemories) {
+            if (memory.getId().equals(memoryId)) {
                 mViewPager.setCurrentItem(i);
                 break;
             }
+            i++;
         }
     }
 

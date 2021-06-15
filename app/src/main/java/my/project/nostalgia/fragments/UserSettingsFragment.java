@@ -280,8 +280,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     }
     private String[] getEntryValues(CharSequence[] userevents) {
         List<String> stringList = new ArrayList<String>();
-        for(int i = 0; i < userevents.length; i++)
-            stringList.add(String.valueOf(i));
+        for(CharSequence sequence:userevents)
+            stringList.add(String.valueOf(sequence));
         return stringList.toArray( new String[0] );
     }
     private CharSequence[] getEntries() {
@@ -332,8 +332,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         String[] applicableEvents = {};
         applicableEvents = allEvents.toArray(applicableEvents);
         StringBuilder combinedEvents = new StringBuilder();
-        for (int i = 0; i < applicableEvents.length; i++)
-            combinedEvents.append(applicableEvents[i]).append(",");
+        for (String string: applicableEvents)
+            combinedEvents.append(string).append(",");
 
         return combinedEvents.toString();
     }

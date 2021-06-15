@@ -10,15 +10,15 @@ android {
         applicationId "my.project.nostalgia"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 6
-        versionName "2.0"
+        versionCode 7
+        versionName "Alpha"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

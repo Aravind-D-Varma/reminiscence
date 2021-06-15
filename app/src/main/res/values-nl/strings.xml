@@ -86,5 +86,6 @@
     <string name="emptyfilter">Geen geheugen gevonden!</string>
     <string name="no_title_set">(Geen titel ingesteld)</string>
     <string name="noted_on">Genoteerd op: </string>
+    <string name="general">Algemeen</string>
 
 </resources>

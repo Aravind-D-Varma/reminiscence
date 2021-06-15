@@ -115,9 +115,9 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
     }
     private List<Bitmap> getPhotoBitmaps(String[] mediaPaths) {
         photos = new ArrayList<Bitmap>();
-        for (int i = 0; i < mediaPaths.length; i++) {
-            if(isImageFile(mediaPaths[i])) {
-                Bitmap bpimg = BitmapFactory.decodeFile(mediaPaths[i]);
+        for (String mediaPath:mediaPaths) {
+            if(isImageFile(mediaPath)) {
+                Bitmap bpimg = BitmapFactory.decodeFile(mediaPath);
                 photos.add(bpimg);
             }
             else photos.add(null);
@@ -127,9 +127,9 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
   
     private List<Uri> getVideoURIs(String[] mediaPaths) {
         videos = new ArrayList<Uri>();
-        for (int i = 0; i < mediaPaths.length; i++) {
-            if(isVideoFile(mediaPaths[i])) {
-                Uri uriVid = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", new File(mediaPaths[i]));
+        for (String mediaPath:mediaPaths) {
+            if(isVideoFile(mediaPath)) {
+                Uri uriVid = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", new File(mediaPath));
                 videos.add(uriVid);
             }
             else

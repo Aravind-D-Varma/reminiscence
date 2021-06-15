@@ -158,8 +158,8 @@ public class IntroductionPagerAdapter extends PagerAdapter {
         String[] applicableEvents = {};
         applicableEvents = allEvents.toArray(applicableEvents);
         StringBuilder combinedEvents = new StringBuilder();
-        for (int i = 0; i < applicableEvents.length; i++)
-            combinedEvents.append(applicableEvents[i]).append(",");
+        for (String string:applicableEvents)
+            combinedEvents.append(string).append(",");
 
         return combinedEvents.toString();
     }

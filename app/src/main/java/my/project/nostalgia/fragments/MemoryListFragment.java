@@ -219,16 +219,8 @@ public class MemoryListFragment extends Fragment {
     public void updateUI() {
 
         MemoryLab memoryLab = MemoryLab.get(getActivity());
-        List<Memory> Memorys = memoryLab.getMemories();
-        for(int i = 0; i < Memorys.size();i++) {
-            if (Memorys.contains(null)) {
-                int nullMemoryposition = Memorys.indexOf(null);
-                MemoryLab.get(getActivity()).deleteMemory(Memorys.get(nullMemoryposition));
-            }
-
-            if(noTitleAndPhotos(Memorys, i))
-                MemoryLab.get(getActivity()).deleteMemory(Memorys.get(i));
-        }
+        removeGarbageMemories(memoryLab);
+        List<Memory> Memorys;
         Memorys = memoryLab.getMemories();
         if(mAdapter == null && Memorys.size()!=0) {
             firstTime = false;
@@ -244,13 +236,25 @@ public class MemoryListFragment extends Fragment {
         updateSubtitle();
     }
 
-    private boolean noTitleAndPhotos(List<Memory> memorys, int i) {
+    private void removeGarbageMemories(MemoryLab memoryLab) {
+        List<Memory> Memorys = memoryLab.getMemories();
+        for(Memory memory:Memorys) {
+            if (Memorys.contains(null)) {
+                int nullMemoryposition = Memorys.indexOf(null);
+                MemoryLab.get(getActivity()).deleteMemory(Memorys.get(nullMemoryposition));
+            }
+            if(noTitleAndPhotos(memory))
+                MemoryLab.get(getActivity()).deleteMemory(memory);
+        }
+    }
+
+    private boolean noTitleAndPhotos(Memory memory) {
         boolean yesPhotos = true;
         try{
-            yesPhotos = memorys.get(i).getMediaPaths().length()<1;
+            yesPhotos = memory.getMediaPaths().length()<1;
         }
         catch (NullPointerException e){}
-        return memorys.get(i).getTitle()==null && yesPhotos;
+        return memory.getTitle()==null && yesPhotos;
     }
     /**
      * ViewHolder which sets up individual items of record of memories.

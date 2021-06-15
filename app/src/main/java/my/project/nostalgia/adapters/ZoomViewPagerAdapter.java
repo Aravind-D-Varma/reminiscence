@@ -81,9 +81,9 @@ public class ZoomViewPagerAdapter extends PagerAdapter {
     private List<Uri> getVideoURI(String[] mediaPaths) {
 
         List<Uri> videos = new ArrayList<Uri>();
-        for (int i = 0; i < mediaPaths.length; i++) {
-            if(RecyclerViewGalleryAdapter.isVideoFile(mediaPaths[i])) {
-                Uri uriVid = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", new File(mediaPaths[i]));
+        for (String mediaPath:mediaPaths) {
+            if(RecyclerViewGalleryAdapter.isVideoFile(mediaPath)) {
+                Uri uriVid = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", new File(mediaPath));
                 videos.add(uriVid);
             }
             else
