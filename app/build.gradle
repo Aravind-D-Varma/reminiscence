@@ -43,6 +43,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation 'androidx.test:runner:1.4.0-beta02'
     androidTestImplementation 'androidx.test:core:1.4.0-beta02'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0-beta02'
 }
 
 repositories {
