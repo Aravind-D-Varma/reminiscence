@@ -214,7 +214,7 @@ public class MemoryListFragment extends Fragment {
      * Deletes null memories to avoid crashes
      * Deletes all those memories whose title is null and does not contain any photos.
      * Then, hooks up the adapter and RecyclerView.
-     * @see #noTitleAndPhotos(List, int)
+     * @see #noTitleAndPhotos(Memory)
      */
     public void updateUI() {
 
