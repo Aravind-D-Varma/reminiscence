@@ -62,8 +62,8 @@
     <string name="discard_event_confirm">Do you want to discard this event?</string>
 
     <string name="personal_settings">Personal Settings</string>
-    <string name="themes">Themes</string>
-    <string name="themes_summary">Change app theme</string>
+    <string name="settings_themes">Themes</string>
+    <string name="settings_themes_summary">Change app theme</string>
     <string name="settings_name">Name</string>
     <string name="settings_name_summary">Change your name</string>
     <string name="settings_events">Events</string>
@@ -81,8 +81,8 @@
     <string name="hangouts">Hangout and chill</string>
     <string name="celebrations">Celebrations</string>
     <string name="add_event">Add Event</string>
-    <string name="language">Language</string>
-    <string name="language_summary">Change app language</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_summary">Change app language</string>
     <string name="general">General</string>
 
 </resources>

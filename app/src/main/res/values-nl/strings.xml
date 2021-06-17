@@ -59,8 +59,8 @@
     <string name="discard">Verwijderen</string>
     <string name="discard_event_confirm">Wil je dit evenement verwijderen?</string>
     <string name="personal_settings">Persoonlijke instellingen</string>
-    <string name="themes">Themas</string>
-    <string name="themes_summary">App-thema wijzigen</string>
+    <string name="settings_themes">Themas</string>
+    <string name="settings_themes_summary">App-thema wijzigen</string>
     <string name="settings_name">Naam</string>
     <string name="settings_name_summary">Verander je naam</string>
     <string name="settings_events">Evenementen</string>
@@ -81,8 +81,8 @@
     <string name="hangouts">Hangout en chill</string>
     <string name="celebrations">Vieringen</string>
     <string name="add_event">Voeg evenement toe</string>
-    <string name="language">Taal</string>
-    <string name="language_summary">App-taal wijzigen</string>
+    <string name="settings_language">Taal</string>
+    <string name="settings_language_summary">App-taal wijzigen</string>
     <string name="emptyfilter">Geen geheugen gevonden!</string>
     <string name="no_title_set">(Geen titel ingesteld)</string>
     <string name="noted_on">Genoteerd op: </string>

@@ -8,6 +8,8 @@ import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.NavigationViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
+
+import org.junit.Before;
 import org.junit.Test;
 import my.project.nostalgia.R;
 
@@ -18,9 +20,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 public class MemoryListActivityTest {
 
+    @Before
+    public void setUp(){
+        ActivityScenario.launch(MemoryListActivity.class);
+    }
+
     @Test
     public void test_isNavigationDrawerInView() {
-        ActivityScenario.launch(MemoryListActivity.class);
+
         checkNavigationDrawerOpen();
 
         testThisViewPresence(R.id.navigation_view);
@@ -32,7 +39,6 @@ public class MemoryListActivityTest {
 
     @Test
     public void test_isFragmentinView() {
-        ActivityScenario.launch(MemoryListActivity.class);
 
         testThisViewPresence(R.id.fragment_container);
         testThisViewPresence(R.id.memory_recycler_view);
@@ -43,7 +49,6 @@ public class MemoryListActivityTest {
 
     @Test
     public void test_createsNewViewPagerOfMemories() {
-        ActivityScenario.launch(MemoryListActivity.class);
 
         performClickOnThis(R.id.memory_fab);
         testThisViewPresence(R.id.memory_view_pager);
@@ -51,7 +56,6 @@ public class MemoryListActivityTest {
 
     @Test
     public void test_goesToSettings() {
-        ActivityScenario.launch(MemoryListActivity.class);
 
         checkNavigationDrawerOpen();
         Espresso.onView(withId(R.id.navigation_view))
@@ -60,7 +64,6 @@ public class MemoryListActivityTest {
     }
     @Test
     public void test_goesToAllEvents() {
-        ActivityScenario.launch(MemoryListActivity.class);
 
         checkNavigationDrawerOpen();
         Espresso.onView(withId(R.id.navigation_view))
@@ -76,6 +79,7 @@ public class MemoryListActivityTest {
                 .check(ViewAssertions.matches(isClosed(Gravity.LEFT)))
                 .perform(DrawerActions.open());
     }
+
 
     private void testThisViewPresence(int viewID) {
         Espresso.onView(withId(viewID)).check(ViewAssertions.matches(isDisplayed()));}

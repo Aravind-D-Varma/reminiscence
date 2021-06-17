@@ -106,8 +106,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     private ListPreference setThemePref(PreferenceScreen mScreen) {
         ListPreference themes = new ListPreference(mScreen.getContext());
         themes.setKey("GlobalTheme");
-        themes.setTitle(getResources().getString(R.string.themes));
-        themes.setSummary(getResources().getString(R.string.themes_summary));
+        themes.setTitle(getResources().getString(R.string.settings_themes));
+        themes.setSummary(getResources().getString(R.string.settings_themes_summary));
         CharSequence[] entries = {"Light","Dark"};
         CharSequence[] entryValues = {"Light","Dark"};
         themes.setEntries(entries);
@@ -132,8 +132,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     private ListPreference setLanguagePref(PreferenceScreen mScreen) {
         ListPreference languages = new ListPreference(mScreen.getContext());
         languages.setKey(LANGUAGE);
-        languages.setTitle(getResources().getString(R.string.language));
-        languages.setSummary(getResources().getString(R.string.language_summary));
+        languages.setTitle(getResources().getString(R.string.settings_language));
+        languages.setSummary(getResources().getString(R.string.settings_language_summary));
         CharSequence[] entries = {"English","Dutch"};
         CharSequence[] entryValues = {"English","Dutch"};
         languages.setEntries(entries);
