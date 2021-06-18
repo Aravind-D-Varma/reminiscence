@@ -5,14 +5,12 @@
 
     <string name="welcome">Welkom!</string>
     <string name="welcome_second">Verzamel al je favoriete herinneringen op één plek. Geef een naam, beschrijf ze,
-        voeg fotos/videos toe in je persoonlijke app! Deel, update en blaas ze nieuw leven in!</string>
-    <string name="tell_us">Vertel iets over jezelf!</string>
+        voeg relevante fotos/videos toe in je persoonlijke app!\n\n Categoriseer ze in een persoonlijke verzameling evenementen
+        zoals het studentenleven of feesten.\n\n Deel, update en laat ze herleven!</string>
     <string name="enterName">Vul uw naam in:</string>
-    <string name="thanks">Deze app is in twee maanden ontwikkeld en bevindt zich nog in de bètafase.
-        Het ondersteunt (en een belangrijke) functie (Verbindingen) is nog niet toegevoegd.
-        Ondertussen kunt u een zoete herinnering toevoegen aan uw persoonlijke verzameling evenementen.
-        Studentenleven, Thuis, Hangouts en Feesten zijn voorbeelden van gebeurtenissen die
-        standaard worden toegevoegd. U kunt ze weggooien en uw eigen keuze toevoegen in instellingen.</string>
+    <string name="thanks">Deze app bevindt zich nog in de ontwikkelingsfase. Zijn ondersteunende (en een belangrijke)
+        functie (Verbindingen) is nog niet toegevoegd. Je zou groepen kunnen vormen met je connecties
+        en praat met ze over een herinnering.</string>
     <string name="thank_downloading">Bedankt voor het downloaden van deze app</string>
     <string name="continue_toMain">Doorgaan met</string>
 

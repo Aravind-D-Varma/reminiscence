@@ -1,16 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Nostalgia</string>
 
     <string name="welcome">Welcome!</string>
     <string name="welcome_second">Gather all your favorite memories in one place. Give a name, describe them,
-        add photos/videos in your personal app! Share, update and revive them!</string>
+        add relevant photos/videos in your personal app!\n\n Categorize them into a personal collention of events
+        such as Student Life or Celebrations.\n\n
+        Share, update and revive them!</string>
     <string name="tell_us">Tell a little bit your self:</string>
     <string name="enterName">Enter your name:</string>
-    <string name="thanks">This app is still in its development phase.
-        Its supporting (and a significant) feature (Connections) has not yet been added. Meanwhile,
-        you can add a sweet memory to your personal collection of events. Student Life, Home,
-        Hangouts and Celebrations are examples of events that are added as default. You can
-        discard them and add your own choice in settings.</string>
+    <string name="thanks">This app is still in its development phase. Its supporting (and a significant)
+        feature (Connections) has not yet been added. You would be able to form groups with your connections
+        and chat with them about a memory.</string>
     <string name="thank_downloading">This is a completely free app. Thank you for downloading it</string>
     <string name="continue_toMain">Continue</string>
 
