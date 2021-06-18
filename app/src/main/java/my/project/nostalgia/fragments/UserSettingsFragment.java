@@ -18,6 +18,7 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
+import my.project.nostalgia.BuildConfig;
 import my.project.nostalgia.activities.IntroductionActivity;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.UserSettingsActivity;
@@ -75,7 +76,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         Preference aboutMe = myselfPref(mScreen);
         help.addPreference(aboutMe);
 
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getContext());
         String themeValues = getData.getString("GlobalTheme", "Dark");
         if (themeValues.equals("Dark")) {
             aboutMe.setIcon(R.drawable.aboutme_white);
@@ -175,6 +176,9 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         sendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+                Intent browse = new Intent( Intent.ACTION_VIEW ,
+                        Uri.parse("https://play.google.com/store/apps/details?id=my.project.nostalgia"));
+                startActivity( browse );
                 return false;
             }
         });
@@ -188,6 +192,14 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Reminiscence");
+                String shareMessage= getResources().getString(R.string.invite_someone)+"\n\n";
+                shareMessage = shareMessage + "https://play.google.com/store/apps/details?id="
+                        + BuildConfig.APPLICATION_ID +"\n\n";
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                startActivity(Intent.createChooser(shareIntent, "Share app"));
                 return false;
             }
         });
@@ -220,15 +232,17 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 int index = mEvents.findIndexOfValue(newValue.toString());
-                if(mEvents.getEntries()[index].equals("Add Event"))
+                if(mEvents.getEntries()[index].equals("Add Event")) {
                     getAndSetNewEvent();
+                }
                 else{
                     if(calls == 0){
                         calls = 1;
                         return false;
                     }
-                    else
+                    else {
                         askDiscardEvent(index);
+                    }
                 }
                 return true;
             }
@@ -253,6 +267,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                         removeFromEvents(finalI);
                         updateDropDownEvents();
                         dialog.dismiss();
+                        startActivity(new Intent(getContext(),UserSettingsActivity.class));
                     }
                 })
                 .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -286,7 +301,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     }
     private CharSequence[] getEntries() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        CharSequence[] userevents = preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "").split(",");
+        CharSequence[] userevents = preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "")
+                .split(",");
         List<CharSequence> usereventsList = new LinkedList<CharSequence>(Arrays.asList(userevents));
 
         String addEvent = getResources().getString(R.string.add_event);
@@ -310,6 +326,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                     updateDropDownEvents();
                 }
                 dialog.dismiss();
+                startActivity(new Intent(getContext(),UserSettingsActivity.class));
             }
         });
         inputEventDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
