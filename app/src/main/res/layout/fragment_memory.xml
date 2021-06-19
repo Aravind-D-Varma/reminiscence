@@ -6,12 +6,7 @@
     android:orientation="vertical"
     android:clipToPadding="false">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
+     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -26,43 +21,42 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/memory_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autofillHints="Title"
-                    android:background="@drawable/button_border"
-                    android:backgroundTint="@color/grey"
-                    android:hint="@string/memory_title_hint"
-                    android:inputType="text"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:padding="5dp" />
+            <EditText
+                android:id="@+id/memory_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="Title"
+                android:background="@drawable/button_border"
+                android:backgroundTint="@color/grey"
+                android:hint="@string/memory_title_hint"
+                android:inputType="text"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp" />
 
             <TextView
                 style="?android:listSeparatorTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/memory_details_label"
-
                 android:textSize="12sp"
                 android:textStyle="bold" />
-                <EditText
-                    android:id="@+id/memory_details"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autofillHints="Title"
-                    android:background="@drawable/button_border"
-                    android:backgroundTint="@color/grey"
-                    android:hint="@string/memory_details_hint"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:padding="5dp"
-                    android:inputType="textMultiLine"
-                    android:maxLines="6"/>
+
+            <EditText
+                android:id="@+id/memory_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="Title"
+                android:background="@drawable/button_border"
+                android:backgroundTint="@color/grey"
+                android:hint="@string/memory_details_hint"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"
+                android:inputType="textMultiLine"
+                android:maxLines="6"/>
         </LinearLayout>
 
-    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

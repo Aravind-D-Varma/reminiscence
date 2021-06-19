@@ -3,8 +3,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -79,7 +84,6 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
         //endregion
         getCurrentPosition();
     }
-
     /**
      * Sets the viewPager to show selected Memory. Else, it will show from the first memory every time.
      */
@@ -98,7 +102,7 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
     @Override
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         String themeValues = getData.getString("GlobalTheme", "Dark");
 
         if (themeValues.equals("Dark"))
@@ -108,5 +112,26 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
             theme.applyStyle(R.style.Theme_Reminiscence_Light, true);
 
         return theme;
+    }
+
+    /**
+     * Ensures that the keyboard goes down if user presses anywhere outside the edit text box.
+     * Applicable to all edittexts in this activity
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(ev.getAction()==MotionEvent.ACTION_DOWN){
+            View v = getCurrentFocus();
+            if(v instanceof EditText){
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if(!outRect.contains((int)ev.getRawX(),(int)ev.getRawY())){
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }
