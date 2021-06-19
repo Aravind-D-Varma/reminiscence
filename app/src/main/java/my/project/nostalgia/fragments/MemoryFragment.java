@@ -28,7 +28,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -70,8 +69,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
-import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * Viewing of data. Updates data and responds to user interaction for a selected Memory depending on user actions.
@@ -430,7 +427,7 @@ public class MemoryFragment extends Fragment {
     private void displayMediaZoomedIn(int position) {
         Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.activity_memory_pager);
+        dialog.setContentView(R.layout.media_pager_layout);
         viewPagerImplementation(position, dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.show();
@@ -438,7 +435,7 @@ public class MemoryFragment extends Fragment {
 
     private void viewPagerImplementation(int position, Dialog dialog) {
         ZoomViewPagerAdapter adapter = new ZoomViewPagerAdapter(getActivity(),individualFilePaths(mMemory));
-        ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
+        ViewPager pager = (ViewPager) dialog.findViewById(R.id.media_view_pager);
         pager.setAdapter(adapter);
         pager.setPageTransformer(false, new ViewPager.PageTransformer() {
             @Override

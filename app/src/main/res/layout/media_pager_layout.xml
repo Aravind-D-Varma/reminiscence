@@ -7,10 +7,10 @@
     android:layout_height="wrap_content">
 
     <androidx.viewpager.widget.ViewPager
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/memory_view_pager"
+        android:id="@+id/media_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
     </androidx.viewpager.widget.ViewPager>
 
     <com.google.android.material.tabs.TabLayout
