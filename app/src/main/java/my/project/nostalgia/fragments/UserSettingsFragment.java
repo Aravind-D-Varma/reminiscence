@@ -171,7 +171,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     private Preference sendFeedbackPref(PreferenceScreen mScreen) {
         Preference sendFeedback = new Preference(mScreen.getContext());
         sendFeedback.setTitle(getResources().getString(R.string.settings_feedback));
-
         sendFeedback.setSummary(getResources().getString(R.string.settings_feedback_summary));
         sendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -187,7 +186,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     private Preference invitePeoplePref(PreferenceScreen mScreen) {
         Preference pref = new Preference(mScreen.getContext());
         pref.setTitle(getResources().getString(R.string.settings_invite));
-
         pref.setSummary(getResources().getString(R.string.settings_invite_summary));
         pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -197,7 +195,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Reminiscence");
                 String shareMessage= getResources().getString(R.string.invite_someone)+"\n\n";
                 shareMessage = shareMessage + "https://play.google.com/store/apps/details?id="
-                        + BuildConfig.APPLICATION_ID +"\n\n";
+                        + BuildConfig.APPLICATION_ID +"\n";
                 shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                 startActivity(Intent.createChooser(shareIntent, "Share app"));
                 return false;
@@ -219,7 +217,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         });
         return aboutMe;
     }
-
 
     private DropDownPreference getDropDownPreference(PreferenceScreen screen) {
 
