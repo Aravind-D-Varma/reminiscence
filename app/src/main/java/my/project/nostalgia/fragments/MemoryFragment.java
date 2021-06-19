@@ -58,6 +58,8 @@ import my.project.nostalgia.activities.MemoryPagerActivity;
 import my.project.nostalgia.R;
 import my.project.nostalgia.adapters.ZoomViewPagerAdapter;
 import my.project.nostalgia.adapters.RecyclerViewGalleryAdapter;
+import my.project.nostalgia.supplementary.transformationViewPager;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -437,16 +439,11 @@ public class MemoryFragment extends Fragment {
         ZoomViewPagerAdapter adapter = new ZoomViewPagerAdapter(getActivity(),individualFilePaths(mMemory));
         ViewPager pager = (ViewPager) dialog.findViewById(R.id.media_view_pager);
         pager.setAdapter(adapter);
-        pager.setPageTransformer(false, new ViewPager.PageTransformer() {
-            @Override
-            public void transformPage(@NonNull View page, float position) {
-                final float normalizedposition = Math.abs(Math.abs(position) - 1);
-                page.setScaleX(normalizedposition / 2 + 0.5f);
-                page.setScaleY(normalizedposition / 2 + 0.5f);
-            }
-        });
+
         pager.addOnPageChangeListener(new CircularViewPager(pager));
         pager.setCurrentItem(position);
+
+        pager.setPageTransformer(false, new transformationViewPager());
         TabLayout tabLayout = dialog.findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(pager,true);
     }

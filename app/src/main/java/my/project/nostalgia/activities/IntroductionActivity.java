@@ -16,6 +16,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import my.project.nostalgia.R;
 import my.project.nostalgia.adapters.IntroductionPagerAdapter;
+import my.project.nostalgia.supplementary.transformationViewPager;
+
 import com.google.android.material.tabs.TabLayout;
 
 /**
@@ -45,16 +47,9 @@ public class IntroductionActivity extends AppCompatActivity {
             pager.setClipToPadding(false);
             pager.setPadding(20,100,20,100);
             pager.setPageMargin(20);
-
             pager.setAdapter(introductionPagerAdapter);
-            pager.setPageTransformer(false, new ViewPager.PageTransformer() {
-                @Override
-                public void transformPage(@NonNull View page, float position) {
-                    final float normalizedposition = Math.abs(Math.abs(position) - 1);
-                    page.setScaleX(normalizedposition / 2 + 0.5f);
-                    page.setScaleY(normalizedposition / 2 + 0.5f);
-                }
-            });
+
+            pager.setPageTransformer(false, new transformationViewPager());
             TabLayout tabLayout = findViewById(R.id.tabDots);
             tabLayout.setupWithViewPager(pager,true);
         }
