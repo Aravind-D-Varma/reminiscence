@@ -50,6 +50,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
+import my.project.nostalgia.supplementary.CircularViewPager;
 import my.project.nostalgia.supplementary.ItemClickRecyclerView;
 import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
@@ -430,6 +431,12 @@ public class MemoryFragment extends Fragment {
         Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.activity_memory_pager);
+        viewPagerImplementation(position, dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    private void viewPagerImplementation(int position, Dialog dialog) {
         ZoomViewPagerAdapter adapter = new ZoomViewPagerAdapter(getActivity(),individualFilePaths(mMemory));
         ViewPager pager = (ViewPager) dialog.findViewById(R.id.memory_view_pager);
         pager.setAdapter(adapter);
@@ -441,12 +448,12 @@ public class MemoryFragment extends Fragment {
                 page.setScaleY(normalizedposition / 2 + 0.5f);
             }
         });
+        pager.addOnPageChangeListener(new CircularViewPager(pager));
         pager.setCurrentItem(position);
         TabLayout tabLayout = dialog.findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(pager,true);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.show();
     }
+
     private AlertDialog AskDeleteMedia(String toDeleteMediapath){
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext(),R.style.PauseDialog)
                 .setTitle(getResources().getString(R.string.delete_file))
