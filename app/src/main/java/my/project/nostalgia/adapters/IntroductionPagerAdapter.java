@@ -50,7 +50,7 @@ public class IntroductionPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        View v = inflater.inflate(R.layout.introduction,container,false);
+        View v = inflater.inflate(R.layout.introduction_pages,container,false);
 
         switch(position){
             case 0:

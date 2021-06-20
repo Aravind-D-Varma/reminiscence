@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +37,7 @@ public class IntroductionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.introduction);
+        setContentView(R.layout.introduction_pages);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (prefs.getBoolean(FIRST_TIME, false)) {
             Intent intent = new Intent(this, MemoryListActivity.class);
@@ -48,7 +49,6 @@ public class IntroductionActivity extends AppCompatActivity {
             pager.setPadding(20,100,20,100);
             pager.setPageMargin(20);
             pager.setAdapter(introductionPagerAdapter);
-
             pager.setPageTransformer(false, new transformationViewPager());
             TabLayout tabLayout = findViewById(R.id.tabDots);
             tabLayout.setupWithViewPager(pager,true);

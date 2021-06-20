@@ -7,6 +7,7 @@
         add relevant photos/videos in your personal app!\n\n Categorize them into a personal collention of events
         such as Student Life or Celebrations.\n\n
         Share, update and revive them!</string>
+    <string name="swipe_introPage">Swipe</string>
     <string name="tell_us">Tell a little bit your self:</string>
     <string name="enterName">Enter your name:</string>
     <string name="enterNameHint">Your name:</string>

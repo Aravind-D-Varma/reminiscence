@@ -37,8 +37,18 @@
                 android:textColor="@color/light_purple"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
+            <Button
+                android:id="@+id/next_introPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableEnd="@drawable/frontarrow_white"
+                android:text="@string/swipe_introPage"
+                android:textColor="@color/light_purple"
+                android:layout_gravity="end|bottom"
+                android:contentDescription=
+                    "@string/introPages_next_CD" />
         </LinearLayout>
-
         <LinearLayout
             android:id="@+id/questions"
             android:orientation="vertical"
@@ -56,7 +66,6 @@
                 android:textColor="@color/light_purple"
                 android:textSize="24sp"
                 android:textStyle="bold"/>
-
             <TextView
                 android:id="@+id/entername_text"
                 android:layout_width="wrap_content"
@@ -67,7 +76,6 @@
                 android:textColor="@color/light_purple"
                 android:textSize="24sp"
                 android:textStyle="bold" />
-
             <EditText
                 android:id="@+id/user_name"
                 android:layout_width="match_parent"
@@ -79,17 +87,27 @@
                 android:imeOptions="actionDone"
                 android:padding="5dp"
                 android:textColor="@color/white"
-                android:autofillHints="@string/enterNameHint" />
-
+                android:hint="@string/enterNameHint"
+                android:importantForAutofill="no" />
+            <Button
+                android:id="@+id/next_introPage2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableEnd="@drawable/frontarrow_white"
+                android:layout_marginTop="25dp"
+                android:layout_gravity="end|bottom"
+                android:text="@string/swipe_introPage"
+                android:textColor="@color/light_purple"
+                android:contentDescription=
+                    "@string/introPages_next_CD" />
         </LinearLayout>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/conclusion"
             android:orientation="vertical"
             android:background="@drawable/layout_border"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-
             <TextView
                 android:id="@+id/thankyou_text"
                 android:layout_width="wrap_content"
@@ -101,7 +119,6 @@
                 android:text="@string/thanks"
                 android:textColor="@color/teal_200"
                 android:textSize="16sp" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -115,7 +132,6 @@
                 android:layout_alignBottom="@id/thankyou_text"
                 android:textStyle="bold"
                 />
-
             <Button
                 android:id="@+id/continue_button"
                 android:layout_width="wrap_content"
@@ -126,8 +142,8 @@
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:background="@drawable/button_border"
-                android:drawableRight="@drawable/frontarrow_white"
+                android:background="@android:color/transparent"
+                android:drawableEnd="@drawable/frontarrow_white"
                 android:padding="10dp"
                 android:text="@string/continue_toMain"
                 android:textColor="@color/light_purple"
@@ -137,4 +153,13 @@
 
     </androidx.viewpager.widget.ViewPager>
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabDots"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"
+        android:theme="@style/Theme.AppCompat.NoActionBar"/>
 </RelativeLayout>
