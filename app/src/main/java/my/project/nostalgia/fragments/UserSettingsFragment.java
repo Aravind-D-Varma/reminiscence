@@ -230,7 +230,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 int index = mEvents.findIndexOfValue(newValue.toString());
 
                 if(mEvents.getEntries()[index].equals("Add Event"))
-                    getAndSetNewEvent();
+                    (new MemoryEventHandling(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext())))
+                    .getAndSetNewEvent();
                 else{
                     if(calls == 0){
                         calls = 1;
@@ -244,7 +245,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         });
         return mEvents;
     }
-    private void askDiscardEvent(int finalI){
+/*    private void askDiscardEvent(int finalI){
         SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getContext());
         String themeValues = getData.getString("GlobalTheme", "Dark");
         AlertDialog.Builder discardMemoryDialogBox;
@@ -272,7 +273,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 })
                 .create();
         discardMemoryDialogBox.show();
-    }
+    }*/
     private void updateDropDownEvents() {
         CharSequence[] userevents = getEntries();
         CharSequence[] entryValues = getEntryValues(userevents);
@@ -296,34 +297,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         usereventsList.add(addEvent);
         CharSequence[] cs = usereventsList.toArray(new CharSequence[0]);
         return cs;
-    }
-    private void getAndSetNewEvent() {
-
-        AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(getContext());
-        inputEventDialog.setTitle("New Custom Event");
-        final EditText input = new EditText(getContext());
-        input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
-        inputEventDialog.setView(input);
-
-        inputEventDialog.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-                String inputString = input.getText().toString();
-                if(inputString.length()>1){
-                    (new MemoryEventHandling(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext())))
-                    .saveNewEvent(inputString);
-                    updateDropDownEvents();
-                }
-                dialog.dismiss();
-                startActivity(new Intent(getContext(),UserSettingsActivity.class));
-            }
-        });
-        inputEventDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        }).create();
-        inputEventDialog.show();
     }
 
 }
