@@ -230,50 +230,25 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 int index = mEvents.findIndexOfValue(newValue.toString());
 
                 if(mEvents.getEntries()[index].equals("Add Event"))
-                    (new MemoryEventHandling(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext())))
-                    .getAndSetNewEvent();
+                    getMemoryEventHandling().getAndSetNewEvent();
                 else{
                     if(calls == 0){
                         calls = 1;
                         return false;
                     }
                     else
-                        askDiscardEvent(index);
+                        getMemoryEventHandling().askDiscardEvent(index);
                 }
                 return true;
             }
         });
         return mEvents;
     }
-/*    private void askDiscardEvent(int finalI){
-        SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
-        AlertDialog.Builder discardMemoryDialogBox;
-        if(themeValues.equals("Light"))
-            discardMemoryDialogBox = new AlertDialog.Builder(getContext(), R.style.LightDialog)
-                    .setIcon(R.drawable.delete_black);
-        else
-            discardMemoryDialogBox = new AlertDialog.Builder(getContext(), R.style.DarkDialog)
-                    .setIcon(R.drawable.delete_purple);
 
-        discardMemoryDialogBox.setTitle(getResources().getString(R.string.discard_event))
-                .setMessage(getResources().getString(R.string.discard_event_confirm))
-                .setPositiveButton(getResources().getString(R.string.discard), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        (new MemoryEventHandling(getContext(),getData)).removeFromEvents(finalI);
-                        updateDropDownEvents();
-                        dialog.dismiss();
-                        startActivity(new Intent(getContext(),UserSettingsActivity.class));
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .create();
-        discardMemoryDialogBox.show();
-    }*/
+    private MemoryEventHandling getMemoryEventHandling() {
+        return new MemoryEventHandling(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
+    }
+
     private void updateDropDownEvents() {
         CharSequence[] userevents = getEntries();
         CharSequence[] entryValues = getEntryValues(userevents);
@@ -287,16 +262,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             stringList.add(String.valueOf(sequence));
         return stringList.toArray( new String[0] );
     }
-    private CharSequence[] getEntries() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        CharSequence[] userevents = preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "")
-                .split(",");
-        List<CharSequence> usereventsList = new LinkedList<CharSequence>(Arrays.asList(userevents));
-
-        String addEvent = getResources().getString(R.string.add_event);
-        usereventsList.add(addEvent);
-        CharSequence[] cs = usereventsList.toArray(new CharSequence[0]);
-        return cs;
+    private String[] getEntries() {
+        return getMemoryEventHandling().getJoinedEvents().split(",");
     }
 
 }

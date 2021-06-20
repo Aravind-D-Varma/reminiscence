@@ -43,7 +43,7 @@ public class MemoryEventHandling {
         this.joinedCurrentEvents = defaultEventsJoined();
     }
 
-    public String getJoinedDefaultEvents() {
+    public String getJoinedEvents() {
         return joinedCurrentEvents;
     }
     /**
@@ -56,6 +56,7 @@ public class MemoryEventHandling {
         allEvents.add(stringResource(R.string.home));
         allEvents.add(stringResource(R.string.hangouts));
         allEvents.add(stringResource(R.string.celebrations));
+        allEvents.add(stringResource(R.string.add_event));
 
         return stringListToString(allEvents);
     }
@@ -96,7 +97,7 @@ public class MemoryEventHandling {
         }).create();
         inputEventDialog.show();
     }
-    private void askDiscardEvent(int finalI){
+    public void askDiscardEvent(int finalI){
 
         String themeValues = mPreferences.getString("GlobalTheme", "Dark");
         AlertDialog.Builder discardMemoryDialogBox;

@@ -105,7 +105,7 @@ public class IntroductionPagerAdapter extends PagerAdapter {
         mContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String combinedEvents = (new MemoryEventHandling(mContext)).getJoinedDefaultEvents();
+                String combinedEvents = (new MemoryEventHandling(mContext)).getJoinedEvents();
                 String userName = mUsername.getText().toString();
 
                 setGeneralInfo(userName, combinedEvents);

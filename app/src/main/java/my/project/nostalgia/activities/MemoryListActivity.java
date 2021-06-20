@@ -188,8 +188,10 @@ public class MemoryListActivity extends SingleFragmentActivity
         subMenu.removeGroup(R.id.events);
         int menuID = 0;
         for (String string:currentEvents){
-            subMenu.add(R.id.events,menuID,1,string);
-            menuID++;
+            if(!string.equals(getResources().getString(R.string.add_event))) {
+                subMenu.add(R.id.events, menuID, 1, string);
+                menuID++;
+            }
         }
     }
     private void goToSettings() {
