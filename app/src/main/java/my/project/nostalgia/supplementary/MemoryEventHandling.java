@@ -8,6 +8,8 @@ import android.text.InputType;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.preference.DropDownPreference;
+import androidx.preference.PreferenceScreen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.UserSettingsActivity;
+import my.project.nostalgia.fragments.UserSettingsFragment;
 
 import static my.project.nostalgia.activities.IntroductionActivity.APPLICABLE_EVENTS;
 
@@ -86,7 +89,6 @@ public class MemoryEventHandling {
                     addNewEvent(inputString);
                 }
                 dialog.dismiss();
-                mContext.startActivity(new Intent(mContext, UserSettingsActivity.class));
             }
         });
         inputEventDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -113,7 +115,6 @@ public class MemoryEventHandling {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         removeFromEvents(finalI);
                         dialog.dismiss();
-                        mContext.startActivity(new Intent(mContext,UserSettingsActivity.class));
                     }
                 })
                 .setNegativeButton(stringResource(R.string.cancel), new DialogInterface.OnClickListener() {

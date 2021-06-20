@@ -334,9 +334,13 @@ public class MemoryFragment extends Fragment {
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(applicableEvents[position].equals(stringFromResource(R.string.add_event)))
+                if(applicableEvents[position].equals(stringFromResource(R.string.add_event))) {
                     new MemoryEventHandling(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()))
                             .getAndSetNewEvent();
+                    applicableEvents = new MemoryEventHandling(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()))
+                            .getJoinedEvents().split(",");
+                    ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), R.layout.myspinner, applicableEvents);
+                }
                 else {
                     mMemory.setEvent(applicableEvents[position]);
                     updateMemory();

@@ -222,22 +222,23 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         mEvents = new DropDownPreference(screen.getContext());
         mEvents.setTitle(getResources().getString(R.string.settings_events));
         mEvents.setSummary(getResources().getString(R.string.settings_events_summary));
-
         updateDropDownEvents();
         mEvents.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 int index = mEvents.findIndexOfValue(newValue.toString());
 
-                if(mEvents.getEntries()[index].equals("Add Event"))
+                if(mEvents.getEntries()[index].equals("Add Event")) {
                     getMemoryEventHandling().getAndSetNewEvent();
+                }
                 else{
                     if(calls == 0){
                         calls = 1;
                         return false;
                     }
-                    else
+                    else {
                         getMemoryEventHandling().askDiscardEvent(index);
+                    }
                 }
                 return true;
             }
