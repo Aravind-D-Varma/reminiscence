@@ -56,12 +56,11 @@ public class MemoryEventHandling {
         allEvents.add(stringResource(R.string.home));
         allEvents.add(stringResource(R.string.hangouts));
         allEvents.add(stringResource(R.string.celebrations));
-        allEvents.add(stringResource(R.string.add_event));
 
         return stringListToString(allEvents);
     }
 
-    private void saveNewEvent(String input) {
+    private void addNewEvent(String input) {
         List<String> wordList = stringListOfCurrentEvents();
         wordList.add(input);
         saveInPreference(wordList);
@@ -84,7 +83,7 @@ public class MemoryEventHandling {
 
                 String inputString = input.getText().toString();
                 if(inputString.length()>1){
-                    saveNewEvent(inputString);
+                    addNewEvent(inputString);
                 }
                 dialog.dismiss();
                 mContext.startActivity(new Intent(mContext, UserSettingsActivity.class));
@@ -125,16 +124,13 @@ public class MemoryEventHandling {
                 .create();
         discardMemoryDialogBox.show();
     }
-
     private String stringResource(int resourceID) {
         return mContext.getResources().getString(resourceID);
     }
-
     private List<String> stringListOfCurrentEvents() {
         List<String> currentEventsList = Arrays.asList(joinedCurrentEvents.split(","));
         return new ArrayList<>(currentEventsList);
     }
-
     private void saveInPreference(List<String> wordList) {
         SharedPreferences.Editor mEditor = mPreferences.edit();
         mEditor.putString(APPLICABLE_EVENTS, stringListToString(wordList));
@@ -148,5 +144,10 @@ public class MemoryEventHandling {
             combinedEvents.append(string).append(",");
 
         return combinedEvents.toString();
+    }
+    public String[] addStringToArray(String string, String[] strings){
+        List<String> mylist = new LinkedList<String>(Arrays.asList(strings));
+        mylist.add(string);
+        return mylist.toArray(new String[0]);
     }
 }

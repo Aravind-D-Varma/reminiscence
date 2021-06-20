@@ -263,7 +263,10 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         return stringList.toArray( new String[0] );
     }
     private String[] getEntries() {
-        return getMemoryEventHandling().getJoinedEvents().split(",");
+        String[] applicableEvents =getMemoryEventHandling().getJoinedEvents().split(",");
+        applicableEvents = getMemoryEventHandling().addStringToArray(getResources().getString(R.string.add_event),
+                applicableEvents);
+        return applicableEvents;
     }
 
 }
