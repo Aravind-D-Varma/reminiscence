@@ -22,6 +22,7 @@ import my.project.nostalgia.BuildConfig;
 import my.project.nostalgia.activities.IntroductionActivity;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.UserSettingsActivity;
+import my.project.nostalgia.supplementary.MemoryEventHandling;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -129,7 +130,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         });
         return themes;
     }
-
     private ListPreference setLanguagePref(PreferenceScreen mScreen) {
         ListPreference languages = new ListPreference(mScreen.getContext());
         languages.setKey(LANGUAGE);
@@ -167,7 +167,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         getContext().getResources().
                 updateConfiguration(config, getContext().getResources().getDisplayMetrics());
     }
-
     private Preference sendFeedbackPref(PreferenceScreen mScreen) {
         Preference sendFeedback = new Preference(mScreen.getContext());
         sendFeedback.setTitle(getResources().getString(R.string.settings_feedback));
@@ -229,17 +228,16 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 int index = mEvents.findIndexOfValue(newValue.toString());
-                if(mEvents.getEntries()[index].equals("Add Event")) {
+
+                if(mEvents.getEntries()[index].equals("Add Event"))
                     getAndSetNewEvent();
-                }
                 else{
                     if(calls == 0){
                         calls = 1;
                         return false;
                     }
-                    else {
+                    else
                         askDiscardEvent(index);
-                    }
                 }
                 return true;
             }
@@ -247,7 +245,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         return mEvents;
     }
     private void askDiscardEvent(int finalI){
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getContext());
         String themeValues = getData.getString("GlobalTheme", "Dark");
         AlertDialog.Builder discardMemoryDialogBox;
         if(themeValues.equals("Light"))
@@ -261,7 +259,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 .setMessage(getResources().getString(R.string.discard_event_confirm))
                 .setPositiveButton(getResources().getString(R.string.discard), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        removeFromEvents(finalI);
+                        (new MemoryEventHandling(getContext(),getData)).removeFromEvents(finalI);
                         updateDropDownEvents();
                         dialog.dismiss();
                         startActivity(new Intent(getContext(),UserSettingsActivity.class));
@@ -281,15 +279,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         mEvents.setEntries(userevents);
         mEvents.setEntryValues(entryValues);
     }
-    private void removeFromEvents(int finalI) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        String currentEvents = prefs.getString(IntroductionActivity.APPLICABLE_EVENTS, "");
-        List<String> wordList = new ArrayList<String>(Arrays.asList(currentEvents.split(",")));
-        wordList.remove(finalI);
-        editor.putString(IntroductionActivity.APPLICABLE_EVENTS,stringListToString(wordList));
-        editor.apply();
-    }
+
     private String[] getEntryValues(CharSequence[] userevents) {
         List<String> stringList = new ArrayList<String>();
         for(CharSequence sequence:userevents)
@@ -318,8 +308,10 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         inputEventDialog.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
-                if(input.getText().toString().length()>1){
-                    saveNewEvent(input);
+                String inputString = input.getText().toString();
+                if(inputString.length()>1){
+                    (new MemoryEventHandling(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext())))
+                    .saveNewEvent(inputString);
                     updateDropDownEvents();
                 }
                 dialog.dismiss();
@@ -332,24 +324,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             }
         }).create();
         inputEventDialog.show();
-    }
-    private void saveNewEvent(EditText input) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        String currentEvents = prefs.getString(IntroductionActivity.APPLICABLE_EVENTS, "");
-        List<String> wordList = new ArrayList<String>(Arrays.asList(currentEvents.split(",")));
-        wordList.add(input.getText().toString());
-        editor.putString(IntroductionActivity.APPLICABLE_EVENTS,stringListToString(wordList));
-        editor.apply();
-    }
-    private String stringListToString(List<String> allEvents) {
-        String[] applicableEvents = {};
-        applicableEvents = allEvents.toArray(applicableEvents);
-        StringBuilder combinedEvents = new StringBuilder();
-        for (String string: applicableEvents)
-            combinedEvents.append(string).append(",");
-
-        return combinedEvents.toString();
     }
 
 }

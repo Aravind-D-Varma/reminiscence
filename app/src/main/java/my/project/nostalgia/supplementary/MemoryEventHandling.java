@@ -58,13 +58,13 @@ public class MemoryEventHandling {
         return stringListToString(allEvents);
     }
 
-    private void saveNewEvent(EditText input) {
+    public void saveNewEvent(String input) {
         List<String> wordList = stringListOfEvents();
-        wordList.add(input.getText().toString());
+        wordList.add(input);
         saveInPreference(wordList);
     }
 
-    private void removeFromEvents(int finalI) {
+    public void removeFromEvents(int finalI) {
         List<String> wordList = stringListOfEvents();
         wordList.remove(finalI);
         saveInPreference(wordList);
