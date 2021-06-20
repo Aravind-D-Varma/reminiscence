@@ -5,15 +5,17 @@
 
     <string name="welcome">Welkom!</string>
     <string name="welcome_second">Verzamel al je favoriete herinneringen op één plek. Geef een naam, beschrijf ze,
-        voeg relevante fotos/videos toe in je persoonlijke app!\n\n Categoriseer ze in een persoonlijke verzameling evenementen
-        zoals het studentenleven of feesten.\n\n Deel, update en laat ze herleven!</string>
+        voeg relevante fotos/videos toe in je persoonlijke app!\n\n Categoriseer ze in een persoonlijke verzameling
+        evenementen zoals het studentenleven of feesten.\n\n Deel, update en laat ze herleven!</string>
     <string name="tell_us">Vertel jezelf een beetje:</string>
     <string name="enterName">Vul uw naam in:</string>
+    <string name="enterNameHint">Uw naam:</string>
     <string name="thanks">Deze app bevindt zich nog in de ontwikkelingsfase. Zijn ondersteunende (en een belangrijke)
         functie (Verbindingen) is nog niet toegevoegd. Je zou groepen kunnen vormen met je connecties
         en praat met ze over een herinnering.</string>
     <string name="thank_downloading">Bedankt voor het downloaden van deze app</string>
     <string name="continue_toMain">Doorgaan</string>
+    <string name="introPages_next_CD">Volgende bladzijde</string>
 
     <string name="NDopen">open</string>
     <string name="NDclose">dichtbij</string>
@@ -86,6 +88,7 @@
     <string name="no_title_set">(Geen titel ingesteld)</string>
     <string name="noted_on">Genoteerd op: </string>
     <string name="general">Algemeen</string>
-    <string name="invite_someone">Bekijk dit eens! U kunt uw favoriete herinneringen op één plek opslaan en delen! Ik raad het je aan!</string>
+    <string name="invite_someone">Bekijk dit eens! U kunt uw favoriete herinneringen op één plek opslaan en delen!
+        Ik raad het je aan!</string>
 
 </resources>

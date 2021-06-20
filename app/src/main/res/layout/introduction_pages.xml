@@ -78,7 +78,8 @@
                 android:inputType="text"
                 android:imeOptions="actionDone"
                 android:padding="5dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:autofillHints="@string/enterNameHint" />
 
         </LinearLayout>
 
@@ -135,15 +136,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.viewpager.widget.ViewPager>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabDots"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabBackground="@drawable/tab_selector"
-        app:tabGravity="center"
-        app:tabIndicatorHeight="0dp"
-        android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
 </RelativeLayout>
