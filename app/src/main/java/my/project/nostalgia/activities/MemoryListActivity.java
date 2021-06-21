@@ -164,7 +164,8 @@ public class MemoryListActivity extends SingleFragmentActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        String[] currentEvents = new memoryEvents(getApplicationContext()).getIndividualEvents();
+        String[] currentEvents = new memoryEvents(getApplicationContext(),
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext())).getIndividualEvents();
 
         if(item.getItemId() == R.id.all )
             return filterOnSelected(R.string.all);
