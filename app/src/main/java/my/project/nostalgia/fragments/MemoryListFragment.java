@@ -343,53 +343,54 @@ public class MemoryListFragment extends Fragment {
                     getActivity().finish();
                 }
             });
+            try{
             String[] mediaPaths = mMemory.getMediaPaths().split(",");
             int numberOfMedias = mediaPaths.length;
-            if(numberOfMedias == 0)
-                mImageView.setImageResource(R.drawable.media_notfound_purple);
-            else if(numberOfMedias == 1) {
-                if(isImageFile(mediaPaths[0]))
-                    mImageView.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[0]));
-                else if (isVideoFile(mediaPaths[0])){
-                    Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[0],MediaStore.Images.Thumbnails.MINI_KIND);
-                    mImageView.setImageBitmap(thumb);
+                if(numberOfMedias == 1) {
+                    if(isImageFile(mediaPaths[0]))
+                        mImageView.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[0]));
+                    else if (isVideoFile(mediaPaths[0])){
+                        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[0],MediaStore.Images.Thumbnails.MINI_KIND);
+                        mImageView.setImageBitmap(thumb);
+                    }
                 }
-            }
-            else if (numberOfMedias == 2) {
-                if(isImageFile(mediaPaths[0]))
-                    mImageView.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[0]));
-                else if (isVideoFile(mediaPaths[0])){
-                    Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[0],MediaStore.Images.Thumbnails.MINI_KIND);
-                    mImageView.setImageBitmap(thumb);
-                }
-                ImageView mImageView2 = itemView.findViewById(R.id.cardview_image2);
-                if(isImageFile(mediaPaths[1]))
+                else if (numberOfMedias == 2) {
+                    if(isImageFile(mediaPaths[0]))
+                        mImageView.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[0]));
+                    else if (isVideoFile(mediaPaths[0])){
+                        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[0],MediaStore.Images.Thumbnails.MINI_KIND);
+                        mImageView.setImageBitmap(thumb);
+                    }
+                    ImageView mImageView2 = itemView.findViewById(R.id.cardview_image2);
+                    if(isImageFile(mediaPaths[1]))
+                        mImageView2.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[1]));
+                    else if (isVideoFile(mediaPaths[1])){
+                        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[1],MediaStore.Images.Thumbnails.MINI_KIND);
+                        mImageView2.setImageBitmap(thumb);
+                    }
                     mImageView2.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[1]));
-                else if (isVideoFile(mediaPaths[1])){
-                    Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[1],MediaStore.Images.Thumbnails.MINI_KIND);
-                    mImageView2.setImageBitmap(thumb);
                 }
-                mImageView2.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[1]));
-            }
-            else if (numberOfMedias > 2){
-                if(isImageFile(mediaPaths[0]))
-                    mImageView.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[0]));
-                else if (isVideoFile(mediaPaths[0])){
-                    Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[0],MediaStore.Images.Thumbnails.MINI_KIND);
-                    mImageView.setImageBitmap(thumb);
-                }
-                ImageView mImageView2 = itemView.findViewById(R.id.cardview_image2);
-                if(isImageFile(mediaPaths[1]))
+                else if (numberOfMedias > 2){
+                    if(isImageFile(mediaPaths[0]))
+                        mImageView.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[0]));
+                    else if (isVideoFile(mediaPaths[0])){
+                        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[0],MediaStore.Images.Thumbnails.MINI_KIND);
+                        mImageView.setImageBitmap(thumb);
+                    }
+                    ImageView mImageView2 = itemView.findViewById(R.id.cardview_image2);
+                    if(isImageFile(mediaPaths[1]))
+                        mImageView2.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[1]));
+                    else if (isVideoFile(mediaPaths[1])){
+                        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[1],MediaStore.Images.Thumbnails.MINI_KIND);
+                        mImageView2.setImageBitmap(thumb);
+                    }
                     mImageView2.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[1]));
-                else if (isVideoFile(mediaPaths[1])){
-                    Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[1],MediaStore.Images.Thumbnails.MINI_KIND);
-                    mImageView2.setImageBitmap(thumb);
+                    TextView mExtraText = itemView.findViewById(R.id.cardview_extramedia);
+                    mExtraText.setText("+"+ (numberOfMedias-2));
                 }
-                mImageView2.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[1]));
-                TextView mExtraText = itemView.findViewById(R.id.cardview_extramedia);
-                mExtraText.setText("+"+ (numberOfMedias-2));
+            }catch (NullPointerException e){
+                mImageView.setImageResource(R.drawable.media_notfound_red);
             }
-
         }
         private ArrayList<Uri> getUrisFromPaths() {
             ArrayList<Uri> mediaUri = new ArrayList<Uri>();
