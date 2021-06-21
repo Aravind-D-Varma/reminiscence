@@ -48,6 +48,10 @@
     <string name="delete_memory_confirm">Je hebt geen titel ingesteld of fotos gekozen.
         Wilt u deze herinnering weggooien?</string>
     <string name="share_warning">Geen fotos/videos bijgevoegd!</string>
+    <string name="no_title_set">(Geen titel ingesteld)</string>
+    <string name="no_details_set">(Geen details ingesteld))</string>
+
+    <string name="more"> meer</string>
 
     <string name="settings">Instellingen</string>
     <string name="changeName">Naam veranderen: </string>
@@ -87,8 +91,6 @@
     <string name="language">Taal</string>
     <string name="language_summary">App-taal wijzigen</string>
     <string name="emptyfilter">Geen geheugen gevonden!</string>
-    <string name="no_title_set">(Geen titel ingesteld)</string>
-    <string name="noted_on">Genoteerd op: </string>
     <string name="general">Algemeen</string>
     <string name="invite_someone">Bekijk dit eens! U kunt uw favoriete herinneringen op één plek opslaan en delen!
         Ik raad het je aan!</string>
