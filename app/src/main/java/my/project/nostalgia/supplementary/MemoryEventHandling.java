@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.MemoryListActivity;
+import my.project.nostalgia.activities.MemoryPagerActivity;
 import my.project.nostalgia.activities.UserSettingsActivity;
 import my.project.nostalgia.fragments.MemoryFragment;
 import my.project.nostalgia.fragments.MemoryListFragment;
@@ -28,7 +29,7 @@ import my.project.nostalgia.models.Memory;
 
 import static my.project.nostalgia.activities.IntroductionActivity.APPLICABLE_EVENTS;
 
-public class MemoryEventHandling {
+public class MemoryEventHandling implements MemoryListFragment.Callbacks{
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -143,13 +144,20 @@ public class MemoryEventHandling {
                             mContext.startActivity(new Intent(mContext,UserSettingsActivity.class));
 
                         else if(activityName.equals("MemoryPagerActivity")) {
-                            MemoryListFragment.Callbacks mCallbacks = (MemoryListFragment.Callbacks) mContext;
-                            mCallbacks.onMemorySelected(memory);
+                            //MemoryListFragment.Callbacks mCallbacks = (MemoryListFragment.Callbacks) mContext;
+                            //mCallbacks.onMemorySelected(memory);
+                            onMemorySelected(memory);
                         }
 
                     }
                 }).show();
 
+    }
+
+    @Override
+    public void onMemorySelected(Memory memory) {
+        Intent intent = MemoryPagerActivity.newIntent(mContext, memory.getId());
+        mContext.startActivity(intent);
     }
     private String stringResource(int resourceID) {
         return mContext.getResources().getString(resourceID);
@@ -177,4 +185,5 @@ public class MemoryEventHandling {
         mylist.add(string);
         return mylist.toArray(new String[0]);
     }
+
 }
