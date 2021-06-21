@@ -17,6 +17,13 @@
         android:layout_height="wrap_content"
         android:stateListAnimator="@null">
 
+        <ImageView
+            android:id="@+id/cardview_image"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <TextView
             android:id="@+id/cardview_memory_title"
             android:layout_width="0dp"
@@ -27,7 +34,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/cardview_image" />
 
         <TextView
             android:id="@+id/cardview_memory_detail"
@@ -48,21 +55,27 @@
             android:id="@+id/cardview_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardview_memory_detail"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="@string/share"
-            android:background="@android:color/transparent"/>
+            android:textStyle="bold"
+            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/share_purple"/>
 
         <Button
             android:id="@+id/cardview_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardview_memory_detail"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="@string/Delete"
-            android:background="@android:color/transparent" />
+            android:textStyle="bold"
+            android:background="@android:color/transparent"
+            android:drawableEnd="@drawable/delete_purple"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

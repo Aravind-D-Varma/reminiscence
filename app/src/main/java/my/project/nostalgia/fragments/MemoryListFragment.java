@@ -2,6 +2,7 @@ package my.project.nostalgia.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -265,12 +267,13 @@ public class MemoryListFragment extends Fragment {
     /**
      * ViewHolder which sets up individual items of record of memories.
      */
-    private class MemoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MemoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mTitleText;
         private TextView mDetailText;
         private Button mShare;
         private Button mDelete;
+        private ImageView mImageView;
         private Memory mMemory;
 
         public MemoryHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -283,7 +286,7 @@ public class MemoryListFragment extends Fragment {
             setTextTheme(mDetailText);
             mShare = (Button) itemView.findViewById(R.id.cardview_share);
             mDelete = (Button) itemView.findViewById(R.id.cardview_delete);
-
+            mImageView = (ImageView) itemView.findViewById(R.id.cardview_image);
         }
         private void setLayoutTheme(View v){
             SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -294,7 +297,6 @@ public class MemoryListFragment extends Fragment {
             else if (themeValues.equals("Dark"))
                 v.setBackground(getResources().getDrawable(R.drawable.layout_border));
         }
-
         private void setTextTheme(TextView tv) {
             SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
             String themeValues = getData.getString("GlobalTheme", "Dark");
@@ -335,6 +337,14 @@ public class MemoryListFragment extends Fragment {
                     getActivity().finish();
                 }
             });
+            String[] mediaPaths = mMemory.getMediaPaths().split(",");
+            int numberOfMedias = mediaPaths.length;
+            if(numberOfMedias == 0)
+                mImageView.setImageResource(R.drawable.media_notfound_purple);
+            else if(numberOfMedias == 1)
+                mImageView.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[0]));
+            else if (numberOfMedias == 2)
+
 
         }
         private ArrayList<Uri> getUrisFromPaths() {
@@ -375,7 +385,6 @@ public class MemoryListFragment extends Fragment {
             }
             mCallbacks.onMemorySelected(mMemory);
         }
-
     }
     /**
      * Adapter for RecyclerView to contain record of all memories
