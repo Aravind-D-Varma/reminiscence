@@ -340,6 +340,7 @@ public class MemoryListFragment extends Fragment {
             int numberOfMedias = mediaPaths.length;
                 if(numberOfMedias == 1) {
                     setPreviewImage(mediaPaths, 0, mImageView);
+                    mImageView2.setImageBitmap(null);
                     mExtraText.setText("");
                 }
                 else if (numberOfMedias == 2) {

@@ -118,6 +118,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                     themes.setValue("Dark");
                 Intent intent = new Intent(getContext(), UserSettingsActivity.class);
                 startActivity(intent);
+                getActivity().finish();
                 return false;
             }
         });
@@ -144,8 +145,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                     setLanguage(languages, "Dutch", "nl");
                 }
                 Intent intent = new Intent(getContext(), UserSettingsActivity.class);
-                getActivity().finish();
                 startActivity(intent);
+                getActivity().finish();
                 return false;
             }
         });
