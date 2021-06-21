@@ -2,9 +2,12 @@ package my.project.nostalgia.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,6 +37,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isImageFile;
+import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isVideoFile;
 
 /**
  * Contains list layout of RecyclerView and floating action button to show all memories and to add a new one.
@@ -341,10 +347,48 @@ public class MemoryListFragment extends Fragment {
             int numberOfMedias = mediaPaths.length;
             if(numberOfMedias == 0)
                 mImageView.setImageResource(R.drawable.media_notfound_purple);
-            else if(numberOfMedias == 1)
-                mImageView.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[0]));
-            else if (numberOfMedias == 2)
-
+            else if(numberOfMedias == 1) {
+                if(isImageFile(mediaPaths[0]))
+                    mImageView.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[0]));
+                else if (isVideoFile(mediaPaths[0])){
+                    Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[0],MediaStore.Images.Thumbnails.MINI_KIND);
+                    mImageView.setImageBitmap(thumb);
+                }
+            }
+            else if (numberOfMedias == 2) {
+                if(isImageFile(mediaPaths[0]))
+                    mImageView.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[0]));
+                else if (isVideoFile(mediaPaths[0])){
+                    Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[0],MediaStore.Images.Thumbnails.MINI_KIND);
+                    mImageView.setImageBitmap(thumb);
+                }
+                ImageView mImageView2 = itemView.findViewById(R.id.cardview_image2);
+                if(isImageFile(mediaPaths[1]))
+                    mImageView2.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[1]));
+                else if (isVideoFile(mediaPaths[1])){
+                    Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[1],MediaStore.Images.Thumbnails.MINI_KIND);
+                    mImageView2.setImageBitmap(thumb);
+                }
+                mImageView2.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[1]));
+            }
+            else if (numberOfMedias > 2){
+                if(isImageFile(mediaPaths[0]))
+                    mImageView.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[0]));
+                else if (isVideoFile(mediaPaths[0])){
+                    Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[0],MediaStore.Images.Thumbnails.MINI_KIND);
+                    mImageView.setImageBitmap(thumb);
+                }
+                ImageView mImageView2 = itemView.findViewById(R.id.cardview_image2);
+                if(isImageFile(mediaPaths[1]))
+                    mImageView2.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[1]));
+                else if (isVideoFile(mediaPaths[1])){
+                    Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[1],MediaStore.Images.Thumbnails.MINI_KIND);
+                    mImageView2.setImageBitmap(thumb);
+                }
+                mImageView2.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[1]));
+                TextView mExtraText = itemView.findViewById(R.id.cardview_extramedia);
+                mExtraText.setText("+"+ (numberOfMedias-2));
+            }
 
         }
         private ArrayList<Uri> getUrisFromPaths() {
