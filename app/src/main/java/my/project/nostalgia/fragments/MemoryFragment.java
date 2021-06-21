@@ -58,6 +58,7 @@ import my.project.nostalgia.activities.MemoryPagerActivity;
 import my.project.nostalgia.R;
 import my.project.nostalgia.adapters.ZoomViewPagerAdapter;
 import my.project.nostalgia.adapters.RecyclerViewGalleryAdapter;
+import my.project.nostalgia.supplementary.memoryEvents;
 import my.project.nostalgia.supplementary.transformationViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -209,7 +210,7 @@ public class MemoryFragment extends Fragment {
                     startActivity(Intent.createChooser(share, "Share Memory"));
                 }
                 catch (NullPointerException e){
-                    Toast.makeText(getContext(), getResources().getString(R.string.share_warning),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), stringFromResource(R.string.share_warning),Toast.LENGTH_SHORT).show();
                 }
             default:
                 return super.onOptionsItemSelected(item);
@@ -245,9 +246,13 @@ public class MemoryFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_memory, container, false);
         getActivity().setTitle(mMemory.getTitle());
         try {
-            applicableEvents = ((MemoryPagerActivity) getActivity()).applicableEvents;
+            applicableEvents = getMemoryEvents().getIndividualEvents();
+            applicableEvents = getMemoryEvents().addStringToArray(stringFromResource(R.string.add_event),
+                    applicableEvents);
         }catch (ClassCastException c){
-            applicableEvents = ((MemoryListActivity) getActivity()).applicableEvents;
+            applicableEvents = getMemoryEvents().getIndividualEvents();
+            applicableEvents = getMemoryEvents().addStringToArray(stringFromResource(R.string.add_event),
+                    applicableEvents);
         }
         mThemeValues = mSharedPreferences.getString("GlobalTheme", "Dark");
         // region EditText
@@ -291,8 +296,6 @@ public class MemoryFragment extends Fragment {
             }
         });
         setBackgroundTheme(mDetailField);
-        //endregion
-        //region DateButton
         mDateButton = (Button) v.findViewById(R.id.memory_date);
         updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
@@ -305,8 +308,6 @@ public class MemoryFragment extends Fragment {
             }
         });
         setBackgroundTheme(mDateButton);
-        //endregion
-        // region TimeButton
         mTimeButton = (Button) v.findViewById(R.id.memory_time);
         updateTime();
         mTimeButton.setOnClickListener(new View.OnClickListener() {
@@ -319,8 +320,6 @@ public class MemoryFragment extends Fragment {
             }
         });
         setBackgroundTheme(mTimeButton);
-        //endregion
-        //region Spinner
         mSpinner = (Spinner) v.findViewById(R.id.memory_spinner);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), R.layout.myspinner, applicableEvents);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -329,8 +328,13 @@ public class MemoryFragment extends Fragment {
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(applicableEvents[position].equals(stringFromResource(R.string.add_event))) {
+                    getMemoryEvents().getAndSetNewEvent(getView(),getActivity(),mMemory);
+                }
+                else {
                     mMemory.setEvent(applicableEvents[position]);
                     updateMemory();
+                }
             }
 
             @Override
@@ -338,8 +342,6 @@ public class MemoryFragment extends Fragment {
             }
         });
         setBackgroundTheme(mSpinner);
-        //endregion
-        //region PhotoButton
         mPhotoButton = (Button)v.findViewById(R.id.memory_selectphotos);
         try {
             if (mMemory.getMediaPaths().length() != 0)
@@ -361,8 +363,6 @@ public class MemoryFragment extends Fragment {
             }
         });
         setBackgroundTheme(mPhotoButton);
-        //endregion
-        //region PhotoGridView
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL));
         try{
@@ -384,8 +384,6 @@ public class MemoryFragment extends Fragment {
                 return false;
             }
         });
-        //endregion
-        //region photoFAB
         mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
         behaviourBeforeAddingMedia(v);
         Intent getmoreImage = getFromMediaIntent();
@@ -396,8 +394,16 @@ public class MemoryFragment extends Fragment {
                 }
             });
         setBackgroundTheme(mPhotoFAB);
-        //endregion
+
         return v;
+    }
+
+    private memoryEvents getMemoryEvents() {
+        return new memoryEvents(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
+    }
+
+    private String stringFromResource(int resourceID) {
+        return getResources().getString(resourceID);
     }
 
     private void setBackgroundTheme(View v) {
@@ -405,21 +411,25 @@ public class MemoryFragment extends Fragment {
             if (mThemeValues.equals("Dark")) {
                 v.setBackgroundResource(R.drawable.button_border);
                 if (v instanceof Button)
-                    ((Button) v).setTextColor(getResources().getColor(R.color.light_purple));
+                    ((Button) v).setTextColor(colorFromResources(R.color.light_purple));
                 else if (v instanceof EditText){
-                    ((EditText) v).setTextColor(getResources().getColor(R.color.white));
+                    ((EditText) v).setTextColor(colorFromResources(R.color.white));
                 }
             } else if (mThemeValues.equals("Light")) {
                 v.setBackgroundResource(R.drawable.button_border_light);
                 if (v instanceof Button)
-                    ((Button) v).setTextColor(getResources().getColor(R.color.white));
+                    ((Button) v).setTextColor(colorFromResources(R.color.white));
                 else if (v instanceof Spinner) {
                     TextView oTextView = (TextView) ((Spinner)v).getChildAt(0);
-                    oTextView.setTextColor(getResources().getColor(R.color.white));
+                    oTextView.setTextColor(colorFromResources(R.color.white));
                 }
             }
         }
         catch (NullPointerException e){}
+    }
+
+    private int colorFromResources(int resourceID) {
+        return getResources().getColor(resourceID);
     }
 
     private boolean hasMediaPermission() {
@@ -434,7 +444,6 @@ public class MemoryFragment extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.show();
     }
-
     private void viewPagerImplementation(int position, Dialog dialog) {
         ZoomViewPagerAdapter adapter = new ZoomViewPagerAdapter(getActivity(),individualFilePaths(mMemory));
         ViewPager pager = (ViewPager) dialog.findViewById(R.id.media_view_pager);
@@ -450,10 +459,10 @@ public class MemoryFragment extends Fragment {
 
     private AlertDialog AskDeleteMedia(String toDeleteMediapath){
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext(),R.style.PauseDialog)
-                .setTitle(getResources().getString(R.string.delete_file))
-                .setMessage(getResources().getString(R.string.deletion_confirm))
+                .setTitle(stringFromResource(R.string.delete_file))
+                .setMessage(stringFromResource(R.string.deletion_confirm))
                 .setIcon(android.R.drawable.ic_menu_delete)
-                .setPositiveButton(getResources().getString(R.string.discard), new DialogInterface.OnClickListener() {
+                .setPositiveButton(stringFromResource(R.string.discard), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String[] allPhotoPaths = individualFilePaths(mMemory);
                         List<String> list = new ArrayList<String>(Arrays.asList(allPhotoPaths));
@@ -464,7 +473,7 @@ public class MemoryFragment extends Fragment {
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                .setNegativeButton(stringFromResource(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
@@ -620,17 +629,17 @@ public class MemoryFragment extends Fragment {
     }
     private AlertDialog AskDiscardMemory(){
         AlertDialog discardMemoryDialogBox = new AlertDialog.Builder(getContext())
-                .setTitle(getResources().getString(R.string.delete_memory))
-                .setMessage(getResources().getString(R.string.delete_memory_confirm))
+                .setTitle(stringFromResource(R.string.delete_memory))
+                .setMessage(stringFromResource(R.string.delete_memory_confirm))
                 .setIcon(android.R.drawable.ic_menu_delete)
-                .setPositiveButton(getResources().getString(R.string.discard), new DialogInterface.OnClickListener() {
+                .setPositiveButton(stringFromResource(R.string.discard), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Intent intent = new Intent(getActivity(), MemoryListActivity.class);
                         startActivity(intent);
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                .setNegativeButton(stringFromResource(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
@@ -699,12 +708,10 @@ public class MemoryFragment extends Fragment {
         String[] split = docId.split(":");
         return new String[] {split[1]};
     }
-
     private void setMediaRecyclerView() {
         RecyclerViewGalleryAdapter adapter = new RecyclerViewGalleryAdapter(getContext(), individualFilePaths(mMemory));
         mPhotoRecyclerView.setAdapter(adapter);
     }
-
     private String[] individualFilePaths(Memory givenMemory){
         return givenMemory.getMediaPaths().split(",");
     }

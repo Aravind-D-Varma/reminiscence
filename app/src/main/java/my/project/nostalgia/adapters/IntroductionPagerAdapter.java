@@ -7,13 +7,9 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -21,9 +17,8 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import my.project.nostalgia.activities.MemoryListActivity;
 import my.project.nostalgia.R;
+import my.project.nostalgia.supplementary.memoryEvents;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 
 import static my.project.nostalgia.activities.IntroductionActivity.APPLICABLE_EVENTS;
@@ -110,7 +105,7 @@ public class IntroductionPagerAdapter extends PagerAdapter {
         mContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String combinedEvents = joinAllApplicableEvents();
+                String combinedEvents = (new memoryEvents(mContext)).getJoinedEvents();
                 String userName = mUsername.getText().toString();
 
                 setGeneralInfo(userName, combinedEvents);
@@ -121,17 +116,6 @@ public class IntroductionPagerAdapter extends PagerAdapter {
                 ((Activity)mContext).finish();
             }
         });
-    }
-    /**
-     * Concatenates all events which are applicable into one string so that it can be stored in SharedPreferences.
-     * @return
-     */
-    private String joinAllApplicableEvents() {
-        List<String> allEvents = new LinkedList<String>();
-
-        allEvents = initializeListOfEvents(allEvents);
-
-        return stringListToString(allEvents);
     }
     /**
      * Sets up the username and applicable events for access across application by using SharedPreferences.
@@ -146,22 +130,4 @@ public class IntroductionPagerAdapter extends PagerAdapter {
         editor.putString(USER_ID, UUID.randomUUID().toString());
         editor.apply();
     }
-    private List<String> initializeListOfEvents(List<String> allEvents) {
-        allEvents.add(mContext.getResources().getString(R.string.student_life));
-        allEvents.add(mContext.getResources().getString(R.string.home));
-        allEvents.add(mContext.getResources().getString(R.string.hangouts));
-        allEvents.add(mContext.getResources().getString(R.string.celebrations));
-
-        return allEvents;
-    }
-    private String stringListToString(List<String> allEvents) {
-        String[] applicableEvents = {};
-        applicableEvents = allEvents.toArray(applicableEvents);
-        StringBuilder combinedEvents = new StringBuilder();
-        for (String string:applicableEvents)
-            combinedEvents.append(string).append(",");
-
-        return combinedEvents.toString();
-    }
-
 }

@@ -113,7 +113,8 @@ public class MemoryListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        View view = inflater.inflate(R.layout.fragment_memory_list, container, false);
+        setListAndAddButton(view);
         if(MemoryLab.get(getActivity()).getMemories().size()==0){
             View noMemoryView = inflater.inflate(R.layout.empty_list_page, container, false);
             SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -142,8 +143,7 @@ public class MemoryListFragment extends Fragment {
             return noMemoryView;
         }
 
-        View view = inflater.inflate(R.layout.fragment_memory_list, container, false);
-        setListAndAddButton(view);
+
         updateByDevice();
         return view;
     }
@@ -214,7 +214,7 @@ public class MemoryListFragment extends Fragment {
      * Deletes null memories to avoid crashes
      * Deletes all those memories whose title is null and does not contain any photos.
      * Then, hooks up the adapter and RecyclerView.
-     * @see #noTitleAndPhotos(List, int)
+     * @see #noTitleAndPhotos(Memory)
      */
     public void updateUI() {
 

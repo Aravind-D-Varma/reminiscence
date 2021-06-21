@@ -1,15 +1,11 @@
 package my.project.nostalgia.fragments;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.InputType;
-import android.widget.EditText;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DropDownPreference;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
@@ -19,13 +15,11 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import my.project.nostalgia.BuildConfig;
-import my.project.nostalgia.activities.IntroductionActivity;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.UserSettingsActivity;
+import my.project.nostalgia.supplementary.memoryEvents;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -129,7 +123,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         });
         return themes;
     }
-
     private ListPreference setLanguagePref(PreferenceScreen mScreen) {
         ListPreference languages = new ListPreference(mScreen.getContext());
         languages.setKey(LANGUAGE);
@@ -167,7 +160,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         getContext().getResources().
                 updateConfiguration(config, getContext().getResources().getDisplayMetrics());
     }
-
     private Preference sendFeedbackPref(PreferenceScreen mScreen) {
         Preference sendFeedback = new Preference(mScreen.getContext());
         sendFeedback.setTitle(getResources().getString(R.string.settings_feedback));
@@ -223,14 +215,14 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         mEvents = new DropDownPreference(screen.getContext());
         mEvents.setTitle(getResources().getString(R.string.settings_events));
         mEvents.setSummary(getResources().getString(R.string.settings_events_summary));
-
         updateDropDownEvents();
         mEvents.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 int index = mEvents.findIndexOfValue(newValue.toString());
+
                 if(mEvents.getEntries()[index].equals("Add Event")) {
-                    getAndSetNewEvent();
+                    getMemoryEventHandling().getAndSetNewEvent(getView(),getActivity(),null);
                 }
                 else{
                     if(calls == 0){
@@ -238,7 +230,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                         return false;
                     }
                     else {
-                        askDiscardEvent(index);
+                        getMemoryEventHandling().askDiscardEvent(getView(),getActivity(),index);
                     }
                 }
                 return true;
@@ -246,110 +238,29 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         });
         return mEvents;
     }
-    private void askDiscardEvent(int finalI){
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
-        AlertDialog.Builder discardMemoryDialogBox;
-        if(themeValues.equals("Light"))
-            discardMemoryDialogBox = new AlertDialog.Builder(getContext(), R.style.LightDialog)
-                    .setIcon(R.drawable.delete_black);
-        else
-            discardMemoryDialogBox = new AlertDialog.Builder(getContext(), R.style.DarkDialog)
-                    .setIcon(R.drawable.delete_purple);
 
-        discardMemoryDialogBox.setTitle(getResources().getString(R.string.discard_event))
-                .setMessage(getResources().getString(R.string.discard_event_confirm))
-                .setPositiveButton(getResources().getString(R.string.discard), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        removeFromEvents(finalI);
-                        updateDropDownEvents();
-                        dialog.dismiss();
-                        startActivity(new Intent(getContext(),UserSettingsActivity.class));
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .create();
-        discardMemoryDialogBox.show();
+    private memoryEvents getMemoryEventHandling() {
+        return new memoryEvents(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
     }
+
     private void updateDropDownEvents() {
         CharSequence[] userevents = getEntries();
         CharSequence[] entryValues = getEntryValues(userevents);
         mEvents.setEntries(userevents);
         mEvents.setEntryValues(entryValues);
     }
-    private void removeFromEvents(int finalI) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        String currentEvents = prefs.getString(IntroductionActivity.APPLICABLE_EVENTS, "");
-        List<String> wordList = new ArrayList<String>(Arrays.asList(currentEvents.split(",")));
-        wordList.remove(finalI);
-        editor.putString(IntroductionActivity.APPLICABLE_EVENTS,stringListToString(wordList));
-        editor.apply();
-    }
+
     private String[] getEntryValues(CharSequence[] userevents) {
         List<String> stringList = new ArrayList<String>();
         for(CharSequence sequence:userevents)
             stringList.add(String.valueOf(sequence));
         return stringList.toArray( new String[0] );
     }
-    private CharSequence[] getEntries() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        CharSequence[] userevents = preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "")
-                .split(",");
-        List<CharSequence> usereventsList = new LinkedList<CharSequence>(Arrays.asList(userevents));
-
-        String addEvent = getResources().getString(R.string.add_event);
-        usereventsList.add(addEvent);
-        CharSequence[] cs = usereventsList.toArray(new CharSequence[0]);
-        return cs;
-    }
-    private void getAndSetNewEvent() {
-
-        AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(getContext());
-        inputEventDialog.setTitle("New Custom Event");
-        final EditText input = new EditText(getContext());
-        input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
-        inputEventDialog.setView(input);
-
-        inputEventDialog.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-                if(input.getText().toString().length()>1){
-                    saveNewEvent(input);
-                    updateDropDownEvents();
-                }
-                dialog.dismiss();
-                startActivity(new Intent(getContext(),UserSettingsActivity.class));
-            }
-        });
-        inputEventDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        }).create();
-        inputEventDialog.show();
-    }
-    private void saveNewEvent(EditText input) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        String currentEvents = prefs.getString(IntroductionActivity.APPLICABLE_EVENTS, "");
-        List<String> wordList = new ArrayList<String>(Arrays.asList(currentEvents.split(",")));
-        wordList.add(input.getText().toString());
-        editor.putString(IntroductionActivity.APPLICABLE_EVENTS,stringListToString(wordList));
-        editor.apply();
-    }
-    private String stringListToString(List<String> allEvents) {
-        String[] applicableEvents = {};
-        applicableEvents = allEvents.toArray(applicableEvents);
-        StringBuilder combinedEvents = new StringBuilder();
-        for (String string: applicableEvents)
-            combinedEvents.append(string).append(",");
-
-        return combinedEvents.toString();
+    private String[] getEntries() {
+        String[] applicableEvents =getMemoryEventHandling().getJoinedEvents().split(",");
+        applicableEvents = getMemoryEventHandling().addStringToArray(getResources().getString(R.string.add_event),
+                applicableEvents);
+        return applicableEvents;
     }
 
 }
