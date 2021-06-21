@@ -17,7 +17,7 @@ import androidx.preference.PreferenceScreen;
 import my.project.nostalgia.BuildConfig;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.UserSettingsActivity;
-import my.project.nostalgia.supplementary.MemoryEventHandling;
+import my.project.nostalgia.supplementary.memoryEvents;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -239,8 +239,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         return mEvents;
     }
 
-    private MemoryEventHandling getMemoryEventHandling() {
-        return new MemoryEventHandling(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
+    private memoryEvents getMemoryEventHandling() {
+        return new memoryEvents(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
     }
 
     private void updateDropDownEvents() {

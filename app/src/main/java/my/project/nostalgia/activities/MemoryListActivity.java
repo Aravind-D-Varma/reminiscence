@@ -23,6 +23,8 @@ import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.R;
 import my.project.nostalgia.fragments.MemoryFragment;
 import my.project.nostalgia.fragments.MemoryListFragment;
+import my.project.nostalgia.supplementary.memoryEvents;
+
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Locale;
@@ -109,7 +111,7 @@ public class MemoryListActivity extends SingleFragmentActivity
     }
 
     private void setUserTheme() {
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         mThemeValues = getData.getString("GlobalTheme", "Dark");
         if (mThemeValues.equals("Dark"))
             setTheme(R.style.Theme_Reminiscence);
@@ -162,8 +164,7 @@ public class MemoryListActivity extends SingleFragmentActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String[] currentEvents = prefs.getString(IntroductionActivity.APPLICABLE_EVENTS, "").split(",");
+        String[] currentEvents = new memoryEvents(getApplicationContext()).getIndividualEvents();
 
         if(item.getItemId() == R.id.all )
             return filterOnSelected(R.string.all);
@@ -181,8 +182,8 @@ public class MemoryListActivity extends SingleFragmentActivity
      * These items have ids starting from zero and increment till size of array.
      */
     private void showMenuEvents() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String[] currentEvents = prefs.getString(IntroductionActivity.APPLICABLE_EVENTS, "").split(",");
+        String[] currentEvents = new memoryEvents(getApplicationContext(),PreferenceManager.getDefaultSharedPreferences(getApplicationContext()))
+                .getIndividualEvents();
         Menu eventMenu = mNavigationView.getMenu();
         SubMenu subMenu = eventMenu.getItem(0).getSubMenu();
         subMenu.removeGroup(R.id.events);
@@ -234,8 +235,6 @@ public class MemoryListActivity extends SingleFragmentActivity
     private void getGeneralInfo() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         userName = pref.getString(IntroductionActivity.SEND_USERNAME,"");
-        String userevents = pref.getString(IntroductionActivity.APPLICABLE_EVENTS, "");
-        applicableEvents = userevents.split(",");
         String languages = pref.getString(IntroductionActivity.LANGUAGE, "English");
         if (languages.equals("English")){
             setLanguage("en");

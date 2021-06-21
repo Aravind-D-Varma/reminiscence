@@ -29,7 +29,7 @@ import my.project.nostalgia.models.Memory;
 
 import static my.project.nostalgia.activities.IntroductionActivity.APPLICABLE_EVENTS;
 
-public class MemoryEventHandling implements MemoryListFragment.Callbacks{
+public class memoryEvents implements MemoryListFragment.Callbacks{
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -40,7 +40,7 @@ public class MemoryEventHandling implements MemoryListFragment.Callbacks{
      * Constructor with context as parameter indicates getting events from Preferences
      * @param context
      */
-    public MemoryEventHandling(Context context, SharedPreferences preference) {
+    public memoryEvents(Context context, SharedPreferences preference) {
         this.mContext = context;
         this.mPreferences =  preference;
         this.joinedCurrentEvents = mPreferences.getString(APPLICABLE_EVENTS,"");
@@ -48,13 +48,14 @@ public class MemoryEventHandling implements MemoryListFragment.Callbacks{
     /**
      * Empty constructor indicates default Events
      */
-    public MemoryEventHandling(Context context){
+    public memoryEvents(Context context){
         this.mContext = context;
         this.joinedCurrentEvents = defaultEventsJoined();
     }
     public String getJoinedEvents() {
         return joinedCurrentEvents;
     }
+    public String[] getIndividualEvents(){ return joinedCurrentEvents.split(",");}
     /**
      * Concatenates all events which are applicable into one string so that it can be stored in SharedPreferences.
      */
@@ -144,11 +145,9 @@ public class MemoryEventHandling implements MemoryListFragment.Callbacks{
                             mContext.startActivity(new Intent(mContext,UserSettingsActivity.class));
 
                         else if(activityName.equals("MemoryPagerActivity")) {
-                            //MemoryListFragment.Callbacks mCallbacks = (MemoryListFragment.Callbacks) mContext;
-                            //mCallbacks.onMemorySelected(memory);
+                            activity.finish();
                             onMemorySelected(memory);
                         }
-
                     }
                 }).show();
 

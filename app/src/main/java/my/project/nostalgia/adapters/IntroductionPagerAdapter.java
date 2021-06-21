@@ -17,7 +17,7 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import my.project.nostalgia.activities.MemoryListActivity;
 import my.project.nostalgia.R;
-import my.project.nostalgia.supplementary.MemoryEventHandling;
+import my.project.nostalgia.supplementary.memoryEvents;
 
 import java.util.UUID;
 
@@ -105,7 +105,7 @@ public class IntroductionPagerAdapter extends PagerAdapter {
         mContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String combinedEvents = (new MemoryEventHandling(mContext)).getJoinedEvents();
+                String combinedEvents = (new memoryEvents(mContext)).getJoinedEvents();
                 String userName = mUsername.getText().toString();
 
                 setGeneralInfo(userName, combinedEvents);

@@ -37,8 +37,6 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
     private static final String EXTRA_memory_ID = "my.project.memory_id";
     private static ViewPager mViewPager;
     private List<Memory> mMemories;
-    public String[] applicableEvents;
-
     /**
      * Not sure. To be inspected
      */
@@ -61,9 +59,6 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.media_pager_layout);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String combinedEvents= preferences.getString(IntroductionActivity.APPLICABLE_EVENTS, "");
-        applicableEvents = combinedEvents.split(",");
         mViewPager = (ViewPager) findViewById(R.id.media_view_pager);
         mMemories = MemoryLab.get(this).getMemories();
         FragmentManager fragmentManager = getSupportFragmentManager();

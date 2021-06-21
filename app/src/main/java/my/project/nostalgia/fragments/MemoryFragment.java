@@ -58,7 +58,7 @@ import my.project.nostalgia.activities.MemoryPagerActivity;
 import my.project.nostalgia.R;
 import my.project.nostalgia.adapters.ZoomViewPagerAdapter;
 import my.project.nostalgia.adapters.RecyclerViewGalleryAdapter;
-import my.project.nostalgia.supplementary.MemoryEventHandling;
+import my.project.nostalgia.supplementary.memoryEvents;
 import my.project.nostalgia.supplementary.transformationViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -246,12 +246,12 @@ public class MemoryFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_memory, container, false);
         getActivity().setTitle(mMemory.getTitle());
         try {
-            applicableEvents = ((MemoryPagerActivity) getActivity()).applicableEvents;
-            applicableEvents = new MemoryEventHandling(getContext()).addStringToArray(stringFromResource(R.string.add_event),
+            applicableEvents = getMemoryEvents().getIndividualEvents();
+            applicableEvents = getMemoryEvents().addStringToArray(stringFromResource(R.string.add_event),
                     applicableEvents);
         }catch (ClassCastException c){
-            applicableEvents = ((MemoryListActivity) getActivity()).applicableEvents;
-            applicableEvents = new MemoryEventHandling(getContext()).addStringToArray(stringFromResource(R.string.add_event),
+            applicableEvents = getMemoryEvents().getIndividualEvents();
+            applicableEvents = getMemoryEvents().addStringToArray(stringFromResource(R.string.add_event),
                     applicableEvents);
         }
         mThemeValues = mSharedPreferences.getString("GlobalTheme", "Dark");
@@ -296,8 +296,6 @@ public class MemoryFragment extends Fragment {
             }
         });
         setBackgroundTheme(mDetailField);
-        //endregion
-        //region DateButton
         mDateButton = (Button) v.findViewById(R.id.memory_date);
         updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
@@ -310,8 +308,6 @@ public class MemoryFragment extends Fragment {
             }
         });
         setBackgroundTheme(mDateButton);
-        //endregion
-        // region TimeButton
         mTimeButton = (Button) v.findViewById(R.id.memory_time);
         updateTime();
         mTimeButton.setOnClickListener(new View.OnClickListener() {
@@ -324,8 +320,6 @@ public class MemoryFragment extends Fragment {
             }
         });
         setBackgroundTheme(mTimeButton);
-        //endregion
-        //region Spinner
         mSpinner = (Spinner) v.findViewById(R.id.memory_spinner);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), R.layout.myspinner, applicableEvents);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -335,8 +329,7 @@ public class MemoryFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(applicableEvents[position].equals(stringFromResource(R.string.add_event))) {
-                    new MemoryEventHandling(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()))
-                            .getAndSetNewEvent(getView(),getActivity(),mMemory);
+                    getMemoryEvents().getAndSetNewEvent(getView(),getActivity(),mMemory);
                 }
                 else {
                     mMemory.setEvent(applicableEvents[position]);
@@ -349,8 +342,6 @@ public class MemoryFragment extends Fragment {
             }
         });
         setBackgroundTheme(mSpinner);
-        //endregion
-        //region PhotoButton
         mPhotoButton = (Button)v.findViewById(R.id.memory_selectphotos);
         try {
             if (mMemory.getMediaPaths().length() != 0)
@@ -372,8 +363,6 @@ public class MemoryFragment extends Fragment {
             }
         });
         setBackgroundTheme(mPhotoButton);
-        //endregion
-        //region PhotoGridView
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL));
         try{
@@ -395,8 +384,6 @@ public class MemoryFragment extends Fragment {
                 return false;
             }
         });
-        //endregion
-        //region photoFAB
         mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
         behaviourBeforeAddingMedia(v);
         Intent getmoreImage = getFromMediaIntent();
@@ -407,8 +394,12 @@ public class MemoryFragment extends Fragment {
                 }
             });
         setBackgroundTheme(mPhotoFAB);
-        //endregion
+
         return v;
+    }
+
+    private memoryEvents getMemoryEvents() {
+        return new memoryEvents(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
     }
 
     private String stringFromResource(int resourceID) {
