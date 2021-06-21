@@ -2,6 +2,7 @@ package my.project.nostalgia.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +29,7 @@ import my.project.nostalgia.R;
 import my.project.nostalgia.activities.MemoryListActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.text.DateFormat;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +87,7 @@ public class MemoryListFragment extends Fragment {
                     mAdapter.searchFilter(query);
                 }
                 catch (NullPointerException e){
-                    Toast.makeText(getContext(),getResources().getString(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), stringResource(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
@@ -97,11 +99,15 @@ public class MemoryListFragment extends Fragment {
                 }
                 catch (NullPointerException e){
                     if(newText.length()>=1)
-                        Toast.makeText(getContext(),getResources().getString(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), stringResource(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
         });
+    }
+
+    private String stringResource(int p) {
+        return getResources().getString(p);
     }
 
     @Override
@@ -261,18 +267,23 @@ public class MemoryListFragment extends Fragment {
      */
     private class MemoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView mTitleTextView;
-        private TextView mDateTextView;
+        private TextView mTitleText;
+        private TextView mDetailText;
+        private Button mShare;
+        private Button mDelete;
         private Memory mMemory;
 
         public MemoryHolder(LayoutInflater inflater, ViewGroup parent) {
-                super(inflater.inflate(R.layout.list_item_memory, parent, false));
-                itemView.setOnClickListener(this);
-                setLayoutTheme(itemView);
-                mTitleTextView = (TextView) itemView.findViewById(R.id.memory_title);
-                setTextTheme(mTitleTextView);
-                mDateTextView = (TextView) itemView.findViewById(R.id.memory_date);
-            setTextTheme(mDateTextView);
+            super(inflater.inflate(R.layout.list_item_memory, parent, false));
+            itemView.setOnClickListener(this);
+            setLayoutTheme(itemView);
+            mTitleText = (TextView) itemView.findViewById(R.id.cardview_memory_title);
+            setTextTheme(mTitleText);
+            mDetailText = (TextView) itemView.findViewById(R.id.cardview_memory_detail);
+            setTextTheme(mDetailText);
+            mShare = (Button) itemView.findViewById(R.id.cardview_share);
+            mDelete = (Button) itemView.findViewById(R.id.cardview_delete);
+
         }
         private void setLayoutTheme(View v){
             SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -296,17 +307,59 @@ public class MemoryListFragment extends Fragment {
         }
         public void bind(Memory Memory){
             mMemory = Memory;
-            if (mMemory.getTitle()==null)
-                mTitleTextView.setText(R.string.no_title_set);
             try{
-                if (mMemory.getTitle().equals(""))
-                    mTitleTextView.setText(R.string.no_title_set);
+                if (mMemory.getTitle()==null || mMemory.getTitle().equals(""))
+                    mTitleText.setText(R.string.no_title_set);
                 else
-                    mTitleTextView.setText(mMemory.getTitle());
+                    mTitleText.setText(mMemory.getTitle());
             }catch (NullPointerException e){}
-            mDateTextView.setText(String.format("%s%s", getString(R.string.noted_on), DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate())));
-        }
+            mDetailText.setText(mMemory.getDetail());
+            mShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        ArrayList<Uri> mediaUri = getUrisFromPaths();
+                        Intent share = shareMemoryIntent(mediaUri);
+                        startActivity(Intent.createChooser(share, "Share Memory"));
+                    }
+                    catch (NullPointerException e){
+                        Toast.makeText(getContext(), stringResource(R.string.share_warning),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            mDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MemoryLab.get(getActivity()).deleteMemory(mMemory);
+                    startActivity(new Intent(getActivity(), MemoryListActivity.class));
+                    getActivity().finish();
+                }
+            });
 
+        }
+        private ArrayList<Uri> getUrisFromPaths() {
+            ArrayList<Uri> mediaUri = new ArrayList<Uri>();
+            for (String path : mMemory.getMediaPaths().split(",")) {
+                File file = new File(path);
+                Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
+                mediaUri.add(uri);
+            }
+            return mediaUri;
+        }
+        /**
+         * Creates an intent which allows user to share the memory: photos/videos and title.
+         * @param mediaUri list of all Uri which contain filepaths of photos and videos of a memory.
+         * @return
+         */
+        private Intent shareMemoryIntent(ArrayList<Uri> mediaUri) {
+            Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);
+            share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, mediaUri);
+            share.setType("*/*");
+            share.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {"image/*", "video/*"});
+            share.putExtra(Intent.EXTRA_TEXT, mMemory.getTitle());
+            share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            return share;
+        }
         @Override
         public void onClick(View v) {
 
@@ -368,7 +421,7 @@ public class MemoryListFragment extends Fragment {
                 mAdapter.setMemorys(searchMemorysList);
                 notifyDataSetChanged();
             }catch (NullPointerException e){
-                Toast.makeText(getContext(),getResources().getString(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), stringResource(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -391,9 +444,7 @@ public class MemoryListFragment extends Fragment {
             mAdapter.setMemorys(searchMemorysList);
             mAdapter.notifyDataSetChanged();
         }catch (NullPointerException e){
-            Toast.makeText(getContext(),getResources().getString(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), stringResource(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
         }
-
     }
-
 }

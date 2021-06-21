@@ -42,6 +42,7 @@ public class IntroductionActivity extends AppCompatActivity {
         if (prefs.getBoolean(FIRST_TIME, false)) {
             Intent intent = new Intent(this, MemoryListActivity.class);
             startActivity(intent);
+            this.finish();
         } else {
             IntroductionPagerAdapter introductionPagerAdapter = new IntroductionPagerAdapter(this);
             ViewPager pager = findViewById(R.id.pager);

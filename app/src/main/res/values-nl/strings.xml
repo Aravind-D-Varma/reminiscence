@@ -29,6 +29,7 @@
     </plurals>
     <string name="search">Zoeken</string>
     <string name="memory_search_hint">Zoek geheugen</string>
+    <string name="share">Delen</string>
 
     <string name="memory_title_hint">Geef een naam aan dit souvenir!</string>
     <string name="memory_title_label">Titel</string>

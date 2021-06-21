@@ -94,5 +94,6 @@
     <string name="refreshButton" translatable="false">Refresh</string>
     <string name="new_custom_event">New Custom Event</string>
     <string name="create">Create</string>
+    <string name="share">Share</string>
 
 </resources>
