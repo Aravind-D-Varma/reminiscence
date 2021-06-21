@@ -1,15 +1,11 @@
 package my.project.nostalgia.fragments;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.InputType;
-import android.widget.EditText;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DropDownPreference;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
@@ -19,14 +15,11 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import my.project.nostalgia.BuildConfig;
-import my.project.nostalgia.activities.IntroductionActivity;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.UserSettingsActivity;
 import my.project.nostalgia.supplementary.MemoryEventHandling;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -229,7 +222,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 int index = mEvents.findIndexOfValue(newValue.toString());
 
                 if(mEvents.getEntries()[index].equals("Add Event")) {
-                    getMemoryEventHandling().getAndSetNewEvent();
+                    getMemoryEventHandling().getAndSetNewEvent(getView(),getActivity(),null);
                 }
                 else{
                     if(calls == 0){
@@ -237,7 +230,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                         return false;
                     }
                     else {
-                        getMemoryEventHandling().askDiscardEvent(index);
+                        getMemoryEventHandling().askDiscardEvent(getView(),getActivity(),index);
                     }
                 }
                 return true;

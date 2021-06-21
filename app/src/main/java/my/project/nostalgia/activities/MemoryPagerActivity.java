@@ -81,7 +81,6 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
                 return mMemories.size();
             }
         });
-        //endregion
         getCurrentPosition();
     }
     /**

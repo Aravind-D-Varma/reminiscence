@@ -1,24 +1,30 @@
 package my.project.nostalgia.supplementary;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.InputType;
+import android.view.View;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.preference.DropDownPreference;
-import androidx.preference.PreferenceScreen;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import my.project.nostalgia.R;
+import my.project.nostalgia.activities.MemoryListActivity;
 import my.project.nostalgia.activities.UserSettingsActivity;
-import my.project.nostalgia.fragments.UserSettingsFragment;
+import my.project.nostalgia.fragments.MemoryFragment;
+import my.project.nostalgia.fragments.MemoryListFragment;
+import my.project.nostalgia.models.Memory;
 
 import static my.project.nostalgia.activities.IntroductionActivity.APPLICABLE_EVENTS;
 
@@ -45,7 +51,6 @@ public class MemoryEventHandling {
         this.mContext = context;
         this.joinedCurrentEvents = defaultEventsJoined();
     }
-
     public String getJoinedEvents() {
         return joinedCurrentEvents;
     }
@@ -73,20 +78,21 @@ public class MemoryEventHandling {
         wordList.remove(finalI);
         saveInPreference(wordList);
     }
-    public void getAndSetNewEvent() {
+    public void getAndSetNewEvent(View view, Activity activity,Memory memory) {
 
         AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(mContext);
-        inputEventDialog.setTitle("New Custom Event");
+        inputEventDialog.setTitle(R.string.new_custom_event);
         final EditText input = new EditText(mContext);
         input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
         inputEventDialog.setView(input);
 
-        inputEventDialog.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+        inputEventDialog.setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 String inputString = input.getText().toString();
                 if(inputString.length()>1){
                     addNewEvent(inputString);
+                    refreshSnackbar(view,activity,memory);
                 }
                 dialog.dismiss();
             }
@@ -98,7 +104,7 @@ public class MemoryEventHandling {
         }).create();
         inputEventDialog.show();
     }
-    public void askDiscardEvent(int finalI){
+    public void askDiscardEvent(View view, Activity activity,int finalI){
 
         String themeValues = mPreferences.getString("GlobalTheme", "Dark");
         AlertDialog.Builder discardMemoryDialogBox;
@@ -114,6 +120,7 @@ public class MemoryEventHandling {
                 .setPositiveButton(stringResource(R.string.discard), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         removeFromEvents(finalI);
+                        refreshSnackbar(view,activity,null);
                         dialog.dismiss();
                     }
                 })
@@ -124,6 +131,25 @@ public class MemoryEventHandling {
                 })
                 .create();
         discardMemoryDialogBox.show();
+    }
+    public void refreshSnackbar(View view, Activity activity, Memory memory){
+        Snackbar.make(view,stringResource(R.string.refreshPage),Snackbar.LENGTH_SHORT)
+                .setAction(stringResource(R.string.refreshButton), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        String activityName = activity.getClass().getSimpleName();
+                        if(activityName.equals("UserSettingsActivity"))
+                            mContext.startActivity(new Intent(mContext,UserSettingsActivity.class));
+
+                        else if(activityName.equals("MemoryPagerActivity")) {
+                            MemoryListFragment.Callbacks mCallbacks = (MemoryListFragment.Callbacks) mContext;
+                            mCallbacks.onMemorySelected(memory);
+                        }
+
+                    }
+                }).show();
+
     }
     private String stringResource(int resourceID) {
         return mContext.getResources().getString(resourceID);
