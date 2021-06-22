@@ -37,11 +37,9 @@ public class IntroductionPagerAdapter extends PagerAdapter {
 
     Context mContext;
     private EditText mUsername;
-    private GoogleSignInClient mGoogleSignInClient;
 
-    public IntroductionPagerAdapter(Context context, GoogleSignInClient googleSignInClient){
+    public IntroductionPagerAdapter(Context context){
         this.mContext = context;
-        this.mGoogleSignInClient = googleSignInClient;
     }
     /**
      * Inflate three layouts depending on where the user is at.
@@ -65,12 +63,6 @@ public class IntroductionPagerAdapter extends PagerAdapter {
                 if (conclusionLL.getParent() != null) {
                     ((ViewGroup) conclusionLL.getParent()).removeView(conclusionLL); // <- fix
                 }
-                conclusionLL.findViewById(R.id.sign_in).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        signIn();
-                    }
-                });
                 container.addView(conclusionLL);
                 return conclusionLL;
         }
@@ -89,10 +81,6 @@ public class IntroductionPagerAdapter extends PagerAdapter {
     /**important to remove the super.destoryItem method*/
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-    }
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        ((Activity)mContext).startActivityForResult(signInIntent, IntroductionActivity.RC_SIGN_IN);
     }
     /*private void setContinuebutton(View v) {
         Button mContinue = (Button)v.findViewById(R.id.continue_button);

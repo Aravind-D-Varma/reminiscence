@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "25493816746",
-    "project_id": "reminiscence-6373b",
-    "storage_bucket": "reminiscence-6373b.appspot.com"
+    "project_number": "320660318662",
+    "project_id": "reminiscence-556ae",
+    "storage_bucket": "reminiscence-556ae.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:25493816746:android:b8e8a9750641d22d0617d3",
+        "mobilesdk_app_id": "1:320660318662:android:2e359dce35a3729857eac7",
         "android_client_info": {
           "package_name": "my.project.nostalgia"
         }
       },
       "oauth_client": [
         {
-          "client_id": "25493816746-ugmsanmlsv0uuf0ueggi1r3ran86o5jn.apps.googleusercontent.com",
+          "client_id": "320660318662-mqrbs4ke3v2bor1uffdkc6slopgieng2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "my.project.nostalgia",
-            "certificate_hash": "545ec080ea49b12dcfa809c03828a47c5c6dabe8"
+            "certificate_hash": "056df52af56e2cc028eda80bdf9b2d53c5a658be"
           }
         },
         {
-          "client_id": "25493816746-i8ta4kqms26a0brbhjbmje6pke5918lc.apps.googleusercontent.com",
+          "client_id": "320660318662-slb6n23iltuoum0oo865117v1s776417.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAjmpE95A_sHWzsUwMujyKdQZUV04aTtds"
+          "current_key": "AIzaSyDtEX6Z-U21fMIptz1J1dJ0IQj7qtJTMVk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "25493816746-i8ta4kqms26a0brbhjbmje6pke5918lc.apps.googleusercontent.com",
+              "client_id": "320660318662-slb6n23iltuoum0oo865117v1s776417.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

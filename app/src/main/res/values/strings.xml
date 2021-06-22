@@ -90,5 +90,10 @@
     <string name="new_custom_event">New Custom Event</string>
     <string name="create">Create</string>
     <string name="share">Share</string>
+    <string name="email_adress">Email Adress:</string>
+    <string name="password">Password:</string>
+    <string name="login">Login</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="register">Register</string>
 
 </resources>

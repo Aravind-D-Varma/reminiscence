@@ -49,86 +49,32 @@ public class IntroductionActivity extends AppCompatActivity {
     public static final String APPLICABLE_EVENTS = "true_events";
 
     private FirebaseAuth mAuth;
-    private GoogleSignInClient mGoogleSignInClient;
-    private static final String TAG = "GoogleActivity";
     public static final int RC_SIGN_IN = 9001;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.introduction_pages);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
 
-        findViewById(R.id.sign_in).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
-        /*if (prefs.getBoolean(FIRST_TIME, false)) {
-            Intent intent = new Intent(this, MemoryListActivity.class);
-            startActivity(intent);
-            this.finish();
-        } else {*/
-            IntroductionPagerAdapter introductionPagerAdapter = new IntroductionPagerAdapter(this,mGoogleSignInClient);
-            ViewPager pager = findViewById(R.id.pager);
-            pager.setClipToPadding(false);
-            pager.setPadding(20, 100, 20, 100);
-            pager.setPageMargin(20);
-            pager.setAdapter(introductionPagerAdapter);
-            pager.setPageTransformer(false, new transformationViewPager());
-            TabLayout tabLayout = findViewById(R.id.tabDots);
-            tabLayout.setupWithViewPager(pager, true);
-        //}
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                Toast.makeText(this,"Sign in successful, firebaseAuthWithGoogle:" + account.getId(),Toast.LENGTH_SHORT).show();
-                firebaseAuthWithGoogle(account.getIdToken());
-            } catch (ApiException e) {
-                Toast.makeText(this,"Google sign in failed",Toast.LENGTH_SHORT).show();
-            }
-        }
+        IntroductionPagerAdapter introductionPagerAdapter = new IntroductionPagerAdapter(this);
+        ViewPager pager = findViewById(R.id.pager);
+        pager.setClipToPadding(false);
+        pager.setPadding(20, 100, 20, 100);
+        pager.setPageMargin(20);
+        pager.setAdapter(introductionPagerAdapter);
+        pager.setPageTransformer(false, new transformationViewPager());
+        TabLayout tabLayout = findViewById(R.id.tabDots);
+        tabLayout.setupWithViewPager(pager, true);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
+        if(currentUser!=null)
+            Toast.makeText(this,"Already Signed in",Toast.LENGTH_SHORT).show();
     }
 
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                        } else
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                    }
-                });
-    }
 }
