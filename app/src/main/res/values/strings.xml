@@ -96,5 +96,7 @@
     <string name="forgot_password">Forgot Password</string>
     <string name="register">Register</string>
     <string name="enter_name">Your name</string>
+    <string name="password_reenter">Re-enter Password</string>
+    <string name="sign_up">Sign Up !</string>
 
 </resources>

@@ -1,10 +1,8 @@
 package my.project.nostalgia.activities;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -236,8 +234,8 @@ public class MemoryListActivity extends SingleFragmentActivity
     }
     private void getGeneralInfo() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        userName = pref.getString(IntroductionActivity.SEND_USERNAME,"");
-        String languages = pref.getString(IntroductionActivity.LANGUAGE, "English");
+        userName = pref.getString(LoginActivity.SEND_USERNAME,"");
+        String languages = pref.getString(LoginActivity.LANGUAGE, "English");
         if (languages.equals("English")){
             setLanguage("en");
         }

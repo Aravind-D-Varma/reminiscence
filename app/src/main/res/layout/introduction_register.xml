@@ -10,6 +10,13 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up"
+        android:gravity="center"
+        android:textSize="40dp"/>
+
     <EditText
         android:id="@+id/register_name"
         android:layout_width="match_parent"
@@ -40,6 +47,17 @@
         android:layout_height="wrap_content"
         android:background="@drawable/button_border"
         android:hint="@string/password"
+        android:imeOptions="actionDone"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        android:layout_margin="20dp"
+        android:padding="20dp"/>
+    <EditText
+        android:id="@+id/register_password_reenter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_border"
+        android:hint="@string/password_reenter"
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="textPassword"

@@ -17,17 +17,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 import my.project.nostalgia.R;
-import my.project.nostalgia.activities.MemoryListActivity;
 import my.project.nostalgia.activities.MemoryPagerActivity;
 import my.project.nostalgia.activities.UserSettingsActivity;
-import my.project.nostalgia.fragments.MemoryFragment;
 import my.project.nostalgia.fragments.MemoryListFragment;
 import my.project.nostalgia.models.Memory;
 
-import static my.project.nostalgia.activities.IntroductionActivity.APPLICABLE_EVENTS;
+import static my.project.nostalgia.activities.LoginActivity.APPLICABLE_EVENTS;
 
 public class memoryEvents implements MemoryListFragment.Callbacks{
 

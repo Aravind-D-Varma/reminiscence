@@ -1,5 +1,6 @@
 package my.project.nostalgia.activities;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -15,16 +16,10 @@ import com.google.firebase.auth.FirebaseUser;
  * Creates a viewPager to show what the user sees and sets it up to its adapter.<br>
  * Uses TabLayout to show dots indicating where the user is in the viewPager.
  */
-public class IntroductionActivity extends AppCompatActivity {
-
-    public static final String FIRST_TIME = "firsttime";
-    public static final String USER_ID = "userid";
-    public static final String SEND_USERNAME = "username";
-    public static final String LANGUAGE = "GlobalLanguage";
-    public static final String APPLICABLE_EVENTS = "true_events";
+public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    public static final int RC_SIGN_IN = 9001;
+    private EditText mEmail, mPassword;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
