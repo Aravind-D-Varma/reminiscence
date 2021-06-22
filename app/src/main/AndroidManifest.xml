@@ -26,6 +26,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="my.project.nostalgia.activities.RegisterActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:parentActivityName="my.project.nostalgia.activities.LoginActivity">
+        </activity>
+        <activity
             android:name="my.project.nostalgia.activities.MemoryListActivity"
             android:theme="@style/Theme.Reminiscence"
             android:configChanges="screenSize|orientation|keyboardHidden">
