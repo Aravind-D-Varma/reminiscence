@@ -1,39 +1,14 @@
 package my.project.nostalgia.activities;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 
 import my.project.nostalgia.R;
-import my.project.nostalgia.adapters.IntroductionPagerAdapter;
-import my.project.nostalgia.supplementary.transformationViewPager;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 
 /**
  * Appears when the user visits the app for the first time.<br>
@@ -54,19 +29,10 @@ public class IntroductionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.introduction_pages);
+        setContentView(R.layout.introduction_login);
 
         mAuth = FirebaseAuth.getInstance();
 
-        IntroductionPagerAdapter introductionPagerAdapter = new IntroductionPagerAdapter(this);
-        ViewPager pager = findViewById(R.id.pager);
-        pager.setClipToPadding(false);
-        pager.setPadding(20, 100, 20, 100);
-        pager.setPageMargin(20);
-        pager.setAdapter(introductionPagerAdapter);
-        pager.setPageTransformer(false, new transformationViewPager());
-        TabLayout tabLayout = findViewById(R.id.tabDots);
-        tabLayout.setupWithViewPager(pager, true);
     }
 
     @Override
