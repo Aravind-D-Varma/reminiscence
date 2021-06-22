@@ -1,8 +1,10 @@
 package my.project.nostalgia.adapters;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.google.android.gms.auth.api.identity.SignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+
 import my.project.nostalgia.R;
+import my.project.nostalgia.activities.IntroductionActivity;
 
 import java.util.UUID;
 
@@ -31,8 +37,11 @@ public class IntroductionPagerAdapter extends PagerAdapter {
 
     Context mContext;
     private EditText mUsername;
-    public IntroductionPagerAdapter(Context context){
+    private GoogleSignInClient mGoogleSignInClient;
+
+    public IntroductionPagerAdapter(Context context, GoogleSignInClient googleSignInClient){
         this.mContext = context;
+        this.mGoogleSignInClient = googleSignInClient;
     }
     /**
      * Inflate three layouts depending on where the user is at.
@@ -56,12 +65,10 @@ public class IntroductionPagerAdapter extends PagerAdapter {
                 if (conclusionLL.getParent() != null) {
                     ((ViewGroup) conclusionLL.getParent()).removeView(conclusionLL); // <- fix
                 }
-
-                v.findViewById(R.id.sign_in).setOnClickListener(new View.OnClickListener() {
+                conclusionLL.findViewById(R.id.sign_in).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                        startActivityForResult(signInIntent, RC_SIGN_IN);
+                        signIn();
                     }
                 });
                 container.addView(conclusionLL);
@@ -83,7 +90,10 @@ public class IntroductionPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
     }
-
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        ((Activity)mContext).startActivityForResult(signInIntent, IntroductionActivity.RC_SIGN_IN);
+    }
     /*private void setContinuebutton(View v) {
         Button mContinue = (Button)v.findViewById(R.id.continue_button);
         mContinue.setOnClickListener(new View.OnClickListener() {

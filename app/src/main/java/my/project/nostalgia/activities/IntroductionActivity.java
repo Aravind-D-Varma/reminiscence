@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,7 +51,7 @@ public class IntroductionActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "GoogleActivity";
-    private static final int RC_SIGN_IN = 9001;
+    public static final int RC_SIGN_IN = 9001;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,12 +66,18 @@ public class IntroductionActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
 
-        if (prefs.getBoolean(FIRST_TIME, false)) {
+        findViewById(R.id.sign_in).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
+        /*if (prefs.getBoolean(FIRST_TIME, false)) {
             Intent intent = new Intent(this, MemoryListActivity.class);
             startActivity(intent);
             this.finish();
-        } else {
-            IntroductionPagerAdapter introductionPagerAdapter = new IntroductionPagerAdapter(this);
+        } else {*/
+            IntroductionPagerAdapter introductionPagerAdapter = new IntroductionPagerAdapter(this,mGoogleSignInClient);
             ViewPager pager = findViewById(R.id.pager);
             pager.setClipToPadding(false);
             pager.setPadding(20, 100, 20, 100);
@@ -79,21 +86,20 @@ public class IntroductionActivity extends AppCompatActivity {
             pager.setPageTransformer(false, new transformationViewPager());
             TabLayout tabLayout = findViewById(R.id.tabDots);
             tabLayout.setupWithViewPager(pager, true);
-        }
+        //}
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+                Toast.makeText(this,"Sign in successful, firebaseAuthWithGoogle:" + account.getId(),Toast.LENGTH_SHORT).show();
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
+                Toast.makeText(this,"Google sign in failed",Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -101,6 +107,7 @@ public class IntroductionActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         FirebaseUser currentUser = mAuth.getCurrentUser();
 //        updateUI(currentUser);
     }
