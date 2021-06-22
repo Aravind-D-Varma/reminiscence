@@ -130,4 +130,5 @@ public class IntroductionPagerAdapter extends PagerAdapter {
         editor.putString(USER_ID, UUID.randomUUID().toString());
         editor.apply();
     }
+
 }
