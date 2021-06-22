@@ -95,5 +95,6 @@
     <string name="login">Login</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="register">Register</string>
+    <string name="enter_name">Your name</string>
 
 </resources>
