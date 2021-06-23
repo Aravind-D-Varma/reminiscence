@@ -33,18 +33,13 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
 
     private String joinedCurrentEvents;
 
-    /**
-     * Constructor with context as parameter indicates getting events from Preferences
-     * @param context
-     */
+    /**Constructor with context and preferences as parameters indicates getting events from Preferences*/
     public memoryEvents(Context context, SharedPreferences preference) {
         this.mContext = context;
         this.mPreferences =  preference;
         this.joinedCurrentEvents = mPreferences.getString(APPLICABLE_EVENTS,"");
     }
-    /**
-     * Empty constructor indicates default Events
-     */
+    /**Only context as parameter indicates default Events*/
     public memoryEvents(Context context){
         this.mContext = context;
         this.joinedCurrentEvents = defaultEventsJoined();
@@ -53,9 +48,7 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
         return joinedCurrentEvents;
     }
     public String[] getIndividualEvents(){ return joinedCurrentEvents.split(",");}
-    /**
-     * Concatenates all events which are applicable into one string so that it can be stored in SharedPreferences.
-     */
+    /** Concatenates all events which are applicable into one string so that it can be stored in SharedPreferences.*/
     public String defaultEventsJoined() {
         List<String> allEvents = new LinkedList<String>();
 
@@ -67,11 +60,6 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
         return stringListToString(allEvents);
     }
 
-    private void addNewEvent(String input) {
-        List<String> wordList = stringListOfCurrentEvents();
-        wordList.add(input);
-        saveInPreference(wordList);
-    }
     public void removeFromEvents(int finalI) {
         List<String> wordList = stringListOfCurrentEvents();
         wordList.remove(finalI);
@@ -154,6 +142,12 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
     public void onMemorySelected(Memory memory) {
         Intent intent = MemoryPagerActivity.newIntent(mContext, memory.getId());
         mContext.startActivity(intent);
+    }
+
+    private void addNewEvent(String input) {
+        List<String> wordList = stringListOfCurrentEvents();
+        wordList.add(input);
+        saveInPreference(wordList);
     }
     private String stringResource(int resourceID) {
         return mContext.getResources().getString(resourceID);

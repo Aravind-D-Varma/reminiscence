@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
 import my.project.nostalgia.R;
+import my.project.nostalgia.supplementary.memoryEvents;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -68,9 +69,40 @@ public class LoginActivity extends AppCompatActivity {
                 Login();
             }
         });
+        mForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ForgotPassword();
+            }
+        });
 
-        setGeneralInfo("Username","Student Life");
+    }
 
+    private void ForgotPassword() {
+        String email = mEmail.getText().toString();
+
+        if (TextUtils.isEmpty(email)) {
+            mEmail.setError("Enter your email");return;}
+
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful())
+                    Toast.makeText(LoginActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(LoginActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            startActivity(new Intent(LoginActivity.this,MemoryListActivity.class));
+            finish();
+        }
     }
     private void Login() {
         String email = mEmail.getText().toString();
@@ -81,7 +113,6 @@ public class LoginActivity extends AppCompatActivity {
 
         if(TextUtils.isEmpty(password)){
             mPassword.setError("Enter your password");return;}
-
 
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.show();
@@ -104,11 +135,5 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-    private void setGeneralInfo(String userName, String combinedEvents) {
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        editor.putString(SEND_USERNAME, userName);
-        editor.putString(APPLICABLE_EVENTS, combinedEvents);
-        editor.apply();
     }
 }
