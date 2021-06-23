@@ -418,18 +418,29 @@ public class MemoryFragment extends Fragment {
                 for(String path:individualFilePaths(mMemory)){
                     if(path!=null) {
                         Uri uri = Uri.fromFile(new File(path));
-                        StorageReference storageReference = mStorageReference.child(userID+ s +path);
+
+                        char[] arrayOfFilename = path.toCharArray();
+                        for(int i = arrayOfFilename.length-1; i>0; i--){
+                            if(arrayOfFilename[i] == '/'){
+                               path = path.substring(i+1);
+                               break;
+                            }
+                        }
+                        StorageReference storageReference = mStorageReference.child(userID+"/"+ s +"/"+path);
                         storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                Toast.makeText(getActivity(),"Upload successful",Toast.LENGTH_SHORT).show();
-                                mProgressDialog.dismiss();
+                                try {
+                                    Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_SHORT).show();
+                                    mProgressDialog.dismiss();
+                                }catch (NullPointerException ignored){}
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getActivity(),"Upload failed",Toast.LENGTH_SHORT).show();
-                                mProgressDialog.dismiss();
+                                try{
+                                Toast.makeText(getContext(),"Upload failed",Toast.LENGTH_SHORT).show();
+                                mProgressDialog.dismiss();}catch (NullPointerException ignored){}
                             }
                         });
                     }

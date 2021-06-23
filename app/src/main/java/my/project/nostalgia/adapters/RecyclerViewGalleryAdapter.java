@@ -158,7 +158,7 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
         char[] arrayOfFilename = fileName.toCharArray();
         for(int i = arrayOfFilename.length-1; i > 0; i--){
             if(arrayOfFilename[i] == '.'){
-                return fileName.substring(i+1, fileName.length());
+                return fileName.substring(i+1);
             }
         }
         return "";

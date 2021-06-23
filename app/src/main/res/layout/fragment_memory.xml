@@ -155,9 +155,7 @@
                 android:contentDescription="@string/photo_add"
                 android:elevation="20dp"/>
         </RelativeLayout>
-
     </FrameLayout>
-
 </LinearLayout>
 
 
