@@ -130,9 +130,14 @@ public class MemoryListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         StorageReference userStorage = FirebaseStorage.getInstance().getReference();
-        if(userStorage.child(user.getUid()).toString().length()>1)
+        StorageReference userRootDirectory = userStorage.child(user.getUid());
+        if(userRootDirectory.toString().length()>1) {
             firstTime = false;
-        Toast.makeText(getContext(),"UserID Directory is: "+userStorage.child(user.getUid()),Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(),"UserID Directory is: "+userRootDirectory.child("42e2e35e-c277-a9d9-8596875938e4/").toString()
+                    ,Toast.LENGTH_LONG).show();
+            ;
+        }
+
         setHasOptionsMenu(true);
     }
 

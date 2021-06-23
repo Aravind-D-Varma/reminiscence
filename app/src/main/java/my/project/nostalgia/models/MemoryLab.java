@@ -37,7 +37,6 @@ public class MemoryLab {
     private MemoryLab(Context context){
         mContext = context.getApplicationContext();
         mSQLiteDatabase = new MemoryBaseHelper(mContext).getWritableDatabase();
-        //mmemorys = new ArrayList<>();
     }
 
     //region get list of memories
