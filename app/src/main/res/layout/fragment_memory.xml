@@ -133,27 +133,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom">
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/photo_fab"
                 android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="8dp"
-                app:icon="@drawable/ic_menu_add"
+                android:src="@drawable/ic_menu_add"
                 android:background="@drawable/button_border"
-                android:text="@string/add_on"
                 android:contentDescription="@string/photo_add"
                 android:elevation="20dp"/>
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/upload_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="8dp"
-                app:icon="@drawable/ic_menu_add"
+                android:src="@android:drawable/ic_menu_upload"
                 android:background="@drawable/button_border"
-                android:text="@string/upload"
                 android:contentDescription="@string/photo_add"
                 android:elevation="20dp"/>
         </RelativeLayout>

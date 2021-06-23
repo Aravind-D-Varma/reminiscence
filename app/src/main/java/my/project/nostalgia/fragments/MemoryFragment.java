@@ -99,7 +99,7 @@ public class MemoryFragment extends Fragment {
     private Spinner mSpinner;
     private Intent getImage;
     private RecyclerView mPhotoRecyclerView;
-    private ExtendedFloatingActionButton mPhotoFAB, mUploadFAB;
+    private FloatingActionButton mPhotoFAB, mUploadFAB;
     private Callbacks mCallbacks;
 
     private StorageReference mStorageReference;
@@ -392,7 +392,7 @@ public class MemoryFragment extends Fragment {
                 return false;
             }
         });
-        mPhotoFAB = (ExtendedFloatingActionButton) v.findViewById(R.id.photo_fab);
+        mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
         behaviourBeforeAddingMedia(v);
         Intent getmoreImage = getFromMediaIntent();
         mPhotoFAB.setOnClickListener(new View.OnClickListener() {
@@ -402,13 +402,14 @@ public class MemoryFragment extends Fragment {
                 }
             });
         setBackgroundTheme(mPhotoFAB);
-        mUploadFAB = (ExtendedFloatingActionButton) v.findViewById(R.id.upload_fab);
-        mPhotoFAB.setOnClickListener(new View.OnClickListener() {
+        mUploadFAB = (FloatingActionButton) v.findViewById(R.id.upload_fab);
+        mUploadFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProgressDialog mProgressDialog = new ProgressDialog(getActivity());
                 mProgressDialog.setMessage("Uploading...");
                 mProgressDialog.show();
+                mFirebaseAuth = FirebaseAuth.getInstance();
                 FirebaseUser user = mFirebaseAuth.getCurrentUser();
                 String userID = user.getUid();
                 mStorageReference = FirebaseStorage.getInstance().getReference();
