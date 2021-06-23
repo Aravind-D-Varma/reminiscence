@@ -3,6 +3,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -61,9 +62,16 @@ import my.project.nostalgia.adapters.RecyclerViewGalleryAdapter;
 import my.project.nostalgia.supplementary.memoryEvents;
 import my.project.nostalgia.supplementary.transformationViewPager;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -93,7 +101,9 @@ public class MemoryFragment extends Fragment {
     private RecyclerView mPhotoRecyclerView;
     private ExtendedFloatingActionButton mPhotoFAB, mUploadFAB;
     private Callbacks mCallbacks;
-    
+
+    private StorageReference mStorageReference;
+    private FirebaseAuth mFirebaseAuth;
     private boolean discardPhoto = false;
 
     public static final String DIALOG_DATE = "DialogDate";
@@ -396,6 +406,33 @@ public class MemoryFragment extends Fragment {
         mPhotoFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ProgressDialog mProgressDialog = new ProgressDialog(getActivity());
+                mProgressDialog.setMessage("Uploading...");
+                mProgressDialog.show();
+                FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                String userID = user.getUid();
+                mStorageReference = FirebaseStorage.getInstance().getReference();
+                String s = mMemory.getId().toString();
+
+                for(String path:individualFilePaths(mMemory)){
+                    if(path!=null) {
+                        Uri uri = Uri.fromFile(new File(path));
+                        StorageReference storageReference = mStorageReference.child(userID+ s +path);
+                        storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Toast.makeText(getActivity(),"Upload successful",Toast.LENGTH_SHORT).show();
+                                mProgressDialog.dismiss();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getActivity(),"Upload failed",Toast.LENGTH_SHORT).show();
+                                mProgressDialog.dismiss();
+                            }
+                        });
+                    }
+                }
 
             }
         });
