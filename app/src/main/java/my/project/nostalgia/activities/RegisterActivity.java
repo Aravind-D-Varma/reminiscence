@@ -89,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
                             finish();
                         }
                         else{
-                            Toast.makeText(RegisterActivity.this, "Registration Failed!"
+                            Toast.makeText(RegisterActivity.this, "Registration Failed!"+task.getException().getMessage()
                                     , Toast.LENGTH_SHORT).show();
                             mProgressDialog.dismiss();
                         }
