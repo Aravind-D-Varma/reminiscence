@@ -61,6 +61,7 @@ import my.project.nostalgia.adapters.RecyclerViewGalleryAdapter;
 import my.project.nostalgia.supplementary.memoryEvents;
 import my.project.nostalgia.supplementary.transformationViewPager;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -85,15 +86,12 @@ public class MemoryFragment extends Fragment {
     private SharedPreferences.Editor mEditor;
     private String[] applicableEvents ={};
     
-    private EditText mTitleField;
-    private EditText mDetailField;
-    private Button mDateButton;
-    private Button mTimeButton;
+    private EditText mTitleField, mDetailField;
+    private Button mDateButton, mTimeButton, mPhotoButton;
     private Spinner mSpinner;
-    private Button mPhotoButton;
-        private Intent getImage;
+    private Intent getImage;
     private RecyclerView mPhotoRecyclerView;
-    private FloatingActionButton mPhotoFAB;
+    private ExtendedFloatingActionButton mPhotoFAB, mUploadFAB;
     private Callbacks mCallbacks;
     
     private boolean discardPhoto = false;
@@ -384,7 +382,7 @@ public class MemoryFragment extends Fragment {
                 return false;
             }
         });
-        mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
+        mPhotoFAB = (ExtendedFloatingActionButton) v.findViewById(R.id.photo_fab);
         behaviourBeforeAddingMedia(v);
         Intent getmoreImage = getFromMediaIntent();
         mPhotoFAB.setOnClickListener(new View.OnClickListener() {
@@ -394,18 +392,23 @@ public class MemoryFragment extends Fragment {
                 }
             });
         setBackgroundTheme(mPhotoFAB);
+        mUploadFAB = (ExtendedFloatingActionButton) v.findViewById(R.id.upload_fab);
+        mPhotoFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
+        setBackgroundTheme(mUploadFAB);
         return v;
     }
 
     private memoryEvents getMemoryEvents() {
         return new memoryEvents(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
     }
-
     private String stringFromResource(int resourceID) {
         return getResources().getString(resourceID);
     }
-
     private void setBackgroundTheme(View v) {
         try {
             if (mThemeValues.equals("Dark")) {
@@ -427,7 +430,6 @@ public class MemoryFragment extends Fragment {
         }
         catch (NullPointerException e){}
     }
-
     private int colorFromResources(int resourceID) {
         return getResources().getColor(resourceID);
     }
@@ -485,8 +487,6 @@ public class MemoryFragment extends Fragment {
     private void behaviourBeforeAddingMedia(View v) {
         mPhotoFAB.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
         mPhotoFAB.setEnabled(mMemory.getMediaPaths()!=null);
-        TextView mAddphoto = v.findViewById(R.id.addphotos);
-        mAddphoto.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
     }
     private Intent getFromMediaIntent() {
         Intent getmoreImage = new Intent(Intent.ACTION_GET_CONTENT);

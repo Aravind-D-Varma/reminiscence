@@ -98,5 +98,7 @@
     <string name="enter_name">Your name</string>
     <string name="password_reenter">Re-enter Password</string>
     <string name="sign_up">Sign Up !</string>
+    <string name="add_on">Add On</string>
+    <string name="upload">Upload</string>
 
 </resources>
