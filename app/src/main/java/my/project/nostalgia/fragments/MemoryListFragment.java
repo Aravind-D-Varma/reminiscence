@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +34,10 @@ import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.MemoryListActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,6 +53,8 @@ public class MemoryListFragment extends Fragment {
 
     //region Declarations
     private static final String SAVE_SUBTITLE = "save_subtitle";
+
+    private FirebaseAuth mAuth;
     private RecyclerView mRecyclerView;
     private Memory mNewMemory;
     private MemoryAdapter mAdapter;
@@ -121,6 +128,11 @@ public class MemoryListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        StorageReference userStorage = FirebaseStorage.getInstance().getReference();
+        if(userStorage.child(user.getUid()).toString().length()>1)
+            firstTime = false;
+        Toast.makeText(getContext(),"UserID Directory is: "+userStorage.child(user.getUid()),Toast.LENGTH_LONG).show();
         setHasOptionsMenu(true);
     }
 
@@ -129,9 +141,10 @@ public class MemoryListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_memory_list, container, false);
         setListAndAddButton(view);
-        if(MemoryLab.get(getActivity()).getMemories().size()==0){
+        if(MemoryLab.get(getActivity()).getMemories().size()==0&&firstTime){
+            //TODO remove fragment_memory_list before inflating empty_list_page
             View noMemoryView = inflater.inflate(R.layout.empty_list_page, container, false);
-            SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
+            SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getContext());
             String themeValues = getData.getString("GlobalTheme", "Dark");
             Button noMemoryButton = (Button) noMemoryView.findViewById(R.id.no_memory_button);
             if (themeValues.equals("Light")) {
@@ -156,8 +169,6 @@ public class MemoryListFragment extends Fragment {
             updateByDevice();
             return noMemoryView;
         }
-
-
         updateByDevice();
         return view;
     }
@@ -230,7 +241,6 @@ public class MemoryListFragment extends Fragment {
     public void updateUI() {
 
         MemoryLab memoryLab = MemoryLab.get(getActivity());
-        removeGarbageMemories(memoryLab);
         List<Memory> Memorys;
         Memorys = memoryLab.getMemories();
         if(mAdapter == null && Memorys.size()!=0) {
@@ -245,15 +255,6 @@ public class MemoryListFragment extends Fragment {
             }
         }
         updateSubtitle();
-    }
-    private void removeGarbageMemories(MemoryLab memoryLab) {
-        List<Memory> Memorys = memoryLab.getMemories();
-        for(Memory memory:Memorys) {
-            if (Memorys.contains(null)) {
-                int nullMemoryposition = Memorys.indexOf(null);
-                MemoryLab.get(getActivity()).deleteMemory(Memorys.get(nullMemoryposition));
-            }
-        }
     }
     /**
      * ViewHolder which sets up individual items of record of memories.
