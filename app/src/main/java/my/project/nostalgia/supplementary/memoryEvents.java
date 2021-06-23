@@ -17,17 +17,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 import my.project.nostalgia.R;
-import my.project.nostalgia.activities.MemoryListActivity;
 import my.project.nostalgia.activities.MemoryPagerActivity;
 import my.project.nostalgia.activities.UserSettingsActivity;
-import my.project.nostalgia.fragments.MemoryFragment;
 import my.project.nostalgia.fragments.MemoryListFragment;
 import my.project.nostalgia.models.Memory;
 
-import static my.project.nostalgia.activities.IntroductionActivity.APPLICABLE_EVENTS;
+import static my.project.nostalgia.activities.LoginActivity.APPLICABLE_EVENTS;
 
 public class memoryEvents implements MemoryListFragment.Callbacks{
 
@@ -36,18 +33,13 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
 
     private String joinedCurrentEvents;
 
-    /**
-     * Constructor with context as parameter indicates getting events from Preferences
-     * @param context
-     */
+    /**Constructor with context and preferences as parameters indicates getting events from Preferences*/
     public memoryEvents(Context context, SharedPreferences preference) {
         this.mContext = context;
         this.mPreferences =  preference;
         this.joinedCurrentEvents = mPreferences.getString(APPLICABLE_EVENTS,"");
     }
-    /**
-     * Empty constructor indicates default Events
-     */
+    /**Only context as parameter indicates default Events*/
     public memoryEvents(Context context){
         this.mContext = context;
         this.joinedCurrentEvents = defaultEventsJoined();
@@ -56,9 +48,7 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
         return joinedCurrentEvents;
     }
     public String[] getIndividualEvents(){ return joinedCurrentEvents.split(",");}
-    /**
-     * Concatenates all events which are applicable into one string so that it can be stored in SharedPreferences.
-     */
+    /** Concatenates all events which are applicable into one string so that it can be stored in SharedPreferences.*/
     public String defaultEventsJoined() {
         List<String> allEvents = new LinkedList<String>();
 
@@ -70,11 +60,6 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
         return stringListToString(allEvents);
     }
 
-    private void addNewEvent(String input) {
-        List<String> wordList = stringListOfCurrentEvents();
-        wordList.add(input);
-        saveInPreference(wordList);
-    }
     public void removeFromEvents(int finalI) {
         List<String> wordList = stringListOfCurrentEvents();
         wordList.remove(finalI);
@@ -157,6 +142,12 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
     public void onMemorySelected(Memory memory) {
         Intent intent = MemoryPagerActivity.newIntent(mContext, memory.getId());
         mContext.startActivity(intent);
+    }
+
+    private void addNewEvent(String input) {
+        List<String> wordList = stringListOfCurrentEvents();
+        wordList.add(input);
+        saveInPreference(wordList);
     }
     private String stringResource(int resourceID) {
         return mContext.getResources().getString(resourceID);

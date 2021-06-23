@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static my.project.nostalgia.activities.IntroductionActivity.LANGUAGE;
-import static my.project.nostalgia.activities.IntroductionActivity.SEND_USERNAME;
+import static my.project.nostalgia.activities.LoginActivity.LANGUAGE;
+import static my.project.nostalgia.activities.LoginActivity.SEND_USERNAME;
 
 /**
  * Creates and sets application according to choices made here.

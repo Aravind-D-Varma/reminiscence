@@ -8,14 +8,7 @@
         such as Student Life or Celebrations.\n\n
         Share, update and revive them!</string>
     <string name="swipe_introPage">Swipe</string>
-    <string name="tell_us">Tell a little bit your self:</string>
-    <string name="enterName">Enter your name:</string>
-    <string name="enterNameHint">Your name:</string>
-    <string name="thanks">This app is still in its development phase. Its supporting (and a significant)
-        feature (Connections) has not yet been added. You would be able to form groups with your connections
-        and chat with them about a memory.</string>
     <string name="thank_downloading">This is a completely free app. Thank you for downloading it</string>
-    <string name="continue_toMain">Continue</string>
     <string name="introPages_next_CD">Next page</string>
 
     <string name="NDopen">open</string>
@@ -97,4 +90,13 @@
     <string name="new_custom_event">New Custom Event</string>
     <string name="create">Create</string>
     <string name="share">Share</string>
+    <string name="email_adress">Email Address:</string>
+    <string name="password">Password:</string>
+    <string name="login">Login</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="register">Register</string>
+    <string name="enter_name">Your name</string>
+    <string name="password_reenter">Re-enter Password</string>
+    <string name="sign_up">Sign Up !</string>
+
 </resources>
