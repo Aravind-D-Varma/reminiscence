@@ -36,6 +36,7 @@ import my.project.nostalgia.activities.MemoryListActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -191,6 +192,13 @@ public class MemoryListFragment extends Fragment {
                 if(isDeviceTablet())
                     updateUIForTablet();
                 mCallbacks.onMemorySelected(mNewMemory);
+            }
+        });
+        FloatingActionButton upload = (FloatingActionButton) view.findViewById(R.id.memory_upload);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
             }
         });
     }
