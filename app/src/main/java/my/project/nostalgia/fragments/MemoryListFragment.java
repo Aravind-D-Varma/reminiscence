@@ -9,6 +9,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -150,27 +151,22 @@ public class MemoryListFragment extends Fragment {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if(documentSnapshot.exists()){
-                        MemoryLab memoryLab;
-                        // memoryLab = documentSnapshot.toObject(MemoryLab.class);
+                        MemoryLab memoryLab = MemoryLab.get(getContext());
                         Map<String,Object> dataReceived = documentSnapshot.getData();
-                        List<Memory> memories = (List<Memory>) dataReceived.get("Memories");
-                        if(mAdapter == null && memories.size()!=0) {
-                            firstTime = false;
-                            mAdapter = new MemoryAdapter(memories);
-                            mRecyclerView.setAdapter(mAdapter);
+                        List<HashMap> hashMaps = (List<HashMap>) dataReceived.get(MEMORIES_KEY);
+                        for(HashMap hashMap:hashMaps){
+                            Memory memory = new Memory();
+                            memory.setTitle(hashMap.get("title").toString());
+                            memory.setDetail(hashMap.get("detail").toString());
+                            memory.setMediaPaths(hashMap.get("mediaPaths").toString());
+                            memory.setEvent(hashMap.get("event").toString());
+                            memoryLab.addMemory(memory);
                         }
-                        else {
-                            if (memories.size() != 0) {
-                                mAdapter.setMemorys(memories);
-                                mAdapter.notifyItemChanged(itemChangedposition);
-                            }
-                        }
-                        updateSubtitle();
+                        updateByDevice();
                     }
                 }
             });
         }
-
         setHasOptionsMenu(true);
     }
 
