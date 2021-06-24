@@ -33,7 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private EditText mEmail, mPassword;
+    private EditText mEmail, mPassword, mName;
     private Button mLogin, mForgot, mRegister;
     private ProgressDialog mProgressDialog;
 
@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mEmail = (EditText) findViewById(R.id.login_email);
         mPassword = (EditText) findViewById(R.id.login_password);
+        mName = (EditText) findViewById(R.id.login_name);
         mRegister = (Button) findViewById(R.id.login_register);
         mForgot = (Button) findViewById(R.id.login_forgot);
         mLogin = (Button) findViewById(R.id.login_button);
@@ -125,6 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(task.isSuccessful()) {
                     Toast.makeText(LoginActivity.this, "Successfully logged in."
                             , Toast.LENGTH_SHORT).show();
+                    setGeneralInfo(mName.getText().toString(),new memoryEvents(getApplicationContext()).getJoinedEvents());
                     startActivity(new Intent(LoginActivity.this,MemoryListActivity.class));
                     finish();
                 }
@@ -135,5 +137,11 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    private void setGeneralInfo(String userName, String combinedEvents) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        editor.putString(SEND_USERNAME, userName);
+        editor.putString(APPLICABLE_EVENTS, combinedEvents);
+        editor.apply();
     }
 }

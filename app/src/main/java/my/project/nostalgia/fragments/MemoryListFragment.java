@@ -44,6 +44,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -64,8 +65,6 @@ public class MemoryListFragment extends Fragment {
 
     //region Declarations
     private static final String SAVE_SUBTITLE = "save_subtitle";
-    private DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
-            .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
     public static final String MEMORIES_KEY = "Memories";
     private RecyclerView mRecyclerView;
     private Memory mNewMemory;
@@ -143,11 +142,33 @@ public class MemoryListFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         StorageReference userStorage = FirebaseStorage.getInstance().getReference();
         StorageReference userRootDirectory = userStorage.child(user.getUid());
-        if(userRootDirectory.toString().length()>1) {
-            firstTime = false;
-            //Toast.makeText(getContext(),"UserID Directory is: "+userRootDirectory.child("42e2e35e-c277-a9d9-8596875938e4/").toString()
-             //       ,Toast.LENGTH_LONG).show();
-            ;
+        if(userRootDirectory.toString().length()>1&&firstTime) {
+            String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
+                    .document(userid);
+            userDocument.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if(documentSnapshot.exists()){
+                        MemoryLab memoryLab;
+                        // memoryLab = documentSnapshot.toObject(MemoryLab.class);
+                        Map<String,Object> dataReceived = documentSnapshot.getData();
+                        List<Memory> memories = (List<Memory>) dataReceived.get("Memories");
+                        if(mAdapter == null && memories.size()!=0) {
+                            firstTime = false;
+                            mAdapter = new MemoryAdapter(memories);
+                            mRecyclerView.setAdapter(mAdapter);
+                        }
+                        else {
+                            if (memories.size() != 0) {
+                                mAdapter.setMemorys(memories);
+                                mAdapter.notifyItemChanged(itemChangedposition);
+                            }
+                        }
+                        updateSubtitle();
+                    }
+                }
+            });
         }
 
         setHasOptionsMenu(true);
@@ -206,11 +227,14 @@ public class MemoryListFragment extends Fragment {
             }
         });
         FloatingActionButton upload = (FloatingActionButton) view.findViewById(R.id.memory_upload);
-        ProgressDialog mProgressDialog = new ProgressDialog(getContext());
-        mProgressDialog.setMessage("Uploading...");
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
+                        .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+                mProgressDialog.setMessage("Uploading...");
+                mProgressDialog.show();
                 Map<String,List<Memory>> dataToSave = new HashMap<String,List<Memory>>();
                 dataToSave.put(MEMORIES_KEY,MemoryLab.get(getActivity()).getMemories());
                 userDocument.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -222,7 +246,7 @@ public class MemoryListFragment extends Fragment {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(),"Upload Failed: "+e.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"Upload Failed: "+e.getMessage(),Toast.LENGTH_SHORT).show();
                         mProgressDialog.dismiss();
                     }
                 });
