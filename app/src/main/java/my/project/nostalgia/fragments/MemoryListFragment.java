@@ -1,4 +1,5 @@
 package my.project.nostalgia.fragments;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,16 +34,25 @@ import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.MemoryListActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isImageFile;
 import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isVideoFile;
@@ -54,8 +64,9 @@ public class MemoryListFragment extends Fragment {
 
     //region Declarations
     private static final String SAVE_SUBTITLE = "save_subtitle";
-
-    private FirebaseAuth mAuth;
+    private DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
+            .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+    public static final String MEMORIES_KEY = "Memories";
     private RecyclerView mRecyclerView;
     private Memory mNewMemory;
     private MemoryAdapter mAdapter;
@@ -134,8 +145,8 @@ public class MemoryListFragment extends Fragment {
         StorageReference userRootDirectory = userStorage.child(user.getUid());
         if(userRootDirectory.toString().length()>1) {
             firstTime = false;
-            Toast.makeText(getContext(),"UserID Directory is: "+userRootDirectory.child("42e2e35e-c277-a9d9-8596875938e4/").toString()
-                    ,Toast.LENGTH_LONG).show();
+            //Toast.makeText(getContext(),"UserID Directory is: "+userRootDirectory.child("42e2e35e-c277-a9d9-8596875938e4/").toString()
+             //       ,Toast.LENGTH_LONG).show();
             ;
         }
 
@@ -195,10 +206,26 @@ public class MemoryListFragment extends Fragment {
             }
         });
         FloatingActionButton upload = (FloatingActionButton) view.findViewById(R.id.memory_upload);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+        mProgressDialog.setMessage("Uploading...");
+        upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                Map<String,List<Memory>> dataToSave = new HashMap<String,List<Memory>>();
+                dataToSave.put(MEMORIES_KEY,MemoryLab.get(getActivity()).getMemories());
+                userDocument.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getContext(),"Upload Successful",Toast.LENGTH_SHORT).show();
+                        mProgressDialog.dismiss();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(),"Upload Failed: "+e.toString(),Toast.LENGTH_SHORT).show();
+                        mProgressDialog.dismiss();
+                    }
+                });
             }
         });
     }
