@@ -1,11 +1,19 @@
 package my.project.nostalgia.fragments;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.InputType;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DropDownPreference;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
@@ -14,7 +22,14 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import my.project.nostalgia.BuildConfig;
 import my.project.nostalgia.R;
@@ -45,11 +60,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         setPreferenceScreen(mScreen);
 
         PreferenceCategory mChoices = new PreferenceCategory(mScreen.getContext());
-        mChoices.setTitle(getResources().getString(R.string.personal_settings));
+        mChoices.setTitle(stringResource(R.string.personal_settings));
         mScreen.addPreference(mChoices);
-
-        Preference signOut = signOutPref(mScreen);
-        mChoices.addPreference(signOut);
 
         EditTextPreference username = setUserName(mScreen);
         mChoices.addPreference(username);
@@ -76,6 +88,16 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         Preference aboutMe = myselfPref(mScreen);
         help.addPreference(aboutMe);
 
+        PreferenceCategory accounts = new PreferenceCategory(mScreen.getContext());
+        accounts.setTitle("Account");
+        mScreen.addPreference(accounts);
+
+        Preference signOut = signOutPref(mScreen);
+        accounts.addPreference(signOut);
+
+        Preference deleteAccount = deleteAccountPref(mScreen);
+        accounts.addPreference(deleteAccount);
+
         SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getContext());
         String themeValues = getData.getString("GlobalTheme", "Dark");
         if (themeValues.equals("Dark")) {
@@ -98,10 +120,63 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         }
     }
 
+    private Preference deleteAccountPref(PreferenceScreen mScreen) {
+        Preference deleteAccount = new Preference(mScreen.getContext());
+        deleteAccount.setTitle(stringResource(R.string.delete_account));
+        deleteAccount.setSummary(stringResource(R.string.delete_account_summary));
+        deleteAccount.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                AlertDialog.Builder deleted_account = new AlertDialog.Builder(getContext());
+                LinearLayout layout = new LinearLayout(getContext());
+                layout.setOrientation(LinearLayout.VERTICAL);
+                final TextView confirmation = new TextView(getContext());
+                confirmation.setText(stringResource(R.string.delete_account_confirm));
+                layout.addView(confirmation);
+                final EditText email = new EditText(getContext());
+                email.setHint("Re-enter your email address");
+                email.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
+                layout.addView(email);
+                final EditText password = new EditText(getContext());
+                password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD| InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                password.setHint("Re-enter your password");
+                layout.addView(password);
+                deleted_account.setView(layout);
+                deleted_account.setPositiveButton(stringResource(R.string.delete), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        AuthCredential credential = EmailAuthProvider.getCredential(email.getText().toString(), password.getText().toString());
+                        user.reauthenticate(credential).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                user.delete();
+                                //TODO make a toast on successful deletion
+                                startActivity(new Intent(getActivity(), LoginActivity.class));
+                                getActivity().finish();
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                }).setNegativeButton(stringResource(R.string.cancel), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create();
+                deleted_account.show();
+                return false;
+            }
+        });
+        return deleteAccount;
+    }
+
+    private String stringResource(int p) {
+        return getResources().getString(p);
+    }
+
     private Preference signOutPref(PreferenceScreen mScreen) {
         Preference signOut = new Preference(mScreen.getContext());
-        signOut.setTitle(getResources().getString(R.string.sign_out));
-        signOut.setSummary(getResources().getString(R.string.sign_out_summary));
+        signOut.setTitle(stringResource(R.string.sign_out));
+        signOut.setSummary(stringResource(R.string.sign_out_summary));
         signOut.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -117,15 +192,15 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     private EditTextPreference setUserName(PreferenceScreen mScreen) {
         EditTextPreference username = new EditTextPreference(mScreen.getContext());
         username.setKey(SEND_USERNAME);
-        username.setTitle(getResources().getString(R.string.settings_name));
-        username.setSummary(getResources().getString(R.string.settings_name_summary));
+        username.setTitle(stringResource(R.string.settings_name));
+        username.setSummary(stringResource(R.string.settings_name_summary));
         return username;
     }
     private ListPreference setThemePref(PreferenceScreen mScreen) {
         ListPreference themes = new ListPreference(mScreen.getContext());
         themes.setKey("GlobalTheme");
-        themes.setTitle(getResources().getString(R.string.themes));
-        themes.setSummary(getResources().getString(R.string.themes_summary));
+        themes.setTitle(stringResource(R.string.themes));
+        themes.setSummary(stringResource(R.string.themes_summary));
         CharSequence[] entries = {"Light","Dark"};
         CharSequence[] entryValues = {"Light","Dark"};
         themes.setEntries(entries);
@@ -150,8 +225,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     private ListPreference setLanguagePref(PreferenceScreen mScreen) {
         ListPreference languages = new ListPreference(mScreen.getContext());
         languages.setKey(LANGUAGE);
-        languages.setTitle(getResources().getString(R.string.language));
-        languages.setSummary(getResources().getString(R.string.language_summary));
+        languages.setTitle(stringResource(R.string.language));
+        languages.setSummary(stringResource(R.string.language_summary));
         CharSequence[] entries = {"English","Dutch"};
         CharSequence[] entryValues = {"English","Dutch"};
         languages.setEntries(entries);
@@ -186,8 +261,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     }
     private Preference sendFeedbackPref(PreferenceScreen mScreen) {
         Preference sendFeedback = new Preference(mScreen.getContext());
-        sendFeedback.setTitle(getResources().getString(R.string.settings_feedback));
-        sendFeedback.setSummary(getResources().getString(R.string.settings_feedback_summary));
+        sendFeedback.setTitle(stringResource(R.string.settings_feedback));
+        sendFeedback.setSummary(stringResource(R.string.settings_feedback_summary));
         sendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -201,15 +276,15 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     }
     private Preference invitePeoplePref(PreferenceScreen mScreen) {
         Preference pref = new Preference(mScreen.getContext());
-        pref.setTitle(getResources().getString(R.string.settings_invite));
-        pref.setSummary(getResources().getString(R.string.settings_invite_summary));
+        pref.setTitle(stringResource(R.string.settings_invite));
+        pref.setSummary(stringResource(R.string.settings_invite_summary));
         pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Reminiscence");
-                String shareMessage= getResources().getString(R.string.invite_someone)+"\n\n";
+                String shareMessage= stringResource(R.string.invite_someone) +"\n\n";
                 shareMessage = shareMessage + "https://play.google.com/store/apps/details?id="
                         + BuildConfig.APPLICATION_ID +"\n";
                 shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
@@ -221,8 +296,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     }
     private Preference myselfPref(PreferenceScreen mScreen) {
         Preference aboutMe = new Preference(mScreen.getContext());
-        aboutMe.setTitle(getResources().getString(R.string.settings_aboutme));
-        aboutMe.setSummary(getResources().getString(R.string.settings_aboutme_summary));
+        aboutMe.setTitle(stringResource(R.string.settings_aboutme));
+        aboutMe.setSummary(stringResource(R.string.settings_aboutme_summary));
         aboutMe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -237,8 +312,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     private DropDownPreference getDropDownPreference(PreferenceScreen screen) {
 
         mEvents = new DropDownPreference(screen.getContext());
-        mEvents.setTitle(getResources().getString(R.string.settings_events));
-        mEvents.setSummary(getResources().getString(R.string.settings_events_summary));
+        mEvents.setTitle(stringResource(R.string.settings_events));
+        mEvents.setSummary(stringResource(R.string.settings_events_summary));
         updateDropDownEvents();
         mEvents.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -282,7 +357,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     }
     private String[] getEntries() {
         String[] applicableEvents =getMemoryEventHandling().getJoinedEvents().split(",");
-        applicableEvents = getMemoryEventHandling().addStringToArray(getResources().getString(R.string.add_event),
+        applicableEvents = getMemoryEventHandling().addStringToArray(stringResource(R.string.add_event),
                 applicableEvents);
         return applicableEvents;
     }
