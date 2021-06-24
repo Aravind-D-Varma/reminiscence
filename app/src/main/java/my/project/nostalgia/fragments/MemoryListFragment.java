@@ -49,14 +49,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -164,29 +169,30 @@ public class MemoryListFragment extends Fragment {
             view = inflater.inflate(R.layout.fragment_memory_list, container, false);
             setListAndAddButton(view);
             String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
-                .document(userid);
-            if(userDocument.getId().length()>1) {
-                if(!hasMediaPermission()) {
-                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
-                    alertBuilder.setCancelable(true);
-                    alertBuilder.setTitle("Storage permission necessary");
-                    alertBuilder.setMessage("In order to load your images and videos of previous memories" +
-                            ", please grant storage permissions");
-                    alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE);
-                        }
-                    });
-                    AlertDialog alert = alertBuilder.create();
-                    alert.show();
-                }
-                prefs.edit().putBoolean(FIRST_TIME,false).apply();
-                userDocument.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if(documentSnapshot.exists()){
+            CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("Users");
+            DocumentReference userDocument = usersCollection.document(userid);
+            userDocument.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if (documentSnapshot.exists()) {
+                            if(!hasMediaPermission()) {
+                                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                                alertBuilder.setCancelable(true);
+                                alertBuilder.setTitle("Storage permission necessary");
+                                alertBuilder.setMessage("In order to load your images and videos of previous memories" +
+                                        ", please grant storage permissions");
+                                alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE);
+                                    }
+                                });
+                                AlertDialog alert = alertBuilder.create();
+                                alert.show();
+                            }
+                            prefs.edit().putBoolean(FIRST_TIME,false).apply();
                             MemoryLab memoryLab = MemoryLab.get(getActivity());
                             Map<String,Object> dataReceived = documentSnapshot.getData();
                             List<HashMap> hashMaps = (List<HashMap>) dataReceived.get(MEMORIES_KEY);
@@ -195,7 +201,7 @@ public class MemoryListFragment extends Fragment {
                                 memory.setTitle(hashMap.get("title").toString());
                                 memory.setDetail(hashMap.get("detail").toString());
                                 try{
-                                memory.setMediaPaths(hashMap.get("mediaPaths").toString());
+                                    memory.setMediaPaths(hashMap.get("mediaPaths").toString());
                                 }catch (NullPointerException e){
                                     memory.setMediaPaths("");
                                 }
@@ -205,8 +211,8 @@ public class MemoryListFragment extends Fragment {
                             updateByDevice();
                         }
                     }
-                });
-            }
+                }
+            });
         }
         else if(memories.size()==0){
 
@@ -267,8 +273,6 @@ public class MemoryListFragment extends Fragment {
                 mProgressDialog.show();
                 Map<String,List<Memory>> dataToSave = new HashMap<String,List<Memory>>();
                 dataToSave.put(MEMORIES_KEY,MemoryLab.get(getActivity()).getMemories());
-                Map<String,Object> userIDToSave = new HashMap<String,Object>();
-                userIDToSave.put(USERID_KEY,userid);
                 userDocument.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -282,7 +286,6 @@ public class MemoryListFragment extends Fragment {
                         mProgressDialog.dismiss();
                     }
                 });
-                userDocument.update(userIDToSave);
             }
         });
     }
