@@ -73,6 +73,7 @@ public class MemoryListFragment extends Fragment {
     //region Declarations
     private static final String SAVE_SUBTITLE = "save_subtitle";
     public static final String MEMORIES_KEY = "Memories";
+    private static final String USERID_KEY = "UserID";
     private RecyclerView mRecyclerView;
     private Memory mNewMemory;
     private MemoryAdapter mAdapter;
@@ -162,7 +163,11 @@ public class MemoryListFragment extends Fragment {
         if (isFirstTime) {
             view = inflater.inflate(R.layout.fragment_memory_list, container, false);
             setListAndAddButton(view);
-            if(!hasMediaPermission()) {
+            String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
+                .document(userid);
+            if(userDocument.getId().length()>1) {
+                if(!hasMediaPermission()) {
                     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
                     alertBuilder.setCancelable(true);
                     alertBuilder.setTitle("Storage permission necessary");
@@ -176,11 +181,7 @@ public class MemoryListFragment extends Fragment {
                     });
                     AlertDialog alert = alertBuilder.create();
                     alert.show();
-            }
-            String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
-                .document(userid);
-            if(userDocument.getId().length()>1) {
+                }
                 prefs.edit().putBoolean(FIRST_TIME,false).apply();
                 userDocument.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -258,13 +259,16 @@ public class MemoryListFragment extends Fragment {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
-                        .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        .document(userid);
                 ProgressDialog mProgressDialog = new ProgressDialog(getContext());
                 mProgressDialog.setMessage("Uploading...");
                 mProgressDialog.show();
                 Map<String,List<Memory>> dataToSave = new HashMap<String,List<Memory>>();
                 dataToSave.put(MEMORIES_KEY,MemoryLab.get(getActivity()).getMemories());
+                Map<String,Object> userIDToSave = new HashMap<String,Object>();
+                userIDToSave.put(USERID_KEY,userid);
                 userDocument.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -278,6 +282,7 @@ public class MemoryListFragment extends Fragment {
                         mProgressDialog.dismiss();
                     }
                 });
+                userDocument.update(userIDToSave);
             }
         });
     }
