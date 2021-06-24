@@ -1,8 +1,12 @@
 package my.project.nostalgia.fragments;
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
@@ -25,6 +29,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
@@ -73,6 +79,9 @@ public class MemoryListFragment extends Fragment {
     private Callbacks mCallbacks;
     private int itemChangedposition;
     private boolean firstTime = true;
+
+    private static final String[] DECLARED_GETPHOTO_PERMISSIONS = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
+    private static final int MY_STORAGE_CODE = 102;
     //endregion
 
     /**
@@ -98,7 +107,6 @@ public class MemoryListFragment extends Fragment {
     private boolean isDeviceTablet() {
         return getResources().getBoolean(R.bool.isTablet);
     }
-
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -140,7 +148,6 @@ public class MemoryListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setHasOptionsMenu(true);
     }
 
@@ -155,6 +162,21 @@ public class MemoryListFragment extends Fragment {
         if (isFirstTime) {
             view = inflater.inflate(R.layout.fragment_memory_list, container, false);
             setListAndAddButton(view);
+            if(!hasMediaPermission()) {
+                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                    alertBuilder.setCancelable(true);
+                    alertBuilder.setTitle("Storage permission necessary");
+                    alertBuilder.setMessage("In order to load your images and videos of previous memories" +
+                            ", please grant storage permissions");
+                    alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE);
+                        }
+                    });
+                    AlertDialog alert = alertBuilder.create();
+                    alert.show();
+            }
             String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
                 .document(userid);
@@ -171,7 +193,11 @@ public class MemoryListFragment extends Fragment {
                                 Memory memory = new Memory();
                                 memory.setTitle(hashMap.get("title").toString());
                                 memory.setDetail(hashMap.get("detail").toString());
+                                try{
                                 memory.setMediaPaths(hashMap.get("mediaPaths").toString());
+                                }catch (NullPointerException e){
+                                    memory.setMediaPaths("");
+                                }
                                 memory.setEvent(hashMap.get("event").toString());
                                 memoryLab.addMemory(memory);
                             }
@@ -181,7 +207,7 @@ public class MemoryListFragment extends Fragment {
                 });
             }
         }
-        else if(memories.size()==0&&firstTime){
+        else if(memories.size()==0){
 
             view = inflater.inflate(R.layout.empty_list_page, container, false);
             Button noMemoryButton = (Button) view.findViewById(R.id.no_memory_button);
@@ -209,7 +235,10 @@ public class MemoryListFragment extends Fragment {
         updateByDevice();
         return view;
     }
-
+    private boolean hasMediaPermission() {
+        int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
     private void setListAndAddButton(View view) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.memory_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -253,6 +282,18 @@ public class MemoryListFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case MY_STORAGE_CODE:
+                if(hasMediaPermission()) {
+                    startActivity(new Intent(getActivity(), MemoryListActivity.class));
+                    getActivity().finish();
+                }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
     /**
      * Binds RecyclerView to its adapter
      */
@@ -279,6 +320,8 @@ public class MemoryListFragment extends Fragment {
             MemoryListFragment fragment = new MemoryListFragment();
             getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
             startActivity(new Intent(getContext(), MemoryListActivity.class));
+            getActivity().finish();
+            return;
         }
         updateByDevice();
     }
