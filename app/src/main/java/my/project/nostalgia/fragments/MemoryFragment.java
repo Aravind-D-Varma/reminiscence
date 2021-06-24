@@ -3,6 +3,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -61,8 +62,16 @@ import my.project.nostalgia.adapters.RecyclerViewGalleryAdapter;
 import my.project.nostalgia.supplementary.memoryEvents;
 import my.project.nostalgia.supplementary.transformationViewPager;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -85,17 +94,16 @@ public class MemoryFragment extends Fragment {
     private SharedPreferences.Editor mEditor;
     private String[] applicableEvents ={};
     
-    private EditText mTitleField;
-    private EditText mDetailField;
-    private Button mDateButton;
-    private Button mTimeButton;
+    private EditText mTitleField, mDetailField;
+    private Button mDateButton, mTimeButton, mPhotoButton;
     private Spinner mSpinner;
-    private Button mPhotoButton;
-        private Intent getImage;
+    private Intent getImage;
     private RecyclerView mPhotoRecyclerView;
-    private FloatingActionButton mPhotoFAB;
+    private FloatingActionButton mPhotoFAB, mUploadFAB;
     private Callbacks mCallbacks;
-    
+
+    private StorageReference mStorageReference;
+    private FirebaseAuth mFirebaseAuth;
     private boolean discardPhoto = false;
 
     public static final String DIALOG_DATE = "DialogDate";
@@ -394,18 +402,62 @@ public class MemoryFragment extends Fragment {
                 }
             });
         setBackgroundTheme(mPhotoFAB);
+        mUploadFAB = (FloatingActionButton) v.findViewById(R.id.upload_fab);
+        mUploadFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProgressDialog mProgressDialog = new ProgressDialog(getActivity());
+                mProgressDialog.setMessage("Uploading...");
+                mProgressDialog.show();
+                mFirebaseAuth = FirebaseAuth.getInstance();
+                FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                String userID = user.getUid();
+                mStorageReference = FirebaseStorage.getInstance().getReference();
+                String s = mMemory.getId().toString();
 
+                for(String path:individualFilePaths(mMemory)){
+                    if(path!=null) {
+                        Uri uri = Uri.fromFile(new File(path));
+
+                        char[] arrayOfFilename = path.toCharArray();
+                        for(int i = arrayOfFilename.length-1; i>0; i--){
+                            if(arrayOfFilename[i] == '/'){
+                               path = path.substring(i+1);
+                               break;
+                            }
+                        }
+                        StorageReference storageReference = mStorageReference.child(userID+"/"+ s +"/"+path);
+                        storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                try {
+                                    Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_SHORT).show();
+                                    mProgressDialog.dismiss();
+                                }catch (NullPointerException ignored){}
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                try{
+                                Toast.makeText(getContext(),"Upload failed",Toast.LENGTH_SHORT).show();
+                                mProgressDialog.dismiss();}catch (NullPointerException ignored){}
+                            }
+                        });
+                    }
+                }
+
+            }
+        });
+        setBackgroundTheme(mUploadFAB);
         return v;
     }
 
     private memoryEvents getMemoryEvents() {
         return new memoryEvents(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
     }
-
     private String stringFromResource(int resourceID) {
         return getResources().getString(resourceID);
     }
-
     private void setBackgroundTheme(View v) {
         try {
             if (mThemeValues.equals("Dark")) {
@@ -427,7 +479,6 @@ public class MemoryFragment extends Fragment {
         }
         catch (NullPointerException e){}
     }
-
     private int colorFromResources(int resourceID) {
         return getResources().getColor(resourceID);
     }
@@ -485,8 +536,6 @@ public class MemoryFragment extends Fragment {
     private void behaviourBeforeAddingMedia(View v) {
         mPhotoFAB.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
         mPhotoFAB.setEnabled(mMemory.getMediaPaths()!=null);
-        TextView mAddphoto = v.findViewById(R.id.addphotos);
-        mAddphoto.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
     }
     private Intent getFromMediaIntent() {
         Intent getmoreImage = new Intent(Intent.ACTION_GET_CONTENT);

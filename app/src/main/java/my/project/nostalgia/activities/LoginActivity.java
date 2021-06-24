@@ -2,10 +2,13 @@ package my.project.nostalgia.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -33,13 +36,14 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private EditText mEmail, mPassword;
+    private EditText mEmail, mPassword, mName;
     private Button mLogin, mForgot, mRegister;
     private ProgressDialog mProgressDialog;
 
     public static final String SEND_USERNAME= "username";
     public static final String LANGUAGE = "GlobalLanguage";
     public static final String APPLICABLE_EVENTS = "true_events";
+    public static final String FIRST_TIME = "first_time";
 
 
     @Override
@@ -51,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mEmail = (EditText) findViewById(R.id.login_email);
         mPassword = (EditText) findViewById(R.id.login_password);
+        mName = (EditText) findViewById(R.id.login_name);
         mRegister = (Button) findViewById(R.id.login_register);
         mForgot = (Button) findViewById(R.id.login_forgot);
         mLogin = (Button) findViewById(R.id.login_button);
@@ -125,6 +130,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(task.isSuccessful()) {
                     Toast.makeText(LoginActivity.this, "Successfully logged in."
                             , Toast.LENGTH_SHORT).show();
+                    setGeneralInfo(mName.getText().toString(),new memoryEvents(getApplicationContext()).getJoinedEvents());
                     startActivity(new Intent(LoginActivity.this,MemoryListActivity.class));
                     finish();
                 }
@@ -135,5 +141,28 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    private void setGeneralInfo(String userName, String combinedEvents) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        editor.putString(SEND_USERNAME, userName);
+        editor.putBoolean(FIRST_TIME,true);
+        editor.putString(APPLICABLE_EVENTS, combinedEvents);
+        editor.apply();
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(ev.getAction()==MotionEvent.ACTION_DOWN){
+            View v = getCurrentFocus();
+            if(v instanceof EditText){
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if(!outRect.contains((int)ev.getRawX(),(int)ev.getRawY())){
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }
