@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String SEND_USERNAME= "username";
     public static final String LANGUAGE = "GlobalLanguage";
     public static final String APPLICABLE_EVENTS = "true_events";
+    public static final String FIRST_TIME = "first_time";
 
 
     @Override
@@ -141,6 +142,7 @@ public class LoginActivity extends AppCompatActivity {
     private void setGeneralInfo(String userName, String combinedEvents) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
         editor.putString(SEND_USERNAME, userName);
+        editor.putBoolean(FIRST_TIME,true);
         editor.putString(APPLICABLE_EVENTS, combinedEvents);
         editor.apply();
     }

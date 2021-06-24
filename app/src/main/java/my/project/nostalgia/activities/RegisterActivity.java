@@ -27,6 +27,7 @@ import my.project.nostalgia.R;
 import my.project.nostalgia.supplementary.memoryEvents;
 
 import static my.project.nostalgia.activities.LoginActivity.APPLICABLE_EVENTS;
+import static my.project.nostalgia.activities.LoginActivity.FIRST_TIME;
 import static my.project.nostalgia.activities.LoginActivity.SEND_USERNAME;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -107,6 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
         editor.putString(SEND_USERNAME, userName);
         editor.putString(APPLICABLE_EVENTS, combinedEvents);
+        editor.putBoolean(FIRST_TIME,true);
         editor.apply();
     }
 }

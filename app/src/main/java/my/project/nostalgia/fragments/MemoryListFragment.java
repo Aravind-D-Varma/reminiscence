@@ -43,7 +43,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -56,6 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static my.project.nostalgia.activities.LoginActivity.FIRST_TIME;
 import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isImageFile;
 import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isVideoFile;
 
@@ -111,7 +111,7 @@ public class MemoryListFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 try {
-                    mAdapter.searchFilter(query);
+                    mAdapter.searchMemoriesByTitle(query);
                 }
                 catch (NullPointerException e){
                     Toast.makeText(getContext(), stringResource(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
@@ -122,7 +122,7 @@ public class MemoryListFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 try {
-                    mAdapter.searchFilter(newText);
+                    mAdapter.searchMemoriesByTitle(newText);
                 }
                 catch (NullPointerException e){
                     if(newText.length()>=1)
@@ -140,18 +140,21 @@ public class MemoryListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        StorageReference userStorage = FirebaseStorage.getInstance().getReference();
-        StorageReference userRootDirectory = userStorage.child(user.getUid());
-        if(userRootDirectory.toString().length()>1&&firstTime) {
-            String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
-                    .document(userid);
+        String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        boolean documentExists = false;
+        DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
+                .document(userid);
+        if(userDocument.getId().length()>1)
+            documentExists = true;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        boolean isFirstTime = prefs.getBoolean(FIRST_TIME,true);
+        if(documentExists && isFirstTime) {
+            prefs.edit().putBoolean(FIRST_TIME,false).apply();
             userDocument.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if(documentSnapshot.exists()){
-                        MemoryLab memoryLab = MemoryLab.get(getContext());
+                        MemoryLab memoryLab = MemoryLab.get(getActivity());
                         Map<String,Object> dataReceived = documentSnapshot.getData();
                         List<HashMap> hashMaps = (List<HashMap>) dataReceived.get(MEMORIES_KEY);
                         for(HashMap hashMap:hashMaps){
@@ -175,7 +178,8 @@ public class MemoryListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_memory_list, container, false);
         setListAndAddButton(view);
-        if(MemoryLab.get(getActivity()).getMemories().size()==0&&firstTime){
+        List<Memory> memories = MemoryLab.get(getActivity()).getMemories();
+        if(memories.size()==0&&firstTime){
             //TODO remove fragment_memory_list before inflating empty_list_page
             View noMemoryView = inflater.inflate(R.layout.empty_list_page, container, false);
             SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -497,18 +501,12 @@ public class MemoryListFragment extends Fragment {
         public void setMemorys(List<Memory> Memorys){
             mMemories = Memorys;
         }
-
-        /**
-         * Searches through all memories whose title contains the text typed and changes display accordingly
-         * @param text
-         */
-        public void searchFilter(String text) {
+        public void searchMemoriesByTitle(String text) {
 
                 List<Memory> searchMemorysList = new ArrayList<>();
                 for (Memory Memory : MemoryLab.get(getActivity()).getMemories()) {
-                    if (Memory.getTitle().contains(text)) {
+                    if (Memory.getTitle().contains(text))
                         searchMemorysList.add(Memory);
-                    }
                 }
             try {
                 mAdapter.setMemorys(searchMemorysList);
