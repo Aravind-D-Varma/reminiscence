@@ -14,8 +14,11 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import my.project.nostalgia.BuildConfig;
 import my.project.nostalgia.R;
+import my.project.nostalgia.activities.LoginActivity;
 import my.project.nostalgia.activities.UserSettingsActivity;
 import my.project.nostalgia.supplementary.memoryEvents;
 
@@ -44,6 +47,9 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         PreferenceCategory mChoices = new PreferenceCategory(mScreen.getContext());
         mChoices.setTitle(getResources().getString(R.string.personal_settings));
         mScreen.addPreference(mChoices);
+
+        Preference signOut = signOutPref(mScreen);
+        mChoices.addPreference(signOut);
 
         EditTextPreference username = setUserName(mScreen);
         mChoices.addPreference(username);
@@ -91,6 +97,23 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             mEvents.setIcon(R.drawable.swap_black);
         }
     }
+
+    private Preference signOutPref(PreferenceScreen mScreen) {
+        Preference signOut = new Preference(mScreen.getContext());
+        signOut.setTitle(getResources().getString(R.string.sign_out));
+        signOut.setSummary(getResources().getString(R.string.sign_out_summary));
+        signOut.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
+                return false;
+            }
+        });
+        return signOut;
+    }
+
     private EditTextPreference setUserName(PreferenceScreen mScreen) {
         EditTextPreference username = new EditTextPreference(mScreen.getContext());
         username.setKey(SEND_USERNAME);

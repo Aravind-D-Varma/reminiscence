@@ -100,5 +100,7 @@
     <string name="sign_up">Sign Up !</string>
     <string name="add_on">Add On</string>
     <string name="upload">Upload</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_out_summary">Signing out will take you to the login page.</string>
 
 </resources>
