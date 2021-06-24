@@ -140,55 +140,52 @@ public class MemoryListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        boolean documentExists = false;
-        DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
-                .document(userid);
-        if(userDocument.getId().length()>1)
-            documentExists = true;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        boolean isFirstTime = prefs.getBoolean(FIRST_TIME,true);
-        if(documentExists && isFirstTime) {
-            prefs.edit().putBoolean(FIRST_TIME,false).apply();
-            userDocument.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if(documentSnapshot.exists()){
-                        MemoryLab memoryLab = MemoryLab.get(getActivity());
-                        Map<String,Object> dataReceived = documentSnapshot.getData();
-                        List<HashMap> hashMaps = (List<HashMap>) dataReceived.get(MEMORIES_KEY);
-                        for(HashMap hashMap:hashMaps){
-                            Memory memory = new Memory();
-                            memory.setTitle(hashMap.get("title").toString());
-                            memory.setDetail(hashMap.get("detail").toString());
-                            memory.setMediaPaths(hashMap.get("mediaPaths").toString());
-                            memory.setEvent(hashMap.get("event").toString());
-                            memoryLab.addMemory(memory);
-                        }
-                        updateByDevice();
-                    }
-                }
-            });
-        }
+
         setHasOptionsMenu(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_memory_list, container, false);
-        setListAndAddButton(view);
         List<Memory> memories = MemoryLab.get(getActivity()).getMemories();
-        if(memories.size()==0&&firstTime){
-            //TODO remove fragment_memory_list before inflating empty_list_page
-            View noMemoryView = inflater.inflate(R.layout.empty_list_page, container, false);
-            SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getContext());
-            String themeValues = getData.getString("GlobalTheme", "Dark");
-            Button noMemoryButton = (Button) noMemoryView.findViewById(R.id.no_memory_button);
-            if (themeValues.equals("Light")) {
-                noMemoryButton.setBackgroundResource(R.drawable.button_border_light);
-                noMemoryButton.setTextColor(getResources().getColor(R.color.white));
+        View view;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        boolean isFirstTime = prefs.getBoolean(FIRST_TIME,true);
+
+        if (isFirstTime) {
+            view = inflater.inflate(R.layout.fragment_memory_list, container, false);
+            setListAndAddButton(view);
+            String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
+                .document(userid);
+            if(userDocument.getId().length()>1) {
+                prefs.edit().putBoolean(FIRST_TIME,false).apply();
+                userDocument.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()){
+                            MemoryLab memoryLab = MemoryLab.get(getActivity());
+                            Map<String,Object> dataReceived = documentSnapshot.getData();
+                            List<HashMap> hashMaps = (List<HashMap>) dataReceived.get(MEMORIES_KEY);
+                            for(HashMap hashMap:hashMaps){
+                                Memory memory = new Memory();
+                                memory.setTitle(hashMap.get("title").toString());
+                                memory.setDetail(hashMap.get("detail").toString());
+                                memory.setMediaPaths(hashMap.get("mediaPaths").toString());
+                                memory.setEvent(hashMap.get("event").toString());
+                                memoryLab.addMemory(memory);
+                            }
+                            updateByDevice();
+                        }
+                    }
+                });
             }
+        }
+        else if(memories.size()==0&&firstTime){
+
+            view = inflater.inflate(R.layout.empty_list_page, container, false);
+            Button noMemoryButton = (Button) view.findViewById(R.id.no_memory_button);
+
             noMemoryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View noMemoryView) {
@@ -204,8 +201,10 @@ public class MemoryListFragment extends Fragment {
                     mCallbacks.onMemorySelected(mNewMemory);
                 }
             });
-            updateByDevice();
-            return noMemoryView;
+        }
+        else{
+            view = inflater.inflate(R.layout.fragment_memory_list, container, false);
+            setListAndAddButton(view);
         }
         updateByDevice();
         return view;
