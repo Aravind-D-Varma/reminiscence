@@ -1,13 +1,19 @@
 package my.project.nostalgia.fragments;
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +29,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
@@ -33,16 +41,27 @@ import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.MemoryListActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static my.project.nostalgia.activities.LoginActivity.FIRST_TIME;
 import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isImageFile;
 import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isVideoFile;
 
@@ -53,14 +72,16 @@ public class MemoryListFragment extends Fragment {
 
     //region Declarations
     private static final String SAVE_SUBTITLE = "save_subtitle";
-
-    private FirebaseAuth mAuth;
+    public static final String MEMORIES_KEY = "Memories";
     private RecyclerView mRecyclerView;
     private Memory mNewMemory;
     private MemoryAdapter mAdapter;
     private Callbacks mCallbacks;
     private int itemChangedposition;
     private boolean firstTime = true;
+
+    private static final String[] DECLARED_GETPHOTO_PERMISSIONS = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
+    private static final int MY_STORAGE_CODE = 102;
     //endregion
 
     /**
@@ -86,7 +107,6 @@ public class MemoryListFragment extends Fragment {
     private boolean isDeviceTablet() {
         return getResources().getBoolean(R.bool.isTablet);
     }
-
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -99,7 +119,7 @@ public class MemoryListFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 try {
-                    mAdapter.searchFilter(query);
+                    mAdapter.searchMemoriesByTitle(query);
                 }
                 catch (NullPointerException e){
                     Toast.makeText(getContext(), stringResource(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
@@ -110,7 +130,7 @@ public class MemoryListFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 try {
-                    mAdapter.searchFilter(newText);
+                    mAdapter.searchMemoriesByTitle(newText);
                 }
                 catch (NullPointerException e){
                     if(newText.length()>=1)
@@ -128,34 +148,70 @@ public class MemoryListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        StorageReference userStorage = FirebaseStorage.getInstance().getReference();
-        StorageReference userRootDirectory = userStorage.child(user.getUid());
-        if(userRootDirectory.toString().length()>1) {
-            firstTime = false;
-            Toast.makeText(getContext(),"UserID Directory is: "+userRootDirectory.child("42e2e35e-c277-a9d9-8596875938e4/").toString()
-                    ,Toast.LENGTH_LONG).show();
-            ;
-        }
-
         setHasOptionsMenu(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_memory_list, container, false);
-        setListAndAddButton(view);
-        if(MemoryLab.get(getActivity()).getMemories().size()==0&&firstTime){
-            //TODO remove fragment_memory_list before inflating empty_list_page
-            View noMemoryView = inflater.inflate(R.layout.empty_list_page, container, false);
-            SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getContext());
-            String themeValues = getData.getString("GlobalTheme", "Dark");
-            Button noMemoryButton = (Button) noMemoryView.findViewById(R.id.no_memory_button);
-            if (themeValues.equals("Light")) {
-                noMemoryButton.setBackgroundResource(R.drawable.button_border_light);
-                noMemoryButton.setTextColor(getResources().getColor(R.color.white));
+        List<Memory> memories = MemoryLab.get(getActivity()).getMemories();
+        View view;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        boolean isFirstTime = prefs.getBoolean(FIRST_TIME,true);
+
+        if (isFirstTime) {
+            view = inflater.inflate(R.layout.fragment_memory_list, container, false);
+            setListAndAddButton(view);
+            if(!hasMediaPermission()) {
+                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                    alertBuilder.setCancelable(true);
+                    alertBuilder.setTitle("Storage permission necessary");
+                    alertBuilder.setMessage("In order to load your images and videos of previous memories" +
+                            ", please grant storage permissions");
+                    alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE);
+                        }
+                    });
+                    AlertDialog alert = alertBuilder.create();
+                    alert.show();
             }
+            String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
+                .document(userid);
+            if(userDocument.getId().length()>1) {
+                prefs.edit().putBoolean(FIRST_TIME,false).apply();
+                userDocument.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()){
+                            MemoryLab memoryLab = MemoryLab.get(getActivity());
+                            Map<String,Object> dataReceived = documentSnapshot.getData();
+                            List<HashMap> hashMaps = (List<HashMap>) dataReceived.get(MEMORIES_KEY);
+                            for(HashMap hashMap:hashMaps){
+                                Memory memory = new Memory();
+                                memory.setTitle(hashMap.get("title").toString());
+                                memory.setDetail(hashMap.get("detail").toString());
+                                try{
+                                memory.setMediaPaths(hashMap.get("mediaPaths").toString());
+                                }catch (NullPointerException e){
+                                    memory.setMediaPaths("");
+                                }
+                                memory.setEvent(hashMap.get("event").toString());
+                                memoryLab.addMemory(memory);
+                            }
+                            updateByDevice();
+                        }
+                    }
+                });
+            }
+        }
+        else if(memories.size()==0){
+
+            view = inflater.inflate(R.layout.empty_list_page, container, false);
+            Button noMemoryButton = (Button) view.findViewById(R.id.no_memory_button);
+
             noMemoryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View noMemoryView) {
@@ -171,13 +227,18 @@ public class MemoryListFragment extends Fragment {
                     mCallbacks.onMemorySelected(mNewMemory);
                 }
             });
-            updateByDevice();
-            return noMemoryView;
+        }
+        else{
+            view = inflater.inflate(R.layout.fragment_memory_list, container, false);
+            setListAndAddButton(view);
         }
         updateByDevice();
         return view;
     }
-
+    private boolean hasMediaPermission() {
+        int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
     private void setListAndAddButton(View view) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.memory_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -193,6 +254,44 @@ public class MemoryListFragment extends Fragment {
                 mCallbacks.onMemorySelected(mNewMemory);
             }
         });
+        FloatingActionButton upload = (FloatingActionButton) view.findViewById(R.id.memory_upload);
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
+                        .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+                mProgressDialog.setMessage("Uploading...");
+                mProgressDialog.show();
+                Map<String,List<Memory>> dataToSave = new HashMap<String,List<Memory>>();
+                dataToSave.put(MEMORIES_KEY,MemoryLab.get(getActivity()).getMemories());
+                userDocument.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getContext(),"Upload Successful",Toast.LENGTH_SHORT).show();
+                        mProgressDialog.dismiss();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(),"Upload Failed: "+e.getMessage(),Toast.LENGTH_SHORT).show();
+                        mProgressDialog.dismiss();
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case MY_STORAGE_CODE:
+                if(hasMediaPermission()) {
+                    startActivity(new Intent(getActivity(), MemoryListActivity.class));
+                    getActivity().finish();
+                }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     /**
@@ -221,6 +320,8 @@ public class MemoryListFragment extends Fragment {
             MemoryListFragment fragment = new MemoryListFragment();
             getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
             startActivity(new Intent(getContext(), MemoryListActivity.class));
+            getActivity().finish();
+            return;
         }
         updateByDevice();
     }
@@ -442,18 +543,12 @@ public class MemoryListFragment extends Fragment {
         public void setMemorys(List<Memory> Memorys){
             mMemories = Memorys;
         }
-
-        /**
-         * Searches through all memories whose title contains the text typed and changes display accordingly
-         * @param text
-         */
-        public void searchFilter(String text) {
+        public void searchMemoriesByTitle(String text) {
 
                 List<Memory> searchMemorysList = new ArrayList<>();
                 for (Memory Memory : MemoryLab.get(getActivity()).getMemories()) {
-                    if (Memory.getTitle().contains(text)) {
+                    if (Memory.getTitle().contains(text))
                         searchMemorysList.add(Memory);
-                    }
                 }
             try {
                 mAdapter.setMemorys(searchMemorysList);
