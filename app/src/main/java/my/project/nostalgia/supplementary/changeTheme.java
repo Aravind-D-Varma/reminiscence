@@ -29,8 +29,10 @@ public class changeTheme {
     }
 
     public void setUserTheme() {
-        if (mTheme.equals("Dark"))
+        //TODO fix add memory button in light theme
+        if (mTheme.equals("Dark")){
             mContext.setTheme(R.style.Theme_Reminiscence);
+        }
         else
             mContext.setTheme(R.style.Theme_Reminiscence_Light);
     }
