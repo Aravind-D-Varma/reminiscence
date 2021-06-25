@@ -1,5 +1,4 @@
 package my.project.nostalgia.fragments;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -19,7 +18,6 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +27,6 @@ import my.project.nostalgia.BuildConfig;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.LoginActivity;
 import my.project.nostalgia.activities.UserSettingsActivity;
-import my.project.nostalgia.supplementary.changeTheme;
 import my.project.nostalgia.supplementary.memoryEvents;
 
 import java.util.ArrayList;
