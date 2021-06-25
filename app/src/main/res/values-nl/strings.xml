@@ -4,16 +4,9 @@
     <string name="app_name">Nostalgie</string>
 
     <string name="welcome">Welkom!</string>
-    <string name="welcome_second">Verzamel al je favoriete herinneringen op één plek. Geef een naam, beschrijf ze,
-        voeg relevante fotos/videos toe in je persoonlijke app!\n\n Categoriseer ze in een persoonlijke verzameling
-        evenementen zoals het studentenleven of feesten.\n\n Deel, update en laat ze herleven!</string>
-    <string name="swipe_introPage">Swipe</string>
-    <string name="thank_downloading">Bedankt voor het downloaden van deze app</string>
-    <string name="introPages_next_CD">Volgende bladzijde</string>
 
     <string name="NDopen">open</string>
     <string name="NDclose">dichtbij</string>
-    <string name="header_ND">Geheugengebeurtenissen</string>
     <string name="no_memorys_display">Er zijn geen herinneringen om weer te geven</string>
     <string name="no_memory_add">Een herinnering toevoegen?</string>
     <plurals name="subtitle_plural">
@@ -36,7 +29,6 @@
     <string name="choose_photos">Kies Fotos</string>
     <string name="photo_add">Voeg foto toe</string>
     <string name="photos_reselection">Fotos opnieuw selecteren</string>
-    <string name="add_photos_videos">Fotos/videos toevoegen</string>
     <string name="delete_memory">Geheugen verwijderen</string>
     <string name="delete_memory_confirm">Je hebt geen titel ingesteld of fotos gekozen.
         Wilt u deze herinnering weggooien?</string>
@@ -47,11 +39,6 @@
     <string name="more"> meer</string>
 
     <string name="settings">Instellingen</string>
-    <string name="changeName">Naam veranderen: </string>
-    <string name="changesettings">Wijzig uw instellingen: </string>
-    <string name="yes">Ja</string>
-    <string name="no">Nee</string>
-    <string name="create_custom_event">Aangepaste gebeurtenis maken</string>
     <string name="delete_file">Verwijder bestand</string>
     <string name="deletion_confirm">Wilt u dit bestand verwijderen?</string>
     <string name="discard_event">Gebeurtenis negeren Disc</string>

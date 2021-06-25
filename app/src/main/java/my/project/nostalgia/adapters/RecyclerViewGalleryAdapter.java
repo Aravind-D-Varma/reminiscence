@@ -95,7 +95,7 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
        if(isVideoFile(mediaPaths[position]))
             return VIDEO;
-       else if(isImageFile(mediaPaths[position]));
+       else
             return IMAGE;
     }
 
