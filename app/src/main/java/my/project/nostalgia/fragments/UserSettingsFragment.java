@@ -1,7 +1,6 @@
 package my.project.nostalgia.fragments;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,9 +9,7 @@ import android.text.InputType;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DropDownPreference;
 import androidx.preference.EditTextPreference;
@@ -22,10 +19,7 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +29,7 @@ import my.project.nostalgia.BuildConfig;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.LoginActivity;
 import my.project.nostalgia.activities.UserSettingsActivity;
+import my.project.nostalgia.supplementary.changeTheme;
 import my.project.nostalgia.supplementary.memoryEvents;
 
 import java.util.ArrayList;
@@ -55,6 +50,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
+        changeTheme cT = new changeTheme(getContext());
         calls = 0;
         PreferenceScreen mScreen = getPreferenceManager().createPreferenceScreen(getActivity());
         setPreferenceScreen(mScreen);
@@ -65,15 +61,19 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
 
         EditTextPreference username = setUserName(mScreen);
         mChoices.addPreference(username);
+        //cT.setPreferenceIcon(username);
 
         DropDownPreference events = getDropDownPreference(mScreen);
         mChoices.addPreference(events);
+        //cT.setPreferenceIcon(events);
 
         ListPreference themes = setThemePref(mScreen);
         mChoices.addPreference(themes);
+        //cT.setPreferenceIcon(themes);
 
         ListPreference language = setLanguagePref(mScreen);
         mChoices.addPreference(language);
+        //cT.setPreferenceIcon(language);
 
         PreferenceCategory help = new PreferenceCategory(mScreen.getContext());
         help.setTitle("Help");
@@ -97,34 +97,13 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
 
         Preference deleteAccount = deleteAccountPref(mScreen);
         accounts.addPreference(deleteAccount);
-
-        SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
-        if (themeValues.equals("Dark")) {
-            aboutMe.setIcon(R.drawable.aboutme_white);
-            themes.setIcon(R.drawable.settingstheme_white);
-            language.setIcon(R.drawable.language_white);
-            sendFeedback.setIcon(R.drawable.feedback_white);
-            invitePeople.setIcon(R.drawable.invite_white);
-            username.setIcon(R.drawable.username_white);
-            mEvents.setIcon(R.drawable.swap_white);
-        }
-        else if (themeValues.equals("Light")) {
-            themes.setIcon(R.drawable.settingstheme_black);
-            language.setIcon(R.drawable.language_black);
-            aboutMe.setIcon(R.drawable.aboutme_black);
-            sendFeedback.setIcon(R.drawable.feedback_black);
-            invitePeople.setIcon(R.drawable.invite_black);
-            username.setIcon(R.drawable.username_black);
-            mEvents.setIcon(R.drawable.swap_black);
-        }
     }
 
     private Preference deleteAccountPref(PreferenceScreen mScreen) {
-        Preference deleteAccount = new Preference(mScreen.getContext());
-        deleteAccount.setTitle(stringResource(R.string.delete_account));
-        deleteAccount.setSummary(stringResource(R.string.delete_account_summary));
-        deleteAccount.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        Preference pref = new Preference(mScreen.getContext());
+        pref.setTitle(stringResource(R.string.delete_account));
+        pref.setSummary(stringResource(R.string.delete_account_summary));
+        pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 AlertDialog.Builder deleted_account = new AlertDialog.Builder(getContext());
@@ -166,7 +145,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 return false;
             }
         });
-        return deleteAccount;
+        return pref;
     }
 
     private String stringResource(int p) {
@@ -174,10 +153,10 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     }
 
     private Preference signOutPref(PreferenceScreen mScreen) {
-        Preference signOut = new Preference(mScreen.getContext());
-        signOut.setTitle(stringResource(R.string.sign_out));
-        signOut.setSummary(stringResource(R.string.sign_out_summary));
-        signOut.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        Preference pref = new Preference(mScreen.getContext());
+        pref.setTitle(stringResource(R.string.sign_out));
+        pref.setSummary(stringResource(R.string.sign_out_summary));
+        pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 FirebaseAuth.getInstance().signOut();
@@ -186,61 +165,64 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 return false;
             }
         });
-        return signOut;
+        return pref;
     }
 
     private EditTextPreference setUserName(PreferenceScreen mScreen) {
-        EditTextPreference username = new EditTextPreference(mScreen.getContext());
-        username.setKey(SEND_USERNAME);
-        username.setTitle(stringResource(R.string.settings_name));
-        username.setSummary(stringResource(R.string.settings_name_summary));
-        return username;
+        EditTextPreference pref = new EditTextPreference(mScreen.getContext());
+        pref.setKey(SEND_USERNAME);
+        pref.setTitle(stringResource(R.string.settings_name));
+        pref.setSummary(stringResource(R.string.settings_name_summary));
+        pref.setIcon(R.drawable.settings_username);
+        return pref;
     }
     private ListPreference setThemePref(PreferenceScreen mScreen) {
-        ListPreference themes = new ListPreference(mScreen.getContext());
-        themes.setKey("GlobalTheme");
-        themes.setTitle(stringResource(R.string.themes));
-        themes.setSummary(stringResource(R.string.themes_summary));
+        ListPreference pref = new ListPreference(mScreen.getContext());
+        pref.setKey("GlobalTheme");
+        pref.setTitle(stringResource(R.string.themes));
+        pref.setSummary(stringResource(R.string.themes_summary));
+        pref.setIcon(R.drawable.settings_themes);
         CharSequence[] entries = {"Light","Dark"};
         CharSequence[] entryValues = {"Light","Dark"};
-        themes.setEntries(entries);
-        themes.setEntryValues(entryValues);
+        pref.setEntries(entries);
+        pref.setEntryValues(entryValues);
 
-        themes.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                int index = themes.findIndexOfValue(newValue.toString());
-                if (themes.getEntries()[index].equals("Light"))
-                    themes.setValue("Light");
+                int index = pref.findIndexOfValue(newValue.toString());
+                if (pref.getEntries()[index].equals("Light"))
+                    pref.setValue("Light");
                 else
-                    themes.setValue("Dark");
+                    pref.setValue("Dark");
                 Intent intent = new Intent(getContext(), UserSettingsActivity.class);
                 startActivity(intent);
                 getActivity().finish();
                 return false;
             }
         });
-        return themes;
+        return pref;
     }
     private ListPreference setLanguagePref(PreferenceScreen mScreen) {
-        ListPreference languages = new ListPreference(mScreen.getContext());
-        languages.setKey(LANGUAGE);
-        languages.setTitle(stringResource(R.string.language));
-        languages.setSummary(stringResource(R.string.language_summary));
+        ListPreference pref = new ListPreference(mScreen.getContext());
+        pref.setKey(LANGUAGE);
+        pref.setTitle(stringResource(R.string.language));
+        pref.setSummary(stringResource(R.string.language_summary));
+        pref.setIcon(R.drawable.settings_language);
         CharSequence[] entries = {"English","Dutch"};
         CharSequence[] entryValues = {"English","Dutch"};
-        languages.setEntries(entries);
-        languages.setEntryValues(entryValues);
+        pref.setEntries(entries);
+        pref.setEntryValues(entryValues);
 
-        languages.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                int index = languages.findIndexOfValue(newValue.toString());
-                if (languages.getEntries()[index].equals("English")){
-                    setLanguage(languages, "English", "en");
+                int index = pref.findIndexOfValue(newValue.toString());
+                if (pref.getEntries()[index].equals("English")){
+                    setLanguage(pref, "English", "en");
                 }
                 else{
-                    setLanguage(languages, "Dutch", "nl");
+                    setLanguage(pref, "Dutch", "nl");
                 }
                 Intent intent = new Intent(getContext(), UserSettingsActivity.class);
                 startActivity(intent);
@@ -248,7 +230,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 return false;
             }
         });
-        return languages;
+        return pref;
     }
     private void setLanguage(ListPreference languages, String language, String lang) {
         languages.setValue(language);
@@ -260,10 +242,11 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 updateConfiguration(config, getContext().getResources().getDisplayMetrics());
     }
     private Preference sendFeedbackPref(PreferenceScreen mScreen) {
-        Preference sendFeedback = new Preference(mScreen.getContext());
-        sendFeedback.setTitle(stringResource(R.string.settings_feedback));
-        sendFeedback.setSummary(stringResource(R.string.settings_feedback_summary));
-        sendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        Preference pref = new Preference(mScreen.getContext());
+        pref.setTitle(stringResource(R.string.settings_feedback));
+        pref.setSummary(stringResource(R.string.settings_feedback_summary));
+        pref.setIcon(R.drawable.settings_feedback);
+        pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Intent browse = new Intent( Intent.ACTION_VIEW ,
@@ -272,12 +255,13 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 return false;
             }
         });
-        return sendFeedback;
+        return pref;
     }
     private Preference invitePeoplePref(PreferenceScreen mScreen) {
         Preference pref = new Preference(mScreen.getContext());
         pref.setTitle(stringResource(R.string.settings_invite));
         pref.setSummary(stringResource(R.string.settings_invite_summary));
+        pref.setIcon(R.drawable.settings_invite);
         pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -295,10 +279,11 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         return pref;
     }
     private Preference myselfPref(PreferenceScreen mScreen) {
-        Preference aboutMe = new Preference(mScreen.getContext());
-        aboutMe.setTitle(stringResource(R.string.settings_aboutme));
-        aboutMe.setSummary(stringResource(R.string.settings_aboutme_summary));
-        aboutMe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        Preference pref = new Preference(mScreen.getContext());
+        pref.setTitle(stringResource(R.string.settings_aboutme));
+        pref.setSummary(stringResource(R.string.settings_aboutme_summary));
+        pref.setIcon(R.drawable.settings_aboutme);
+        pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Intent browse = new Intent( Intent.ACTION_VIEW , Uri.parse("https://github.com/Aravind-D-Varma"));
@@ -306,7 +291,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 return true;
             }
         });
-        return aboutMe;
+        return pref;
     }
 
     private DropDownPreference getDropDownPreference(PreferenceScreen screen) {
@@ -314,6 +299,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         mEvents = new DropDownPreference(screen.getContext());
         mEvents.setTitle(stringResource(R.string.settings_events));
         mEvents.setSummary(stringResource(R.string.settings_events_summary));
+        mEvents.setIcon(R.drawable.settings_customevents);
         updateDropDownEvents();
         mEvents.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override

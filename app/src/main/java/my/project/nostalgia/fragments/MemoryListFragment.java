@@ -41,6 +41,7 @@ import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.MemoryListActivity;
+import my.project.nostalgia.supplementary.changeTheme;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -69,7 +70,7 @@ import java.util.Map;
 import static my.project.nostalgia.activities.LoginActivity.FIRST_TIME;
 import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isImageFile;
 import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isVideoFile;
-
+//TODO Some input files use or override a depecrate API recompile with -Xlint:deprecation for details
 /**
  * Contains list layout of RecyclerView and floating action button to show all memories and to add a new one.
  */
@@ -387,35 +388,17 @@ public class MemoryListFragment extends Fragment {
         public MemoryHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_memory, parent, false));
             itemView.setOnClickListener(this);
-            setLayoutTheme(itemView);
+            changeTheme cT = new changeTheme(getContext());
+            cT.setLayoutTheme(itemView);
             mTitleText = (TextView) itemView.findViewById(R.id.cardview_memory_title);
-            setTextTheme(mTitleText);
+            cT.setTextTheme(mTitleText);
             mDetailText = (TextView) itemView.findViewById(R.id.cardview_memory_detail);
-            setTextTheme(mDetailText);
+            cT.setTextTheme(mDetailText);
             mShare = (Button) itemView.findViewById(R.id.cardview_share);
             mDelete = (Button) itemView.findViewById(R.id.cardview_delete);
             mImageView = (ImageView) itemView.findViewById(R.id.cardview_image);
             mImageView2 = itemView.findViewById(R.id.cardview_image2);
             mExtraText = itemView.findViewById(R.id.cardview_extramedia);
-        }
-        private void setLayoutTheme(View v){
-            SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
-            String themeValues = getData.getString("GlobalTheme", "Dark");
-
-            if (themeValues.equals("Light"))
-                v.setBackground(getResources().getDrawable(R.drawable.layout_border_light));
-            else if (themeValues.equals("Dark"))
-                v.setBackground(getResources().getDrawable(R.drawable.layout_border));
-        }
-        private void setTextTheme(TextView tv) {
-            SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
-            String themeValues = getData.getString("GlobalTheme", "Dark");
-
-            if (themeValues.equals("Light"))
-                tv.setTextColor(getResources().getColor(R.color.black));
-            else if (themeValues.equals("Dark"))
-                tv.setTextColor(getResources().getColor(R.color.light_purple));
-
         }
         public void bind(Memory Memory){
             mMemory = Memory;

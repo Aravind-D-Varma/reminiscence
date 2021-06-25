@@ -59,6 +59,7 @@ import my.project.nostalgia.activities.MemoryPagerActivity;
 import my.project.nostalgia.R;
 import my.project.nostalgia.adapters.ZoomViewPagerAdapter;
 import my.project.nostalgia.adapters.RecyclerViewGalleryAdapter;
+import my.project.nostalgia.supplementary.changeTheme;
 import my.project.nostalgia.supplementary.memoryEvents;
 import my.project.nostalgia.supplementary.transformationViewPager;
 
@@ -181,21 +182,9 @@ public class MemoryFragment extends Fragment {
         }
         mEditor.apply();
         inflater.inflate(R.menu.fragment_memory, menu);
-        setColorToIcon(menu);
+        new changeTheme(getContext()).colorMemoryIcon(menu);
 
     }
-    private void setColorToIcon(@NonNull Menu menu) {
-        String themeValues = mSharedPreferences.getString("GlobalTheme", "Dark");
-        if (themeValues.equals("Light")){
-            menu.findItem(R.id.delete_memory).setIcon(R.drawable.delete_white);
-            menu.findItem(R.id.share_memory).setIcon(R.drawable.share_white);
-        }
-        else if (themeValues.equals("Dark")){
-            menu.findItem(R.id.delete_memory).setIcon(R.drawable.delete_purple);
-            menu.findItem(R.id.share_memory).setIcon(R.drawable.share_purple);
-        }
-    }
-
     /**
      * Does actions on selecting delete or share
      * @see #getUrisFromPaths()
@@ -253,6 +242,7 @@ public class MemoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_memory, container, false);
         getActivity().setTitle(mMemory.getTitle());
+        changeTheme cT = new changeTheme(getContext());
         try {
             applicableEvents = getMemoryEvents().getIndividualEvents();
             applicableEvents = getMemoryEvents().addStringToArray(stringFromResource(R.string.add_event),
@@ -284,7 +274,7 @@ public class MemoryFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
-        setBackgroundTheme(mTitleField);
+        cT.setBackgroundTheme(mTitleField);
         //endregion
         //region EditText Details
         mDetailField = (EditText) v.findViewById(R.id.memory_details);
@@ -303,7 +293,7 @@ public class MemoryFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
-        setBackgroundTheme(mDetailField);
+        cT.setBackgroundTheme(mDetailField);
         mDateButton = (Button) v.findViewById(R.id.memory_date);
         updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
@@ -315,7 +305,7 @@ public class MemoryFragment extends Fragment {
                 dp.show(manager, DIALOG_DATE);
             }
         });
-        setBackgroundTheme(mDateButton);
+        cT.setBackgroundTheme(mDateButton);
         mTimeButton = (Button) v.findViewById(R.id.memory_time);
         updateTime();
         mTimeButton.setOnClickListener(new View.OnClickListener() {
@@ -327,7 +317,7 @@ public class MemoryFragment extends Fragment {
                 tp.show(fm, DIALOG_TIME);
             }
         });
-        setBackgroundTheme(mTimeButton);
+        cT.setBackgroundTheme(mTimeButton);
         mSpinner = (Spinner) v.findViewById(R.id.memory_spinner);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), R.layout.myspinner, applicableEvents);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -349,7 +339,7 @@ public class MemoryFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        setBackgroundTheme(mSpinner);
+        cT.setBackgroundTheme(mSpinner);
         mPhotoButton = (Button)v.findViewById(R.id.memory_selectphotos);
         try {
             if (mMemory.getMediaPaths().length() != 0)
@@ -370,7 +360,7 @@ public class MemoryFragment extends Fragment {
                 }
             }
         });
-        setBackgroundTheme(mPhotoButton);
+        cT.setBackgroundTheme(mPhotoButton);
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL));
         try{
@@ -401,7 +391,7 @@ public class MemoryFragment extends Fragment {
                     startActivityForResult(Intent.createChooser(getmoreImage, "Select Image"), REQUEST_GALLERY_ADDITIONALPHOTO);
                 }
             });
-        setBackgroundTheme(mPhotoFAB);
+        cT.setBackgroundTheme(mPhotoFAB);
         mUploadFAB = (FloatingActionButton) v.findViewById(R.id.upload_fab);
         mUploadFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -448,7 +438,7 @@ public class MemoryFragment extends Fragment {
 
             }
         });
-        setBackgroundTheme(mUploadFAB);
+        cT.setBackgroundTheme(mUploadFAB);
         return v;
     }
 
@@ -457,30 +447,6 @@ public class MemoryFragment extends Fragment {
     }
     private String stringFromResource(int resourceID) {
         return getResources().getString(resourceID);
-    }
-    private void setBackgroundTheme(View v) {
-        try {
-            if (mThemeValues.equals("Dark")) {
-                v.setBackgroundResource(R.drawable.button_border);
-                if (v instanceof Button)
-                    ((Button) v).setTextColor(colorFromResources(R.color.light_purple));
-                else if (v instanceof EditText){
-                    ((EditText) v).setTextColor(colorFromResources(R.color.white));
-                }
-            } else if (mThemeValues.equals("Light")) {
-                v.setBackgroundResource(R.drawable.button_border_light);
-                if (v instanceof Button)
-                    ((Button) v).setTextColor(colorFromResources(R.color.white));
-                else if (v instanceof Spinner) {
-                    TextView oTextView = (TextView) ((Spinner)v).getChildAt(0);
-                    oTextView.setTextColor(colorFromResources(R.color.white));
-                }
-            }
-        }
-        catch (NullPointerException e){}
-    }
-    private int colorFromResources(int resourceID) {
-        return getResources().getColor(resourceID);
     }
 
     private boolean hasMediaPermission() {

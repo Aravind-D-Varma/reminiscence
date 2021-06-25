@@ -8,7 +8,7 @@
                 <item
                     android:orderInCategory="0"
                     android:id="@+id/all"
-                    android:icon="@drawable/all_white"
+                    android:icon="@drawable/navigation_all"
                     android:title="@string/all" />
             </group>
             <group android:id="@+id/events">
@@ -22,7 +22,7 @@
         <item
             android:orderInCategory="2"
             android:id="@+id/user_settings"
-            android:icon="@drawable/settings_white"
+            android:icon="@drawable/navigation_settings"
             android:title="@string/settings"/>
     </group>
 

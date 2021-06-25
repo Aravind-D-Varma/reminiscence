@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,7 +35,7 @@
             android:layout_margin="25dp"
             android:elevation="20dp"
             android:background="@drawable/button_border"
-            android:src="@drawable/ic_menu_add"
+            android:src="@drawable/add"
             android:contentDescription="@string/no_memory_add" />
     </RelativeLayout>
 

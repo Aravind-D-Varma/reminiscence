@@ -23,6 +23,7 @@ import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.R;
 import my.project.nostalgia.fragments.MemoryFragment;
+import my.project.nostalgia.supplementary.changeTheme;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,7 +34,6 @@ import java.util.UUID;
  */
 public class MemoryPagerActivity extends AppCompatActivity implements MemoryFragment.Callbacks {
 
-    //region Declarations
     private static final String EXTRA_memory_ID = "my.project.memory_id";
     private static ViewPager mViewPager;
     private List<Memory> mMemories;
@@ -43,8 +43,6 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
     @Override
     public void onMemoryUpdated(Memory Memory) {
     }
-    //endregion
-
     /**
      * Starts this ViewPager activity from MemoryListActivity if device is phone
      * @see MemoryListActivity#onMemorySelected(Memory)
@@ -54,16 +52,15 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
         intent.putExtra(EXTRA_memory_ID, memoryId);
         return intent;
     }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new changeTheme(this).setUserTheme();
         setContentView(R.layout.media_pager_layout);
         mViewPager = (ViewPager) findViewById(R.id.media_view_pager);
         mMemories = MemoryLab.get(this).getMemories();
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        //region setAdapter
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager){
             @NonNull
             @Override
@@ -92,26 +89,8 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
             i++;
         }
     }
-
-    @Override
-    public Resources.Theme getTheme() {
-        Resources.Theme theme = super.getTheme();
-        SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
-
-        if (themeValues.equals("Dark"))
-            theme.applyStyle(R.style.Theme_Reminiscence, true);
-
-        if (themeValues.equals("Light"))
-            theme.applyStyle(R.style.Theme_Reminiscence_Light, true);
-
-        return theme;
-    }
-
-    /**
-     * Ensures that the keyboard goes down if user presses anywhere outside the edit text box.
-     * Applicable to all edittexts in this activity
-     */
+    /**Ensures that the keyboard goes down if user presses anywhere outside the edit text box.
+     * Applicable to all edittexts in this activity*/
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if(ev.getAction()==MotionEvent.ACTION_DOWN){

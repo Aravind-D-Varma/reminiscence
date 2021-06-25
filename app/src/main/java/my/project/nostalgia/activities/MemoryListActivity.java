@@ -1,7 +1,6 @@
 package my.project.nostalgia.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,6 +20,7 @@ import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.R;
 import my.project.nostalgia.fragments.MemoryFragment;
 import my.project.nostalgia.fragments.MemoryListFragment;
+import my.project.nostalgia.supplementary.changeTheme;
 import my.project.nostalgia.supplementary.memoryEvents;
 
 import com.google.android.material.navigation.NavigationView;
@@ -35,14 +35,13 @@ import java.util.Locale;
 public class MemoryListActivity extends SingleFragmentActivity
         implements MemoryListFragment.Callbacks, MemoryFragment.Callbacks, NavigationView.OnNavigationItemSelectedListener {
 
-    DrawerLayout mDrawerLayout;
-    ActionBarDrawerToggle mABDrawerToggle;
-    NavigationView mNavigationView;
-    public MemoryListFragment MLfragment;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mABDrawerToggle;
+    private NavigationView mNavigationView;
+    private MemoryListFragment MLfragment;
     private TextView mHeaderText;
     private String userName;
-    public String[] applicableEvents = {};
-    private String mThemeValues = "Dark";
+    private changeTheme mTheme;
 
     /**
      * Create a fragment which contains a list of memories (using recycler view).
@@ -87,45 +86,24 @@ public class MemoryListActivity extends SingleFragmentActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.detail_fragment_container, newDetail).commit();
         }
     }
-
     @Override
     protected Fragment createFragment() {
         MLfragment = new MemoryListFragment();
         return MLfragment;
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setUserTheme();
+        mTheme = new changeTheme(this);
+        mTheme.setUserTheme();
         super.onCreate(savedInstanceState);
 
         mNavigationView = findViewById(R.id.navigation_view);
-        setColorToIcons();
+        mTheme.colorToNavigationIcons(mNavigationView);
 
         getGeneralInfo();
         setHeaderWelcomeUser(userName);
         showMenuEvents();
         drawerAndToggle();
-    }
-
-    private void setUserTheme() {
-        SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        mThemeValues = getData.getString("GlobalTheme", "Dark");
-        if (mThemeValues.equals("Dark"))
-            setTheme(R.style.Theme_Reminiscence);
-        else
-            setTheme(R.style.Theme_Reminiscence_Light);
-    }
-
-    private void setColorToIcons() {
-        int colorInt;
-        if (mThemeValues.equals("Dark"))
-            colorInt = getResources().getColor(R.color.white);
-        else
-            colorInt = getResources().getColor(R.color.black);
-
-        ColorStateList csl = ColorStateList.valueOf(colorInt);
-        mNavigationView.setItemIconTintList(csl);
     }
     @Override
     protected void onResume() {
@@ -134,21 +112,12 @@ public class MemoryListActivity extends SingleFragmentActivity
         setHeaderWelcomeUser(userName);
         showMenuEvents();
     }
-
     private void setHeaderWelcomeUser(String userName) {
         View headerView = mNavigationView.getHeaderView(0);
-
         mHeaderText = headerView.findViewById(R.id.nav_header_textView);
         mHeaderText.setText(String.format("%s %s!",
                 getResources().getString(R.string.welcome).substring(0,7), userName));
-
-        if (mThemeValues.equals("Dark")) {
-            headerView.setBackgroundColor(getResources().getColor(R.color.medium_black));
-        }
-        if (mThemeValues.equals("Light")){
-            headerView.setBackgroundColor(getResources().getColor(R.color.dark_purple));
-            mHeaderText.setTextColor(getResources().getColor(R.color.white));
-        }
+        mTheme.setNavigationHeaderTheme(headerView, mHeaderText);
     }
     private void drawerAndToggle() {
         mDrawerLayout = findViewById(R.id.main_drawerLayout);
@@ -159,7 +128,6 @@ public class MemoryListActivity extends SingleFragmentActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mABDrawerToggle.syncState();
     }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         String[] currentEvents = new memoryEvents(getApplicationContext(),
@@ -195,7 +163,6 @@ public class MemoryListActivity extends SingleFragmentActivity
     private void goToSettings() {
         Intent intent = new Intent(this, UserSettingsActivity.class);
         startActivity(intent);
-        this.finish();
     }
     /**
      * Updates list of memories depending on what the user selected in menu of Navigation Drawer

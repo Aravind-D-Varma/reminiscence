@@ -13,11 +13,15 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryDark</item>
 
+
+
         <!-- Customize your theme here. -->
         <item name = "actionBarStyle">@style/myActionbar</item>
         <item name="android:textColor">@color/light_purple</item>
         <item name="android:textColorPrimary">@color/light_purple</item>
         <item name="android:textColorSecondary">@color/grey</item>
+
+        <item name="preferenceTheme">@style/darkPreferenceStyle</item>
 
     </style>
 
@@ -25,6 +29,7 @@
         <item name ="background">@color/medium_black</item>
         <item name="titleTextStyle">@style/myActionbar.TitleTextStyle</item>
         <item name="subtitleTextStyle">@style/myActionbar.SubtitleTextStyle</item>
+        <item name="colorControlNormal">@color/light_purple</item>
     </style>
     <style name="myActionbar.TitleTextStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:textColor">@color/light_purple</item>
@@ -33,6 +38,9 @@
     </style>
     <style name="myActionbar.SubtitleTextStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:textColor">@color/light_purple</item>
+    </style>
+    <style name="darkPreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="android:tint">@color/white</item>
     </style>
 
     <!-- Light application theme. -->
@@ -48,12 +56,15 @@
         <item name="android:textColorSecondary">@color/grey</item>
 
         <item name = "actionBarStyle">@style/myActionbarLight</item>
+
+        <item name="preferenceTheme">@style/lightPreferenceStyle</item>
     </style>
 
     <style name="myActionbarLight" parent ="Widget.AppCompat.ActionBar">
         <item name ="background">@color/dark_purple</item>
         <item name="titleTextStyle">@style/myActionbar.TitleTextStyleLight</item>
         <item name="subtitleTextStyle">@style/myActionbar.SubtitleTextStyleLight</item>
+        <item name="iconTint">@color/black</item>g
     </style>
     <style name="myActionbar.TitleTextStyleLight" parent="Widget.AppCompat.ActionBar">
         <item name="android:textColor">@color/white</item>
@@ -63,6 +74,8 @@
     <style name="myActionbar.SubtitleTextStyleLight" parent="Widget.AppCompat.ActionBar">
         <item name="android:textColor">@color/white</item>
     </style>
-
+    <style name="lightPreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="android:tint">@color/black</item>
+    </style>
 
 </resources>
