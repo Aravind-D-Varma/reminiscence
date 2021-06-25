@@ -220,7 +220,6 @@ public class MemoryFragment extends Fragment {
     /**
      * Creates an intent which allows user to share the memory: photos/videos and title.
      * @param mediaUri list of all Uri which contain filepaths of photos and videos of a memory.
-     * @return
      */
     private Intent shareMemoryIntent(ArrayList<Uri> mediaUri) {
         Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);
@@ -289,26 +288,20 @@ public class MemoryFragment extends Fragment {
         cT.setBackgroundTheme(detailField);
         mDateButton = (Button) v.findViewById(R.id.memory_date);
         updateDate();
-        mDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager manager = getFragmentManager();
-                DatePickerDialogFragment dp = DatePickerDialogFragment.newInstance(mMemory.getDate());
-                dp.setTargetFragment(MemoryFragment.this, REQUEST_DATE);
-                dp.show(manager, DIALOG_DATE);
-            }
+        mDateButton.setOnClickListener(v17 -> {
+            FragmentManager manager = getFragmentManager();
+            DatePickerDialogFragment dp = DatePickerDialogFragment.newInstance(mMemory.getDate());
+            dp.setTargetFragment(MemoryFragment.this, REQUEST_DATE);
+            dp.show(manager, DIALOG_DATE);
         });
         cT.setBackgroundTheme(mDateButton);
         mTimeButton = (Button) v.findViewById(R.id.memory_time);
         updateTime();
-        mTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                TimePickerDialogFragment tp = TimePickerDialogFragment.newInstance(mMemory.getDate());
-                tp.setTargetFragment(MemoryFragment.this, REQUEST_TIME);
-                tp.show(fm, DIALOG_TIME);
-            }
+        mTimeButton.setOnClickListener(v16 -> {
+            FragmentManager fm = getFragmentManager();
+            TimePickerDialogFragment tp = TimePickerDialogFragment.newInstance(mMemory.getDate());
+            tp.setTargetFragment(MemoryFragment.this, REQUEST_TIME);
+            tp.show(fm, DIALOG_TIME);
         });
         cT.setBackgroundTheme(mTimeButton);
         Spinner spinner = (Spinner) v.findViewById(R.id.memory_spinner);
@@ -339,17 +332,14 @@ public class MemoryFragment extends Fragment {
                 mPhotoButton.setText(R.string.photos_reselection);
         }catch (NullPointerException ignored){}
         getImage = getFromMediaIntent();
-        mPhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(hasMediaPermission()) {
+        mPhotoButton.setOnClickListener(v15 -> {
+            if(hasMediaPermission()) {
+                startActivityForResult(Intent.createChooser(getImage, "Select Images/Videos"), REQUEST_GALLERY_PHOTO);
+            }
+            else{
+                requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE);
+                if(hasMediaPermission()){
                     startActivityForResult(Intent.createChooser(getImage, "Select Images/Videos"), REQUEST_GALLERY_PHOTO);
-                }
-                else{
-                    requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE);
-                    if(hasMediaPermission()){
-                        startActivityForResult(Intent.createChooser(getImage, "Select Images/Videos"), REQUEST_GALLERY_PHOTO);
-                    }
                 }
             }
         });
@@ -360,76 +350,57 @@ public class MemoryFragment extends Fragment {
             setMediaRecyclerView();
         }
         catch (NullPointerException ignored){}
-        ItemClickRecyclerView.addTo(mPhotoRecyclerView).setOnItemClickListener(new ItemClickRecyclerView.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                displayMediaZoomedIn(position);
-            }
-        });
-        ItemClickRecyclerView.addTo(mPhotoRecyclerView).setOnItemLongClickListener(new ItemClickRecyclerView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClicked(RecyclerView recyclerView, int position, View v) {
-                String[] filePaths = individualFilePaths(mMemory);
-                AlertDialog diaBox = AskDeleteMedia(filePaths[position]);
-                diaBox.show();
-                return false;
-            }
+        ItemClickRecyclerView.addTo(mPhotoRecyclerView).setOnItemClickListener((recyclerView, position, v14) -> displayMediaZoomedIn(position));
+        ItemClickRecyclerView.addTo(mPhotoRecyclerView).setOnItemLongClickListener((recyclerView, position, v13) -> {
+            String[] filePaths = individualFilePaths(mMemory);
+            AlertDialog diaBox = AskDeleteMedia(filePaths[position]);
+            diaBox.show();
+            return false;
         });
         mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
         behaviourBeforeAddingMedia(v);
         Intent getmoreImage = getFromMediaIntent();
-        mPhotoFAB.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivityForResult(Intent.createChooser(getmoreImage, "Select Image"), REQUEST_GALLERY_ADDITIONALPHOTO);
-                }
-            });
+        mPhotoFAB.setOnClickListener(v12 -> startActivityForResult(Intent.createChooser(getmoreImage, "Select Image"), REQUEST_GALLERY_ADDITIONALPHOTO));
         cT.setBackgroundTheme(mPhotoFAB);
         FloatingActionButton uploadFAB = (FloatingActionButton) v.findViewById(R.id.upload_fab);
-        uploadFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProgressDialog mProgressDialog = new ProgressDialog(getActivity());
-                mProgressDialog.setMessage("Uploading...");
-                mProgressDialog.show();
-                mFirebaseAuth = FirebaseAuth.getInstance();
-                FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                String userID = user.getUid();
-                mStorageReference = FirebaseStorage.getInstance().getReference();
-                String s = mMemory.getId().toString();
+        uploadFAB.setOnClickListener(v1 -> {
+            ProgressDialog mProgressDialog = new ProgressDialog(getActivity());
+            mProgressDialog.setMessage("Uploading...");
+            mProgressDialog.show();
+            mFirebaseAuth = FirebaseAuth.getInstance();
+            FirebaseUser user = mFirebaseAuth.getCurrentUser();
+            String userID = user.getUid();
+            mStorageReference = FirebaseStorage.getInstance().getReference();
+            String s = mMemory.getId().toString();
 
-                for(String path:individualFilePaths(mMemory)){
-                    if(path!=null) {
-                        Uri uri = Uri.fromFile(new File(path));
+            for(String path:individualFilePaths(mMemory)){
+                if(path!=null) {
+                    Uri uri = Uri.fromFile(new File(path));
 
-                        char[] arrayOfFilename = path.toCharArray();
-                        for(int i = arrayOfFilename.length-1; i>0; i--){
-                            if(arrayOfFilename[i] == '/'){
-                               path = path.substring(i+1);
-                               break;
-                            }
+                    char[] arrayOfFilename = path.toCharArray();
+                    for(int i = arrayOfFilename.length-1; i>0; i--){
+                        if(arrayOfFilename[i] == '/'){
+                           path = path.substring(i+1);
+                           break;
                         }
-                        StorageReference storageReference = mStorageReference.child(userID+"/"+ s +"/"+path);
-                        storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                try {
-                                    Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_SHORT).show();
-                                    mProgressDialog.dismiss();
-                                }catch (NullPointerException ignored){}
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                try{
-                                Toast.makeText(getContext(),"Upload failed",Toast.LENGTH_SHORT).show();
-                                mProgressDialog.dismiss();}catch (NullPointerException ignored){}
-                            }
-                        });
                     }
+                    StorageReference storageReference = mStorageReference.child(userID+"/"+ s +"/"+path);
+                    storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> {
+                        try {
+                            Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_SHORT).show();
+                            mProgressDialog.dismiss();
+                        } catch (NullPointerException ignored) {
+                        }
+                    }).addOnFailureListener(e -> {
+                        try {
+                            Toast.makeText(getContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+                            mProgressDialog.dismiss();
+                        } catch (NullPointerException ignored) {
+                        }
+                    });
                 }
-
             }
+
         });
         cT.setBackgroundTheme(uploadFAB);
         return v;
@@ -472,22 +443,16 @@ public class MemoryFragment extends Fragment {
                 .setTitle(stringFromResource(R.string.delete_file))
                 .setMessage(stringFromResource(R.string.deletion_confirm))
                 .setIcon(android.R.drawable.ic_menu_delete)
-                .setPositiveButton(stringFromResource(R.string.discard), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String[] allPhotoPaths = individualFilePaths(mMemory);
-                        List<String> list = new ArrayList<>(Arrays.asList(allPhotoPaths));
-                        list.remove(toDeleteMediapath);
-                        String joined = TextUtils.join(",", list);
-                        mMemory.setMediaPaths(joined);
-                        setMediaRecyclerView();
-                        dialog.dismiss();
-                    }
+                .setPositiveButton(stringFromResource(R.string.discard), (dialog, whichButton) -> {
+                    String[] allPhotoPaths = individualFilePaths(mMemory);
+                    List<String> list = new ArrayList<>(Arrays.asList(allPhotoPaths));
+                    list.remove(toDeleteMediapath);
+                    String joined = TextUtils.join(",", list);
+                    mMemory.setMediaPaths(joined);
+                    setMediaRecyclerView();
+                    dialog.dismiss();
                 })
-                .setNegativeButton(stringFromResource(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> dialog.dismiss())
                 .create();
         myQuittingDialogBox.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         return myQuittingDialogBox;
@@ -618,21 +583,18 @@ public class MemoryFragment extends Fragment {
         }
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener(){
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    String title = mSharedPreferences.getString(CURRENT_MEMORY, "");
-                    boolean photosAbsent = mSharedPreferences.getBoolean(CURRENT_PHOTOS_ABSENT,true);
-                    if (title.equals("")&&photosAbsent) {
-                        AskDiscardMemory().show();
-                        return true;
-                    }
-                    else
-                        return false;
+        getView().setOnKeyListener((v, keyCode, event) -> {
+            if(event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                String title = mSharedPreferences.getString(CURRENT_MEMORY, "");
+                boolean photosAbsent = mSharedPreferences.getBoolean(CURRENT_PHOTOS_ABSENT,true);
+                if (title.equals("")&&photosAbsent) {
+                    AskDiscardMemory().show();
+                    return true;
                 }
-                return false;
+                else
+                    return false;
             }
+            return false;
         });
     }
     private AlertDialog AskDiscardMemory(){
@@ -640,18 +602,12 @@ public class MemoryFragment extends Fragment {
                 .setTitle(stringFromResource(R.string.delete_memory))
                 .setMessage(stringFromResource(R.string.delete_memory_confirm))
                 .setIcon(android.R.drawable.ic_menu_delete)
-                .setPositiveButton(stringFromResource(R.string.discard), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        Intent intent = new Intent(getActivity(), MemoryListActivity.class);
-                        startActivity(intent);
-                        dialog.dismiss();
-                    }
+                .setPositiveButton(stringFromResource(R.string.discard), (dialog, whichButton) -> {
+                    Intent intent = new Intent(getActivity(), MemoryListActivity.class);
+                    startActivity(intent);
+                    dialog.dismiss();
                 })
-                .setNegativeButton(stringFromResource(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> dialog.dismiss())
                 .create();
     }
 
@@ -669,7 +625,7 @@ public class MemoryFragment extends Fragment {
      * @see #getSelectionArgumentsForCursor(Uri)
      * @see #isImage(Uri)
      * @see #getMimeType(Uri)
-     * @param mMediaUri
+     * @param mMediaUri Uri of media
      * @return String containing filepath
      */
     private String getMediaPathFromUri(Uri mMediaUri) {

@@ -28,10 +28,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Depending on the screen size, i.e, phone/tablet, this will (should) return the relevant user interface.
-     * @return
-     */
+    /**Depending on the screen size, i.e, phone/tablet, this will (should) return the relevant user interface.u*/
     @LayoutRes
     protected int  getlayoutresID() {
         return R.layout.activity_main;

@@ -48,12 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
         mPassword2 = (EditText) findViewById(R.id.register_password_reenter);
         Button register = (Button) findViewById(R.id.register_button);
         mProgressDialog = new ProgressDialog(this);
-        register.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Register();
-            }
-        });
+        register.setOnClickListener(v -> Register());
     }
 
     private void Register() {
@@ -86,22 +81,19 @@ public class RegisterActivity extends AppCompatActivity {
         mProgressDialog.setCanceledOnTouchOutside(false);
 
         mAuth.createUserWithEmailAndPassword(email,password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
-                    Toast.makeText(RegisterActivity.this, "Successfully registered."
-                            , Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(RegisterActivity.this,MemoryListActivity.class));
-                    finish();
-                }
-                else{
-                    Toast.makeText(RegisterActivity.this, "Registration Failed!"
-                            , Toast.LENGTH_SHORT).show();
-                    mProgressDialog.dismiss();
-                }
-            }
-        });
+                .addOnCompleteListener(this, task -> {
+                    if(task.isSuccessful()) {
+                        Toast.makeText(RegisterActivity.this, "Successfully registered."
+                                , Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(RegisterActivity.this,MemoryListActivity.class));
+                        finish();
+                    }
+                    else{
+                        Toast.makeText(RegisterActivity.this, "Registration Failed!"
+                                , Toast.LENGTH_SHORT).show();
+                        mProgressDialog.dismiss();
+                    }
+                });
     }
     private void setGeneralInfo(String userName, String combinedEvents) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();

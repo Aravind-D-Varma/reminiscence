@@ -101,18 +101,8 @@ public class ZoomViewPagerAdapter extends PagerAdapter {
         try {
             vv.setVideoURI(getVideoURI(individualMediaPaths).get(position));
             vv.seekTo(1);
-            buttonLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    clickForPauseOrResume(vv, ib);
-                }
-            });
-            ib.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    clickForPauseOrResume(vv, ib);
-                }
-            });
+            buttonLayout.setOnClickListener(v12 -> clickForPauseOrResume(vv, ib));
+            ib.setOnClickListener(v1 -> clickForPauseOrResume(vv, ib));
         }
         catch (NullPointerException ignored){}
     }

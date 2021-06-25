@@ -161,45 +161,37 @@ public class MemoryListFragment extends Fragment {
             String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("Users");
             DocumentReference userDocument = usersCollection.document(userid);
-            userDocument.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        if (documentSnapshot.exists()) {
-                            if(!hasMediaPermission()) {
-                                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
-                                alertBuilder.setCancelable(true);
-                                alertBuilder.setTitle("Storage permission necessary");
-                                alertBuilder.setMessage("In order to load your images and videos of previous memories" +
-                                        ", please grant storage permissions");
-                                alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE);
-                                    }
-                                });
-                                AlertDialog alert = alertBuilder.create();
-                                alert.show();
-                            }
-                            prefs.edit().putBoolean(FIRST_TIME,false).apply();
-                            MemoryLab memoryLab = MemoryLab.get(getActivity());
-                            Map<String,Object> dataReceived = documentSnapshot.getData();
-                            List<HashMap> hashMaps = (List<HashMap>) dataReceived.get(MEMORIES_KEY);
-                            for(HashMap hashMap:hashMaps){
-                                Memory memory = new Memory();
-                                memory.setTitle(hashMap.get("title").toString());
-                                memory.setDetail(hashMap.get("detail").toString());
-                                try{
-                                    memory.setMediaPaths(hashMap.get("mediaPaths").toString());
-                                }catch (NullPointerException e){
-                                    memory.setMediaPaths("");
-                                }
-                                memory.setEvent(hashMap.get("event").toString());
-                                memoryLab.addMemory(memory);
-                            }
-                            updateByDevice();
+            userDocument.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot.exists()) {
+                        if(!hasMediaPermission()) {
+                            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                            alertBuilder.setCancelable(true);
+                            alertBuilder.setTitle("Storage permission necessary");
+                            alertBuilder.setMessage("In order to load your images and videos of previous memories" +
+                                    ", please grant storage permissions");
+                            alertBuilder.setPositiveButton(android.R.string.yes, (dialog, which) -> requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE));
+                            AlertDialog alert = alertBuilder.create();
+                            alert.show();
                         }
+                        prefs.edit().putBoolean(FIRST_TIME,false).apply();
+                        MemoryLab memoryLab = MemoryLab.get(getActivity());
+                        Map<String,Object> dataReceived = documentSnapshot.getData();
+                        List<HashMap> hashMaps = (List<HashMap>) dataReceived.get(MEMORIES_KEY);
+                        for(HashMap hashMap:hashMaps){
+                            Memory memory = new Memory();
+                            memory.setTitle(hashMap.get("title").toString());
+                            memory.setDetail(hashMap.get("detail").toString());
+                            try{
+                                memory.setMediaPaths(hashMap.get("mediaPaths").toString());
+                            }catch (NullPointerException e){
+                                memory.setMediaPaths("");
+                            }
+                            memory.setEvent(hashMap.get("event").toString());
+                            memoryLab.addMemory(memory);
+                        }
+                        updateByDevice();
                     }
                 }
             });
@@ -209,20 +201,17 @@ public class MemoryListFragment extends Fragment {
             view = inflater.inflate(R.layout.empty_list_page, container, false);
             Button noMemoryButton = (Button) view.findViewById(R.id.no_memory_button);
 
-            noMemoryButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View noMemoryView) {
-                    mNewMemory = new Memory();
-                    MemoryLab.get(getActivity()).addMemory(mNewMemory);
-                    if(isDeviceTablet()) {
-                        container.removeAllViews();
-                        noMemoryView = inflater.inflate(R.layout.fragment_memory_list, container, false);
-                        container.addView(noMemoryView);
-                        setListAndAddButton(noMemoryView);
-                        updateUIForTablet();
-                    }
-                    mCallbacks.onMemorySelected(mNewMemory);
+            noMemoryButton.setOnClickListener(noMemoryView -> {
+                mNewMemory = new Memory();
+                MemoryLab.get(getActivity()).addMemory(mNewMemory);
+                if(isDeviceTablet()) {
+                    container.removeAllViews();
+                    noMemoryView = inflater.inflate(R.layout.fragment_memory_list, container, false);
+                    container.addView(noMemoryView);
+                    setListAndAddButton(noMemoryView);
+                    updateUIForTablet();
                 }
+                mCallbacks.onMemorySelected(mNewMemory);
             });
         }
         else{
@@ -241,42 +230,30 @@ public class MemoryListFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.memory_fab);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mNewMemory = new Memory();
-                MemoryLab.get(getActivity()).addMemory(mNewMemory);
-                if(isDeviceTablet())
-                    updateUIForTablet();
-                mCallbacks.onMemorySelected(mNewMemory);
-            }
+        floatingActionButton.setOnClickListener(v -> {
+            mNewMemory = new Memory();
+            MemoryLab.get(getActivity()).addMemory(mNewMemory);
+            if(isDeviceTablet())
+                updateUIForTablet();
+            mCallbacks.onMemorySelected(mNewMemory);
         });
         FloatingActionButton upload = (FloatingActionButton) view.findViewById(R.id.memory_upload);
-        upload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
-                        .document(userid);
-                ProgressDialog mProgressDialog = new ProgressDialog(getContext());
-                mProgressDialog.setMessage("Uploading...");
-                mProgressDialog.show();
-                Map<String,List<Memory>> dataToSave = new HashMap<>();
-                dataToSave.put(MEMORIES_KEY,MemoryLab.get(getActivity()).getMemories());
-                userDocument.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getContext(),"Upload Successful",Toast.LENGTH_SHORT).show();
-                        mProgressDialog.dismiss();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(),"Upload Failed: "+e.getMessage(),Toast.LENGTH_SHORT).show();
-                        mProgressDialog.dismiss();
-                    }
-                });
-            }
+        upload.setOnClickListener(v -> {
+            String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
+                    .document(userid);
+            ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+            mProgressDialog.setMessage("Uploading...");
+            mProgressDialog.show();
+            Map<String,List<Memory>> dataToSave = new HashMap<>();
+            dataToSave.put(MEMORIES_KEY,MemoryLab.get(getActivity()).getMemories());
+            userDocument.set(dataToSave).addOnSuccessListener(aVoid -> {
+                Toast.makeText(getContext(), "Upload Successful", Toast.LENGTH_SHORT).show();
+                mProgressDialog.dismiss();
+            }).addOnFailureListener(e -> {
+                Toast.makeText(getContext(), "Upload Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                mProgressDialog.dismiss();
+            });
         });
     }
 
@@ -400,26 +377,20 @@ public class MemoryListFragment extends Fragment {
                 else
                     mDetailText.setText(mMemory.getDetail());
             }catch (NullPointerException ignored){}
-            mShare.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        ArrayList<Uri> mediaUri = getUrisFromPaths();
-                        Intent share = shareMemoryIntent(mediaUri);
-                        startActivity(Intent.createChooser(share, "Share Memory"));
-                    }
-                    catch (NullPointerException e){
-                        Toast.makeText(getContext(), stringResource(R.string.share_warning),Toast.LENGTH_SHORT).show();
-                    }
+            mShare.setOnClickListener(v -> {
+                try {
+                    ArrayList<Uri> mediaUri = getUrisFromPaths();
+                    Intent share = shareMemoryIntent(mediaUri);
+                    startActivity(Intent.createChooser(share, "Share Memory"));
+                }
+                catch (NullPointerException e){
+                    Toast.makeText(getContext(), stringResource(R.string.share_warning),Toast.LENGTH_SHORT).show();
                 }
             });
-            mDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MemoryLab.get(getActivity()).deleteMemory(mMemory);
-                    startActivity(new Intent(getActivity(), MemoryListActivity.class));
-                    getActivity().finish();
-                }
+            mDelete.setOnClickListener(v -> {
+                MemoryLab.get(getActivity()).deleteMemory(mMemory);
+                startActivity(new Intent(getActivity(), MemoryListActivity.class));
+                getActivity().finish();
             });
             try{
             String[] mediaPaths = mMemory.getMediaPaths().split(",");
@@ -468,7 +439,6 @@ public class MemoryListFragment extends Fragment {
         /**
          * Creates an intent which allows user to share the memory: photos/videos and title.
          * @param mediaUri list of all Uri which contain filepaths of photos and videos of a memory.
-         * @return
          */
         private Intent shareMemoryIntent(ArrayList<Uri> mediaUri) {
             Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);

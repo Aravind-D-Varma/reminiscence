@@ -65,19 +65,16 @@ public class TimePickerDialogFragment extends DialogFragment {
             dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getActivity(), R.style.DarkDialog);
 
         dialogBuilder.setView(v)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            int dialogHour = mTimePicker.getHour();
-                            int dialogMinute = mTimePicker. getMinute();
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(date);
-                            calendar.set(Calendar.HOUR_OF_DAY, dialogHour);
-                            calendar.set(Calendar.MINUTE, dialogMinute);
-                            Date time = calendar.getTime();
-                            sendResult(Activity.RESULT_OK, time);
-                        }
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        int dialogHour = mTimePicker.getHour();
+                        int dialogMinute = mTimePicker. getMinute();
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(date);
+                        calendar.set(Calendar.HOUR_OF_DAY, dialogHour);
+                        calendar.set(Calendar.MINUTE, dialogMinute);
+                        Date time = calendar.getTime();
+                        sendResult(Activity.RESULT_OK, time);
                     }
                 });
         return dialogBuilder.create();

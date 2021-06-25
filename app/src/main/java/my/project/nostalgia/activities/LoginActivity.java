@@ -57,26 +57,13 @@ public class LoginActivity extends AppCompatActivity {
         Button forgot = (Button) findViewById(R.id.login_forgot);
         Button login = (Button) findViewById(R.id.login_button);
         mProgressDialog = new ProgressDialog(this);
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
-                finish();
-            }
+        register.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+            finish();
         });
 
-        login.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Login();
-            }
-        });
-        forgot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ForgotPassword();
-            }
-        });
+        login.setOnClickListener(v -> Login());
+        forgot.setOnClickListener(v -> ForgotPassword());
 
     }
 
@@ -86,14 +73,11 @@ public class LoginActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(email)) {
             mEmail.setError("Enter your email");return;}
 
-        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful())
-                    Toast.makeText(LoginActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(LoginActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
-            }
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+            if (task.isSuccessful())
+                Toast.makeText(LoginActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(LoginActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -121,23 +105,20 @@ public class LoginActivity extends AppCompatActivity {
         mProgressDialog.setCanceledOnTouchOutside(false);
 
         mAuth.signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
-                    Toast.makeText(LoginActivity.this, "Successfully logged in."
-                            , Toast.LENGTH_SHORT).show();
-                    setGeneralInfo(mName.getText().toString(),new memoryEvents(getApplicationContext()).getJoinedEvents());
-                    startActivity(new Intent(LoginActivity.this,MemoryListActivity.class));
-                    finish();
-                }
-                else{
-                    Toast.makeText(LoginActivity.this, "Incorrect combination of email and password !"
-                            , Toast.LENGTH_SHORT).show();
-                    mProgressDialog.dismiss();
-                }
-            }
-        });
+                .addOnCompleteListener(this, task -> {
+                    if(task.isSuccessful()) {
+                        Toast.makeText(LoginActivity.this, "Successfully logged in."
+                                , Toast.LENGTH_SHORT).show();
+                        setGeneralInfo(mName.getText().toString(),new memoryEvents(getApplicationContext()).getJoinedEvents());
+                        startActivity(new Intent(LoginActivity.this,MemoryListActivity.class));
+                        finish();
+                    }
+                    else{
+                        Toast.makeText(LoginActivity.this, "Incorrect combination of email and password !"
+                                , Toast.LENGTH_SHORT).show();
+                        mProgressDialog.dismiss();
+                    }
+                });
     }
     private void setGeneralInfo(String userName, String combinedEvents) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();

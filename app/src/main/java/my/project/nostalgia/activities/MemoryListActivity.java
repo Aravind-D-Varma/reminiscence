@@ -32,6 +32,7 @@ import java.util.Locale;
  * Displays the list of memories user has added in its own fragment MemoryListFragment
  * @see MemoryListFragment
  */
+@SuppressWarnings("JavaDoc")
 public class MemoryListActivity extends SingleFragmentActivity
         implements MemoryListFragment.Callbacks, MemoryFragment.Callbacks, NavigationView.OnNavigationItemSelectedListener {
 
