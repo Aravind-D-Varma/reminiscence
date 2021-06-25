@@ -22,7 +22,6 @@
     <string name="no_memory_add">Add a memory?</string>
     <string name="memory_photo_button_description">Take photo of memory scene</string>
     <string name="memory_photo_no_image_description">memory scene photo (not set)</string>
-    <string name="memory_photo_image_description">memory scene photo (set)</string>
     <string name="memory_details_hint">Describe your recollection in detail</string>
     <string name="choose_photos">Choose Photos/Videos</string>
     <string name="photo_add">Add photo</string>
@@ -84,8 +83,6 @@
     <string name="enter_name">Your name</string>
     <string name="password_reenter">Re-enter Password</string>
     <string name="sign_up">Sign Up !</string>
-    <string name="add_on">Add On</string>
-    <string name="upload">Upload</string>
     <string name="sign_out">Sign Out</string>
     <string name="sign_out_summary">Signing out will take you to the login page.</string>
     <string name="delete_account">Delete Account</string>

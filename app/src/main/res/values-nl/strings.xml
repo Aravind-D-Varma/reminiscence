@@ -23,7 +23,6 @@
     <string name="Delete">Verwijderen</string>
     <string name="memory_photo_button_description">Maak een foto van een herinneringsscène</string>
     <string name="memory_photo_no_image_description">geheugenscène foto (niet ingesteld)</string>
-    <string name="memory_photo_image_description">geheugenscène foto (set)</string>
     <string name="memory_details_hint">Beschrijf uw herinnering in detail</string>
     <string name="all">Alle evenementen</string>
     <string name="choose_photos">Kies Fotos</string>
@@ -87,8 +86,6 @@
     <string name="enter_name">Uw naam</string>
     <string name="password_reenter">Voer paswoord opnieuw in</string>
     <string name="sign_up">Aanmelden !</string>
-    <string name="add_on">Toevoegen</string>
-    <string name="upload">Uploaden</string>
     <string name="sign_out">Afmelden</string>
     <string name="sign_out_summary">Als u zich afmeldt, gaat u naar de inlogpagina.</string>
     <string name="delete_account">Account verwijderen</string>
