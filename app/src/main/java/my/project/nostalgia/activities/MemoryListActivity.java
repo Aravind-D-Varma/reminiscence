@@ -171,12 +171,10 @@ public class MemoryListActivity extends SingleFragmentActivity
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        switch (item.getItemId()){
-            case android.R.id.home:
-                return closeAndOpenDrawer();
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            return closeAndOpenDrawer();
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private boolean closeAndOpenDrawer() {

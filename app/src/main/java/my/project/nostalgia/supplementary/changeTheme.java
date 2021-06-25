@@ -2,7 +2,6 @@ package my.project.nostalgia.supplementary;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
@@ -12,8 +11,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.preference.Preference;
 
 import com.google.android.material.navigation.NavigationView;
 

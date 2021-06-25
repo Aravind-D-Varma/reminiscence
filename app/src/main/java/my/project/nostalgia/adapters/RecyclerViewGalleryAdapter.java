@@ -68,13 +68,13 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
                     vv.setVideoURI(videos.get(position));
                     vv.seekTo(1);
                 }
-                catch(NullPointerException e){}
+                catch(NullPointerException ignored){}
                 break;
             case IMAGE:
                 try{
                     ((MyImageViewHolder)holder).image.setImageBitmap(photos.get(position));
                 }
-                catch (NullPointerException e){}
+                catch (NullPointerException ignored){}
                 break;
         }
     }
@@ -114,7 +114,7 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
         }
     }
     private List<Bitmap> getPhotoBitmaps(String[] mediaPaths) {
-        photos = new ArrayList<Bitmap>();
+        photos = new ArrayList<>();
         for (String mediaPath:mediaPaths) {
             if(isImageFile(mediaPath)) {
                 Bitmap bpimg = BitmapFactory.decodeFile(mediaPath);
@@ -126,7 +126,7 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
     }
   
     private List<Uri> getVideoURIs(String[] mediaPaths) {
-        videos = new ArrayList<Uri>();
+        videos = new ArrayList<>();
         for (String mediaPath:mediaPaths) {
             if(isVideoFile(mediaPath)) {
                 Uri uriVid = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", new File(mediaPath));

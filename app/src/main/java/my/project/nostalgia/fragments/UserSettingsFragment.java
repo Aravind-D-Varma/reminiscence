@@ -50,7 +50,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
-        changeTheme cT = new changeTheme(getContext());
         calls = 0;
         PreferenceScreen mScreen = getPreferenceManager().createPreferenceScreen(getActivity());
         setPreferenceScreen(mScreen);
@@ -61,19 +60,15 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
 
         EditTextPreference username = setUserName(mScreen);
         mChoices.addPreference(username);
-        //cT.setPreferenceIcon(username);
 
         DropDownPreference events = getDropDownPreference(mScreen);
         mChoices.addPreference(events);
-        //cT.setPreferenceIcon(events);
 
         ListPreference themes = setThemePref(mScreen);
         mChoices.addPreference(themes);
-        //cT.setPreferenceIcon(themes);
 
         ListPreference language = setLanguagePref(mScreen);
         mChoices.addPreference(language);
-        //cT.setPreferenceIcon(language);
 
         PreferenceCategory help = new PreferenceCategory(mScreen.getContext());
         help.setTitle("Help");
@@ -336,7 +331,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     }
 
     private String[] getEntryValues(CharSequence[] userevents) {
-        List<String> stringList = new ArrayList<String>();
+        List<String> stringList = new ArrayList<>();
         for(CharSequence sequence:userevents)
             stringList.add(String.valueOf(sequence));
         return stringList.toArray( new String[0] );

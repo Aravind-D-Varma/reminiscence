@@ -13,7 +13,6 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,7 +28,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -49,20 +47,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,9 +68,7 @@ import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isVideoFi
 public class MemoryListFragment extends Fragment {
 
     //region Declarations
-    private static final String SAVE_SUBTITLE = "save_subtitle";
     public static final String MEMORIES_KEY = "Memories";
-    private static final String USERID_KEY = "UserID";
     private RecyclerView mRecyclerView;
     private Memory mNewMemory;
     private MemoryAdapter mAdapter;
@@ -272,7 +261,7 @@ public class MemoryListFragment extends Fragment {
                 ProgressDialog mProgressDialog = new ProgressDialog(getContext());
                 mProgressDialog.setMessage("Uploading...");
                 mProgressDialog.show();
-                Map<String,List<Memory>> dataToSave = new HashMap<String,List<Memory>>();
+                Map<String,List<Memory>> dataToSave = new HashMap<>();
                 dataToSave.put(MEMORIES_KEY,MemoryLab.get(getActivity()).getMemories());
                 userDocument.set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -410,7 +399,7 @@ public class MemoryListFragment extends Fragment {
                     mDetailText.setText(R.string.no_details_set);
                 else
                     mDetailText.setText(mMemory.getDetail());
-            }catch (NullPointerException e){}
+            }catch (NullPointerException ignored){}
             mShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -468,7 +457,7 @@ public class MemoryListFragment extends Fragment {
         }
 
         private ArrayList<Uri> getUrisFromPaths() {
-            ArrayList<Uri> mediaUri = new ArrayList<Uri>();
+            ArrayList<Uri> mediaUri = new ArrayList<>();
             for (String path : mMemory.getMediaPaths().split(",")) {
                 File file = new File(path);
                 Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);

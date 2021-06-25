@@ -50,7 +50,7 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
     public String[] getIndividualEvents(){ return joinedCurrentEvents.split(",");}
     /** Concatenates all events which are applicable into one string so that it can be stored in SharedPreferences.*/
     public String defaultEventsJoined() {
-        List<String> allEvents = new LinkedList<String>();
+        List<String> allEvents = new LinkedList<>();
 
         allEvents.add(stringResource(R.string.student_life));
         allEvents.add(stringResource(R.string.home));
@@ -171,7 +171,7 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
         return combinedEvents.toString();
     }
     public String[] addStringToArray(String string, String[] strings){
-        List<String> mylist = new LinkedList<String>(Arrays.asList(strings));
+        List<String> mylist = new LinkedList<>(Arrays.asList(strings));
         mylist.add(string);
         return mylist.toArray(new String[0]);
     }

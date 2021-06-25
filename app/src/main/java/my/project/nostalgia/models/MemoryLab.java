@@ -56,8 +56,6 @@ public class MemoryLab {
     //endregion
 
     public void deleteMemory(Memory memory){
-
-        List<Memory> memoriess = this.getMemories();
         mSQLiteDatabase.delete(memoryTable.NAME, memoryTable.Columns.UUID + "= ?", new String[] {memory.getId().toString()} );
     }
     //region get memory from UUID

@@ -35,7 +35,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -65,7 +64,6 @@ import my.project.nostalgia.supplementary.transformationViewPager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -211,7 +209,7 @@ public class MemoryFragment extends Fragment {
         }
     }
     private ArrayList<Uri> getUrisFromPaths() {
-        ArrayList<Uri> mediaUri = new ArrayList<Uri>();
+        ArrayList<Uri> mediaUri = new ArrayList<>();
         for (String path : individualFilePaths(mMemory)) {
             File file = new File(path);
             Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
@@ -249,8 +247,6 @@ public class MemoryFragment extends Fragment {
             applicableEvents = getMemoryEvents().addStringToArray(stringFromResource(R.string.add_event),
                     applicableEvents);
         }
-        String themeValues = mSharedPreferences.getString("GlobalTheme", "Dark");
-        // region EditText
         EditText titleField = (EditText) v.findViewById(R.id.memory_title);
         titleField.setText(mMemory.getTitle());
         titleField.addTextChangedListener(new TextWatcher() {
@@ -316,7 +312,7 @@ public class MemoryFragment extends Fragment {
         });
         cT.setBackgroundTheme(mTimeButton);
         Spinner spinner = (Spinner) v.findViewById(R.id.memory_spinner);
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), R.layout.myspinner, applicableEvents);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.myspinner, applicableEvents);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
         spinner.setSelection(Arrays.asList(applicableEvents).indexOf(mMemory.getEvent()),false);
@@ -341,7 +337,7 @@ public class MemoryFragment extends Fragment {
         try {
             if (mMemory.getMediaPaths().length() != 0)
                 mPhotoButton.setText(R.string.photos_reselection);
-        }catch (NullPointerException e){}
+        }catch (NullPointerException ignored){}
         getImage = getFromMediaIntent();
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -363,7 +359,7 @@ public class MemoryFragment extends Fragment {
         try{
             setMediaRecyclerView();
         }
-        catch (NullPointerException e){}
+        catch (NullPointerException ignored){}
         ItemClickRecyclerView.addTo(mPhotoRecyclerView).setOnItemClickListener(new ItemClickRecyclerView.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
@@ -479,7 +475,7 @@ public class MemoryFragment extends Fragment {
                 .setPositiveButton(stringFromResource(R.string.discard), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String[] allPhotoPaths = individualFilePaths(mMemory);
-                        List<String> list = new ArrayList<String>(Arrays.asList(allPhotoPaths));
+                        List<String> list = new ArrayList<>(Arrays.asList(allPhotoPaths));
                         list.remove(toDeleteMediapath);
                         String joined = TextUtils.join(",", list);
                         mMemory.setMediaPaths(joined);
@@ -497,8 +493,8 @@ public class MemoryFragment extends Fragment {
         return myQuittingDialogBox;
     }
     private void behaviourBeforeAddingMedia(View v) {
-        mPhotoFAB.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
-        mPhotoFAB.setEnabled(mMemory.getMediaPaths()!=null);
+        v.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
+        v.setEnabled(mMemory.getMediaPaths()!=null);
     }
     private Intent getFromMediaIntent() {
         Intent getmoreImage = new Intent(Intent.ACTION_GET_CONTENT);

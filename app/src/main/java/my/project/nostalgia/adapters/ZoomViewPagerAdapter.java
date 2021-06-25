@@ -80,7 +80,7 @@ public class ZoomViewPagerAdapter extends PagerAdapter {
      */
     private List<Uri> getVideoURI(String[] mediaPaths) {
 
-        List<Uri> videos = new ArrayList<Uri>();
+        List<Uri> videos = new ArrayList<>();
         for (String mediaPath:mediaPaths) {
             if(RecyclerViewGalleryAdapter.isVideoFile(mediaPath)) {
                 Uri uriVid = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", new File(mediaPath));
@@ -114,7 +114,7 @@ public class ZoomViewPagerAdapter extends PagerAdapter {
                 }
             });
         }
-        catch (NullPointerException e){}
+        catch (NullPointerException ignored){}
     }
     private void clickForPauseOrResume(VideoView vv, ImageButton ib) {
         if (vv.isPlaying()) {
