@@ -45,7 +45,7 @@ public class TimePickerDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_time, null);
-        mTimePicker = (TimePicker) v.findViewById(R.id.dialog_time_picker);
+        mTimePicker = v.findViewById(R.id.dialog_time_picker);
         Date date = (Date) getArguments().getSerializable(ARG_TIME);
         Calendar dateCalendar = Calendar.getInstance();
         dateCalendar.setTime(date);

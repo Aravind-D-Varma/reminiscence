@@ -246,7 +246,7 @@ public class MemoryFragment extends Fragment {
             applicableEvents = getMemoryEvents().addStringToArray(stringFromResource(R.string.add_event),
                     applicableEvents);
         }
-        EditText titleField = (EditText) v.findViewById(R.id.memory_title);
+        EditText titleField = v.findViewById(R.id.memory_title);
         titleField.setText(mMemory.getTitle());
         titleField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -269,7 +269,7 @@ public class MemoryFragment extends Fragment {
         cT.setBackgroundTheme(titleField);
         //endregion
         //region EditText Details
-        EditText detailField = (EditText) v.findViewById(R.id.memory_details);
+        EditText detailField = v.findViewById(R.id.memory_details);
         detailField.setText(mMemory.getDetail());
         detailField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -286,7 +286,7 @@ public class MemoryFragment extends Fragment {
             }
         });
         cT.setBackgroundTheme(detailField);
-        mDateButton = (Button) v.findViewById(R.id.memory_date);
+        mDateButton = v.findViewById(R.id.memory_date);
         updateDate();
         mDateButton.setOnClickListener(v17 -> {
             FragmentManager manager = getFragmentManager();
@@ -295,7 +295,7 @@ public class MemoryFragment extends Fragment {
             dp.show(manager, DIALOG_DATE);
         });
         cT.setBackgroundTheme(mDateButton);
-        mTimeButton = (Button) v.findViewById(R.id.memory_time);
+        mTimeButton = v.findViewById(R.id.memory_time);
         updateTime();
         mTimeButton.setOnClickListener(v16 -> {
             FragmentManager fm = getFragmentManager();
@@ -304,7 +304,7 @@ public class MemoryFragment extends Fragment {
             tp.show(fm, DIALOG_TIME);
         });
         cT.setBackgroundTheme(mTimeButton);
-        Spinner spinner = (Spinner) v.findViewById(R.id.memory_spinner);
+        Spinner spinner = v.findViewById(R.id.memory_spinner);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.myspinner, applicableEvents);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
@@ -326,7 +326,7 @@ public class MemoryFragment extends Fragment {
             }
         });
         cT.setBackgroundTheme(spinner);
-        mPhotoButton = (Button)v.findViewById(R.id.memory_selectphotos);
+        mPhotoButton = v.findViewById(R.id.memory_selectphotos);
         try {
             if (mMemory.getMediaPaths().length() != 0)
                 mPhotoButton.setText(R.string.photos_reselection);
@@ -344,7 +344,7 @@ public class MemoryFragment extends Fragment {
             }
         });
         cT.setBackgroundTheme(mPhotoButton);
-        mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
+        mPhotoRecyclerView = v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL));
         try{
             setMediaRecyclerView();
@@ -357,12 +357,12 @@ public class MemoryFragment extends Fragment {
             diaBox.show();
             return false;
         });
-        mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
+        mPhotoFAB = v.findViewById(R.id.photo_fab);
         behaviourBeforeAddingMedia(v);
         Intent getmoreImage = getFromMediaIntent();
         mPhotoFAB.setOnClickListener(v12 -> startActivityForResult(Intent.createChooser(getmoreImage, "Select Image"), REQUEST_GALLERY_ADDITIONALPHOTO));
         cT.setBackgroundTheme(mPhotoFAB);
-        FloatingActionButton uploadFAB = (FloatingActionButton) v.findViewById(R.id.upload_fab);
+        FloatingActionButton uploadFAB = v.findViewById(R.id.upload_fab);
         uploadFAB.setOnClickListener(v1 -> {
             ProgressDialog mProgressDialog = new ProgressDialog(getActivity());
             mProgressDialog.setMessage("Uploading...");
@@ -427,7 +427,7 @@ public class MemoryFragment extends Fragment {
     }
     private void viewPagerImplementation(int position, Dialog dialog) {
         ZoomViewPagerAdapter adapter = new ZoomViewPagerAdapter(getActivity(),individualFilePaths(mMemory));
-        ViewPager pager = (ViewPager) dialog.findViewById(R.id.media_view_pager);
+        ViewPager pager = dialog.findViewById(R.id.media_view_pager);
         pager.setAdapter(adapter);
 
         pager.addOnPageChangeListener(new CircularViewPager(pager));
@@ -486,29 +486,29 @@ public class MemoryFragment extends Fragment {
             updateTime();
         }
         else if (requestCode == REQUEST_GALLERY_PHOTO){
-            String joinedFilePaths = "";
+            StringBuilder joinedFilePaths = new StringBuilder();
             if(data.getData()!=null){
                 Uri mMediaUri=data.getData();
-                joinedFilePaths = joinedFilePaths +(getMediaPathFromUri(mMediaUri));
+                joinedFilePaths.append(getMediaPathFromUri(mMediaUri));
             } else {
                 if (data.getClipData() != null) {
                     ClipData mClipData = data.getClipData();
                     for (int i = 0; i < mClipData.getItemCount(); i++) {
                         ClipData.Item item = mClipData.getItemAt(i);
                         Uri mMediaUri = item.getUri();
-                        if(joinedFilePaths.equals(""))
-                            joinedFilePaths = joinedFilePaths +(getMediaPathFromUri(mMediaUri));
+                        if(joinedFilePaths.toString().equals(""))
+                            joinedFilePaths.append(getMediaPathFromUri(mMediaUri));
                         else
-                            joinedFilePaths = joinedFilePaths + "," + (getMediaPathFromUri(mMediaUri));
+                            joinedFilePaths.append(",").append(getMediaPathFromUri(mMediaUri));
                     }
                 }
             }
-            mMemory.setMediaPaths(joinedFilePaths);
+            mMemory.setMediaPaths(joinedFilePaths.toString());
             updateMemory();
             behaviourAfterAddingMedia();
         }
         else if (requestCode == REQUEST_GALLERY_ADDITIONALPHOTO){
-            String extraFilePaths = mMemory.getMediaPaths();
+            StringBuilder extraFilePaths = new StringBuilder(mMemory.getMediaPaths());
 
             if(data.getData()!=null){
                     Uri mMediaUri=data.getData();
@@ -516,7 +516,7 @@ public class MemoryFragment extends Fragment {
                     if(isDuplicate(newPhoto))
                         discardPhoto = true;
                     else {
-                        extraFilePaths = extraFilePaths + "," + (getMediaPathFromUri(mMediaUri));
+                        extraFilePaths.append(",").append(getMediaPathFromUri(mMediaUri));
                         discardPhoto = false;
                     }
                 } else {
@@ -529,13 +529,13 @@ public class MemoryFragment extends Fragment {
                             if(isDuplicate(newPhoto))
                                 discardPhoto = true;
                             else {
-                                extraFilePaths = extraFilePaths + "," + newPhoto;
+                                extraFilePaths.append(",").append(newPhoto);
                                 discardPhoto = false;
                             }
                         }
                     }
                 }
-            mMemory.setMediaPaths(extraFilePaths);
+            mMemory.setMediaPaths(extraFilePaths.toString());
             updateMemory();
             setMediaRecyclerView();
         }

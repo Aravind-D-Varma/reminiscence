@@ -103,14 +103,14 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
         ImageView image;
         public MyImageViewHolder(View itemView) {
             super(itemView);
-            image = (ImageView) itemView.findViewById(R.id.memory_photo);
+            image = itemView.findViewById(R.id.memory_photo);
         }
     }
     public class MyVideoViewHolder extends RecyclerView.ViewHolder{
         VideoView video;
         public MyVideoViewHolder(View itemView) {
             super(itemView);
-            video = (VideoView) itemView.findViewById(R.id.memory_video);
+            video = itemView.findViewById(R.id.memory_video);
         }
     }
     private List<Bitmap> getPhotoBitmaps(String[] mediaPaths) {

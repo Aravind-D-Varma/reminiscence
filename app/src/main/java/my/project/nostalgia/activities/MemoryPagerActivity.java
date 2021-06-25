@@ -54,7 +54,7 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
         super.onCreate(savedInstanceState);
         new changeTheme(this).setUserTheme();
         setContentView(R.layout.media_pager_layout);
-        mViewPager = (ViewPager) findViewById(R.id.media_view_pager);
+        mViewPager = findViewById(R.id.media_view_pager);
         mMemories = MemoryLab.get(this).getMemories();
         FragmentManager fragmentManager = getSupportFragmentManager();
 

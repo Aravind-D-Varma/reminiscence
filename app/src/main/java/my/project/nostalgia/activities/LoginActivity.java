@@ -50,12 +50,12 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        mEmail = (EditText) findViewById(R.id.login_email);
-        mPassword = (EditText) findViewById(R.id.login_password);
-        mName = (EditText) findViewById(R.id.login_name);
-        Button register = (Button) findViewById(R.id.login_register);
-        Button forgot = (Button) findViewById(R.id.login_forgot);
-        Button login = (Button) findViewById(R.id.login_button);
+        mEmail = findViewById(R.id.login_email);
+        mPassword = findViewById(R.id.login_password);
+        mName = findViewById(R.id.login_name);
+        Button register = findViewById(R.id.login_register);
+        Button forgot = findViewById(R.id.login_forgot);
+        Button login = findViewById(R.id.login_button);
         mProgressDialog = new ProgressDialog(this);
         register.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this,RegisterActivity.class));

@@ -51,7 +51,7 @@ public class DatePickerDialogFragment extends DialogFragment {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        mDatePicker = (DatePicker) v.findViewById(R.id.dialog_date_picker);
+        mDatePicker = v.findViewById(R.id.dialog_date_picker);
         mDatePicker.init(year, month, day, null);
 
         SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());

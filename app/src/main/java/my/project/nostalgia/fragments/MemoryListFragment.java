@@ -199,7 +199,7 @@ public class MemoryListFragment extends Fragment {
         else if(memories.size()==0){
 
             view = inflater.inflate(R.layout.empty_list_page, container, false);
-            Button noMemoryButton = (Button) view.findViewById(R.id.no_memory_button);
+            Button noMemoryButton = view.findViewById(R.id.no_memory_button);
 
             noMemoryButton.setOnClickListener(noMemoryView -> {
                 mNewMemory = new Memory();
@@ -226,10 +226,10 @@ public class MemoryListFragment extends Fragment {
         return result == PackageManager.PERMISSION_GRANTED;
     }
     private void setListAndAddButton(View view) {
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.memory_recycler_view);
+        mRecyclerView = view.findViewById(R.id.memory_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.memory_fab);
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.memory_fab);
         floatingActionButton.setOnClickListener(v -> {
             mNewMemory = new Memory();
             MemoryLab.get(getActivity()).addMemory(mNewMemory);
@@ -237,7 +237,7 @@ public class MemoryListFragment extends Fragment {
                 updateUIForTablet();
             mCallbacks.onMemorySelected(mNewMemory);
         });
-        FloatingActionButton upload = (FloatingActionButton) view.findViewById(R.id.memory_upload);
+        FloatingActionButton upload = view.findViewById(R.id.memory_upload);
         upload.setOnClickListener(v -> {
             String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
@@ -355,13 +355,13 @@ public class MemoryListFragment extends Fragment {
             itemView.setOnClickListener(this);
             changeTheme cT = new changeTheme(getContext());
             cT.setLayoutTheme(itemView);
-            mTitleText = (TextView) itemView.findViewById(R.id.cardview_memory_title);
+            mTitleText = itemView.findViewById(R.id.cardview_memory_title);
             cT.setTextTheme(mTitleText);
-            mDetailText = (TextView) itemView.findViewById(R.id.cardview_memory_detail);
+            mDetailText = itemView.findViewById(R.id.cardview_memory_detail);
             cT.setTextTheme(mDetailText);
-            mShare = (Button) itemView.findViewById(R.id.cardview_share);
-            mDelete = (Button) itemView.findViewById(R.id.cardview_delete);
-            mImageView = (ImageView) itemView.findViewById(R.id.cardview_image);
+            mShare = itemView.findViewById(R.id.cardview_share);
+            mDelete = itemView.findViewById(R.id.cardview_delete);
+            mImageView = itemView.findViewById(R.id.cardview_image);
             mImageView2 = itemView.findViewById(R.id.cardview_image2);
             mExtraText = itemView.findViewById(R.id.cardview_extramedia);
         }
