@@ -1,7 +1,6 @@
 package my.project.nostalgia.fragments;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -51,7 +50,7 @@ public class DatePickerDialogFragment extends DialogFragment {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        mDatePicker = (DatePicker) v.findViewById(R.id.dialog_date_picker);
+        mDatePicker = v.findViewById(R.id.dialog_date_picker);
         mDatePicker.init(year, month, day, null);
 
         SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -64,15 +63,12 @@ public class DatePickerDialogFragment extends DialogFragment {
             dialogBuilder = new AlertDialog.Builder(getActivity(), R.style.DarkDialog);
 
                 dialogBuilder.setView(v)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int year = mDatePicker.getYear();
-                        int month = mDatePicker.getMonth();
-                        int day = mDatePicker.getDayOfMonth();
-                        Date calendarDate = new GregorianCalendar(year, month, day, calendar.get(Calendar.HOUR),calendar.get(Calendar.MINUTE)).getTime();
-                        sendResult(Activity.RESULT_OK, calendarDate);
-                    }
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    int year1 = mDatePicker.getYear();
+                    int month1 = mDatePicker.getMonth();
+                    int day1 = mDatePicker.getDayOfMonth();
+                    Date calendarDate = new GregorianCalendar(year1, month1, day1, calendar.get(Calendar.HOUR),calendar.get(Calendar.MINUTE)).getTime();
+                    sendResult(Activity.RESULT_OK, calendarDate);
                 });
         return dialogBuilder.create();
     }

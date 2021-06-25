@@ -1,7 +1,6 @@
 package my.project.nostalgia.fragments;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -45,7 +44,7 @@ public class TimePickerDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_time, null);
-        mTimePicker = (TimePicker) v.findViewById(R.id.dialog_time_picker);
+        mTimePicker = v.findViewById(R.id.dialog_time_picker);
         Date date = (Date) getArguments().getSerializable(ARG_TIME);
         Calendar dateCalendar = Calendar.getInstance();
         dateCalendar.setTime(date);
@@ -65,19 +64,16 @@ public class TimePickerDialogFragment extends DialogFragment {
             dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getActivity(), R.style.DarkDialog);
 
         dialogBuilder.setView(v)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            int dialogHour = mTimePicker.getHour();
-                            int dialogMinute = mTimePicker. getMinute();
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(date);
-                            calendar.set(Calendar.HOUR_OF_DAY, dialogHour);
-                            calendar.set(Calendar.MINUTE, dialogMinute);
-                            Date time = calendar.getTime();
-                            sendResult(Activity.RESULT_OK, time);
-                        }
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        int dialogHour = mTimePicker.getHour();
+                        int dialogMinute = mTimePicker. getMinute();
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(date);
+                        calendar.set(Calendar.HOUR_OF_DAY, dialogHour);
+                        calendar.set(Calendar.MINUTE, dialogMinute);
+                        Date time = calendar.getTime();
+                        sendResult(Activity.RESULT_OK, time);
                     }
                 });
         return dialogBuilder.create();

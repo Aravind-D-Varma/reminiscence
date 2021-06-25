@@ -68,13 +68,13 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
                     vv.setVideoURI(videos.get(position));
                     vv.seekTo(1);
                 }
-                catch(NullPointerException e){}
+                catch(NullPointerException ignored){}
                 break;
             case IMAGE:
                 try{
                     ((MyImageViewHolder)holder).image.setImageBitmap(photos.get(position));
                 }
-                catch (NullPointerException e){}
+                catch (NullPointerException ignored){}
                 break;
         }
     }
@@ -95,7 +95,7 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
        if(isVideoFile(mediaPaths[position]))
             return VIDEO;
-       else if(isImageFile(mediaPaths[position]));
+       else
             return IMAGE;
     }
 
@@ -103,18 +103,18 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
         ImageView image;
         public MyImageViewHolder(View itemView) {
             super(itemView);
-            image = (ImageView) itemView.findViewById(R.id.memory_photo);
+            image = itemView.findViewById(R.id.memory_photo);
         }
     }
     public class MyVideoViewHolder extends RecyclerView.ViewHolder{
         VideoView video;
         public MyVideoViewHolder(View itemView) {
             super(itemView);
-            video = (VideoView) itemView.findViewById(R.id.memory_video);
+            video = itemView.findViewById(R.id.memory_video);
         }
     }
     private List<Bitmap> getPhotoBitmaps(String[] mediaPaths) {
-        photos = new ArrayList<Bitmap>();
+        photos = new ArrayList<>();
         for (String mediaPath:mediaPaths) {
             if(isImageFile(mediaPath)) {
                 Bitmap bpimg = BitmapFactory.decodeFile(mediaPath);
@@ -126,7 +126,7 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
     }
   
     private List<Uri> getVideoURIs(String[] mediaPaths) {
-        videos = new ArrayList<Uri>();
+        videos = new ArrayList<>();
         for (String mediaPath:mediaPaths) {
             if(isVideoFile(mediaPath)) {
                 Uri uriVid = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", new File(mediaPath));

@@ -5,16 +5,13 @@ import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
@@ -22,9 +19,6 @@ import androidx.preference.PreferenceManager;
 import my.project.nostalgia.R;
 import my.project.nostalgia.supplementary.memoryEvents;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -37,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private EditText mEmail, mPassword, mName;
-    private Button mLogin, mForgot, mRegister;
     private ProgressDialog mProgressDialog;
 
     public static final String SEND_USERNAME= "username";
@@ -53,33 +46,20 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        mEmail = (EditText) findViewById(R.id.login_email);
-        mPassword = (EditText) findViewById(R.id.login_password);
-        mName = (EditText) findViewById(R.id.login_name);
-        mRegister = (Button) findViewById(R.id.login_register);
-        mForgot = (Button) findViewById(R.id.login_forgot);
-        mLogin = (Button) findViewById(R.id.login_button);
+        mEmail = findViewById(R.id.login_email);
+        mPassword = findViewById(R.id.login_password);
+        mName = findViewById(R.id.login_name);
+        Button register = findViewById(R.id.login_register);
+        Button forgot = findViewById(R.id.login_forgot);
+        Button login = findViewById(R.id.login_button);
         mProgressDialog = new ProgressDialog(this);
-        mRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
-                finish();
-            }
+        register.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+            finish();
         });
 
-        mLogin.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Login();
-            }
-        });
-        mForgot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ForgotPassword();
-            }
-        });
+        login.setOnClickListener(v -> Login());
+        forgot.setOnClickListener(v -> ForgotPassword());
 
     }
 
@@ -89,14 +69,11 @@ public class LoginActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(email)) {
             mEmail.setError("Enter your email");return;}
 
-        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful())
-                    Toast.makeText(LoginActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(LoginActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
-            }
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+            if (task.isSuccessful())
+                Toast.makeText(LoginActivity.this, "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(LoginActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -124,23 +101,20 @@ public class LoginActivity extends AppCompatActivity {
         mProgressDialog.setCanceledOnTouchOutside(false);
 
         mAuth.signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
-                    Toast.makeText(LoginActivity.this, "Successfully logged in."
-                            , Toast.LENGTH_SHORT).show();
-                    setGeneralInfo(mName.getText().toString(),new memoryEvents(getApplicationContext()).getJoinedEvents());
-                    startActivity(new Intent(LoginActivity.this,MemoryListActivity.class));
-                    finish();
-                }
-                else{
-                    Toast.makeText(LoginActivity.this, "Incorrect combination of email and password !"
-                            , Toast.LENGTH_SHORT).show();
-                    mProgressDialog.dismiss();
-                }
-            }
-        });
+                .addOnCompleteListener(this, task -> {
+                    if(task.isSuccessful()) {
+                        Toast.makeText(LoginActivity.this, "Successfully logged in."
+                                , Toast.LENGTH_SHORT).show();
+                        setGeneralInfo(mName.getText().toString(),new memoryEvents(getApplicationContext()).getJoinedEvents());
+                        startActivity(new Intent(LoginActivity.this,MemoryListActivity.class));
+                        finish();
+                    }
+                    else{
+                        Toast.makeText(LoginActivity.this, "Incorrect combination of email and password !"
+                                , Toast.LENGTH_SHORT).show();
+                        mProgressDialog.dismiss();
+                    }
+                });
     }
     private void setGeneralInfo(String userName, String combinedEvents) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();

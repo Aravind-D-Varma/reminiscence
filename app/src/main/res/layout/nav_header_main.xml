@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_header_textView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="bottom"
-    android:padding="12dp">
-    <ImageView
-        android:id="@+id/nav_header_imageView"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:src="@mipmap/nostalgia_logo" />
-
-    <TextView
-        android:id="@+id/nav_header_textView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-</LinearLayout>
+    android:textSize="24sp"
+    android:textStyle="bold"
+    android:padding="15dp"
+    android:drawablePadding="10dp"
+    android:gravity="center_vertical"
+    app:drawableStartCompat="@mipmap/nostalgia_logo">
+</TextView>

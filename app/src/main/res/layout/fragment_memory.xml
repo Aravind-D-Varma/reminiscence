@@ -1,133 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    android:paddingTop="8dp"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp">
 
-     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                style="?android:listSeparatorTextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:padding="0dp"
-                android:text="@string/memory_title_label"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/memory_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="Title"
-                android:background="@drawable/button_border"
-                android:backgroundTint="@color/grey"
-                android:hint="@string/memory_title_hint"
-                android:inputType="text"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:padding="5dp" />
-
-            <TextView
-                style="?android:listSeparatorTextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/memory_details_label"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/memory_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="Title"
-                android:background="@drawable/button_border"
-                android:backgroundTint="@color/grey"
-                android:hint="@string/memory_details_hint"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:padding="5dp"
-                android:inputType="textMultiLine"
-                android:maxLines="6"/>
-        </LinearLayout>
-
-
-    <RelativeLayout
+    <TextView
+        style="?android:listSeparatorTextViewStyle"
+        android:id="@+id/memory_title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        android:text="@string/memory_title_label"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/memory_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:autofillHints="Title"
+        android:background="@drawable/button_border"
+        android:backgroundTint="@color/grey"
+        android:hint="@string/memory_title_hint"
+        android:inputType="text"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:padding="5dp"
+        android:layout_below="@+id/memory_title_text"/>
+    <TextView
+        style="?android:listSeparatorTextViewStyle"
+        android:id="@+id/memory_detail_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/memory_details_label"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_below="@id/memory_title"/>
+    <EditText
+        android:id="@+id/memory_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="Title"
+        android:background="@drawable/button_border"
+        android:backgroundTint="@color/grey"
+        android:hint="@string/memory_details_hint"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:padding="5dp"
+        android:inputType="textMultiLine"
+        android:maxLines="6"
+        android:layout_below="@+id/memory_detail_text"/>
+
 
         <Button
             android:id="@+id/memory_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/button_border"
-            android:drawableLeft="@drawable/memory_date_white"
+            android:drawableStart="@drawable/memory_date_white"
             android:elevation="5dp"
-            android:padding="2dp"
-            android:textSize="10sp" />
-
+            android:padding="8dp"
+            android:textSize="10sp"
+            android:layout_below="@id/memory_details"
+            />
         <Button
             android:id="@+id/memory_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/button_border"
-            android:drawableLeft="@drawable/memory_time_white"
+            android:drawableStart="@drawable/memory_time_white"
             android:elevation="5dp"
-            android:padding="2dp"
-            android:textSize="10sp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+            android:textSize="10sp"
+            android:layout_below="@id/memory_details"/>
 
         <Button
             android:id="@+id/memory_selectphotos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/button_border"
             android:contentDescription="@string/memory_photo_button_description"
             android:drawableStart="@android:drawable/ic_menu_camera"
             android:elevation="5dp"
             android:padding="2dp"
             android:text="@string/choose_photos"
-            android:textSize="10sp" />
-
+            android:textSize="10sp"
+            android:layout_below="@id/memory_date"/>
         <Spinner
             android:id="@+id/memory_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="5dp"
             android:background="@drawable/button_border"
             android:dropDownWidth="match_parent"
             android:padding="2dp"
             android:elevation="5dp"
-            android:spinnerMode="dropdown" />
-    </RelativeLayout>
+            android:spinnerMode="dropdown"
+            android:layout_below="@id/memory_time"/>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/memory_selectphotos">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/photoGridView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp" />
+            android:layout_margin="8dp" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -155,6 +147,6 @@
                 android:elevation="20dp"/>
         </RelativeLayout>
     </FrameLayout>
-</LinearLayout>
+</RelativeLayout>
 
 

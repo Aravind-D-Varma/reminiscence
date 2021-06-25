@@ -80,7 +80,7 @@ public class ZoomViewPagerAdapter extends PagerAdapter {
      */
     private List<Uri> getVideoURI(String[] mediaPaths) {
 
-        List<Uri> videos = new ArrayList<Uri>();
+        List<Uri> videos = new ArrayList<>();
         for (String mediaPath:mediaPaths) {
             if(RecyclerViewGalleryAdapter.isVideoFile(mediaPath)) {
                 Uri uriVid = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", new File(mediaPath));
@@ -101,20 +101,10 @@ public class ZoomViewPagerAdapter extends PagerAdapter {
         try {
             vv.setVideoURI(getVideoURI(individualMediaPaths).get(position));
             vv.seekTo(1);
-            buttonLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    clickForPauseOrResume(vv, ib);
-                }
-            });
-            ib.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    clickForPauseOrResume(vv, ib);
-                }
-            });
+            buttonLayout.setOnClickListener(v12 -> clickForPauseOrResume(vv, ib));
+            ib.setOnClickListener(v1 -> clickForPauseOrResume(vv, ib));
         }
-        catch (NullPointerException e){}
+        catch (NullPointerException ignored){}
     }
     private void clickForPauseOrResume(VideoView vv, ImageButton ib) {
         if (vv.isPlaying()) {

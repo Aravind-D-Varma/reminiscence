@@ -2,7 +2,6 @@ package my.project.nostalgia.supplementary;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.InputType;
@@ -50,7 +49,7 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
     public String[] getIndividualEvents(){ return joinedCurrentEvents.split(",");}
     /** Concatenates all events which are applicable into one string so that it can be stored in SharedPreferences.*/
     public String defaultEventsJoined() {
-        List<String> allEvents = new LinkedList<String>();
+        List<String> allEvents = new LinkedList<>();
 
         allEvents.add(stringResource(R.string.student_life));
         allEvents.add(stringResource(R.string.home));
@@ -73,22 +72,16 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
         input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
         inputEventDialog.setView(input);
 
-        inputEventDialog.setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
+        inputEventDialog.setPositiveButton(R.string.create, (dialog, whichButton) -> {
 
-                String inputString = input.getText().toString();
-                if(inputString.length()>1){
-                    addNewEvent(inputString);
-                    refreshSnackbar(view,activity,memory);
-                }
-                dialog.dismiss();
+            String inputString = input.getText().toString();
+            if(inputString.length()>1){
+                addNewEvent(inputString);
+                refreshSnackbar(view,activity,memory);
             }
+            dialog.dismiss();
         });
-        inputEventDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        }).create();
+        inputEventDialog.setNegativeButton("cancel", (dialog, which) -> dialog.cancel()).create();
         inputEventDialog.show();
     }
     public void askDiscardEvent(View view, Activity activity,int finalI){
@@ -104,35 +97,26 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
 
         discardMemoryDialogBox.setTitle(stringResource(R.string.discard_event))
                 .setMessage(stringResource(R.string.discard_event_confirm))
-                .setPositiveButton(stringResource(R.string.discard), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        removeFromEvents(finalI);
-                        refreshSnackbar(view,activity,null);
-                        dialog.dismiss();
-                    }
+                .setPositiveButton(stringResource(R.string.discard), (dialog, whichButton) -> {
+                    removeFromEvents(finalI);
+                    refreshSnackbar(view,activity,null);
+                    dialog.dismiss();
                 })
-                .setNegativeButton(stringResource(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setNegativeButton(stringResource(R.string.cancel), (dialog, which) -> dialog.dismiss())
                 .create();
         discardMemoryDialogBox.show();
     }
     public void refreshSnackbar(View view, Activity activity, Memory memory){
         Snackbar.make(view,stringResource(R.string.refreshPage),Snackbar.LENGTH_SHORT)
-                .setAction(stringResource(R.string.refreshButton), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                .setAction(stringResource(R.string.refreshButton), v -> {
 
-                        String activityName = activity.getClass().getSimpleName();
-                        if(activityName.equals("UserSettingsActivity"))
-                            mContext.startActivity(new Intent(mContext,UserSettingsActivity.class));
+                    String activityName = activity.getClass().getSimpleName();
+                    if(activityName.equals("UserSettingsActivity"))
+                        mContext.startActivity(new Intent(mContext,UserSettingsActivity.class));
 
-                        else if(activityName.equals("MemoryPagerActivity")) {
-                            activity.finish();
-                            onMemorySelected(memory);
-                        }
+                    else if(activityName.equals("MemoryPagerActivity")) {
+                        activity.finish();
+                        onMemorySelected(memory);
                     }
                 }).show();
 
@@ -171,7 +155,7 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
         return combinedEvents.toString();
     }
     public String[] addStringToArray(String string, String[] strings){
-        List<String> mylist = new LinkedList<String>(Arrays.asList(strings));
+        List<String> mylist = new LinkedList<>(Arrays.asList(strings));
         mylist.add(string);
         return mylist.toArray(new String[0]);
     }
