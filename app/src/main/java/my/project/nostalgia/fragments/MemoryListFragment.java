@@ -70,7 +70,7 @@ import java.util.Map;
 import static my.project.nostalgia.activities.LoginActivity.FIRST_TIME;
 import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isImageFile;
 import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isVideoFile;
-
+//TODO Some input files use or override a depecrate API recompile with -Xlint:deprecation for details
 /**
  * Contains list layout of RecyclerView and floating action button to show all memories and to add a new one.
  */

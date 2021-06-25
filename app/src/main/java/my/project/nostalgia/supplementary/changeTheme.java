@@ -56,11 +56,7 @@ public class changeTheme {
     }
 
     public void colorMemoryIcon(@NonNull Menu menu) {
-        if (mTheme.equals("Light")){
-            menu.findItem(R.id.delete_memory).setIcon(R.drawable.delete_white);
-            menu.findItem(R.id.share_memory).setIcon(R.drawable.share_white);
-        }
-        else if (mTheme.equals("Dark")){
+        if (mTheme.equals("Dark")){
             menu.findItem(R.id.delete_memory).setIcon(R.drawable.delete_purple);
             menu.findItem(R.id.share_memory).setIcon(R.drawable.share_purple);
         }
@@ -103,16 +99,4 @@ public class changeTheme {
             tv.setTextColor(mContext.getResources().getColor(R.color.light_purple));
 
     }
-    public void setPreferenceIcon(Preference p){
-        if(mTheme.equals("Light")){
-            Drawable icon = p.getIcon();
-            icon.setTint(colorFromResources(R.color.black));
-        }
-        else if(mTheme.equals("Dark")){
-            Drawable icon = p.getIcon();
-            icon.setTint(colorFromResources(R.color.white));
-            //DrawableCompat.setTint(icon,colorFromResources(R.color.black));
-        }
-    }
-
 }

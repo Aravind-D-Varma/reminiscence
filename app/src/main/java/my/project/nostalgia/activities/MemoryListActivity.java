@@ -163,7 +163,6 @@ public class MemoryListActivity extends SingleFragmentActivity
     private void goToSettings() {
         Intent intent = new Intent(this, UserSettingsActivity.class);
         startActivity(intent);
-        this.finish();
     }
     /**
      * Updates list of memories depending on what the user selected in menu of Navigation Drawer

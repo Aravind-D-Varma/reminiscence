@@ -36,7 +36,7 @@
             android:layout_margin="25dp"
             android:elevation="20dp"
             android:background="@drawable/button_border"
-            android:src="@drawable/ic_menu_add"
+            android:src="@drawable/add"
             android:contentDescription="@string/no_memory_add" />
     </RelativeLayout>
 

@@ -1,7 +1,6 @@
 package my.project.nostalgia.fragments;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,9 +9,7 @@ import android.text.InputType;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DropDownPreference;
 import androidx.preference.EditTextPreference;
@@ -22,10 +19,7 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -179,7 +173,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         pref.setKey(SEND_USERNAME);
         pref.setTitle(stringResource(R.string.settings_name));
         pref.setSummary(stringResource(R.string.settings_name_summary));
-        pref.setIcon(R.drawable.username_white);
+        pref.setIcon(R.drawable.settings_username);
         return pref;
     }
     private ListPreference setThemePref(PreferenceScreen mScreen) {
@@ -187,7 +181,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         pref.setKey("GlobalTheme");
         pref.setTitle(stringResource(R.string.themes));
         pref.setSummary(stringResource(R.string.themes_summary));
-        pref.setIcon(R.drawable.settingstheme_white);
+        pref.setIcon(R.drawable.settings_themes);
         CharSequence[] entries = {"Light","Dark"};
         CharSequence[] entryValues = {"Light","Dark"};
         pref.setEntries(entries);
@@ -214,7 +208,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         pref.setKey(LANGUAGE);
         pref.setTitle(stringResource(R.string.language));
         pref.setSummary(stringResource(R.string.language_summary));
-        pref.setIcon(R.drawable.language_white);
+        pref.setIcon(R.drawable.settings_language);
         CharSequence[] entries = {"English","Dutch"};
         CharSequence[] entryValues = {"English","Dutch"};
         pref.setEntries(entries);
@@ -251,7 +245,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         Preference pref = new Preference(mScreen.getContext());
         pref.setTitle(stringResource(R.string.settings_feedback));
         pref.setSummary(stringResource(R.string.settings_feedback_summary));
-        pref.setIcon(R.drawable.feedback_white);
+        pref.setIcon(R.drawable.settings_feedback);
         pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -267,7 +261,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         Preference pref = new Preference(mScreen.getContext());
         pref.setTitle(stringResource(R.string.settings_invite));
         pref.setSummary(stringResource(R.string.settings_invite_summary));
-        pref.setIcon(R.drawable.invite_white);
+        pref.setIcon(R.drawable.settings_invite);
         pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -288,7 +282,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         Preference pref = new Preference(mScreen.getContext());
         pref.setTitle(stringResource(R.string.settings_aboutme));
         pref.setSummary(stringResource(R.string.settings_aboutme_summary));
-        pref.setIcon(R.drawable.aboutme_white);
+        pref.setIcon(R.drawable.settings_aboutme);
         pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -305,7 +299,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         mEvents = new DropDownPreference(screen.getContext());
         mEvents.setTitle(stringResource(R.string.settings_events));
         mEvents.setSummary(stringResource(R.string.settings_events_summary));
-        mEvents.setIcon(R.drawable.swap_white);
+        mEvents.setIcon(R.drawable.settings_customevents);
         updateDropDownEvents();
         mEvents.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
