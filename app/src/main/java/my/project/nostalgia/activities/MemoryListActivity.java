@@ -1,7 +1,6 @@
 package my.project.nostalgia.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -99,7 +98,7 @@ public class MemoryListActivity extends SingleFragmentActivity
         super.onCreate(savedInstanceState);
 
         mNavigationView = findViewById(R.id.navigation_view);
-        mTheme.setColorToNavigationIcons(mNavigationView);
+        mTheme.colorToNavigationIcons(mNavigationView);
 
         getGeneralInfo();
         setHeaderWelcomeUser(userName);

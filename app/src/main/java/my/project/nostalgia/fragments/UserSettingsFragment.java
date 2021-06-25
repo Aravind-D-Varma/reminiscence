@@ -35,6 +35,7 @@ import my.project.nostalgia.BuildConfig;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.LoginActivity;
 import my.project.nostalgia.activities.UserSettingsActivity;
+import my.project.nostalgia.supplementary.changeTheme;
 import my.project.nostalgia.supplementary.memoryEvents;
 
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
+        changeTheme cT = new changeTheme(getContext());
         calls = 0;
         PreferenceScreen mScreen = getPreferenceManager().createPreferenceScreen(getActivity());
         setPreferenceScreen(mScreen);
@@ -65,15 +67,19 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
 
         EditTextPreference username = setUserName(mScreen);
         mChoices.addPreference(username);
+        cT.setPreferenceIcon(username);
 
         DropDownPreference events = getDropDownPreference(mScreen);
         mChoices.addPreference(events);
+        cT.setPreferenceIcon(events);
 
         ListPreference themes = setThemePref(mScreen);
         mChoices.addPreference(themes);
+        cT.setPreferenceIcon(themes);
 
         ListPreference language = setLanguagePref(mScreen);
         mChoices.addPreference(language);
+        cT.setPreferenceIcon(language);
 
         PreferenceCategory help = new PreferenceCategory(mScreen.getContext());
         help.setTitle("Help");
@@ -98,7 +104,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         Preference deleteAccount = deleteAccountPref(mScreen);
         accounts.addPreference(deleteAccount);
 
-        SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getContext());
+        /*SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getContext());
         String themeValues = getData.getString("GlobalTheme", "Dark");
         if (themeValues.equals("Dark")) {
             aboutMe.setIcon(R.drawable.aboutme_white);
@@ -117,7 +123,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             invitePeople.setIcon(R.drawable.invite_black);
             username.setIcon(R.drawable.username_black);
             mEvents.setIcon(R.drawable.swap_black);
-        }
+        }*/
     }
 
     private Preference deleteAccountPref(PreferenceScreen mScreen) {
