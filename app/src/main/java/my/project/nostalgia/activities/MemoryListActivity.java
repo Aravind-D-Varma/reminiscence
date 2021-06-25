@@ -36,10 +36,8 @@ public class MemoryListActivity extends SingleFragmentActivity
         implements MemoryListFragment.Callbacks, MemoryFragment.Callbacks, NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mABDrawerToggle;
     private NavigationView mNavigationView;
     private MemoryListFragment MLfragment;
-    private TextView mHeaderText;
     private String userName;
     private changeTheme mTheme;
 
@@ -114,36 +112,42 @@ public class MemoryListActivity extends SingleFragmentActivity
     }
     private void setHeaderWelcomeUser(String userName) {
         View headerView = mNavigationView.getHeaderView(0);
-        mHeaderText = headerView.findViewById(R.id.nav_header_textView);
-        mHeaderText.setText(String.format("%s %s!",
+        TextView headerText = headerView.findViewById(R.id.nav_header_textView);
+        headerText.setText(String.format("%s %s!",
                 getResources().getString(R.string.welcome).substring(0,7), userName));
-        mTheme.setNavigationHeaderTheme(headerView, mHeaderText);
+        mTheme.setNavigationHeaderTheme(headerView, headerText);
     }
     private void drawerAndToggle() {
         mDrawerLayout = findViewById(R.id.main_drawerLayout);
         mNavigationView.setNavigationItemSelectedListener(this);
-        mABDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.NDopen, R.string.NDclose);
-        mDrawerLayout.addDrawerListener(mABDrawerToggle);
-        mABDrawerToggle.setDrawerIndicatorEnabled(true);
+        ActionBarDrawerToggle ABDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.NDopen, R.string.NDclose);
+        mDrawerLayout.addDrawerListener(ABDrawerToggle);
+        ABDrawerToggle.setDrawerIndicatorEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mABDrawerToggle.syncState();
+        ABDrawerToggle.syncState();
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         String[] currentEvents = new memoryEvents(getApplicationContext(),
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext())).getIndividualEvents();
 
-        if(item.getItemId() == R.id.all )
-            return filterOnSelected(R.string.all);
+        if(item.getItemId() == R.id.all ){
+            return filterEvent(getString(R.string.all));
+        }
         else if (item.getItemId() == R.id.user_settings )
                 goToSettings();
         else {
-            MLfragment.eventFilter(currentEvents[item.getItemId()]);
-            onBackPressed();
-            return true;
+            return filterEvent(currentEvents[item.getItemId()]);
         }
         return true;
     }
+
+    private boolean filterEvent(String currentEvent) {
+        MLfragment.eventFilter(currentEvent);
+        onBackPressed();
+        return true;
+    }
+
     /**
      * Gets a string array of applicable Events and adds them as menu items.
      * These items have ids starting from zero and increment till size of array.
@@ -164,15 +168,6 @@ public class MemoryListActivity extends SingleFragmentActivity
         Intent intent = new Intent(this, UserSettingsActivity.class);
         startActivity(intent);
     }
-    /**
-     * Updates list of memories depending on what the user selected in menu of Navigation Drawer
-     */
-    private boolean filterOnSelected(int NavigationItem) {
-        MLfragment.eventFilter(getString(NavigationItem));
-        onBackPressed();
-        return true;
-    }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 

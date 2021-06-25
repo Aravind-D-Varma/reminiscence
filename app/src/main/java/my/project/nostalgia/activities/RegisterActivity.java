@@ -37,7 +37,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private EditText mName, mEmail, mPassword, mPassword2;
-    private Button mRegister;
     private ProgressDialog mProgressDialog;
 
     @Override
@@ -50,9 +49,9 @@ public class RegisterActivity extends AppCompatActivity {
         mEmail = (EditText) findViewById(R.id.register_email);
         mPassword = (EditText) findViewById(R.id.register_password);
         mPassword2 = (EditText) findViewById(R.id.register_password_reenter);
-        mRegister = (Button) findViewById(R.id.register_button);
+        Button register = (Button) findViewById(R.id.register_button);
         mProgressDialog = new ProgressDialog(this);
-        mRegister.setOnClickListener(new View.OnClickListener(){
+        register.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Register();

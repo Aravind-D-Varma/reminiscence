@@ -94,13 +94,11 @@ public class MemoryFragment extends Fragment {
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
     private String[] applicableEvents ={};
-    
-    private EditText mTitleField, mDetailField;
+
     private Button mDateButton, mTimeButton, mPhotoButton;
-    private Spinner mSpinner;
     private Intent getImage;
     private RecyclerView mPhotoRecyclerView;
-    private FloatingActionButton mPhotoFAB, mUploadFAB;
+    private FloatingActionButton mPhotoFAB;
     private Callbacks mCallbacks;
 
     private StorageReference mStorageReference;
@@ -117,7 +115,6 @@ public class MemoryFragment extends Fragment {
     private static final int MY_STORAGE_CODE = 102;
     private final String CURRENT_PHOTOS_ABSENT = "Current Memory Photos";
     public static final String CURRENT_MEMORY = "Current Memory";
-    private String mThemeValues;
 
     /**
      * Used to update UI for a given fragment. Function depends on whether device is tablet or phone.
@@ -252,11 +249,11 @@ public class MemoryFragment extends Fragment {
             applicableEvents = getMemoryEvents().addStringToArray(stringFromResource(R.string.add_event),
                     applicableEvents);
         }
-        mThemeValues = mSharedPreferences.getString("GlobalTheme", "Dark");
+        String themeValues = mSharedPreferences.getString("GlobalTheme", "Dark");
         // region EditText
-        mTitleField = (EditText) v.findViewById(R.id.memory_title);
-        mTitleField.setText(mMemory.getTitle());
-        mTitleField.addTextChangedListener(new TextWatcher() {
+        EditText titleField = (EditText) v.findViewById(R.id.memory_title);
+        titleField.setText(mMemory.getTitle());
+        titleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -274,12 +271,12 @@ public class MemoryFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
-        cT.setBackgroundTheme(mTitleField);
+        cT.setBackgroundTheme(titleField);
         //endregion
         //region EditText Details
-        mDetailField = (EditText) v.findViewById(R.id.memory_details);
-        mDetailField.setText(mMemory.getDetail());
-        mDetailField.addTextChangedListener(new TextWatcher() {
+        EditText detailField = (EditText) v.findViewById(R.id.memory_details);
+        detailField.setText(mMemory.getDetail());
+        detailField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -293,7 +290,7 @@ public class MemoryFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
-        cT.setBackgroundTheme(mDetailField);
+        cT.setBackgroundTheme(detailField);
         mDateButton = (Button) v.findViewById(R.id.memory_date);
         updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
@@ -318,12 +315,12 @@ public class MemoryFragment extends Fragment {
             }
         });
         cT.setBackgroundTheme(mTimeButton);
-        mSpinner = (Spinner) v.findViewById(R.id.memory_spinner);
+        Spinner spinner = (Spinner) v.findViewById(R.id.memory_spinner);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(), R.layout.myspinner, applicableEvents);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinner.setAdapter(spinnerAdapter);
-        mSpinner.setSelection(Arrays.asList(applicableEvents).indexOf(mMemory.getEvent()),false);
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setSelection(Arrays.asList(applicableEvents).indexOf(mMemory.getEvent()),false);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(applicableEvents[position].equals(stringFromResource(R.string.add_event))) {
@@ -339,7 +336,7 @@ public class MemoryFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        cT.setBackgroundTheme(mSpinner);
+        cT.setBackgroundTheme(spinner);
         mPhotoButton = (Button)v.findViewById(R.id.memory_selectphotos);
         try {
             if (mMemory.getMediaPaths().length() != 0)
@@ -392,8 +389,8 @@ public class MemoryFragment extends Fragment {
                 }
             });
         cT.setBackgroundTheme(mPhotoFAB);
-        mUploadFAB = (FloatingActionButton) v.findViewById(R.id.upload_fab);
-        mUploadFAB.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton uploadFAB = (FloatingActionButton) v.findViewById(R.id.upload_fab);
+        uploadFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProgressDialog mProgressDialog = new ProgressDialog(getActivity());
@@ -438,7 +435,7 @@ public class MemoryFragment extends Fragment {
 
             }
         });
-        cT.setBackgroundTheme(mUploadFAB);
+        cT.setBackgroundTheme(uploadFAB);
         return v;
     }
 
@@ -643,7 +640,7 @@ public class MemoryFragment extends Fragment {
         });
     }
     private AlertDialog AskDiscardMemory(){
-        AlertDialog discardMemoryDialogBox = new AlertDialog.Builder(getContext())
+        return new AlertDialog.Builder(getContext())
                 .setTitle(stringFromResource(R.string.delete_memory))
                 .setMessage(stringFromResource(R.string.delete_memory_confirm))
                 .setIcon(android.R.drawable.ic_menu_delete)
@@ -660,15 +657,13 @@ public class MemoryFragment extends Fragment {
                     }
                 })
                 .create();
-        return discardMemoryDialogBox;
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case MY_STORAGE_CODE:
-                if(hasMediaPermission())
-                    startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
+        if (requestCode == MY_STORAGE_CODE) {
+            if (hasMediaPermission())
+                startActivityForResult(Intent.createChooser(getImage, "Select Image"), REQUEST_GALLERY_PHOTO);
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }

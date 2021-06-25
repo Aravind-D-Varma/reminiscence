@@ -37,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private EditText mEmail, mPassword, mName;
-    private Button mLogin, mForgot, mRegister;
     private ProgressDialog mProgressDialog;
 
     public static final String SEND_USERNAME= "username";
@@ -56,11 +55,11 @@ public class LoginActivity extends AppCompatActivity {
         mEmail = (EditText) findViewById(R.id.login_email);
         mPassword = (EditText) findViewById(R.id.login_password);
         mName = (EditText) findViewById(R.id.login_name);
-        mRegister = (Button) findViewById(R.id.login_register);
-        mForgot = (Button) findViewById(R.id.login_forgot);
-        mLogin = (Button) findViewById(R.id.login_button);
+        Button register = (Button) findViewById(R.id.login_register);
+        Button forgot = (Button) findViewById(R.id.login_forgot);
+        Button login = (Button) findViewById(R.id.login_button);
         mProgressDialog = new ProgressDialog(this);
-        mRegister.setOnClickListener(new View.OnClickListener() {
+        register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
@@ -68,13 +67,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mLogin.setOnClickListener(new View.OnClickListener(){
+        login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Login();
             }
         });
-        mForgot.setOnClickListener(new View.OnClickListener() {
+        forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ForgotPassword();

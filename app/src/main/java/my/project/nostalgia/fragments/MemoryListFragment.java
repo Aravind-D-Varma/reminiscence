@@ -293,12 +293,11 @@ public class MemoryListFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case MY_STORAGE_CODE:
-                if(hasMediaPermission()) {
-                    startActivity(new Intent(getActivity(), MemoryListActivity.class));
-                    getActivity().finish();
-                }
+        if (requestCode == MY_STORAGE_CODE) {
+            if (hasMediaPermission()) {
+                startActivity(new Intent(getActivity(), MemoryListActivity.class));
+                getActivity().finish();
+            }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }

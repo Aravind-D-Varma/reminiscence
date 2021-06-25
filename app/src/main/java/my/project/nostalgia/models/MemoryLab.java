@@ -19,7 +19,6 @@ public class MemoryLab {
 
     //region Declarations
     private static MemoryLab sMemoryLab;
-    private Context mContext;
     private SQLiteDatabase mSQLiteDatabase;
     //endregion
 
@@ -35,8 +34,8 @@ public class MemoryLab {
     }
 
     private MemoryLab(Context context){
-        mContext = context.getApplicationContext();
-        mSQLiteDatabase = new MemoryBaseHelper(mContext).getWritableDatabase();
+        Context context1 = context.getApplicationContext();
+        mSQLiteDatabase = new MemoryBaseHelper(context1).getWritableDatabase();
     }
 
     //region get list of memories
