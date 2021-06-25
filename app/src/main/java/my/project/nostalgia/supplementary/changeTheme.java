@@ -106,11 +106,12 @@ public class changeTheme {
     public void setPreferenceIcon(Preference p){
         if(mTheme.equals("Light")){
             Drawable icon = p.getIcon();
-            DrawableCompat.setTint(icon,colorFromResources(R.color.black));
+            icon.setTint(colorFromResources(R.color.black));
         }
         else if(mTheme.equals("Dark")){
             Drawable icon = p.getIcon();
-            DrawableCompat.setTint(icon,colorFromResources(R.color.black));
+            icon.setTint(colorFromResources(R.color.white));
+            //DrawableCompat.setTint(icon,colorFromResources(R.color.black));
         }
     }
 

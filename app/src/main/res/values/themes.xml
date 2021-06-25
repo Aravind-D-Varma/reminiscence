@@ -18,6 +18,8 @@
         <item name="android:textColor">@color/light_purple</item>
         <item name="android:textColorPrimary">@color/light_purple</item>
         <item name="android:textColorSecondary">@color/grey</item>
+        
+        <item name="preferenceTheme">@style/darkPreferenceStyle</item>
 
     </style>
 
@@ -34,6 +36,9 @@
     <style name="myActionbar.SubtitleTextStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:textColor">@color/light_purple</item>
     </style>
+    <style name="darkPreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="android:tint">@color/white</item>
+    </style>
 
     <!-- Light application theme. -->
     <style name="Theme.Reminiscence.Light" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -48,6 +53,8 @@
         <item name="android:textColorSecondary">@color/grey</item>
 
         <item name = "actionBarStyle">@style/myActionbarLight</item>
+
+        <item name="preferenceTheme">@style/lightPreferenceStyle</item>
     </style>
 
     <style name="myActionbarLight" parent ="Widget.AppCompat.ActionBar">
@@ -63,6 +70,8 @@
     <style name="myActionbar.SubtitleTextStyleLight" parent="Widget.AppCompat.ActionBar">
         <item name="android:textColor">@color/white</item>
     </style>
-
+    <style name="lightPreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="android:tint">@color/black</item>
+    </style>
 
 </resources>
