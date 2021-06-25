@@ -188,25 +188,24 @@ public class MemoryFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        switch(item.getItemId()){
-            case R.id.delete_memory:
-                MemoryLab.get(getActivity()).deleteMemory(mMemory);
-                startActivity(new Intent(getActivity(), MemoryListActivity.class));
-                getActivity().finish();
-                return true;
-            case R.id.share_memory:
+        int itemId = item.getItemId();
+        if (itemId == R.id.delete_memory) {
+            MemoryLab.get(getActivity()).deleteMemory(mMemory);
+            startActivity(new Intent(getActivity(), MemoryListActivity.class));
+            getActivity().finish();
+            return true;
+        } else if (itemId == R.id.share_memory) {
+            try {
+                ArrayList<Uri> mediaUri = getUrisFromPaths();
+                Intent share = shareMemoryIntent(mediaUri);
+                startActivity(Intent.createChooser(share, "Share Memory"));
+            } catch (NullPointerException e) {
+                Toast.makeText(getContext(), stringFromResource(R.string.share_warning), Toast.LENGTH_SHORT).show();
+            }
 
-                try {
-                    ArrayList<Uri> mediaUri = getUrisFromPaths();
-                    Intent share = shareMemoryIntent(mediaUri);
-                    startActivity(Intent.createChooser(share, "Share Memory"));
-                }
-                catch (NullPointerException e){
-                    Toast.makeText(getContext(), stringFromResource(R.string.share_warning),Toast.LENGTH_SHORT).show();
-                }
-            default:
-                return super.onOptionsItemSelected(item);
+            return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
     private ArrayList<Uri> getUrisFromPaths() {
         ArrayList<Uri> mediaUri = new ArrayList<>();

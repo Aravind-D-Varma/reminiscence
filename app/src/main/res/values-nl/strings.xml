@@ -78,4 +78,21 @@
     <string name="refreshButton">Verversen</string>
     <string name="new_custom_event">Nieuw aangepast evenement</string>
     <string name="create">Aanmaken</string>
+
+    <string name="email_adress">E-mailadres:</string>
+    <string name="password">Wachtwoord:</string>
+    <string name="login">Log in</string>
+    <string name="forgot_password">Wachtwoord vergeten</string>
+    <string name="register">Registreren</string>
+    <string name="enter_name">Uw naam</string>
+    <string name="password_reenter">Voer paswoord opnieuw in</string>
+    <string name="sign_up">Aanmelden !</string>
+    <string name="add_on">Toevoegen</string>
+    <string name="upload">Uploaden</string>
+    <string name="sign_out">Afmelden</string>
+    <string name="sign_out_summary">Als u zich afmeldt, gaat u naar de inlogpagina.</string>
+    <string name="delete_account">Account verwijderen</string>
+    <string name="delete_account_summary">Als u uw account verwijdert, worden ook uw bestanden verwijderd</string>
+    <string name="delete">Verwijderen</string>
+    <string name="delete_account_confirm">Account verwijderen bevestigen</string>
 </resources>

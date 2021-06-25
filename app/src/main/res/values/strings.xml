@@ -71,8 +71,8 @@
     <string name="general">General</string>
     <string name="invite_someone">Check this out! You can store and share your favoutite memories in one place!
         I recommend it to you!</string>
-    <string name="refreshPage" translatable="false">Click Refresh to see changes</string>
-    <string name="refreshButton" translatable="false">Refresh</string>
+    <string name="refreshPage">Click Refresh to see changes</string>
+    <string name="refreshButton">Refresh</string>
     <string name="new_custom_event">New Custom Event</string>
     <string name="create">Create</string>
     <string name="share">Share</string>

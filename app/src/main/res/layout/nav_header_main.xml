@@ -7,5 +7,8 @@
     android:layout_height="wrap_content"
     android:textSize="24sp"
     android:textStyle="bold"
-    app:drawableTopCompat="@mipmap/nostalgia_logo">
+    android:padding="15dp"
+    android:drawablePadding="10dp"
+    android:gravity="center_vertical"
+    app:drawableStartCompat="@mipmap/nostalgia_logo">
 </TextView>
