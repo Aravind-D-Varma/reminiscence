@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -69,7 +70,7 @@
             android:padding="8dp"
             android:textSize="10sp"
             android:layout_below="@id/memory_details"
-            />
+            tools:ignore="SmallSp" />
         <Button
             android:id="@+id/memory_time"
             android:layout_width="wrap_content"
@@ -81,7 +82,8 @@
             android:drawableStart="@drawable/memory_time_white"
             android:elevation="5dp"
             android:textSize="10sp"
-            android:layout_below="@id/memory_details"/>
+            android:layout_below="@id/memory_details"
+            tools:ignore="SmallSp" />
 
         <Button
             android:id="@+id/memory_selectphotos"
@@ -96,7 +98,8 @@
             android:padding="2dp"
             android:text="@string/choose_photos"
             android:textSize="10sp"
-            android:layout_below="@id/memory_date"/>
+            android:layout_below="@id/memory_date"
+            tools:ignore="SmallSp" />
         <Spinner
             android:id="@+id/memory_spinner"
             android:layout_width="wrap_content"
