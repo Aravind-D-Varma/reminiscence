@@ -577,7 +577,7 @@ public class MemoryFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
     private void setMediaRecyclerView() {
-        RecyclerViewGalleryAdapter adapter = new RecyclerViewGalleryAdapter(getContext(), individualFilePaths(mMemory));
+        RecyclerViewGalleryAdapter adapter = new RecyclerViewGalleryAdapter(getActivity(), individualFilePaths(mMemory));
         mPhotoRecyclerView.setAdapter(adapter);
     }
     private String[] individualFilePaths(Memory givenMemory){
