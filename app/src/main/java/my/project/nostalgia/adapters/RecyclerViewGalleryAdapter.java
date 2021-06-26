@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import my.project.nostalgia.R;
@@ -89,18 +90,53 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
             return IMAGE;
     }
 
-    public class MyImageViewHolder extends RecyclerView.ViewHolder{
+    private class MyImageViewHolder extends RecyclerView.ViewHolder{
         ImageView image;
         public MyImageViewHolder(View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.memory_photo);
         }
     }
-    public class MyVideoViewHolder extends RecyclerView.ViewHolder{
+    private class MyVideoViewHolder extends RecyclerView.ViewHolder{
         VideoView video;
         public MyVideoViewHolder(View itemView) {
             super(itemView);
             video = itemView.findViewById(R.id.memory_video);
+        }
+    }
+    private class MediaDiffUtilCallback extends DiffUtil.Callback{
+
+        private List<Bitmap> mNewPhotos;
+        private List<Uri> mNewVideos;
+        private final List<Bitmap> mOldphotos;
+        private final List<Uri> mOldvideos;
+
+        public MediaDiffUtilCallback(List<Bitmap> newphotos,List<Uri> newvideos){
+            mOldphotos = photos;
+            mOldvideos = videos;
+            this.mNewPhotos = newphotos;
+            this.mNewVideos = newvideos;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return (mOldphotos!=null ? mOldphotos.size():0)+(mOldvideos!=null ? mOldvideos.size():0);
+        }
+
+        @Override
+        public int getNewListSize() {
+            return (mNewPhotos!=null ? mNewPhotos.size():0)+(mNewVideos!=null ? mNewVideos.size():0);
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return mOldphotos.get(oldItemPosition).sameAs(mNewPhotos.get(newItemPosition))
+                    || mOldvideos.get(oldItemPosition).toString().equals(mNewVideos.get(newItemPosition).toString());
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return false;
         }
     }
 }

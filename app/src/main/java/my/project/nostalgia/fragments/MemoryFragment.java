@@ -131,7 +131,6 @@ public class MemoryFragment extends Fragment {
         super.onAttach(context);
         mCallbacks = (Callbacks) context;
     }
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -387,7 +386,6 @@ public class MemoryFragment extends Fragment {
     private String stringFromResource(int resourceID) {
         return getResources().getString(resourceID);
     }
-
     private boolean hasMediaPermission() {
         int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
         return result == PackageManager.PERMISSION_GRANTED;
@@ -412,7 +410,6 @@ public class MemoryFragment extends Fragment {
         TabLayout tabLayout = dialog.findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(pager,true);
     }
-
     private AlertDialog AskDeleteMedia(String toDeleteMediapath){
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext(),R.style.PauseDialog)
                 .setTitle(stringFromResource(R.string.delete_file))
@@ -436,7 +433,6 @@ public class MemoryFragment extends Fragment {
         mPhotoFAB.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
         mPhotoFAB.setEnabled(mMemory.getMediaPaths()!=null);
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(resultCode!= Activity.RESULT_OK)
