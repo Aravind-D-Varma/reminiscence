@@ -1,24 +1,21 @@
 package my.project.nostalgia.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import my.project.nostalgia.R;
+import my.project.nostalgia.supplementary.MediaAndURI;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Setting up the gridLayout: images and videos.<br>
  * Gets images from Bitmap decoder and videos from Uris
@@ -37,8 +34,8 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
     public RecyclerViewGalleryAdapter(Context applicationContext, String[] mediaPaths) {
         this.context = applicationContext;
         this.mediaPaths = mediaPaths;
-        this.photos = getPhotoBitmaps(mediaPaths);
-        this.videos = getVideoURIs(mediaPaths);
+        this.photos = new MediaAndURI().getPhotoBitmaps(mediaPaths);
+        this.videos = new MediaAndURI(applicationContext).getVideoURIs(mediaPaths);
     }
     @NonNull
     @Override
@@ -83,17 +80,10 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return mediaPaths.length;
     }
-
-    /**
-     * @see #isImageFile(String)
-     * @see #isVideoFile(String)
-     * @see #getMimeType(String)
-     * @see #getExtension(String)
-     * @return constant depending on whether item is video or image.
-     */
+    /**@return constant depending on whether item is video or image.*/
     @Override
     public int getItemViewType(int position) {
-       if(isVideoFile(mediaPaths[position]))
+       if(new MediaAndURI().isThisVideoFile(mediaPaths[position]))
             return VIDEO;
        else
             return IMAGE;
@@ -113,55 +103,4 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
             video = itemView.findViewById(R.id.memory_video);
         }
     }
-    private List<Bitmap> getPhotoBitmaps(String[] mediaPaths) {
-        photos = new ArrayList<>();
-        for (String mediaPath:mediaPaths) {
-            if(isImageFile(mediaPath)) {
-                Bitmap bpimg = BitmapFactory.decodeFile(mediaPath);
-                photos.add(bpimg);
-            }
-            else photos.add(null);
-        }
-        return photos;
-    }
-  
-    private List<Uri> getVideoURIs(String[] mediaPaths) {
-        videos = new ArrayList<>();
-        for (String mediaPath:mediaPaths) {
-            if(isVideoFile(mediaPath)) {
-                Uri uriVid = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", new File(mediaPath));
-                videos.add(uriVid);
-            }
-            else
-                videos.add(null);
-        }
-        return videos;
-    }          
-               
-    public static boolean isImageFile(String path) {
-        String mimeType = getMimeType(path);
-        return mimeType != null && mimeType.startsWith("image");
-    }
-    public static boolean isVideoFile(String path) {
-        String mimeType = getMimeType(path);
-        return mimeType != null && mimeType.startsWith("video");
-    }
-    private static String getMimeType(String path) {
-        String mimeType = "";
-        String extension = getExtension(path);
-        if (MimeTypeMap.getSingleton().hasExtension(extension)) {
-            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-        }
-        return mimeType;
-    }
-    private static String getExtension(String fileName){
-        char[] arrayOfFilename = fileName.toCharArray();
-        for(int i = arrayOfFilename.length-1; i > 0; i--){
-            if(arrayOfFilename[i] == '.'){
-                return fileName.substring(i+1);
-            }
-        }
-        return "";
-    }
 }
-
