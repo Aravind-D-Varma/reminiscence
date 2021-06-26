@@ -38,6 +38,7 @@ import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.MemoryListActivity;
+import my.project.nostalgia.supplementary.MediaAndURI;
 import my.project.nostalgia.supplementary.changeTheme;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -54,8 +55,6 @@ import java.util.List;
 import java.util.Map;
 
 import static my.project.nostalgia.activities.LoginActivity.FIRST_TIME;
-import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isImageFile;
-import static my.project.nostalgia.adapters.RecyclerViewGalleryAdapter.isVideoFile;
 //TODO Some input files use or override a depecrate API recompile with -Xlint:deprecation for details
 /**
  * Contains list layout of RecyclerView and floating action button to show all memories and to add a new one.
@@ -414,9 +413,9 @@ public class MemoryListFragment extends Fragment {
         }
 
         private void setPreviewImage(String[] mediaPaths, int i, ImageView imageView) {
-            if (isImageFile(mediaPaths[i]))
+            if (new MediaAndURI().isThisImageFile(mediaPaths[i]))
                 imageView.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[i]));
-            else if (isVideoFile(mediaPaths[i])) {
+            else if (new MediaAndURI().isThisVideoFile(mediaPaths[i])) {
                 Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[i], MediaStore.Images.Thumbnails.MINI_KIND);
                 imageView.setImageBitmap(thumb);
             }
