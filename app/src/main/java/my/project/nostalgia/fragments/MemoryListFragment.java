@@ -250,7 +250,6 @@ public class MemoryListFragment extends Fragment {
             });
         });
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == MY_STORAGE_CODE) {
@@ -261,7 +260,6 @@ public class MemoryListFragment extends Fragment {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
     /**
      * Binds RecyclerView to its adapter
      */
@@ -343,6 +341,7 @@ public class MemoryListFragment extends Fragment {
         private Memory mMemory;
         private ImageView mImageView2;
         private TextView mExtraText;
+        private MediaAndURI mMediaAndURI;
 
         public MemoryHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_memory, parent, false));
@@ -373,8 +372,9 @@ public class MemoryListFragment extends Fragment {
             }catch (NullPointerException ignored){}
             mShare.setOnClickListener(v -> {
                 try {
-                    ArrayList<Uri> mediaUri = getUrisFromPaths();
-                    Intent share = shareMemoryIntent(mediaUri);
+                    mMediaAndURI = new MediaAndURI();
+                    ArrayList<Uri> mediaUri = mMediaAndURI.getUrisFromPaths(mMemory.getMediaPaths().split(","));
+                    Intent share = mMediaAndURI.shareMemoryIntent(mediaUri,mMemory.getTitle());
                     startActivity(Intent.createChooser(share, "Share Memory"));
                 }
                 catch (NullPointerException e){
@@ -419,29 +419,6 @@ public class MemoryListFragment extends Fragment {
                 Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[i], MediaStore.Images.Thumbnails.MINI_KIND);
                 imageView.setImageBitmap(thumb);
             }
-        }
-
-        private ArrayList<Uri> getUrisFromPaths() {
-            ArrayList<Uri> mediaUri = new ArrayList<>();
-            for (String path : mMemory.getMediaPaths().split(",")) {
-                File file = new File(path);
-                Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
-                mediaUri.add(uri);
-            }
-            return mediaUri;
-        }
-        /**
-         * Creates an intent which allows user to share the memory: photos/videos and title.
-         * @param mediaUri list of all Uri which contain filepaths of photos and videos of a memory.
-         */
-        private Intent shareMemoryIntent(ArrayList<Uri> mediaUri) {
-            Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);
-            share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, mediaUri);
-            share.setType("*/*");
-            share.putExtra(Intent.EXTRA_MIME_TYPES, new String[] {"image/*", "video/*"});
-            share.putExtra(Intent.EXTRA_TEXT, mMemory.getTitle());
-            share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            return share;
         }
         @Override
         public void onClick(View v) {

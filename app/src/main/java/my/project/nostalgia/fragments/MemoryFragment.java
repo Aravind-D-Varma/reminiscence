@@ -190,7 +190,7 @@ public class MemoryFragment extends Fragment {
             return true;
         } else if (itemId == R.id.share_memory) {
             try {
-                ArrayList<Uri> mediaUri = new MediaAndURI(getContext()).getUrisFromPaths(individualFilePaths(mMemory));
+                ArrayList<Uri> mediaUri = mMediaAndURI.getUrisFromPaths(individualFilePaths(mMemory));
                 Intent share = new MediaAndURI().shareMemoryIntent(mediaUri,mMemory.getTitle());
                 startActivity(Intent.createChooser(share, "Share Memory"));
             } catch (NullPointerException e) {
@@ -206,6 +206,7 @@ public class MemoryFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_memory, container, false);
         getActivity().setTitle(mMemory.getTitle());
         changeTheme cT = new changeTheme(getContext());
+        mMediaAndURI = new MediaAndURI(getContext());
         try {
             applicableEvents = getMemoryEvents().getIndividualEvents();
             applicableEvents = getMemoryEvents().addStringToArray(stringFromResource(R.string.add_event),
@@ -454,7 +455,6 @@ public class MemoryFragment extends Fragment {
         }
         else if (requestCode == REQUEST_GALLERY_PHOTO){
             StringBuilder joinedFilePaths = new StringBuilder();
-            mMediaAndURI = new MediaAndURI(getContext());
             if(data.getData()!=null){
                 Uri mMediaUri=data.getData();
                 joinedFilePaths.append(mMediaAndURI.getMediaPathFromUri(mMediaUri));
@@ -477,7 +477,6 @@ public class MemoryFragment extends Fragment {
         }
         else if (requestCode == REQUEST_GALLERY_ADDITIONALPHOTO){
             StringBuilder extraFilePaths = new StringBuilder(mMemory.getMediaPaths());
-            mMediaAndURI = new MediaAndURI(getContext());
             if(data.getData()!=null){
                 Uri mMediaUri=data.getData();
                 String newPhoto = mMediaAndURI.getMediaPathFromUri(mMediaUri);
