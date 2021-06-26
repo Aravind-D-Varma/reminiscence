@@ -564,6 +564,7 @@ public class MemoryFragment extends Fragment {
                 .setMessage(stringFromResource(R.string.delete_memory_confirm))
                 .setIcon(android.R.drawable.ic_menu_delete)
                 .setPositiveButton(stringFromResource(R.string.discard), (dialog, whichButton) -> {
+                    MemoryLab.get(getActivity()).deleteMemory(mMemory);
                     Intent intent = new Intent(getActivity(), MemoryListActivity.class);
                     startActivity(intent);
                     dialog.dismiss();
