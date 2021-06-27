@@ -61,14 +61,10 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
 
     public class MemoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView mTitleText;
-        private TextView mDetailText;
-        private Button mShare;
-        private Button mDelete;
-        private ImageView mImageView;
+        private TextView mTitleText, mDetailText,mExtraText;
+        private Button mShare, mDelete;
+        private ImageView mImageView, mImageView2;
         private Memory mMemory;
-        private ImageView mImageView2;
-        private TextView mExtraText;
         private MediaAndURI mMediaAndURI;
 
         public MemoryHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -100,7 +96,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
             }catch (NullPointerException ignored){}
             mShare.setOnClickListener(v -> {
                 try {
-                    mMediaAndURI = new MediaAndURI();
+                    mMediaAndURI = new MediaAndURI(mContext);
                     ArrayList<Uri> mediaUri = mMediaAndURI.getUrisFromPaths(mMemory.getMediaPaths().split(","));
                     Intent share = mMediaAndURI.shareMemoryIntent(mediaUri,mMemory.getTitle());
                     mContext.startActivity(Intent.createChooser(share, "Share Memory"));
@@ -117,18 +113,18 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
                 String[] mediaPaths = mMemory.getMediaPaths().split(",");
                 int numberOfMedias = mediaPaths.length;
                 if(numberOfMedias == 1) {
-                    setPreviewImage(mediaPaths, 0, mImageView);
+                    setPreviewImage(mediaPaths[0], mImageView);
                     mImageView2.setImageBitmap(null);
                     mExtraText.setText("");
                 }
                 else if (numberOfMedias == 2) {
-                    setPreviewImage(mediaPaths, 0, mImageView);
-                    setPreviewImage(mediaPaths, 1, mImageView2);
+                    setPreviewImage(mediaPaths[0], mImageView);
+                    setPreviewImage(mediaPaths[1], mImageView2);
                     mExtraText.setText("");
                 }
                 else if (numberOfMedias > 2){
-                    setPreviewImage(mediaPaths, 0, mImageView);
-                    setPreviewImage(mediaPaths, 1, mImageView2);
+                    setPreviewImage(mediaPaths[0], mImageView);
+                    setPreviewImage(mediaPaths[1], mImageView2);
                     mExtraText.setText("+"+ (numberOfMedias-2)+" "+mContext.getString(R.string.more));
                 }
             }catch (NullPointerException e){
@@ -138,34 +134,21 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
                 mExtraText.setText(stringResource(R.string.share_warning));
             }
         }
-
-        private void setPreviewImage(String[] mediaPaths, int i, ImageView imageView) {
-            MediaAndURI mediaAndURI = new MediaAndURI(mContext);
-            final String mediaPath = mediaPaths[i];
-            if (mediaAndURI.isThisImageFile(mediaPath)){
-                Glide.with(mContext)
-                        .load(mediaAndURI.getMediaUriOf(mediaPath))
-                        .into(imageView);}
-            else if (mediaAndURI.isThisVideoFile(mediaPath)) {
-                Glide.with(mContext)
-                        .asBitmap()
-                        .load(mediaAndURI.getMediaUriOf(mediaPath))
-                        .into(imageView);
-            }
+        private void setPreviewImage(String mediaPath, ImageView imageView) {
+            Glide.with(mContext).load(new MediaAndURI(mContext).getMediaUriOf(mediaPath)).into(imageView);
         }
         @Override
         public void onClick(View v) {
             Intent intent = MemoryPagerActivity.newIntent(mContext, mMemory.getId());
             mContext.startActivity(intent);
         }
-        private String stringResource(int p) {
-            return mContext.getResources().getString(p);
+        private String stringResource(int resourceID) {
+            return mContext.getResources().getString(resourceID);
         }
     }
-    public class MemoryDiffUtilCallback extends DiffUtil.Callback {
+    private static class MemoryDiffUtilCallback extends DiffUtil.Callback {
 
-        private List<Memory> mOldMemories;
-        private List<Memory> mNewMemories;
+        private List<Memory> mOldMemories, mNewMemories;
 
         private MemoryDiffUtilCallback(List<Memory> oldMemories, List<Memory> newMemories) {
             mOldMemories = oldMemories;

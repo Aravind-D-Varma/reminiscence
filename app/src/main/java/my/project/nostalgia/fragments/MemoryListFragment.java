@@ -120,8 +120,8 @@ public class MemoryListFragment extends Fragment {
         });
     }
 
-    private String stringResource(int p) {
-        return getResources().getString(p);
+    private String stringResource(int resourceID) {
+        return getResources().getString(resourceID);
     }
 
     @Override

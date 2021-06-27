@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -87,9 +88,9 @@ public class changeTheme {
 
     public void setLayoutTheme(View v){
         if (mTheme.equals("Light"))
-            v.setBackground(mContext.getResources().getDrawable(R.drawable.layout_border_light));
+            v.setBackground(ContextCompat.getDrawable(mContext,R.drawable.layout_border_light));
         else if (mTheme.equals("Dark"))
-            v.setBackground(mContext.getResources().getDrawable(R.drawable.layout_border));
+            v.setBackground(ContextCompat.getDrawable(mContext,R.drawable.layout_border));
     }
     public void setTextTheme(TextView tv) {
         if (mTheme.equals("Light"))

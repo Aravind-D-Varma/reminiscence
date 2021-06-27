@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="@string/welcome"
         android:gravity="center"
-        android:textSize="40dp"/>
+        android:textSize="40sp"/>
 
     <EditText
         android:id="@+id/login_email"
@@ -63,6 +63,7 @@
             android:layout_height="wrap_content"
             android:text="@string/register"
             android:layout_alignParentEnd="true"
+            android:layout_alignEnd="@+id/login_forgot"
             android:layout_margin="20dp"
             android:background="@android:color/transparent"/>
     </RelativeLayout>

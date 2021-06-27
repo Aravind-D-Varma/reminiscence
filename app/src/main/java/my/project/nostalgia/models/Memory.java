@@ -61,6 +61,8 @@ public class Memory {
 
     @Override
     public boolean equals(@Nullable Object obj) {
+        if (getClass() != obj.getClass())
+            return false;
 
         final Memory other = (Memory) obj;
 

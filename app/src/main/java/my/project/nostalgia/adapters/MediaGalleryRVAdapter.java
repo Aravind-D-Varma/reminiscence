@@ -101,7 +101,7 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
             return IMAGE;
     }
 
-    private class MyImageViewHolder extends RecyclerView.ViewHolder {
+    private static class MyImageViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
 
         public MyImageViewHolder(View itemView) {
@@ -110,7 +110,7 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private class MyVideoViewHolder extends RecyclerView.ViewHolder {
+    private static class MyVideoViewHolder extends RecyclerView.ViewHolder {
         VideoView video;
 
         public MyVideoViewHolder(View itemView) {
@@ -131,15 +131,10 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
 
         private String[] mOldMediaPaths;
         private String[] mNewMediaPaths;
-        private List<Uri> oldphotos, oldvideos, newphotos, newvideos;
 
         private MediaDiffUtilCallback(String[] oldMediaPaths, String[] newMediaPaths) {
             mOldMediaPaths = oldMediaPaths;
             mNewMediaPaths = newMediaPaths;
-            oldphotos = mMediaAndURI.getPhotoUris(mOldMediaPaths);
-            newphotos = mMediaAndURI.getPhotoUris(mNewMediaPaths);
-            oldvideos = mMediaAndURI.getVideoURIs(mOldMediaPaths);
-            newvideos = mMediaAndURI.getVideoURIs(mNewMediaPaths);
         }
 
         @Override

@@ -127,6 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignEnd="@id/upload_fab"
         android:layout_margin="8dp"
         android:src="@drawable/add"
         android:background="@drawable/button_border"

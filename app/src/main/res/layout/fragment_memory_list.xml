@@ -32,6 +32,7 @@
         android:id="@+id/memory_fab"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/memory_upload"
         android:layout_margin="25dp"
         android:elevation="20dp"
         android:background="@drawable/button_border"

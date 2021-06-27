@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="@string/sign_up"
         android:gravity="center"
-        android:textSize="40dp"/>
+        android:textSize="40sp"/>
 
     <EditText
         android:id="@+id/register_name"

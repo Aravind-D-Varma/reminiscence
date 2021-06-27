@@ -66,8 +66,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.mockito.internal.matchers.Null;
-
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -354,21 +352,15 @@ public class MemoryFragment extends Fragment {
                         }
                     }
                     StorageReference storageReference = mStorageReference.child(userID+"/"+ s +"/"+path);
-                    storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            try {
-                                Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_SHORT).show();
-                                mProgressDialog.dismiss();
-                            }catch (NullPointerException ignored){}
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            try{
-                                Toast.makeText(getContext(),"Upload failed",Toast.LENGTH_SHORT).show();
-                                mProgressDialog.dismiss();}catch (NullPointerException ignored){}
-                        }
+                    storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> {
+                        try {
+                            Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_SHORT).show();
+                            mProgressDialog.dismiss();
+                        }catch (NullPointerException ignored){}
+                    }).addOnFailureListener(e -> {
+                        try{
+                            Toast.makeText(getContext(),"Upload failed",Toast.LENGTH_SHORT).show();
+                            mProgressDialog.dismiss();}catch (NullPointerException ignored){}
                     });
                 }
             }

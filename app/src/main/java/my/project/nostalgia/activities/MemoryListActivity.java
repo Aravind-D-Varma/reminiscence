@@ -204,8 +204,8 @@ public class MemoryListActivity extends SingleFragmentActivity
             setLanguage("nl");
         }
     }
-    private void setLanguage(String en) {
-        Locale locale = new Locale(en);
+    private void setLanguage(String language) {
+        Locale locale = new Locale(language);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
