@@ -6,12 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,28 +14,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import my.project.nostalgia.adapters.MemoryAdapter;
+import my.project.nostalgia.adapters.MemoryRVAdapter;
 import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.MemoryListActivity;
-import my.project.nostalgia.supplementary.MediaAndURI;
-import my.project.nostalgia.supplementary.changeTheme;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,7 +39,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +55,7 @@ public class MemoryListFragment extends Fragment {
     public static final String MEMORIES_KEY = "Memories";
     private RecyclerView mRecyclerView;
     private Memory mNewMemory;
-    private MemoryAdapter mAdapter;
+    private MemoryRVAdapter mAdapter;
     private Callbacks mCallbacks;
     private boolean firstTime = true;
 
@@ -227,8 +216,7 @@ public class MemoryListFragment extends Fragment {
         floatingActionButton.setOnClickListener(v -> {
             mNewMemory = new Memory();
             MemoryLab.get(getActivity()).addMemory(mNewMemory);
-            if(isDeviceTablet())
-                updateUIForTablet();
+            updateByDevice();
             mCallbacks.onMemorySelected(mNewMemory);
         });
         FloatingActionButton upload = view.findViewById(R.id.memory_upload);
@@ -268,13 +256,12 @@ public class MemoryListFragment extends Fragment {
         List<Memory> Memorys = memoryLab.getMemories();
         if(mAdapter == null && Memorys.size()!=0) {
             firstTime = false;
-            mAdapter = new MemoryAdapter(getContext(),getActivity(),Memorys);
+            mAdapter = new MemoryRVAdapter(getContext(),getActivity(),Memorys);
             mRecyclerView.setAdapter(mAdapter);
         }
         else {
             if (Memorys.size() != 0) {
-                mAdapter.setMemorys(Memorys);
-                mAdapter.notifyDataSetChanged();
+                mAdapter.updateList(Memorys);
             }
         }
         updateSubtitle();
@@ -317,13 +304,12 @@ public class MemoryListFragment extends Fragment {
         Memorys = memoryLab.getMemories();
         if(mAdapter == null && Memorys.size()!=0) {
             firstTime = false;
-            mAdapter = new MemoryAdapter(getContext(),getActivity(),Memorys);
+            mAdapter = new MemoryRVAdapter(getContext(),getActivity(),Memorys);
             mRecyclerView.setAdapter(mAdapter);
         }
         else {
             if (Memorys.size() != 0) {
-                mAdapter.setMemorys(Memorys);
-                mAdapter.notifyDataSetChanged();
+                mAdapter.updateList(Memorys);
             }
         }
         updateSubtitle();
@@ -339,8 +325,7 @@ public class MemoryListFragment extends Fragment {
             }
         }
         try {
-            mAdapter.setMemorys(searchMemorysList);
-            mAdapter.notifyDataSetChanged();
+            mAdapter.updateList(searchMemorysList);
         }catch (NullPointerException e){
             Toast.makeText(getContext(), stringResource(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
         }
@@ -354,8 +339,7 @@ public class MemoryListFragment extends Fragment {
                 searchMemorysList.add(Memory);
         }
         try {
-            mAdapter.setMemorys(searchMemorysList);
-            mAdapter.notifyDataSetChanged();
+            mAdapter.updateList(searchMemorysList);
         }catch (NullPointerException e){
             Toast.makeText(getContext(), stringResource(R.string.emptyfilter), Toast.LENGTH_SHORT).show();
         }

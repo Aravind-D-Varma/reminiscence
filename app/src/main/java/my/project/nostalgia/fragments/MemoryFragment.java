@@ -5,18 +5,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -28,7 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -40,7 +35,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -56,7 +50,7 @@ import my.project.nostalgia.activities.MemoryListActivity;
 import my.project.nostalgia.activities.MemoryPagerActivity;
 import my.project.nostalgia.R;
 import my.project.nostalgia.adapters.ZoomViewPagerAdapter;
-import my.project.nostalgia.adapters.RecyclerViewGalleryAdapter;
+import my.project.nostalgia.adapters.MediaGalleryRVAdapter;
 import my.project.nostalgia.supplementary.MediaAndURI;
 import my.project.nostalgia.supplementary.changeTheme;
 import my.project.nostalgia.supplementary.memoryEvents;
@@ -71,6 +65,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.mockito.internal.matchers.Null;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -114,7 +110,7 @@ public class MemoryFragment extends Fragment {
     private final String CURRENT_PHOTOS_ABSENT = "Current Memory Photos";
     public static final String CURRENT_MEMORY = "Current Memory";
     private MediaAndURI mMediaAndURI;
-    private RecyclerViewGalleryAdapter mAdapter;
+    private MediaGalleryRVAdapter mAdapter;
 
     /**
      * Used to update UI for a given fragment. Function depends on whether device is tablet or phone.
@@ -319,7 +315,7 @@ public class MemoryFragment extends Fragment {
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL));
         try{
-            mAdapter = new RecyclerViewGalleryAdapter(getActivity(), individualFilePaths(mMemory));
+            mAdapter = new MediaGalleryRVAdapter(getActivity(), individualFilePaths(mMemory));
             mPhotoRecyclerView.setAdapter(mAdapter);
         }
         catch (NullPointerException ignored){}
@@ -461,7 +457,12 @@ public class MemoryFragment extends Fragment {
             }
             mMemory.setMediaPaths(joinedFilePaths.toString());
             updateMemory();
-            mAdapter.updateList(joinedFilePaths.toString().split(","));
+            try {
+                mAdapter.updateList(joinedFilePaths.toString().split(","));
+            }catch(NullPointerException e){
+                mAdapter = new MediaGalleryRVAdapter(getActivity(), individualFilePaths(mMemory));
+                mPhotoRecyclerView.setAdapter(mAdapter);
+            }
             behaviourAfterAddingMedia();
         }
         else if (requestCode == REQUEST_GALLERY_ADDITIONALPHOTO){

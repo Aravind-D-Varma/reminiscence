@@ -1,4 +1,6 @@
 package my.project.nostalgia.models;
+import androidx.annotation.Nullable;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -55,5 +57,22 @@ public class Memory {
     }
     public void setDate(Date date) {
         mDate = date;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+
+        final Memory other = (Memory) obj;
+
+        if(!(this.mTitle).equals(other.getTitle()))
+            return false;
+        if(!(this.mDetail).equals(other.getDetail()))
+            return false;
+        if(!(this.mEvent).equals(other.getEvent()))
+            return false;
+        if(!(this.mMediaPaths).equals(other.getMediaPaths()))
+            return false;
+
+        return true;
     }
 }

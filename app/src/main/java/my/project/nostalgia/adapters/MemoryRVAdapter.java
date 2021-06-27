@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -29,12 +30,12 @@ import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.supplementary.MediaAndURI;
 import my.project.nostalgia.supplementary.changeTheme;
 
-public class MemoryAdapter extends RecyclerView.Adapter<MemoryAdapter.MemoryHolder>{
+public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.MemoryHolder>{
 
     private Activity mActivity;
     private List<Memory> mMemories;
     private Context mContext;
-    public MemoryAdapter(Context context, Activity activity, List<Memory> Memorys){
+    public MemoryRVAdapter(Context context, Activity activity, List<Memory> Memorys){
         mContext = context;
         mActivity = activity;
         mMemories = Memorys;
@@ -55,12 +56,11 @@ public class MemoryAdapter extends RecyclerView.Adapter<MemoryAdapter.MemoryHold
     public int getItemCount() {
         return mMemories.size();
     }
-    public void setMemorys(List<Memory> Memorys){
-        mMemories = Memorys;
+    public void updateList(List<Memory> newMemories) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MemoryDiffUtilCallback(this.mMemories, newMemories));
+        this.mMemories = newMemories;
+        diffResult.dispatchUpdatesTo(this);
     }
-    /**Updates display of memories depending on the event user has selected in the menu of Navigation Drawer.
-     * Is written in fragment code since fragment contains details of memories.
-     * @see MemoryListActivity*/
 
     public class MemoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -114,8 +114,7 @@ public class MemoryAdapter extends RecyclerView.Adapter<MemoryAdapter.MemoryHold
             });
             mDelete.setOnClickListener(v -> {
                 MemoryLab.get(mActivity).deleteMemory(mMemory);
-                mContext.startActivity(new Intent(mActivity, MemoryListActivity.class));
-                mActivity.finish();
+                updateList(MemoryLab.get(mActivity).getMemories());
             });
             try{
                 String[] mediaPaths = mMemory.getMediaPaths().split(",");
@@ -156,8 +155,37 @@ public class MemoryAdapter extends RecyclerView.Adapter<MemoryAdapter.MemoryHold
             Intent intent = MemoryPagerActivity.newIntent(mContext, mMemory.getId());
             mContext.startActivity(intent);
         }
+        private String stringResource(int p) {
+            return mContext.getResources().getString(p);
+        }
     }
-    private String stringResource(int p) {
-        return mContext.getResources().getString(p);
+    public class MemoryDiffUtilCallback extends DiffUtil.Callback {
+
+        private List<Memory> mOldMemories;
+        private List<Memory> mNewMemories;
+
+        private MemoryDiffUtilCallback(List<Memory> oldMemories, List<Memory> newMemories) {
+            mOldMemories = oldMemories;
+            mNewMemories = newMemories;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return mOldMemories.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return mNewMemories.size();
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return mOldMemories.get(oldItemPosition).getId() == mNewMemories.get(newItemPosition).getId();
+        }
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return mOldMemories.get(oldItemPosition).equals(mNewMemories.get(newItemPosition));
+        }
     }
 }

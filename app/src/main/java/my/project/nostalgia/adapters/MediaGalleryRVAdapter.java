@@ -22,7 +22,7 @@ import java.util.List;
  * Setting up the gridLayout: images and videos.<br>
  * Gets images from Bitmap decoder and videos from Uris
  */
-public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
+public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
 
     private MediaAndURI mMediaAndURI;
     private Context mContext;
@@ -34,7 +34,7 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
     /**
      * Upon initialisation, sets video uris and image bitmaps from a memory's videopaths.
      */
-    public RecyclerViewGalleryAdapter(Context context, String[] mediaPaths) {
+    public MediaGalleryRVAdapter(Context context, String[] mediaPaths) {
         this.mContext = context;
         this.mediaPaths = mediaPaths;
         mMediaAndURI = new MediaAndURI(context);
@@ -133,7 +133,7 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
         private String[] mNewMediaPaths;
         private List<Uri> oldphotos, oldvideos, newphotos, newvideos;
 
-        public MediaDiffUtilCallback(String[] oldMediaPaths, String[] newMediaPaths) {
+        private MediaDiffUtilCallback(String[] oldMediaPaths, String[] newMediaPaths) {
             mOldMediaPaths = oldMediaPaths;
             mNewMediaPaths = newMediaPaths;
             oldphotos = mMediaAndURI.getPhotoUris(mOldMediaPaths);
