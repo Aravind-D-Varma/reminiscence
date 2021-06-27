@@ -54,6 +54,9 @@ public class MediaAndURI {
         }
         return imageUris;
     }
+    public Uri getMediaUriOf(String mediaPath){
+        return FileProvider.getUriForFile(mContext,mContext.getPackageName()+".fileprovider",new File(mediaPath));
+    }
     public boolean isThisImageFile(String path) {
         String mimeType = getMimeType(path);
         return mimeType != null && mimeType.startsWith("image");

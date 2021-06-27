@@ -2,11 +2,7 @@ package my.project.nostalgia.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import my.project.nostalgia.R;
-import my.project.nostalgia.activities.MemoryListActivity;
 import my.project.nostalgia.activities.MemoryPagerActivity;
 import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
@@ -143,11 +140,17 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         }
 
         private void setPreviewImage(String[] mediaPaths, int i, ImageView imageView) {
-            if (new MediaAndURI().isThisImageFile(mediaPaths[i]))
-                imageView.setImageBitmap(BitmapFactory.decodeFile(mediaPaths[i]));
-            else if (new MediaAndURI().isThisVideoFile(mediaPaths[i])) {
-                Bitmap thumb = ThumbnailUtils.createVideoThumbnail(mediaPaths[i], MediaStore.Images.Thumbnails.MINI_KIND);
-                imageView.setImageBitmap(thumb);
+            MediaAndURI mediaAndURI = new MediaAndURI(mContext);
+            final String mediaPath = mediaPaths[i];
+            if (mediaAndURI.isThisImageFile(mediaPath)){
+                Glide.with(mContext)
+                        .load(mediaAndURI.getMediaUriOf(mediaPath))
+                        .into(imageView);}
+            else if (mediaAndURI.isThisVideoFile(mediaPath)) {
+                Glide.with(mContext)
+                        .asBitmap()
+                        .load(mediaAndURI.getMediaUriOf(mediaPath))
+                        .into(imageView);
             }
         }
         @Override
