@@ -232,7 +232,6 @@ public class MemoryFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
-        cT.setBackgroundTheme(titleField);
         //endregion
         //region EditText Details
         EditText detailField = (EditText) v.findViewById(R.id.memory_details);
@@ -251,7 +250,6 @@ public class MemoryFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
-        cT.setBackgroundTheme(detailField);
         mDateButton = (Button) v.findViewById(R.id.memory_date);
         updateDate();
         mDateButton.setOnClickListener(v1 -> {
@@ -260,7 +258,6 @@ public class MemoryFragment extends Fragment {
             dp.setTargetFragment(MemoryFragment.this, REQUEST_DATE);
             dp.show(manager, DIALOG_DATE);
         });
-        cT.setBackgroundTheme(mDateButton);
         mTimeButton = (Button) v.findViewById(R.id.memory_time);
         updateTime();
         mTimeButton.setOnClickListener(v12 -> {
@@ -269,7 +266,6 @@ public class MemoryFragment extends Fragment {
             tp.setTargetFragment(MemoryFragment.this, REQUEST_TIME);
             tp.show(fm, DIALOG_TIME);
         });
-        cT.setBackgroundTheme(mTimeButton);
         Spinner spinner = (Spinner) v.findViewById(R.id.memory_spinner);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.myspinner, applicableEvents);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -291,7 +287,6 @@ public class MemoryFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        cT.setBackgroundTheme(spinner);
         mPhotoButton = (Button)v.findViewById(R.id.memory_selectphotos);
         try {
             if (mMemory.getMediaPaths().length() != 0)
@@ -309,7 +304,6 @@ public class MemoryFragment extends Fragment {
                 }
             }
         });
-        cT.setBackgroundTheme(mPhotoButton);
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL));
         try{
@@ -328,7 +322,6 @@ public class MemoryFragment extends Fragment {
         behaviourBeforeAddingMedia();
         Intent getmoreImage = new MediaAndURI().getFromMediaIntent();
         mPhotoFAB.setOnClickListener(v16 -> startActivityForResult(Intent.createChooser(getmoreImage, "Select Image"), REQUEST_GALLERY_ADDITIONALPHOTO));
-        cT.setBackgroundTheme(mPhotoFAB);
         FloatingActionButton uploadFAB = (FloatingActionButton) v.findViewById(R.id.upload_fab);
         uploadFAB.setOnClickListener(v17 -> {
             ProgressDialog mProgressDialog = new ProgressDialog(getActivity());
@@ -366,7 +359,6 @@ public class MemoryFragment extends Fragment {
             }
 
         });
-        cT.setBackgroundTheme(uploadFAB);
         return v;
     }
 

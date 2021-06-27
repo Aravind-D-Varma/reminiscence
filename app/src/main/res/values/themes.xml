@@ -14,25 +14,45 @@
 
         <item name="preferenceTheme">@style/darkPreferenceStyle</item>
 
+        <item name="buttonStyle">@style/darkButtonsStyle</item>
+        <item name = "editTextStyle">@style/darkEditText</item>
+        <item name="spinnerStyle">@style/darkSpinner</item>
+
+        <item name="android:textViewStyle">@style/darkTextView</item>
+
     </style>
 
-    <style name="myActionbar" parent ="Widget.AppCompat.ActionBar">
-    <item name ="background">@color/medium_black</item>
-    <item name="titleTextStyle">@style/myActionbar.TitleTextStyle</item>
-    <item name="subtitleTextStyle">@style/myActionbar.SubtitleTextStyle</item>
-</style>
-<style name="myActionbar.TitleTextStyle" parent="Widget.AppCompat.ActionBar">
-    <item name="android:textColor">@color/light_purple</item>
-    <item name="android:textSize">20sp</item>
-    <item name="android:textStyle">bold</item>
-</style>
-<style name="myActionbar.SubtitleTextStyle" parent="Widget.AppCompat.ActionBar">
-    <item name="android:textColor">@color/light_purple</item>
-</style>
-<style name="darkPreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
-    <item name="android:tint">@color/white</item>
-</style>
-
+        <style name="myActionbar" parent ="Widget.AppCompat.ActionBar">
+            <item name ="background">@color/medium_black</item>
+            <item name="titleTextStyle">@style/myActionbar.TitleTextStyle</item>
+            <item name="subtitleTextStyle">@style/myActionbar.SubtitleTextStyle</item>
+        </style>
+        <style name="myActionbar.TitleTextStyle" parent="Widget.AppCompat.ActionBar">
+            <item name="android:textColor">@color/light_purple</item>
+            <item name="android:textSize">20sp</item>
+            <item name="android:textStyle">bold</item>
+        </style>
+        <style name="myActionbar.SubtitleTextStyle" parent="Widget.AppCompat.ActionBar">
+            <item name="android:textColor">@color/light_purple</item>
+        </style>
+        <style name="darkPreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
+            <item name="android:tint">@color/white</item>
+        </style>
+        <style name="darkButtonsStyle" parent = "Widget.AppCompat.Button">
+            <item name="android:background">@drawable/button_border</item>
+            <item name="android:textColor">@color/light_purple</item>
+        </style>
+        <style name="darkEditText" parent="Widget.AppCompat.EditText">
+            <item name="android:background">@drawable/button_border</item>
+            <item name="android:textColor">@color/white</item>
+        </style>
+        <style name="darkSpinner" parent="Widget.AppCompat.Spinner">
+            <item name="android:background">@drawable/button_border</item>
+            <item name="android:textColor">@color/light_purple</item>
+        </style>
+        <style name="darkTextView" parent="Widget.AppCompat.TextView">
+            <item name="android:textColor">@color/light_purple</item>
+        </style>
 <!-- Light application theme. -->
     <style name="Theme.Reminiscence.Light" parent="Theme.AppCompat.Light.DarkActionBar">
 
@@ -47,23 +67,43 @@
         <item name = "actionBarStyle">@style/myActionbarLight</item>
 
         <item name="preferenceTheme">@style/lightPreferenceStyle</item>
+
+        <item name="buttonStyle">@style/lightButtonsStyle</item>
+        <item name = "editTextStyle">@style/lightEditText</item>
+        <item name="spinnerDropDownItemStyle">@style/lightTextView</item>
+        <item name="spinnerStyle">@style/lightSpinner</item>
+
     </style>
 
-    <style name="myActionbarLight" parent ="Widget.AppCompat.ActionBar">
-        <item name ="background">@color/dark_purple</item>
-        <item name="titleTextStyle">@style/myActionbar.TitleTextStyleLight</item>
-        <item name="subtitleTextStyle">@style/myActionbar.SubtitleTextStyleLight</item>
-    </style>
-    <style name="myActionbar.TitleTextStyleLight" parent="Widget.AppCompat.ActionBar">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-    <style name="myActionbar.SubtitleTextStyleLight" parent="Widget.AppCompat.ActionBar">
-        <item name="android:textColor">@color/white</item>
-    </style>
-    <style name="lightPreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
-        <item name="android:tint">@color/black</item>
-    </style>
-
+        <style name="myActionbarLight" parent ="Widget.AppCompat.ActionBar">
+            <item name ="background">@color/dark_purple</item>
+            <item name="titleTextStyle">@style/myActionbar.TitleTextStyleLight</item>
+            <item name="subtitleTextStyle">@style/myActionbar.SubtitleTextStyleLight</item>
+        </style>
+        <style name="myActionbar.TitleTextStyleLight" parent="Widget.AppCompat.ActionBar">
+            <item name="android:textColor">@color/white</item>
+            <item name="android:textSize">20sp</item>
+            <item name="android:textStyle">bold</item>
+        </style>
+        <style name="myActionbar.SubtitleTextStyleLight" parent="Widget.AppCompat.ActionBar">
+            <item name="android:textColor">@color/white</item>
+        </style>
+        <style name="lightPreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
+            <item name="android:tint">@color/black</item>
+        </style>
+        <style name="lightButtonsStyle" parent = "Widget.AppCompat.Button">
+            <item name="android:background">@drawable/button_border_light</item>
+            <item name="android:textColor">@color/white</item>
+        </style>
+        <style name="lightEditText" parent="Widget.AppCompat.EditText">
+            <item name="android:background">@drawable/button_border_light</item>
+            <item name="android:textColor">@color/black</item>
+        </style>
+        <style name="lightSpinner" parent="Widget.AppCompat.Spinner">
+            <item name="android:background">@drawable/button_border_light</item>
+            <item name="android:textColor">@color/white</item>
+        </style>
+        <style name="lightTextView" parent="Widget.AppCompat.DropDownItem.Spinner">
+            <item name="android:textColor">@color/white</item>
+        </style>
 </resources>

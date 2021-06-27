@@ -61,30 +61,6 @@ public class changeTheme {
             menu.findItem(R.id.share_memory).setIcon(R.drawable.share_purple);
         }
     }
-    public void setBackgroundTheme(View v) {
-        try {
-            if (mTheme.equals("Dark")) {
-                v.setBackgroundResource(R.drawable.button_border);
-                if (v instanceof Button)
-                    ((Button) v).setTextColor(colorFromResources(R.color.light_purple));
-                else if (v instanceof EditText){
-                    ((EditText) v).setTextColor(colorFromResources(R.color.white));
-                }
-            } else if (mTheme.equals("Light")) {
-                v.setBackgroundResource(R.drawable.button_border_light);
-                if (v instanceof Button)
-                    ((Button) v).setTextColor(colorFromResources(R.color.white));
-                else if (v instanceof Spinner) {
-                    TextView oTextView = (TextView) ((Spinner)v).getChildAt(0);
-                    oTextView.setTextColor(colorFromResources(R.color.white));
-                }
-            }
-        }
-        catch (NullPointerException ignored){}
-    }
-    private int colorFromResources(int resourceID) {
-        return mContext.getResources().getColor(resourceID);
-    }
 
     public void setLayoutTheme(View v){
         if (mTheme.equals("Light"))
