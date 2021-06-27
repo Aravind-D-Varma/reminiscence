@@ -584,5 +584,4 @@ public class MemoryFragment extends Fragment {
     private String[] individualFilePaths(Memory givenMemory){
         return givenMemory.getMediaPaths().split(",");
     }
-
 }

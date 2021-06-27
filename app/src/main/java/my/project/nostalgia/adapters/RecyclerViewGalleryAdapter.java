@@ -41,11 +41,12 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
         this.photos = mMediaAndURI.getPhotoUris(mediaPaths);
         this.videos = mMediaAndURI.getVideoURIs(mediaPaths);
     }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
-        switch(viewType){
+        switch (viewType) {
             case VIDEO:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.videogallery_item, parent, false);
                 return new MyVideoViewHolder(v);
@@ -55,70 +56,84 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
         }
         return null;
     }
+
     /**
      * Binds video or image depending on what type of item it is.
      * If video, sets video using its Uri. If image, uses Bitmap to set from filepath.
+     *
      * @see #getItemViewType(int)
      */
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        switch(holder.getItemViewType()){
+        switch (holder.getItemViewType()) {
             case VIDEO:
                 try {
                     VideoView vv = ((MyVideoViewHolder) holder).video;
                     vv.setVideoURI(videos.get(position));
                     vv.seekTo(1);
+                } catch (NullPointerException ignored) {
                 }
-                catch(NullPointerException ignored){}
                 break;
             case IMAGE:
-                try{
+                try {
                     Glide.with(mContext)
                             .load(photos.get(position))
-                            .into(((MyImageViewHolder)holder).image);
+                            .into(((MyImageViewHolder) holder).image);
+                } catch (NullPointerException ignored) {
                 }
-                catch (NullPointerException ignored){}
                 break;
         }
     }
-    
+
     @Override
     public int getItemCount() {
         return mediaPaths.length;
     }
-    /**@return constant depending on whether item is video or image.*/
+
+    /**
+     * @return constant depending on whether item is video or image.
+     */
     @Override
     public int getItemViewType(int position) {
-       if(new MediaAndURI().isThisVideoFile(mediaPaths[position]))
+        if (new MediaAndURI().isThisVideoFile(mediaPaths[position]))
             return VIDEO;
-       else
+        else
             return IMAGE;
     }
-    private class MyImageViewHolder extends RecyclerView.ViewHolder{
+
+    private class MyImageViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
+
         public MyImageViewHolder(View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.memory_photo);
         }
     }
-    private class MyVideoViewHolder extends RecyclerView.ViewHolder{
+
+    private class MyVideoViewHolder extends RecyclerView.ViewHolder {
         VideoView video;
+
         public MyVideoViewHolder(View itemView) {
             super(itemView);
             video = itemView.findViewById(R.id.memory_video);
         }
     }
+
     public void updateList(String[] newMediaPaths) {
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MediaDiffUtilCallback(this.mediaPaths,newMediaPaths));
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MediaDiffUtilCallback(this.mediaPaths, newMediaPaths));
+        this.mediaPaths = newMediaPaths;
+        this.photos = mMediaAndURI.getPhotoUris(mediaPaths);
+        this.videos = mMediaAndURI.getVideoURIs(mediaPaths);
         diffResult.dispatchUpdatesTo(this);
     }
-    private class MediaDiffUtilCallback extends DiffUtil.Callback{
+
+    private class MediaDiffUtilCallback extends DiffUtil.Callback {
 
         private String[] mOldMediaPaths;
         private String[] mNewMediaPaths;
-        private List<Uri> oldphotos,oldvideos,newphotos,newvideos;
+        private List<Uri> oldphotos, oldvideos, newphotos, newvideos;
 
-        public MediaDiffUtilCallback(String[] oldMediaPaths,String[] newMediaPaths){
+        public MediaDiffUtilCallback(String[] oldMediaPaths, String[] newMediaPaths) {
             mOldMediaPaths = oldMediaPaths;
             mNewMediaPaths = newMediaPaths;
             oldphotos = mMediaAndURI.getPhotoUris(mOldMediaPaths);
@@ -144,14 +159,7 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
 
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            boolean contentsAreSame = false;
-            try{
-                if(oldphotos.get(oldItemPosition).equals(newphotos.get(newItemPosition)))
-                    contentsAreSame = true;
-                else if (oldvideos.get(oldItemPosition).equals(newvideos.get(newItemPosition)))
-                    contentsAreSame = true;
-            }catch (NullPointerException ignored){}
-            return contentsAreSame;
+            return mOldMediaPaths[oldItemPosition].equals(mNewMediaPaths[newItemPosition]);
         }
     }
 }
