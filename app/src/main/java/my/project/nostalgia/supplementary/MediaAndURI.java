@@ -25,20 +25,7 @@ public class MediaAndURI {
         this.mContext = context;
     }
     public MediaAndURI(){}
-
-    public List<Bitmap> getPhotoBitmaps(String[] mediaPaths) {
-        List<Bitmap> photos = new ArrayList<>();
-        for (String mediaPath:mediaPaths) {
-            if(isThisImageFile(mediaPath)) {
-                Bitmap bpimg = BitmapFactory.decodeFile(mediaPath);
-                photos.add(bpimg);
-            }
-            else photos.add(null);
-        }
-        return photos;
-    }
-    /**
-     * Extracts a list of Uris to set video from a memory's filePaths.<br>
+    /**Extracts a list of Uris to set video from a memory's filePaths.<br>
      * The Uri is null at those positions where the filepath is an image.
      * @param mediaPaths all media paths including images
      */

@@ -58,98 +58,92 @@
         android:layout_below="@+id/memory_detail_text"/>
 
 
-        <Button
-            android:id="@+id/memory_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="5dp"
-            android:background="@drawable/button_border"
-            android:drawableStart="@drawable/memory_date_white"
-            android:elevation="5dp"
-            android:padding="8dp"
-            android:textSize="10sp"
-            android:layout_below="@id/memory_details"
-            tools:ignore="SmallSp" />
-        <Button
-            android:id="@+id/memory_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/button_border"
-            android:drawableStart="@drawable/memory_time_white"
-            android:elevation="5dp"
-            android:textSize="10sp"
-            android:layout_below="@id/memory_details"
-            tools:ignore="SmallSp" />
+    <Button
+        android:id="@+id/memory_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/button_border"
+        android:drawableStart="@drawable/memory_date_white"
+        android:elevation="5dp"
+        android:padding="8dp"
+        android:textSize="10sp"
+        android:layout_below="@id/memory_details"
+        tools:ignore="SmallSp" />
+    <Button
+        android:id="@+id/memory_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_border"
+        android:drawableStart="@drawable/memory_time_white"
+        android:elevation="5dp"
+        android:textSize="10sp"
+        android:layout_below="@id/memory_details"
+        tools:ignore="SmallSp" />
 
-        <Button
-            android:id="@+id/memory_selectphotos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/button_border"
-            android:contentDescription="@string/memory_photo_button_description"
-            android:drawableStart="@android:drawable/ic_menu_camera"
-            android:elevation="5dp"
-            android:padding="2dp"
-            android:text="@string/choose_photos"
-            android:textSize="10sp"
-            android:layout_below="@id/memory_date"
-            tools:ignore="SmallSp" />
-        <Spinner
-            android:id="@+id/memory_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="5dp"
-            android:background="@drawable/button_border"
-            android:dropDownWidth="match_parent"
-            android:padding="2dp"
-            android:elevation="5dp"
-            android:spinnerMode="dropdown"
-            android:layout_below="@id/memory_time"/>
+    <Button
+        android:id="@+id/memory_selectphotos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_border"
+        android:contentDescription="@string/memory_photo_button_description"
+        android:drawableStart="@android:drawable/ic_menu_camera"
+        android:elevation="5dp"
+        android:padding="2dp"
+        android:text="@string/choose_photos"
+        android:textSize="10sp"
+        android:layout_below="@id/memory_date"
+        tools:ignore="SmallSp" />
+    <Spinner
+        android:id="@+id/memory_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/button_border"
+        android:dropDownWidth="match_parent"
+        android:padding="2dp"
+        android:elevation="5dp"
+        android:spinnerMode="dropdown"
+        android:layout_below="@id/memory_time"/>
 
-    <FrameLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/photoGridView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/memory_selectphotos">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/photoGridView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp" />
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom">
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/photo_fab"
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="8dp"
-                android:src="@drawable/add"
-                android:background="@drawable/button_border"
-                android:contentDescription="@string/photo_add"
-                android:elevation="20dp"/>
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/upload_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="8dp"
-                android:src="@android:drawable/ic_menu_upload"
-                android:background="@drawable/button_border"
-                android:contentDescription="@string/photo_add"
-                android:elevation="20dp"/>
-        </RelativeLayout>
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_below="@id/memory_selectphotos"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/photo_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="8dp"
+        android:src="@drawable/add"
+        android:background="@drawable/button_border"
+        android:contentDescription="@string/photo_add"
+        android:elevation="20dp"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/upload_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="8dp"
+        android:src="@android:drawable/ic_menu_upload"
+        android:background="@drawable/button_border"
+        android:contentDescription="@string/photo_add"
+        android:elevation="20dp"/>
+
 </RelativeLayout>
 
 

@@ -150,11 +150,4 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
             return false;
         }
     }*/
-    public static Bitmap getScaledBitmap(String path, int reqWidth, int reqHeight) {
-
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 8;
-
-        return BitmapFactory.decodeFile(path, options);
-    }
 }
