@@ -34,6 +34,7 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import my.project.nostalgia.adapters.MemoryAdapter;
 import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.R;
@@ -268,7 +269,7 @@ public class MemoryListFragment extends Fragment {
         List<Memory> Memorys = memoryLab.getMemories();
         if(mAdapter == null && Memorys.size()!=0) {
             firstTime = false;
-            mAdapter = new MemoryAdapter(Memorys);
+            mAdapter = new MemoryAdapter(getContext(),getActivity(),Memorys);
             mRecyclerView.setAdapter(mAdapter);
         }
         else {
@@ -317,7 +318,7 @@ public class MemoryListFragment extends Fragment {
         Memorys = memoryLab.getMemories();
         if(mAdapter == null && Memorys.size()!=0) {
             firstTime = false;
-            mAdapter = new MemoryAdapter(Memorys);
+            mAdapter = new MemoryAdapter(getContext(),getActivity(),Memorys);
             mRecyclerView.setAdapter(mAdapter);
         }
         else {
@@ -331,7 +332,7 @@ public class MemoryListFragment extends Fragment {
     /**
      * ViewHolder which sets up individual items of record of memories.
      */
-    public class MemoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+   /* public class MemoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mTitleText;
         private TextView mDetailText;
@@ -436,9 +437,9 @@ public class MemoryListFragment extends Fragment {
             mCallbacks.onMemorySelected(mMemory);
         }
     }
-    /**
+    *//**
      * Adapter for RecyclerView to contain record of all memories
-     */
+     *//*
     private class MemoryAdapter extends RecyclerView.Adapter<MemoryHolder>{
 
         private List<Memory> mMemories;
@@ -478,11 +479,11 @@ public class MemoryListFragment extends Fragment {
             }
         }
     }
-    /**
+    *//**
      * Updates display of memories depending on the event user has selected in the menu of Navigation Drawer.
      * Is written in fragment code since fragment contains details of memories.
      * @see MemoryListActivity
-     */
+     *//*
     public void eventFilter(String event) {
         List<Memory> searchMemorysList = new ArrayList<>();
 
@@ -499,5 +500,5 @@ public class MemoryListFragment extends Fragment {
         }catch (NullPointerException e){
             Toast.makeText(getContext(), stringResource(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 }

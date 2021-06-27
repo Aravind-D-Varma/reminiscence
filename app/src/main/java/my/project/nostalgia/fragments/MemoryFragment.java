@@ -319,7 +319,8 @@ public class MemoryFragment extends Fragment {
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL));
         try{
-            setMediaRecyclerView();
+            mAdapter = new RecyclerViewGalleryAdapter(getActivity(), individualFilePaths(mMemory));
+            mPhotoRecyclerView.setAdapter(mAdapter);
         }
         catch (NullPointerException ignored){}
         ItemClickRecyclerView.addTo(mPhotoRecyclerView).setOnItemClickListener((recyclerView, position, v14) -> displayMediaZoomedIn(position));
@@ -381,16 +382,6 @@ public class MemoryFragment extends Fragment {
         return v;
     }
 
-    private memoryEvents getMemoryEvents() {
-        return new memoryEvents(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
-    }
-    private String stringFromResource(int resourceID) {
-        return getResources().getString(resourceID);
-    }
-    private boolean hasMediaPermission() {
-        int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
-        return result == PackageManager.PERMISSION_GRANTED;
-    }
     private void displayMediaZoomedIn(int position) {
         Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -577,11 +568,17 @@ public class MemoryFragment extends Fragment {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-    private void setMediaRecyclerView() {
-        mAdapter = new RecyclerViewGalleryAdapter(getActivity(), individualFilePaths(mMemory));
-        mPhotoRecyclerView.setAdapter(mAdapter);
-    }
     private String[] individualFilePaths(Memory givenMemory){
         return givenMemory.getMediaPaths().split(",");
+    }
+    private memoryEvents getMemoryEvents() {
+        return new memoryEvents(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
+    }
+    private String stringFromResource(int resourceID) {
+        return getResources().getString(resourceID);
+    }
+    private boolean hasMediaPermission() {
+        int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
+        return result == PackageManager.PERMISSION_GRANTED;
     }
 }
