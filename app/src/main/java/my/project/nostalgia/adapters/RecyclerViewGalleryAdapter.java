@@ -1,9 +1,5 @@
 package my.project.nostalgia.adapters;
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,8 +16,6 @@ import com.bumptech.glide.Glide;
 import my.project.nostalgia.R;
 import my.project.nostalgia.supplementary.MediaAndURI;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,22 +24,22 @@ import java.util.List;
  */
 public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
 
-    Context context;
-    Activity activity;
-    List<Uri> photos;
-    String[] mediaPaths;
-    List<Uri> videos;
+    private MediaAndURI mMediaAndURI;
+    private Context mContext;
+    private List<Uri> photos, videos;
+    private String[] mediaPaths;
     private static final int IMAGE = 0;
     private static final int VIDEO = 1;
+
     /**
      * Upon initialisation, sets video uris and image bitmaps from a memory's videopaths.
      */
-    public RecyclerViewGalleryAdapter(Activity activity, String[] mediaPaths) {
-        this.activity = activity;
-        this.context = activity.getApplicationContext();
+    public RecyclerViewGalleryAdapter(Context context, String[] mediaPaths) {
+        this.mContext = context;
         this.mediaPaths = mediaPaths;
-        this.photos = new MediaAndURI(activity.getApplicationContext()).getPhotoUris(mediaPaths);
-        this.videos = new MediaAndURI(activity.getApplicationContext()).getVideoURIs(mediaPaths);
+        mMediaAndURI = new MediaAndURI(context);
+        this.photos = mMediaAndURI.getPhotoUris(mediaPaths);
+        this.videos = mMediaAndURI.getVideoURIs(mediaPaths);
     }
     @NonNull
     @Override
@@ -80,7 +73,7 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
                 break;
             case IMAGE:
                 try{
-                    Glide.with(context)
+                    Glide.with(mContext)
                             .load(photos.get(position))
                             .into(((MyImageViewHolder)holder).image);
                 }
@@ -114,40 +107,51 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
             super(itemView);
             video = itemView.findViewById(R.id.memory_video);
         }
-    }/*
+    }
+    public void updateList(String[] newMediaPaths) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MediaDiffUtilCallback(this.mediaPaths,newMediaPaths));
+        diffResult.dispatchUpdatesTo(this);
+    }
     private class MediaDiffUtilCallback extends DiffUtil.Callback{
 
-        private List<Bitmap> mNewPhotos;
-        private List<Uri> mNewVideos;
-        private final List<Bitmap> mOldphotos;
-        private final List<Uri> mOldvideos;
+        private String[] mOldMediaPaths;
+        private String[] mNewMediaPaths;
+        private List<Uri> oldphotos,oldvideos,newphotos,newvideos;
 
-        public MediaDiffUtilCallback(List<Bitmap> newphotos,List<Uri> newvideos){
-            mOldphotos = photos;
-            mOldvideos = videos;
-            this.mNewPhotos = newphotos;
-            this.mNewVideos = newvideos;
+        public MediaDiffUtilCallback(String[] oldMediaPaths,String[] newMediaPaths){
+            mOldMediaPaths = oldMediaPaths;
+            mNewMediaPaths = newMediaPaths;
+            oldphotos = mMediaAndURI.getPhotoUris(mOldMediaPaths);
+            newphotos = mMediaAndURI.getPhotoUris(mNewMediaPaths);
+            oldvideos = mMediaAndURI.getVideoURIs(mOldMediaPaths);
+            newvideos = mMediaAndURI.getVideoURIs(mNewMediaPaths);
         }
 
         @Override
         public int getOldListSize() {
-            return (mOldphotos!=null ? mOldphotos.size():0)+(mOldvideos!=null ? mOldvideos.size():0);
+            return mOldMediaPaths.length;
         }
 
         @Override
         public int getNewListSize() {
-            return (mNewPhotos!=null ? mNewPhotos.size():0)+(mNewVideos!=null ? mNewVideos.size():0);
+            return mNewMediaPaths.length;
         }
 
         @Override
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return mOldphotos.get(oldItemPosition).sameAs(mNewPhotos.get(newItemPosition))
-                    || mOldvideos.get(oldItemPosition).toString().equals(mNewVideos.get(newItemPosition).toString());
+            return mOldMediaPaths[oldItemPosition].equals(mNewMediaPaths[newItemPosition]);
         }
 
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            return false;
+            boolean contentsAreSame = false;
+            try{
+                if(oldphotos.get(oldItemPosition).equals(newphotos.get(newItemPosition)))
+                    contentsAreSame = true;
+                else if (oldvideos.get(oldItemPosition).equals(newvideos.get(newItemPosition)))
+                    contentsAreSame = true;
+            }catch (NullPointerException ignored){}
+            return contentsAreSame;
         }
-    }*/
+    }
 }

@@ -114,6 +114,7 @@ public class MemoryFragment extends Fragment {
     private final String CURRENT_PHOTOS_ABSENT = "Current Memory Photos";
     public static final String CURRENT_MEMORY = "Current Memory";
     private MediaAndURI mMediaAndURI;
+    private RecyclerViewGalleryAdapter mAdapter;
 
     /**
      * Used to update UI for a given fragment. Function depends on whether device is tablet or phone.
@@ -421,7 +422,7 @@ public class MemoryFragment extends Fragment {
                     list.remove(toDeleteMediapath);
                     String joined = TextUtils.join(",", list);
                     mMemory.setMediaPaths(joined);
-                    setMediaRecyclerView();
+                    mAdapter.updateList(joined.split(","));
                     dialog.dismiss();
                 })
                 .setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> dialog.dismiss())
@@ -469,6 +470,7 @@ public class MemoryFragment extends Fragment {
             }
             mMemory.setMediaPaths(joinedFilePaths.toString());
             updateMemory();
+            mAdapter.updateList(joinedFilePaths.toString().split(","));
             behaviourAfterAddingMedia();
         }
         else if (requestCode == REQUEST_GALLERY_ADDITIONALPHOTO){
@@ -500,7 +502,7 @@ public class MemoryFragment extends Fragment {
             }
             mMemory.setMediaPaths(extraFilePaths.toString());
             updateMemory();
-            setMediaRecyclerView();
+            mAdapter.updateList(extraFilePaths.toString().split(","));
         }
     }
     private void updateDate() {
@@ -511,7 +513,6 @@ public class MemoryFragment extends Fragment {
         mTimeButton.setText(sdf.format(mMemory.getDate()));
     }
     private void behaviourAfterAddingMedia() {
-        setMediaRecyclerView();
         mEditor.putBoolean(CURRENT_PHOTOS_ABSENT,false);
         mEditor.apply();
 
@@ -577,8 +578,8 @@ public class MemoryFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
     private void setMediaRecyclerView() {
-        RecyclerViewGalleryAdapter adapter = new RecyclerViewGalleryAdapter(getActivity(), individualFilePaths(mMemory));
-        mPhotoRecyclerView.setAdapter(adapter);
+        mAdapter = new RecyclerViewGalleryAdapter(getActivity(), individualFilePaths(mMemory));
+        mPhotoRecyclerView.setAdapter(mAdapter);
     }
     private String[] individualFilePaths(Memory givenMemory){
         return givenMemory.getMediaPaths().split(",");
