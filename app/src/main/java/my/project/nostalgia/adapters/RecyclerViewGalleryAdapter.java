@@ -12,12 +12,16 @@ import android.widget.ImageView;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import my.project.nostalgia.R;
 import my.project.nostalgia.supplementary.MediaAndURI;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +33,7 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
 
     Context context;
     Activity activity;
-    List<Bitmap> photos;
-    List<String> photoPaths;
+    List<Uri> photos;
     String[] mediaPaths;
     List<Uri> videos;
     private static final int IMAGE = 0;
@@ -42,7 +45,7 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
         this.activity = activity;
         this.context = activity.getApplicationContext();
         this.mediaPaths = mediaPaths;
-        this.photos = new MediaAndURI().getPhotoBitmaps(mediaPaths);
+        this.photos = new MediaAndURI(activity.getApplicationContext()).getPhotoUris(mediaPaths);
         this.videos = new MediaAndURI(activity.getApplicationContext()).getVideoURIs(mediaPaths);
     }
     @NonNull
@@ -77,8 +80,9 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
                 break;
             case IMAGE:
                 try{
-                    Bitmap bitmap = getScaledBitmap(getPhotoPaths(mediaPaths).get(position), 150,150);
-                    ((MyImageViewHolder)holder).image.setImageBitmap(bitmap);
+                    Glide.with(context)
+                            .load(photos.get(position))
+                            .into(((MyImageViewHolder)holder).image);
                 }
                 catch (NullPointerException ignored){}
                 break;
@@ -97,20 +101,6 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
        else
             return IMAGE;
     }
-
-    private List<String> getPhotoPaths(String[] mediaPaths){
-        List<String> photoPaths = new ArrayList<>();
-        MediaAndURI mediaAndURI = new MediaAndURI();
-        for (String mediaPath:mediaPaths) {
-            if(mediaAndURI.isThisImageFile(mediaPath)) {
-                photoPaths.add(mediaPath);
-            }
-            else photoPaths.add(null);
-        }
-        return photoPaths;
-    }
-
-
     private class MyImageViewHolder extends RecyclerView.ViewHolder{
         ImageView image;
         public MyImageViewHolder(View itemView) {
@@ -124,7 +114,7 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
             super(itemView);
             video = itemView.findViewById(R.id.memory_video);
         }
-    }
+    }/*
     private class MediaDiffUtilCallback extends DiffUtil.Callback{
 
         private List<Bitmap> mNewPhotos;
@@ -159,41 +149,12 @@ public class RecyclerViewGalleryAdapter extends RecyclerView.Adapter {
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
             return false;
         }
-    }
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) >= reqHeight
-                    && (halfWidth / inSampleSize) >= reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
-    }
+    }*/
     public static Bitmap getScaledBitmap(String path, int reqWidth, int reqHeight) {
 
-        // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
+        options.inSampleSize = 8;
 
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(path, options);
     }
 }

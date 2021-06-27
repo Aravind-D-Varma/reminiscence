@@ -55,6 +55,18 @@ public class MediaAndURI {
         return videos;
     }
 
+    public List<Uri> getPhotoUris(String[] mediaPaths){
+        List<Uri> imageUris = new ArrayList<>();
+        MediaAndURI mediaAndURI = new MediaAndURI();
+        for (String mediaPath:mediaPaths) {
+            if(mediaAndURI.isThisImageFile(mediaPath)) {
+                Uri uriImg = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", new File(mediaPath));
+                imageUris.add(uriImg);
+            }
+            else imageUris.add(null);
+        }
+        return imageUris;
+    }
     public boolean isThisImageFile(String path) {
         String mimeType = getMimeType(path);
         return mimeType != null && mimeType.startsWith("image");
