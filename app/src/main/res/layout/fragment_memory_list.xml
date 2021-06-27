@@ -21,7 +21,6 @@
         android:layout_margin="25dp"
         android:elevation="20dp"
         android:clickable="true"
-        android:background="@drawable/button_border"
         android:src="@android:drawable/ic_menu_upload"
         android:contentDescription="@string/no_memory_add"
         android:focusable="true" />
@@ -35,7 +34,6 @@
         android:layout_alignEnd="@+id/memory_upload"
         android:layout_margin="25dp"
         android:elevation="20dp"
-        android:background="@drawable/button_border"
         android:src="@drawable/add"
         android:contentDescription="@string/no_memory_add"
         android:clickable="true"

@@ -8,7 +8,6 @@
     android:focusable="false"
     android:layout_margin="5dp"
     android:focusableInTouchMode="false"
-    android:background="@drawable/button_border"
     android:contentDescription="@string/memory_photo_no_image_description">
 </ImageView>
 
