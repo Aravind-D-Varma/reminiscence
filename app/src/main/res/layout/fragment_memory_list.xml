@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,32 +12,31 @@
         android:orientation="vertical"
         android:id="@+id/memory_recycler_view"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom">
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/memory_upload"
-            android:layout_alignParentStart="true"
-            android:layout_margin="25dp"
-            android:elevation="20dp"
-            android:background="@drawable/button_border"
-            android:src="@android:drawable/ic_menu_upload"
-            android:contentDescription="@string/no_memory_add" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/memory_upload"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="25dp"
+        android:elevation="20dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_menu_upload"
+        android:contentDescription="@string/no_memory_add"
+        android:focusable="true" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/memory_fab"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="25dp"
-            android:elevation="20dp"
-            android:background="@drawable/button_border"
-            android:src="@drawable/add"
-            android:contentDescription="@string/no_memory_add" />
-    </RelativeLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/memory_fab"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/memory_upload"
+        android:layout_margin="25dp"
+        android:elevation="20dp"
+        android:src="@drawable/add"
+        android:contentDescription="@string/no_memory_add"
+        android:clickable="true"
+        android:focusable="true" />
 
-
-</FrameLayout>
+</RelativeLayout>

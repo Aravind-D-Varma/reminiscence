@@ -26,7 +26,7 @@ import my.project.nostalgia.supplementary.memoryEvents;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Locale;
-
+//TODO Accessing hidden method Landroid/database/sqlite/SQLiteDatabase
 /**
  * Contains the Navigation Drawer containing a welcome text, event lists and settings to change these two.<br>
  * Displays the list of memories user has added in its own fragment MemoryListFragment
@@ -168,6 +168,7 @@ public class MemoryListActivity extends SingleFragmentActivity
     private void goToSettings() {
         Intent intent = new Intent(this, UserSettingsActivity.class);
         startActivity(intent);
+        this.finish();
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -204,8 +205,8 @@ public class MemoryListActivity extends SingleFragmentActivity
             setLanguage("nl");
         }
     }
-    private void setLanguage(String en) {
-        Locale locale = new Locale(en);
+    private void setLanguage(String language) {
+        Locale locale = new Locale(language);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;

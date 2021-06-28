@@ -3,8 +3,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -25,20 +23,7 @@ public class MediaAndURI {
         this.mContext = context;
     }
     public MediaAndURI(){}
-
-    public List<Bitmap> getPhotoBitmaps(String[] mediaPaths) {
-        List<Bitmap> photos = new ArrayList<>();
-        for (String mediaPath:mediaPaths) {
-            if(isThisImageFile(mediaPath)) {
-                Bitmap bpimg = BitmapFactory.decodeFile(mediaPath);
-                photos.add(bpimg);
-            }
-            else photos.add(null);
-        }
-        return photos;
-    }
-    /**
-     * Extracts a list of Uris to set video from a memory's filePaths.<br>
+    /**Extracts a list of Uris to set video from a memory's filePaths.<br>
      * The Uri is null at those positions where the filepath is an image.
      * @param mediaPaths all media paths including images
      */
@@ -55,6 +40,21 @@ public class MediaAndURI {
         return videos;
     }
 
+    public List<Uri> getPhotoUris(String[] mediaPaths){
+        List<Uri> imageUris = new ArrayList<>();
+        MediaAndURI mediaAndURI = new MediaAndURI();
+        for (String mediaPath:mediaPaths) {
+            if(mediaAndURI.isThisImageFile(mediaPath)) {
+                Uri uriImg = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", new File(mediaPath));
+                imageUris.add(uriImg);
+            }
+            else imageUris.add(null);
+        }
+        return imageUris;
+    }
+    public Uri getMediaUriOf(String mediaPath){
+        return FileProvider.getUriForFile(mContext,mContext.getPackageName()+".fileprovider",new File(mediaPath));
+    }
     public boolean isThisImageFile(String path) {
         String mimeType = getMimeType(path);
         return mimeType != null && mimeType.startsWith("image");

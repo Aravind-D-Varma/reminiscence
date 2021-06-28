@@ -7,14 +7,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    card_view:cardCornerRadius="30dp"
+    card_view:cardCornerRadius="10dp"
     card_view:cardElevation="8dp"
     android:foreground="?android:attr/selectableItemBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:stateListAnimator="@null">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/cardview_image"
