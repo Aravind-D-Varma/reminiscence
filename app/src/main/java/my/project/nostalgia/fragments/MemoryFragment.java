@@ -56,15 +56,12 @@ import my.project.nostalgia.supplementary.changeTheme;
 import my.project.nostalgia.supplementary.memoryEvents;
 import my.project.nostalgia.supplementary.transformationViewPager;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -199,7 +196,6 @@ public class MemoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_memory, container, false);
         getActivity().setTitle(mMemory.getTitle());
-        changeTheme cT = new changeTheme(getContext());
         mMediaAndURI = new MediaAndURI(getContext());
         try {
             applicableEvents = getMemoryEvents().getIndividualEvents();
@@ -253,7 +249,7 @@ public class MemoryFragment extends Fragment {
         mDateButton = (Button) v.findViewById(R.id.memory_date);
         updateDate();
         mDateButton.setOnClickListener(v1 -> {
-            FragmentManager manager = getFragmentManager();
+            FragmentManager manager = getActivity().getSupportFragmentManager();
             DatePickerDialogFragment dp = DatePickerDialogFragment.newInstance(mMemory.getDate());
             dp.setTargetFragment(MemoryFragment.this, REQUEST_DATE);
             dp.show(manager, DIALOG_DATE);
@@ -261,7 +257,7 @@ public class MemoryFragment extends Fragment {
         mTimeButton = (Button) v.findViewById(R.id.memory_time);
         updateTime();
         mTimeButton.setOnClickListener(v12 -> {
-            FragmentManager fm = getFragmentManager();
+            FragmentManager fm = getActivity().getSupportFragmentManager();
             TimePickerDialogFragment tp = TimePickerDialogFragment.newInstance(mMemory.getDate());
             tp.setTargetFragment(MemoryFragment.this, REQUEST_TIME);
             tp.show(fm, DIALOG_TIME);

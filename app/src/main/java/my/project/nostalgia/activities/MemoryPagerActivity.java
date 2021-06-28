@@ -12,9 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
@@ -24,7 +23,6 @@ import my.project.nostalgia.supplementary.changeTheme;
 
 import java.util.List;
 import java.util.UUID;
-
 /**
  * Contains ViewPager and record of all Memories.<br>
  * Enables users to swipe left or right for next or before Memory
@@ -32,7 +30,7 @@ import java.util.UUID;
 public class MemoryPagerActivity extends AppCompatActivity implements MemoryFragment.Callbacks {
 
     private static final String EXTRA_memory_ID = "my.project.memory_id";
-    private static ViewPager mViewPager;
+    private static ViewPager2 mViewPager;
     private List<Memory> mMemories;
     /**
      * Not sure. To be inspected
@@ -53,20 +51,19 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         new changeTheme(this).setUserTheme();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.media_pager_layout);
-        mViewPager = findViewById(R.id.media_view_pager);
+        setContentView(R.layout.memory_pager_layout);
+        mViewPager = findViewById(R.id.memory_viewpager2);
         mMemories = MemoryLab.get(this).getMemories();
-        FragmentManager fragmentManager = getSupportFragmentManager();
 
-        mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager){
+        mViewPager.setAdapter(new FragmentStateAdapter(this) {
             @NonNull
             @Override
-            public Fragment getItem(int position) {
+            public Fragment createFragment(int position) {
                 Memory memory = mMemories.get(position);
                 return MemoryFragment.newInstance(memory.getId());
             }
             @Override
-            public int getCount() {
+            public int getItemCount() {
                 return mMemories.size();
             }
         });

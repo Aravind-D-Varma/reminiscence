@@ -26,7 +26,7 @@ import my.project.nostalgia.supplementary.memoryEvents;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Locale;
-
+//TODO Accessing hidden method Landroid/database/sqlite/SQLiteDatabase
 /**
  * Contains the Navigation Drawer containing a welcome text, event lists and settings to change these two.<br>
  * Displays the list of memories user has added in its own fragment MemoryListFragment

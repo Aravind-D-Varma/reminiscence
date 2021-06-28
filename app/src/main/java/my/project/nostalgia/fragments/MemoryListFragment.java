@@ -164,13 +164,12 @@ public class MemoryListFragment extends Fragment {
                         List<HashMap> hashMaps = (List<HashMap>) dataReceived.get(MEMORIES_KEY);
                         for(HashMap hashMap:hashMaps){
                             Memory memory = new Memory();
-                            memory.setTitle(hashMap.get("title").toString());
-                            memory.setDetail(hashMap.get("detail").toString());
-                            try{
-                                memory.setMediaPaths(hashMap.get("mediaPaths").toString());
-                            }catch (NullPointerException e){
-                                memory.setMediaPaths("");
-                            }
+                            try {memory.setTitle(hashMap.get("title").toString());
+                            }catch (NullPointerException e){memory.setTitle("");}
+                            try{memory.setDetail(hashMap.get("detail").toString());
+                            }catch (NullPointerException e){memory.setDetail("");}
+                            try{memory.setMediaPaths(hashMap.get("mediaPaths").toString());
+                            }catch (NullPointerException e){memory.setMediaPaths("");}
                             memory.setEvent(hashMap.get("event").toString());
                             memoryLab.addMemory(memory);
                         }

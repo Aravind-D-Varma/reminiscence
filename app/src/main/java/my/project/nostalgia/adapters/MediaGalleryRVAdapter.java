@@ -127,7 +127,7 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
         diffResult.dispatchUpdatesTo(this);
     }
 
-    private class MediaDiffUtilCallback extends DiffUtil.Callback {
+    private static class MediaDiffUtilCallback extends DiffUtil.Callback {
 
         private String[] mOldMediaPaths;
         private String[] mNewMediaPaths;

@@ -32,7 +32,6 @@
         </activity>
         <activity
             android:name="my.project.nostalgia.activities.MemoryListActivity"
-            android:theme="@style/Theme.Reminiscence"
             android:configChanges="screenSize|orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

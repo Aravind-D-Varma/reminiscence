@@ -15,7 +15,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:padding="0dp"
         android:text="@string/memory_title_label"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -52,7 +51,6 @@
         android:maxLines="6"
         android:layout_below="@+id/memory_detail_text"/>
 
-
     <Button
         android:id="@+id/memory_date"
         android:layout_width="wrap_content"
@@ -60,7 +58,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginStart="5dp"
         android:drawableStart="@drawable/memory_date_white"
-        android:elevation="5dp"
         android:padding="8dp"
         android:textSize="10sp"
         android:layout_below="@id/memory_details"
@@ -73,7 +70,6 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="8dp"
         android:drawableStart="@drawable/memory_time_white"
-        android:elevation="5dp"
         android:textSize="10sp"
         android:layout_below="@id/memory_details"
         tools:ignore="SmallSp" />
@@ -86,7 +82,6 @@
         android:layout_marginTop="8dp"
         android:contentDescription="@string/memory_photo_button_description"
         android:drawableStart="@android:drawable/ic_menu_camera"
-        android:elevation="5dp"
         android:padding="2dp"
         android:text="@string/choose_photos"
         android:textSize="10sp"
@@ -101,7 +96,6 @@
         android:layout_marginEnd="5dp"
         android:dropDownWidth="match_parent"
         android:padding="2dp"
-        android:elevation="5dp"
         android:spinnerMode="dropdown"
         android:layout_below="@id/memory_time"/>
 
