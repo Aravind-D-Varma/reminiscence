@@ -31,6 +31,7 @@ import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.MemoryListActivity;
+import my.project.nostalgia.supplementary.changeTheme;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -149,7 +150,7 @@ public class MemoryListFragment extends Fragment {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     if (documentSnapshot.exists()) {
                         if(!hasMediaPermission()) {
-                            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme());
                             alertBuilder.setCancelable(true);
                             alertBuilder.setTitle("Storage permission necessary");
                             alertBuilder.setMessage("In order to load your images and videos of previous memories" +

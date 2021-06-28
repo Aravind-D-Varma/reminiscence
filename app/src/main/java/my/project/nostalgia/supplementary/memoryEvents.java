@@ -66,7 +66,7 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
     }
     public void getAndSetNewEvent(View view, Activity activity,Memory memory) {
 
-        AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(mContext,new changeTheme(mContext).setDialogTheme());
         inputEventDialog.setTitle(R.string.new_custom_event);
         final EditText input = new EditText(mContext);
         input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);

@@ -2,6 +2,7 @@ package my.project.nostalgia.supplementary;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
@@ -64,5 +65,13 @@ public class changeTheme {
             v.setBackground(ContextCompat.getDrawable(mContext,R.drawable.layout_border_light));
         else if (mTheme.equals("Dark"))
             v.setBackground(ContextCompat.getDrawable(mContext,R.drawable.layout_border));
+    }
+    public int setDialogTheme() {
+        //TODO fix add memory button in light theme
+        if (mTheme.equals("Dark")){
+            return R.style.DarkDialog;
+        }
+        else
+            return R.style.LightDialog;
     }
 }

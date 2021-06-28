@@ -379,7 +379,7 @@ public class MemoryFragment extends Fragment {
         tabLayout.setupWithViewPager(pager,true);
     }
     private AlertDialog AskDeleteMedia(String toDeleteMediapath){
-        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext(),R.style.PauseDialog)
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme())
                 .setTitle(stringFromResource(R.string.delete_file))
                 .setMessage(stringFromResource(R.string.deletion_confirm))
                 .setIcon(android.R.drawable.ic_menu_delete)
@@ -528,7 +528,7 @@ public class MemoryFragment extends Fragment {
         });
     }
     private AlertDialog AskDiscardMemory(){
-        return new AlertDialog.Builder(getContext())
+        return new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme())
                 .setTitle(stringFromResource(R.string.delete_memory))
                 .setMessage(stringFromResource(R.string.delete_memory_confirm))
                 .setIcon(android.R.drawable.ic_menu_delete)

@@ -2,6 +2,7 @@ package my.project.nostalgia.fragments;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -33,6 +34,7 @@ import my.project.nostalgia.activities.LoginActivity;
 import my.project.nostalgia.activities.UserSettingsActivity;
 import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
+import my.project.nostalgia.supplementary.changeTheme;
 import my.project.nostalgia.supplementary.memoryEvents;
 
 import java.util.ArrayList;
@@ -106,11 +108,13 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         pref.setTitle(stringResource(R.string.delete_account));
         pref.setSummary(stringResource(R.string.delete_account_summary));
         pref.setOnPreferenceClickListener(preference -> {
-            AlertDialog.Builder deleted_account = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder deleted_account = new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme());
             LinearLayout layout = new LinearLayout(getContext());
             layout.setOrientation(LinearLayout.VERTICAL);
             final TextView confirmation = new TextView(getContext());
             confirmation.setText(stringResource(R.string.delete_account_confirm));
+            confirmation.setTypeface(null, Typeface.BOLD);
+            confirmation.setTextAppearance(getContext(), android.R.style.TextAppearance_Large);
             layout.addView(confirmation);
             final EditText email = new EditText(getContext());
             email.setHint("Re-enter your email address");
@@ -120,6 +124,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD| InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
             password.setHint("Re-enter your password");
             layout.addView(password);
+            layout.setPadding(35,35,35,35);
             deleted_account.setView(layout);
             deleted_account.setPositiveButton(stringResource(R.string.delete), (dialog, whichButton) -> {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -147,8 +152,9 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         pref.setTitle(stringResource(R.string.sign_out));
         pref.setSummary(stringResource(R.string.sign_out_summary));
         pref.setOnPreferenceClickListener(preference -> {
-            AlertDialog.Builder confirmSignOut = new AlertDialog.Builder(getContext());
-            confirmSignOut.setTitle(R.string.sign_out_confirm);
+            AlertDialog.Builder confirmSignOut = new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme());
+            confirmSignOut.setTitle(R.string.sign_out);
+            confirmSignOut.setMessage(R.string.sign_out_confirm);
             final EditText input = new EditText(getContext());
             input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
             confirmSignOut.setView(input);

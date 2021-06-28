@@ -58,7 +58,7 @@ public class TimePickerDialogFragment extends DialogFragment {
         String themeValues = getData.getString("GlobalTheme", "Dark");
         androidx.appcompat.app.AlertDialog.Builder dialogBuilder;
         if(themeValues.equals("Light")) {
-            dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getActivity(), R.style.LightDialogTime);
+            dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getActivity());
         }
         else
             dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getActivity(), R.style.DarkDialog);
