@@ -167,10 +167,12 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
 
         pref.setOnPreferenceChangeListener((preference, newValue) -> {
             int index = pref.findIndexOfValue(newValue.toString());
-            if (pref.getEntries()[index].equals("Light"))
+            if (pref.getEntries()[index].equals("Light")) {
                 pref.setValue("Light");
-            else
+            }
+            else {
                 pref.setValue("Dark");
+            }
             Intent intent = new Intent(getContext(), UserSettingsActivity.class);
             startActivity(intent);
             getActivity().finish();

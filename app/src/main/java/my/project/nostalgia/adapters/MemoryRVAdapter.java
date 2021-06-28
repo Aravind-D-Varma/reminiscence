@@ -73,9 +73,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
             changeTheme cT = new changeTheme(mContext);
             cT.setLayoutTheme(itemView);
             mTitleText = itemView.findViewById(R.id.cardview_memory_title);
-            cT.setTextTheme(mTitleText);
             mDetailText = itemView.findViewById(R.id.cardview_memory_detail);
-            cT.setTextTheme(mDetailText);
             mShare = itemView.findViewById(R.id.cardview_share);
             mDelete = itemView.findViewById(R.id.cardview_delete);
             mImageView = itemView.findViewById(R.id.cardview_image);

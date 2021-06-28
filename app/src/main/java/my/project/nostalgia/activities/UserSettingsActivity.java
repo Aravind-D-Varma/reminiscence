@@ -1,7 +1,9 @@
 package my.project.nostalgia.activities;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,8 +20,8 @@ public class UserSettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         new changeTheme(this).setUserTheme();
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new UserSettingsFragment()).commit();
         Objects.requireNonNull(getSupportActionBar()).setTitle(getResources().getString(R.string.settings));
@@ -28,8 +30,14 @@ public class UserSettingsActivity extends AppCompatActivity {
      * If not refreshed, it will show previous theme/language*/
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, MemoryListActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this,MemoryListActivity.class));
         super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==android.R.id.home)
+            startActivity(new Intent(this,MemoryListActivity.class));
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -67,12 +67,11 @@
         <item name="android:background">@drawable/button_border</item>
         <item name="android:textColor">@color/light_purple</item>
     </style>
-    <style name="darkTextView" >
+    <style name="darkTextView" parent="android:Widget.TextView" >
         <item name="android:textColor">@color/light_purple</item>
     </style>
     <style name="darkCardView">
         <item name="background">@drawable/layout_border</item>
-
     </style>
 
 
@@ -107,12 +106,11 @@
         <item name="android:background">@drawable/button_border_light</item>
         <item name="android:textColorHint">@color/white</item>
     </style>
-    <style name="lightTextView" parent="Widget.AppCompat.DropDownItem.Spinner">
-        <item name="android:textColor">@color/white</item>
+    <style name="lightTextView" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/black</item>
     </style>
     <style name="lightCardView">
         <item name="background">@drawable/layout_border_light</item>
-
     </style>
 
 </resources>
