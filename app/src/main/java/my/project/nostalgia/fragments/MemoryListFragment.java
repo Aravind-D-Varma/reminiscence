@@ -158,6 +158,7 @@ public class MemoryListFragment extends Fragment {
                             AlertDialog alert = alertBuilder.create();
                             alert.show();
                         }
+
                         prefs.edit().putBoolean(FIRST_TIME,false).apply();
                         MemoryLab memoryLab = MemoryLab.get(getActivity());
                         Map<String,Object> dataReceived = documentSnapshot.getData();
@@ -170,10 +171,11 @@ public class MemoryListFragment extends Fragment {
                             }catch (NullPointerException e){memory.setDetail("");}
                             try{memory.setMediaPaths(hashMap.get("mediaPaths").toString());
                             }catch (NullPointerException e){memory.setMediaPaths("");}
-                            memory.setEvent(hashMap.get("event").toString());
+                            try{
+                            memory.setEvent(hashMap.get("event").toString());}
+                            catch (NullPointerException e){memory.setEvent("");}
                             memoryLab.addMemory(memory);
                         }
-                        updateByDevice();
                     }
                 }
             });
@@ -203,6 +205,7 @@ public class MemoryListFragment extends Fragment {
         updateByDevice();
         return view;
     }
+
     private boolean hasMediaPermission() {
         int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
         return result == PackageManager.PERMISSION_GRANTED;

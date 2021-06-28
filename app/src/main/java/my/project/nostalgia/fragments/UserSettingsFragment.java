@@ -1,4 +1,5 @@
 package my.project.nostalgia.fragments;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.text.InputType;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DropDownPreference;
@@ -22,19 +24,26 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import my.project.nostalgia.BuildConfig;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.LoginActivity;
 import my.project.nostalgia.activities.UserSettingsActivity;
+import my.project.nostalgia.models.Memory;
+import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.supplementary.memoryEvents;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static my.project.nostalgia.activities.LoginActivity.LANGUAGE;
 import static my.project.nostalgia.activities.LoginActivity.SEND_USERNAME;
+import static my.project.nostalgia.fragments.MemoryListFragment.MEMORIES_KEY;
 
 /**
  * Creates and sets application according to choices made here.
@@ -138,9 +147,34 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         pref.setTitle(stringResource(R.string.sign_out));
         pref.setSummary(stringResource(R.string.sign_out_summary));
         pref.setOnPreferenceClickListener(preference -> {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(getActivity(), LoginActivity.class));
-            getActivity().finish();
+            AlertDialog.Builder confirmSignOut = new AlertDialog.Builder(getContext());
+            confirmSignOut.setTitle(R.string.sign_out_confirm);
+            final EditText input = new EditText(getContext());
+            input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
+            confirmSignOut.setView(input);
+            confirmSignOut.setPositiveButton(R.string.save_and_confirm, (dialog, whichButton) -> {
+                String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
+                        .document(userid);
+                ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+                mProgressDialog.setMessage("Uploading...");
+                mProgressDialog.show();
+                Map<String,List<Memory>> dataToSave = new HashMap<>();
+                dataToSave.put(MEMORIES_KEY, MemoryLab.get(getActivity()).getMemories());
+                userDocument.set(dataToSave).addOnSuccessListener(aVoid -> {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().finish();
+                    mProgressDialog.dismiss();
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Upload Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    mProgressDialog.dismiss();
+                });
+                dialog.dismiss();
+            });
+            confirmSignOut.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel()).create();
+            confirmSignOut.show();
+
             return false;
         });
         return pref;
