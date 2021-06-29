@@ -3,10 +3,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 
@@ -96,7 +98,7 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
                 longClickPressed = true;
                 checkbox.setVisibility(View.VISIBLE);
                 checkbox.setChecked(true);
-
+                AskDeleteMedias(mediaPaths[position]);
                 return true;
             }
         });
@@ -168,22 +170,30 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
         TabLayout tabLayout = dialog.findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(pager,true);
     }
-    private void AskDeleteMedia(String toDeleteMediapath){
-        new AlertDialog.Builder(mContext,new changeTheme(mContext).setDialogTheme())
+    private void AskDeleteMedias(String[] toDeleteMediapaths){
+        AlertDialog deleteDialog = new AlertDialog.Builder(mContext,new changeTheme(mContext).setDialogTheme())
                 .setTitle(stringFromResource(R.string.delete_file))
                 .setMessage(stringFromResource(R.string.deletion_confirm))
                 .setPositiveButton(stringFromResource(R.string.delete), (dialog, whichButton) -> {
                     List<String> list = new ArrayList<>(Arrays.asList(mediaPaths));
-                    list.remove(toDeleteMediapath);
+                    for (String deletePath: toDeleteMediapaths) {
+                        list.remove(deletePath);
+                    }
                     String joined = TextUtils.join(",", list);
                     mMemory.setMediaPaths(joined);
                     this.updateList(joined.split(","));
                     dialog.dismiss();
                 })
-                .setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> dialog.dismiss())
-                .create().show();
+                .setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> dialog.dismiss()).create();
+        deleteDialog.setCancelable(false);
+        Window window = deleteDialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.TOP;
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        window.setAttributes(wlp);
+        deleteDialog.show();
     }
-
     private String stringFromResource(int resourceID) {
         return mContext.getResources().getString(resourceID);
     }
