@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,10 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import my.project.nostalgia.R;
+import my.project.nostalgia.activities.MemoryListActivity;
 import my.project.nostalgia.activities.MemoryPagerActivity;
+import my.project.nostalgia.fragments.MemoryListFragment;
 import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.supplementary.MediaAndURI;
@@ -59,20 +64,15 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         this.mMemories = newMemories;
         diffResult.dispatchUpdatesTo(this);
     }
-    public void updateListBySize(List<Memory> newMemories) {
-        List<Memory> oldMemories = this.mMemories;
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
-                new MemoryDiffUtilCallback(oldMemories, newMemories));
-        this.mMemories = newMemories;
-        if(oldMemories.size()!=newMemories.size())
-            diffResult.dispatchUpdatesTo(this);
-    }
-    public class MemoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MemoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener,  View.OnLongClickListener {
 
         private TextView mTitleText, mDetailText,mExtraText;
         private Button mShare, mDelete;
+        private CheckBox checkbox;
+        private boolean longClickPressed = false;
         private ImageView[] ImageViews= new ImageView[4];
         private Memory mMemory;
+        private List<Memory> selectedMemories = new LinkedList<>();
         private MediaAndURI mMediaAndURI;
 
         public MemoryHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -89,6 +89,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
             ImageViews[2] = itemView.findViewById(R.id.cardview_image3);
             ImageViews[3] = itemView.findViewById(R.id.cardview_image4);
             mExtraText = itemView.findViewById(R.id.cardview_extramedia);
+            checkbox = itemView.findViewById(R.id.cardview_checkbox);
         }
         public void bind(Memory Memory){
             mMemory = Memory;
@@ -133,11 +134,33 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         }
         @Override
         public void onClick(View v) {
-            Intent intent = MemoryPagerActivity.newIntent(mContext, mMemory.getId());
-            mContext.startActivity(intent);
+            if(!longClickPressed){
+                Intent intent = MemoryPagerActivity.newIntent(mContext, mMemory.getId());
+                mContext.startActivity(intent);
+            }else {
+                if (checkbox.isChecked()) {
+                    checkbox.setVisibility(View.GONE);
+                    checkbox.setChecked(false);
+                    selectedMemories.remove(mMemory);
+                }
+                else {
+                    checkbox.setVisibility(View.VISIBLE);
+                    checkbox.setChecked(true);
+                    selectedMemories.add(mMemory);
+                }
+            }
         }
         private String stringResource(int resourceID) {
             return mContext.getResources().getString(resourceID);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            longClickPressed = true;
+            checkbox.setVisibility(View.VISIBLE);
+            checkbox.setChecked(true);
+            selectedMemories.add(mMemory);
+            return false;
         }
     }
     public static class MemoryDiffUtilCallback extends DiffUtil.Callback {

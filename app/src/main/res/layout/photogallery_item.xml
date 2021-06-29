@@ -15,7 +15,7 @@
         android:contentDescription="@string/memory_photo_no_image_description"/>
 
     <CheckBox
-        android:id="@+id/memory_photo_checkbox"
+        android:id="@+id/cardview_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/black"
