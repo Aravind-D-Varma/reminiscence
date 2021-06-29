@@ -8,40 +8,7 @@
         <item name="android:windowEnterAnimation">@anim/fadein</item>
         <item name="android:windowExitAnimation">@anim/fadeout</item>
     </style>
-
-    <style name="LightDialog" parent="@android:style/Theme.Dialog">
-        <item name="android:background">@color/white</item>
-        <item name="buttonBarButtonStyle">@style/LightButtonStyle</item>
-        <item name="android:windowTitleStyle">@style/LightDialogTitle</item>
-        <item name="android:textAppearanceMedium">@style/LightDialogMessage</item>
-    </style>
-    <style name="LightButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/black</item>
-    </style>
-    <style name="LightDialogTitle">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
-    </style>
-    <style name="LightDialogMessage">
-        <item name="android:textStyle">italic</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textColorPrimary">@color/black</item>
-    </style>
-    <style name="DarkDialog" parent="@android:style/Theme.Dialog">
-        <item name="android:background">@color/black</item>
-        <item name="buttonBarButtonStyle">@style/DarkButtonStyle</item>
-        <item name="android:windowTitleStyle">@style/DarkDialogTitle</item>
-    </style>
-    <style name="DarkButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/light_purple</item>
-    </style>
-    <style name="DarkDialogTitle">
-        <item name="android:textStyle">bold</item>
-    </style>
-
 <!-- Dark application theme. __________________________________________________________________-->
-    <attr format="reference" name="cardStyle"/>
 
     <style name="myActionbar" parent ="Widget.AppCompat.ActionBar">
         <item name ="background">@color/medium_black</item>
@@ -74,12 +41,6 @@
     </style>
     <style name="darkTextView" parent="android:Widget.TextView" >
         <item name="android:textColor">@color/light_purple</item>
-    </style>
-    <style name="darkCardView">
-        <item name="background">@drawable/layout_border</item>
-    </style>
-    <style name="darkCardViewStyle">
-        <item name="android:background">@drawable/layout_border</item>
     </style>
 
 
@@ -116,8 +77,5 @@
     </style>
     <style name="lightTextView" parent="android:Widget.TextView">
         <item name="android:textColor">@color/black</item>
-    </style>
-    <style name="lightCardView">
-
     </style>
 </resources>

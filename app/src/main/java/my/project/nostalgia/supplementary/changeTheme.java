@@ -69,9 +69,9 @@ public class changeTheme {
     public int setDialogTheme() {
         //TODO fix add memory button in light theme
         if (mTheme.equals("Dark")){
-            return R.style.DarkDialog;
+            return R.style.Theme_AppCompat_DayNight_Dialog_Alert;
         }
         else
-            return R.style.LightDialog;
+            return R.style.Theme_AppCompat_Light_Dialog_Alert;
     }
 }

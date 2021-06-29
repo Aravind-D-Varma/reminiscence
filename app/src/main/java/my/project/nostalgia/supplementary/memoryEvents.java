@@ -89,10 +89,10 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
         String themeValues = mPreferences.getString("GlobalTheme", "Dark");
         AlertDialog.Builder discardMemoryDialogBox;
         if(themeValues.equals("Light"))
-            discardMemoryDialogBox = new AlertDialog.Builder(mContext, R.style.LightDialog)
+            discardMemoryDialogBox = new AlertDialog.Builder(mContext, R.style.Theme_AppCompat_Light_Dialog_Alert)
                     .setIcon(R.drawable.delete_black);
         else
-            discardMemoryDialogBox = new AlertDialog.Builder(mContext, R.style.DarkDialog)
+            discardMemoryDialogBox = new AlertDialog.Builder(mContext, R.style.Theme_AppCompat_DayNight_Dialog_Alert)
                     .setIcon(R.drawable.delete_purple);
 
         discardMemoryDialogBox.setTitle(stringResource(R.string.discard_event))

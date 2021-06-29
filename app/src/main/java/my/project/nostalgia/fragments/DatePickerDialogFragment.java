@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import my.project.nostalgia.R;
+import my.project.nostalgia.supplementary.changeTheme;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -52,25 +53,18 @@ public class DatePickerDialogFragment extends DialogFragment {
 
         mDatePicker = v.findViewById(R.id.dialog_date_picker);
         mDatePicker.init(year, month, day, null);
-
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
-        AlertDialog.Builder dialogBuilder;
-        if(themeValues.equals("Light"))
-            dialogBuilder = new AlertDialog.Builder(getActivity(), R.style.LightDialog);
-
-        else
-            dialogBuilder = new AlertDialog.Builder(getActivity(), R.style.DarkDialog);
-
-                dialogBuilder.setView(v)
+        AlertDialog.Builder dialogBuildernew = new AlertDialog.Builder(
+                getActivity(),new changeTheme(getContext()).setDialogTheme())
+                .setView(v)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     int year1 = mDatePicker.getYear();
                     int month1 = mDatePicker.getMonth();
                     int day1 = mDatePicker.getDayOfMonth();
-                    Date calendarDate = new GregorianCalendar(year1, month1, day1, calendar.get(Calendar.HOUR),calendar.get(Calendar.MINUTE)).getTime();
+                    Date calendarDate = new GregorianCalendar(year1, month1, day1
+                            , calendar.get(Calendar.HOUR),calendar.get(Calendar.MINUTE)).getTime();
                     sendResult(Activity.RESULT_OK, calendarDate);
                 });
-        return dialogBuilder.create();
+        return dialogBuildernew.create();
     }
 
     /**

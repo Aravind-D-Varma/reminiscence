@@ -11,9 +11,11 @@ import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import my.project.nostalgia.R;
+import my.project.nostalgia.supplementary.changeTheme;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -54,16 +56,8 @@ public class TimePickerDialogFragment extends DialogFragment {
             mTimePicker.setHour(hour);
             mTimePicker.setMinute(minute);
         }
-        SharedPreferences getData = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getContext());
-        String themeValues = getData.getString("GlobalTheme", "Dark");
-        androidx.appcompat.app.AlertDialog.Builder dialogBuilder;
-        if(themeValues.equals("Light")) {
-            dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getActivity());
-        }
-        else
-            dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getActivity(), R.style.DarkDialog);
-
-        dialogBuilder.setView(v)
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
+                getActivity(),new changeTheme(getContext()).setDialogTheme()).setView(v)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         int dialogHour = mTimePicker.getHour();
