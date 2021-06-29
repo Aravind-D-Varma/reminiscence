@@ -64,6 +64,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         private TextView mTitleText, mDetailText,mExtraText;
         private Button mShare, mDelete;
         private ImageView mImageView, mImageView2, mImageView3,mImageView4;
+        private ImageView[] ImageViews= {mImageView, mImageView2, mImageView3,mImageView4};
         private Memory mMemory;
         private MediaAndURI mMediaAndURI;
 
@@ -76,10 +77,10 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
             mDetailText = itemView.findViewById(R.id.cardview_memory_detail);
             mShare = itemView.findViewById(R.id.cardview_share);
             mDelete = itemView.findViewById(R.id.cardview_delete);
-            mImageView = itemView.findViewById(R.id.cardview_image);
-            mImageView2 = itemView.findViewById(R.id.cardview_image2);
-            mImageView3 = itemView.findViewById(R.id.cardview_image3);
-            mImageView4 = itemView.findViewById(R.id.cardview_image4);
+            ImageViews[0] = itemView.findViewById(R.id.cardview_image);
+            ImageViews[1] = itemView.findViewById(R.id.cardview_image2);
+            ImageViews[2] = itemView.findViewById(R.id.cardview_image3);
+            ImageViews[3] = itemView.findViewById(R.id.cardview_image4);
             mExtraText = itemView.findViewById(R.id.cardview_extramedia);
         }
         public void bind(Memory Memory){
@@ -112,49 +113,13 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
             try{
                 String[] mediaPaths = mMemory.getMediaPaths().split(",");
                 int numberOfMedias = mediaPaths.length;
-                if(numberOfMedias == 1) {
-                    setPreviewImage(mediaPaths[0], mImageView);
-                    mImageView2.setImageBitmap(null);
-                    mImageView3.setImageBitmap(null);
-                    mImageView4.setImageBitmap(null);
-                    mExtraText.setText("");
-                }
-                else if (numberOfMedias == 2) {
-                    setPreviewImage(mediaPaths[0], mImageView);
-                    setPreviewImage(mediaPaths[1], mImageView2);
-                    mImageView3.setImageBitmap(null);
-                    mImageView4.setImageBitmap(null);
-                    mExtraText.setText("");
-                }
-                else if (numberOfMedias == 3){
-                    setPreviewImage(mediaPaths[0], mImageView);
-                    setPreviewImage(mediaPaths[1], mImageView2);
-                    setPreviewImage(mediaPaths[2], mImageView3);
-                    mImageView4.setImageBitmap(null);
-                    mExtraText.setText("");
-                }
-
-                else if (numberOfMedias == 4){
-                    setPreviewImage(mediaPaths[0], mImageView);
-                    setPreviewImage(mediaPaths[1], mImageView2);
-                    setPreviewImage(mediaPaths[2], mImageView3);
-                    setPreviewImage(mediaPaths[3], mImageView4);
-                    mExtraText.setText("");
-                }
-                else if (numberOfMedias > 4){
-                    setPreviewImage(mediaPaths[0], mImageView);
-                    setPreviewImage(mediaPaths[1], mImageView2);
-                    setPreviewImage(mediaPaths[2], mImageView3);
-                    setPreviewImage(mediaPaths[3], mImageView4);
+                for (int i = 0; i < numberOfMedias && i <=3 ; i++)
+                    Glide.with(mContext).load(new MediaAndURI(mContext).getMediaUriOf(mediaPaths[i])).into(ImageViews[i]);
+                if(numberOfMedias > 4)
                     mExtraText.setText(mContext.getString(R.string.cardview_extratext,(numberOfMedias-4)));
-                }
             }catch (NullPointerException e){
-                mExtraText.setTextSize(16);
                 mExtraText.setText(stringResource(R.string.share_warning));
             }
-        }
-        private void setPreviewImage(String mediaPath, ImageView imageView) {
-            Glide.with(mContext).load(new MediaAndURI(mContext).getMediaUriOf(mediaPath)).into(imageView);
         }
         @Override
         public void onClick(View v) {

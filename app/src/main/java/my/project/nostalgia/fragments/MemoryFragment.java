@@ -1,7 +1,7 @@
 package my.project.nostalgia.fragments;
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
@@ -372,8 +372,7 @@ public class MemoryFragment extends Fragment {
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme())
                 .setTitle(stringFromResource(R.string.delete_file))
                 .setMessage(stringFromResource(R.string.deletion_confirm))
-                .setIcon(android.R.drawable.ic_menu_delete)
-                .setPositiveButton(stringFromResource(R.string.discard), (dialog, whichButton) -> {
+                .setPositiveButton(stringFromResource(R.string.delete), (dialog, whichButton) -> {
                     String[] allPhotoPaths = individualFilePaths(mMemory);
                     List<String> list = new ArrayList<>(Arrays.asList(allPhotoPaths));
                     list.remove(toDeleteMediapath);
@@ -384,7 +383,6 @@ public class MemoryFragment extends Fragment {
                 })
                 .setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> dialog.dismiss())
                 .create();
-        myQuittingDialogBox.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         return myQuittingDialogBox;
     }
     private void behaviourBeforeAddingMedia() {
@@ -498,7 +496,7 @@ public class MemoryFragment extends Fragment {
                 String title = mSharedPreferences.getString(CURRENT_MEMORY, "");
                 boolean photosAbsent = mSharedPreferences.getBoolean(CURRENT_PHOTOS_ABSENT,true);
                 if (title.equals("")&&photosAbsent) {
-                    AskDiscardMemory().show();
+                    AskDiscardMemory();
                     return true;
                 }
                 else
@@ -507,11 +505,10 @@ public class MemoryFragment extends Fragment {
             return false;
         });
     }
-    private AlertDialog AskDiscardMemory(){
-        return new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme())
-                .setTitle(stringFromResource(R.string.delete_memory))
+    private void AskDiscardMemory(){
+        AlertDialog.Builder discardMemoryDialogBox = new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme()) ;
+        discardMemoryDialogBox.setTitle(stringFromResource(R.string.delete_memory))
                 .setMessage(stringFromResource(R.string.delete_memory_confirm))
-                .setIcon(android.R.drawable.ic_menu_delete)
                 .setPositiveButton(stringFromResource(R.string.discard), (dialog, whichButton) -> {
                     MemoryLab.get(getActivity()).deleteMemory(mMemory);
                     Intent intent = new Intent(getActivity(), MemoryListActivity.class);
@@ -519,7 +516,7 @@ public class MemoryFragment extends Fragment {
                     dialog.dismiss();
                 })
                 .setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> dialog.dismiss())
-                .create();
+                .create().show();
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

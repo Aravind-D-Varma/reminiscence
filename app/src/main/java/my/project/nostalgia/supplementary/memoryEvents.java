@@ -92,16 +92,8 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
     }
     public void askDiscardEvent(View view, Activity activity,int finalI){
 
-        String themeValues = mPreferences.getString("GlobalTheme", "Dark");
-        AlertDialog.Builder discardMemoryDialogBox;
-        if(themeValues.equals("Light"))
-            discardMemoryDialogBox = new AlertDialog.Builder(mContext, R.style.Theme_AppCompat_Light_Dialog_Alert)
-                    .setIcon(R.drawable.delete_black);
-        else
-            discardMemoryDialogBox = new AlertDialog.Builder(mContext, R.style.Theme_AppCompat_DayNight_Dialog_Alert)
-                    .setIcon(R.drawable.delete_purple);
-
-        discardMemoryDialogBox.setTitle(stringResource(R.string.discard_event))
+        AlertDialog.Builder discardMemoryDialogBox = new AlertDialog.Builder(mContext, new changeTheme(mContext).setDialogTheme());
+                discardMemoryDialogBox.setTitle(stringResource(R.string.discard_event))
                 .setMessage(stringResource(R.string.discard_event_confirm))
                 .setPositiveButton(stringResource(R.string.discard), (dialog, whichButton) -> {
                     removeFromEvents(finalI);
@@ -109,8 +101,7 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
                     dialog.dismiss();
                 })
                 .setNegativeButton(stringResource(R.string.cancel), (dialog, which) -> dialog.dismiss())
-                .create();
-        discardMemoryDialogBox.show();
+                .create().show();
     }
     public void refreshSnackbar(View view, Activity activity, Memory memory){
         Snackbar.make(view,stringResource(R.string.refreshPage),Snackbar.LENGTH_SHORT)

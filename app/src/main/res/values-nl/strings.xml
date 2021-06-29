@@ -35,8 +35,6 @@
     <string name="no_title_set">(Geen titel ingesteld)</string>
     <string name="no_details_set">(Geen details ingesteld))</string>
 
-    <string name="more"> meer</string>
-
     <string name="settings">Instellingen</string>
     <string name="delete_file">Verwijder bestand</string>
     <string name="deletion_confirm">Wilt u dit bestand verwijderen?</string>

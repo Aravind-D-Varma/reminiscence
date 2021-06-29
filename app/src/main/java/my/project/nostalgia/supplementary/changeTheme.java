@@ -66,9 +66,8 @@ public class changeTheme {
             v.setBackground(ContextCompat.getDrawable(mContext,R.drawable.layout_border));
     }
     public int setDialogTheme() {
-        if (mTheme.equals("Dark")){
+        if (mTheme.equals("Dark"))
             return R.style.Theme_AppCompat_DayNight_Dialog_Alert;
-        }
         else
             return R.style.Theme_AppCompat_Light_Dialog_Alert;
     }
