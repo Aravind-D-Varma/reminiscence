@@ -57,6 +57,13 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
                 new MemoryDiffUtilCallback(oldMemories, newMemories));
         this.mMemories = newMemories;
+        diffResult.dispatchUpdatesTo(this);
+    }
+    public void updateListBySize(List<Memory> newMemories) {
+        List<Memory> oldMemories = this.mMemories;
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
+                new MemoryDiffUtilCallback(oldMemories, newMemories));
+        this.mMemories = newMemories;
         if(oldMemories.size()!=newMemories.size())
             diffResult.dispatchUpdatesTo(this);
     }
@@ -133,7 +140,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
             return mContext.getResources().getString(resourceID);
         }
     }
-    private static class MemoryDiffUtilCallback extends DiffUtil.Callback {
+    public static class MemoryDiffUtilCallback extends DiffUtil.Callback {
 
         private List<Memory> mOldMemories, mNewMemories;
 

@@ -47,22 +47,17 @@ public class MemoryListActivity extends SingleFragmentActivity
      * Updates UI (displays all memories and if its a tablet shows additional memory if about to be added).
      * @see MemoryListFragment
      * @see MemoryListFragment#updateUI()
-     * @see MemoryListFragment#updateUIForTablet()
      */
     @Override
     public void onMemoryUpdated(Memory Memory) {
         MemoryListFragment listFragment = (MemoryListFragment)
                 getSupportFragmentManager()
                         .findFragmentById(R.id.fragment_container);
-        if(isDeviceTablet())
-            listFragment.updateUIForTablet();
-        else
+        if (listFragment != null) {
             listFragment.updateUI();
+        }
     }
 
-    private boolean isDeviceTablet() {
-        return getResources().getBoolean(R.bool.isTablet);
-    }
 
     @Override
     protected int getlayoutresID() {

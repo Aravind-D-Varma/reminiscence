@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -194,7 +195,6 @@ public class MemoryListFragment extends Fragment {
                     noMemoryView = inflater.inflate(R.layout.fragment_memory_list, container, false);
                     container.addView(noMemoryView);
                     setListAndAddButton(noMemoryView);
-                    updateUIForTablet();
                 }
                 mCallbacks.onMemorySelected(mNewMemory);
             });
@@ -203,7 +203,7 @@ public class MemoryListFragment extends Fragment {
             view = inflater.inflate(R.layout.fragment_memory_list, container, false);
             setListAndAddButton(view);
         }
-        updateByDevice();
+        updateUI();
         return view;
     }
 
@@ -219,7 +219,7 @@ public class MemoryListFragment extends Fragment {
         floatingActionButton.setOnClickListener(v -> {
             mNewMemory = new Memory();
             MemoryLab.get(getActivity()).addMemory(mNewMemory);
-            updateByDevice();
+            updateUI();
             mCallbacks.onMemorySelected(mNewMemory);
         });
         FloatingActionButton upload = view.findViewById(R.id.memory_upload);
@@ -251,10 +251,7 @@ public class MemoryListFragment extends Fragment {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-    /**
-     * Binds RecyclerView to its adapter
-     */
-    public void updateUIForTablet() {
+    public void updateUI() {
         MemoryLab memoryLab = MemoryLab.get(getActivity());
         List<Memory> Memorys = memoryLab.getMemories();
         if(mAdapter == null && Memorys.size()!=0) {
@@ -264,7 +261,7 @@ public class MemoryListFragment extends Fragment {
         }
         else {
             if (Memorys.size() != 0) {
-                mAdapter.updateList(Memorys);
+                mAdapter.updateListBySize(Memorys);
             }
         }
         updateSubtitle();
@@ -279,13 +276,7 @@ public class MemoryListFragment extends Fragment {
             getActivity().finish();
             return;
         }
-        updateByDevice();
-    }
-    private void updateByDevice() {
-        if (isDeviceTablet())
-            updateUIForTablet();
-        else
-            updateUI();
+        updateUI();
     }
     /**
      * Shows how many memories are there on the ActionBar
@@ -300,23 +291,7 @@ public class MemoryListFragment extends Fragment {
     /** Deletes null memories to avoid crashes
      * Deletes all those memories whose title is null and does not contain any photos.
      * Then, hooks up the adapter and RecyclerView.*/
-    public void updateUI() {
 
-        MemoryLab memoryLab = MemoryLab.get(getActivity());
-        List<Memory> Memorys;
-        Memorys = memoryLab.getMemories();
-        if(mAdapter == null && Memorys.size()!=0) {
-            firstTime = false;
-            mAdapter = new MemoryRVAdapter(getContext(),getActivity(),Memorys);
-            mRecyclerView.setAdapter(mAdapter);
-        }
-        else {
-            if (Memorys.size() != 0) {
-                mAdapter.updateList(Memorys);
-            }
-        }
-        updateSubtitle();
-    }
     public void eventFilter(String event) {
         List<Memory> searchMemorysList = new ArrayList<>();
 
