@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private String[] mediaPaths;
     private Memory mMemory;
+    private boolean longClickPressed = false;
 
     /**
      * Upon initialisation, sets video uris and image bitmaps from a memory's videopaths.
@@ -68,17 +70,34 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
             Glide.with(mContext).load(mMediaAndURI.getMediaUriOf(mediaPaths[position]))
                     .into(imageView);
         } catch (NullPointerException ignored){}
+        final CheckBox checkbox = ((MyImageViewHolder) holder).mCheckbox;
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                displayMediaZoomedIn(position);
+                if(!longClickPressed)
+                    displayMediaZoomedIn(position);
+                else{
+                    if (checkbox.isChecked()) {
+                        checkbox.setVisibility(View.GONE);
+                        checkbox.setChecked(false);
+                    }
+                    else {
+                        checkbox.setVisibility(View.VISIBLE);
+                        checkbox.setChecked(true);
+                    }
+
+                }
+
             }
         });
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                AskDeleteMedia(mediaPaths[position]);
-                return false;
+                longClickPressed = true;
+                checkbox.setVisibility(View.VISIBLE);
+                checkbox.setChecked(true);
+
+                return true;
             }
         });
 
@@ -90,9 +109,11 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
 
     private static class MyImageViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
+        CheckBox mCheckbox;
         public MyImageViewHolder(View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.memory_photo);
+            mCheckbox = itemView.findViewById(R.id.memory_photo_checkbox);
         }
     }
 
