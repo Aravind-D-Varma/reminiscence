@@ -40,7 +40,6 @@
         <item name="spinnerStyle">@style/lightSpinner</item>
         <item name="android:textViewStyle">@style/lightTextView</item>
         <item name="navigationIconTint">@color/black</item>
-
     </style>
 
 

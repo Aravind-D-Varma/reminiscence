@@ -213,4 +213,5 @@ public class MemoryListActivity extends SingleFragmentActivity
         getBaseContext().getResources().
                 updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
+
 }

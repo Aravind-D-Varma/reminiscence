@@ -1,5 +1,6 @@
 package my.project.nostalgia.adapters;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import my.project.nostalgia.R;
+import my.project.nostalgia.activities.MemoryListActivity;
 import my.project.nostalgia.activities.MemoryPagerActivity;
 import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
@@ -37,7 +41,6 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         mActivity = activity;
         mMemories = Memorys;
     }
-
     @NonNull
     @Override
     public MemoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,17 +57,18 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         return mMemories.size();
     }
     public void updateList(List<Memory> newMemories) {
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MemoryDiffUtilCallback(this.mMemories, newMemories));
+        List<Memory> oldMemories = this.mMemories;
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
+                new MemoryDiffUtilCallback(oldMemories, newMemories));
         this.mMemories = newMemories;
-        diffResult.dispatchUpdatesTo(this);
+        if(oldMemories.size()!=newMemories.size())
+            diffResult.dispatchUpdatesTo(this);
     }
-
     public class MemoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mTitleText, mDetailText,mExtraText;
         private Button mShare, mDelete;
-        private ImageView mImageView, mImageView2, mImageView3,mImageView4;
-        private ImageView[] ImageViews= {mImageView, mImageView2, mImageView3,mImageView4};
+        private ImageView[] ImageViews= new ImageView[4];
         private Memory mMemory;
         private MediaAndURI mMediaAndURI;
 
@@ -101,8 +105,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
                     ArrayList<Uri> mediaUri = mMediaAndURI.getUrisFromPaths(mMemory.getMediaPaths().split(","));
                     Intent share = mMediaAndURI.shareMemoryIntent(mediaUri,mMemory.getTitle());
                     mContext.startActivity(Intent.createChooser(share, "Share Memory"));
-                }
-                catch (NullPointerException e){
+                } catch (NullPointerException e){
                     Toast.makeText(mContext, stringResource(R.string.share_warning),Toast.LENGTH_SHORT).show();
                 }
             });
@@ -110,6 +113,10 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
                 MemoryLab.get(mActivity).deleteMemory(mMemory);
                 updateList(MemoryLab.get(mActivity).getMemories());
             });
+            mExtraText.setText("");
+            for (ImageView img:ImageViews) {
+                img.setImageBitmap(null);
+            }
             try{
                 String[] mediaPaths = mMemory.getMediaPaths().split(",");
                 int numberOfMedias = mediaPaths.length;
