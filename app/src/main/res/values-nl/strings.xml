@@ -97,4 +97,5 @@
     <string name="email_address_hint">Voer je e-mail adres opnieuw in</string>
     <string name="password_hint">Voer je wachtwoord opnieuw in</string>
     <string name="new_custom_event_hint">Nieuw evenement:</string>
+    <string name="cardview_extratext">+ %d</string>
 </resources>

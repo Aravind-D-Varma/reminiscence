@@ -84,7 +84,7 @@ public class MemoryFragment extends Fragment {
     private SharedPreferences.Editor mEditor;
     private String[] applicableEvents ={};
 
-    private Button mDateButton, mTimeButton, mPhotoButton;
+    private Button mDateButton, mPhotoButton;
     private Intent getImage;
     private RecyclerView mPhotoRecyclerView;
     private FloatingActionButton mPhotoFAB;
@@ -95,9 +95,7 @@ public class MemoryFragment extends Fragment {
     private boolean discardPhoto = false;
 
     public static final String DIALOG_DATE = "DialogDate";
-    public static final String DIALOG_TIME = "DialogTime";
     public static final int REQUEST_DATE = 0;
-    public static final int REQUEST_TIME = 1;
     public static final int REQUEST_GALLERY_PHOTO = 2;
     public static final int REQUEST_GALLERY_ADDITIONALPHOTO = 3;
     private static final String[] DECLARED_GETPHOTO_PERMISSIONS = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -254,14 +252,6 @@ public class MemoryFragment extends Fragment {
             dp.setTargetFragment(MemoryFragment.this, REQUEST_DATE);
             dp.show(manager, DIALOG_DATE);
         });
-        mTimeButton = (Button) v.findViewById(R.id.memory_time);
-        updateTime();
-        mTimeButton.setOnClickListener(v12 -> {
-            FragmentManager fm = getActivity().getSupportFragmentManager();
-            TimePickerDialogFragment tp = TimePickerDialogFragment.newInstance(mMemory.getDate());
-            tp.setTargetFragment(MemoryFragment.this, REQUEST_TIME);
-            tp.show(fm, DIALOG_TIME);
-        });
         Spinner spinner = (Spinner) v.findViewById(R.id.memory_spinner);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.myspinner, applicableEvents);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -411,12 +401,6 @@ public class MemoryFragment extends Fragment {
             updateMemory();
             updateDate();
         }
-        else if (requestCode == REQUEST_TIME){
-            Date time = (Date) data.getSerializableExtra(TimePickerDialogFragment.EXTRA_TIME);
-            mMemory.setDate(time);
-            updateMemory();
-            updateTime();
-        }
         else if (requestCode == REQUEST_GALLERY_PHOTO){
             StringBuilder joinedFilePaths = new StringBuilder();
             if(data.getData()!=null){
@@ -479,10 +463,6 @@ public class MemoryFragment extends Fragment {
     }
     private void updateDate() {
         mDateButton.setText(DateFormat.getDateInstance(DateFormat.FULL).format(mMemory.getDate()));
-    }
-    private void updateTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        mTimeButton.setText(sdf.format(mMemory.getDate()));
     }
     private void behaviourAfterAddingMedia() {
         mEditor.putBoolean(CURRENT_PHOTOS_ABSENT,false);

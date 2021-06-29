@@ -21,7 +21,7 @@
             android:layout_height="75dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"/>
+            android:layout_margin="8dp"/>
 
         <ImageView
             android:id="@+id/cardview_image2"
@@ -29,23 +29,37 @@
             android:layout_height="75dp"
             app:layout_constraintStart_toEndOf="@id/cardview_image"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"/>
+            android:layout_margin="8dp"/>
+        <ImageView
+            android:id="@+id/cardview_image3"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            app:layout_constraintStart_toEndOf="@id/cardview_image2"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="8dp"/>
+        <ImageView
+            android:id="@+id/cardview_image4"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            app:layout_constraintStart_toEndOf="@id/cardview_image3"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="8dp"/>
         <TextView
             android:id="@+id/cardview_extramedia"
-            android:layout_width="85dp"
+            android:layout_width="wrap_content"
             android:layout_height="75dp"
             android:gravity="center"
             android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@id/cardview_image2"
+            android:layout_margin="4dp"
+            app:layout_constraintStart_toEndOf="@id/cardview_image4"
             app:layout_constraintTop_toTopOf="parent"/>
-
 
         <TextView
             android:id="@+id/cardview_memory_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

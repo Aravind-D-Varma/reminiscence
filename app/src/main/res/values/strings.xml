@@ -94,5 +94,6 @@
     <string name="email_address_hint">Re-enter your email address</string>
     <string name="password_hint">Re-enter your password</string>
     <string name="new_custom_event_hint">New Event:</string>
+    <string name="cardview_extratext">+ %d</string>
 
 </resources>
