@@ -23,6 +23,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import my.project.nostalgia.R;
@@ -40,6 +41,7 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
     private String[] mediaPaths;
+    private List<String> selectedMediaPaths = new LinkedList<>();
     private Memory mMemory;
     private boolean longClickPressed = false;
 
@@ -66,13 +68,14 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
      */
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final ImageView imageView = ((MyImageViewHolder) holder).image;
+        ImageView imageView = ((MyImageViewHolder) holder).image;
         final MediaAndURI mMediaAndURI = new MediaAndURI(mContext);
         try {
             Glide.with(mContext).load(mMediaAndURI.getMediaUriOf(mediaPaths[position]))
                     .into(imageView);
         } catch (NullPointerException ignored){}
-        final CheckBox checkbox = ((MyImageViewHolder) holder).mCheckbox;
+        CheckBox checkbox = ((MyImageViewHolder) holder).mCheckbox;
+        checkbox.setVisibility(View.GONE);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,14 +85,14 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
                     if (checkbox.isChecked()) {
                         checkbox.setVisibility(View.GONE);
                         checkbox.setChecked(false);
+                        selectedMediaPaths.remove(mediaPaths[position]);
                     }
                     else {
                         checkbox.setVisibility(View.VISIBLE);
                         checkbox.setChecked(true);
+                        selectedMediaPaths.add(mediaPaths[position]);
                     }
-
                 }
-
             }
         });
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -98,7 +101,8 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
                 longClickPressed = true;
                 checkbox.setVisibility(View.VISIBLE);
                 checkbox.setChecked(true);
-                AskDeleteMedias(mediaPaths[position]);
+                selectedMediaPaths.add(mediaPaths[position]);
+                AskDeleteMedias();
                 return true;
             }
         });
@@ -118,7 +122,6 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
             mCheckbox = itemView.findViewById(R.id.memory_photo_checkbox);
         }
     }
-
     private static class MediaDiffUtilCallback extends DiffUtil.Callback {
 
         private String[] mOldMediaPaths;
@@ -170,21 +173,25 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
         TabLayout tabLayout = dialog.findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(pager,true);
     }
-    private void AskDeleteMedias(String[] toDeleteMediapaths){
-        AlertDialog deleteDialog = new AlertDialog.Builder(mContext,new changeTheme(mContext).setDialogTheme())
-                .setTitle(stringFromResource(R.string.delete_file))
-                .setMessage(stringFromResource(R.string.deletion_confirm))
-                .setPositiveButton(stringFromResource(R.string.delete), (dialog, whichButton) -> {
-                    List<String> list = new ArrayList<>(Arrays.asList(mediaPaths));
-                    for (String deletePath: toDeleteMediapaths) {
-                        list.remove(deletePath);
-                    }
-                    String joined = TextUtils.join(",", list);
-                    mMemory.setMediaPaths(joined);
-                    this.updateList(joined.split(","));
-                    dialog.dismiss();
-                })
-                .setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> dialog.dismiss()).create();
+    private void AskDeleteMedias(){
+        AlertDialog.Builder deleteDialogbuilder = new AlertDialog.Builder(mContext, new changeTheme(mContext).setDialogTheme())
+            .setTitle(stringFromResource(R.string.delete_file))
+            .setMessage(stringFromResource(R.string.deletion_confirm))
+            .setPositiveButton(stringFromResource(R.string.delete), (dialog, whichButton) -> {
+                List<String> list = new ArrayList<>(Arrays.asList(mediaPaths));
+                list.removeAll(selectedMediaPaths);
+                String joined = TextUtils.join(",", list);
+                mMemory.setMediaPaths(joined);
+                this.updateList(joined.split(","));
+                this.notifyDataSetChanged();
+                longClickPressed = false;
+                dialog.dismiss();
+            }).setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> {
+                this.notifyDataSetChanged();
+                longClickPressed = false;
+                dialog.dismiss();
+             });
+        AlertDialog deleteDialog = deleteDialogbuilder.create();
         deleteDialog.setCancelable(false);
         Window window = deleteDialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();

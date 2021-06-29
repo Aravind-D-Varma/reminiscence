@@ -261,7 +261,7 @@ public class MemoryListFragment extends Fragment {
         }
         else {
             if (Memorys.size() != 0) {
-                mAdapter.updateListBySize(Memorys);
+                mAdapter.updateList(Memorys);
             }
         }
         updateSubtitle();
