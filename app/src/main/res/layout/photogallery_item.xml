@@ -4,7 +4,7 @@
     android:id="@+id/memory_photo"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:scaleType="fitXY"
+    android:scaleType="centerInside"
     android:focusable="false"
     android:layout_margin="5dp"
     android:focusableInTouchMode="false"

@@ -89,6 +89,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         }
         public void bind(Memory Memory){
             mMemory = Memory;
+            mMediaAndURI = new MediaAndURI(mContext);
             try{
                 if (mMemory.getTitle()==null || mMemory.getTitle().equals(""))
                     mTitleText.setText(R.string.no_title_set);
@@ -101,7 +102,6 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
             }catch (NullPointerException ignored){}
             mShare.setOnClickListener(v -> {
                 try {
-                    mMediaAndURI = new MediaAndURI(mContext);
                     ArrayList<Uri> mediaUri = mMediaAndURI.getUrisFromPaths(mMemory.getMediaPaths().split(","));
                     Intent share = mMediaAndURI.shareMemoryIntent(mediaUri,mMemory.getTitle());
                     mContext.startActivity(Intent.createChooser(share, "Share Memory"));
@@ -121,7 +121,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
                 String[] mediaPaths = mMemory.getMediaPaths().split(",");
                 int numberOfMedias = mediaPaths.length;
                 for (int i = 0; i < numberOfMedias && i <=3 ; i++)
-                    Glide.with(mContext).load(new MediaAndURI(mContext).getMediaUriOf(mediaPaths[i])).into(ImageViews[i]);
+                    Glide.with(mContext).load(mMediaAndURI.getMediaUriOf(mediaPaths[i])).into(ImageViews[i]);
                 if(numberOfMedias > 4)
                     mExtraText.setText(mContext.getString(R.string.cardview_extratext,(numberOfMedias-4)));
             }catch (NullPointerException e){
