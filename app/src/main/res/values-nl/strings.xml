@@ -91,7 +91,10 @@
     <string name="delete_account">Account verwijderen</string>
     <string name="delete_account_summary">Als u uw account verwijdert, worden ook uw bestanden verwijderd</string>
     <string name="delete">Verwijderen</string>
-    <string name="delete_account_confirm">Account verwijderen bevestigen</string>
+    <string name="delete_account_confirm">Bevestigen</string>
     <string name="sign_out_confirm">Bevestigen: Wil je uitloggen? Niet-opgeslagen herinneringen gaan verloren.</string>
     <string name="save_and_confirm">Opslaan en uitloggen</string>
+    <string name="email_address_hint">Voer je e-mail adres opnieuw in</string>
+    <string name="password_hint">Voer je wachtwoord opnieuw in</string>
+    <string name="new_custom_event_hint">Nieuw evenement:</string>
 </resources>

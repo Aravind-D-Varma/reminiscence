@@ -66,7 +66,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         mChoices.setTitle(stringResource(R.string.personal_settings));
         mScreen.addPreference(mChoices);
 
-        EditTextPreference username = setUserName(mScreen);
+        Preference username = setUserName(mScreen);
         mChoices.addPreference(username);
 
         DropDownPreference events = getDropDownPreference(mScreen);
@@ -108,7 +108,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         pref.setTitle(stringResource(R.string.delete_account));
         pref.setSummary(stringResource(R.string.delete_account_summary));
         pref.setOnPreferenceClickListener(preference -> {
-            AlertDialog.Builder deleted_account = new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme());
+            AlertDialog.Builder deleted_account = new AlertDialog.Builder(
+                    getContext(),new changeTheme(getContext()).setDialogTheme());
             LinearLayout layout = new LinearLayout(getContext());
             layout.setOrientation(LinearLayout.VERTICAL);
             final TextView confirmation = new TextView(getContext());
@@ -117,18 +118,19 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             confirmation.setTextAppearance(getContext(), android.R.style.TextAppearance_Large);
             layout.addView(confirmation);
             final EditText email = new EditText(getContext());
-            email.setHint("Re-enter your email address");
+            email.setHint(R.string.email_address_hint);
             email.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
             layout.addView(email);
             final EditText password = new EditText(getContext());
             password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD| InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            password.setHint("Re-enter your password");
+            password.setHint(R.string.password_hint);
             layout.addView(password);
             layout.setPadding(35,35,35,35);
             deleted_account.setView(layout);
             deleted_account.setPositiveButton(stringResource(R.string.delete), (dialog, whichButton) -> {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                AuthCredential credential = EmailAuthProvider.getCredential(email.getText().toString(), password.getText().toString());
+                AuthCredential credential = EmailAuthProvider
+                        .getCredential(email.getText().toString(), password.getText().toString());
                 user.reauthenticate(credential).addOnSuccessListener(aVoid -> {
                     user.delete();
                     //TODO make a toast on successful deletion
@@ -186,12 +188,34 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         return pref;
     }
 
-    private EditTextPreference setUserName(PreferenceScreen mScreen) {
-        EditTextPreference pref = new EditTextPreference(mScreen.getContext());
+    private Preference setUserName(PreferenceScreen mScreen) {
+        Preference pref = new Preference(mScreen.getContext());
         pref.setKey(SEND_USERNAME);
         pref.setTitle(stringResource(R.string.settings_name));
         pref.setSummary(stringResource(R.string.settings_name_summary));
-        pref.setIcon(R.drawable.settings_username);
+        pref.setIcon(R.drawable.settings_username);pref.setOnPreferenceClickListener(preference -> {
+            AlertDialog.Builder changeName = new AlertDialog.Builder(
+                    getContext(),new changeTheme(getContext()).setDialogTheme());
+            LinearLayout layout = new LinearLayout(getContext());
+            layout.setOrientation(LinearLayout.VERTICAL);
+            final TextView message = new TextView(getContext());
+            message.setText(stringResource(R.string.settings_name));
+            message.setTypeface(null, Typeface.BOLD);
+            message.setTextAppearance(getContext(), android.R.style.TextAppearance_Large);
+            layout.addView(message);
+            final EditText name = new EditText(getContext());
+            name.setHint(R.string.settings_name_summary);
+            name.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
+            layout.addView(name);
+            layout.setPadding(35,35,35,35);
+            changeName.setView(layout);
+            changeName.setPositiveButton(stringResource(R.string.delete_account_confirm), (dialog, whichButton) -> {
+                PreferenceManager.getDefaultSharedPreferences(getContext())
+                        .edit().putString(SEND_USERNAME,name.getText().toString()).apply();
+            }).setNegativeButton(stringResource(R.string.cancel), (dialog, which) -> dialog.dismiss()).create();
+            changeName.show();
+            return false;
+        });
         return pref;
     }
     private ListPreference setThemePref(PreferenceScreen mScreen) {

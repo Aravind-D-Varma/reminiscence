@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -68,9 +69,14 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
 
         AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(mContext,new changeTheme(mContext).setDialogTheme());
         inputEventDialog.setTitle(R.string.new_custom_event);
+        LinearLayout layout = new LinearLayout(mContext);
+        layout.setOrientation(LinearLayout.VERTICAL);
         final EditText input = new EditText(mContext);
+        input.setHint(R.string.new_custom_event_hint);
         input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
-        inputEventDialog.setView(input);
+        layout.addView(input);
+        layout.setPadding(35,35,35,35);
+        inputEventDialog.setView(layout);
 
         inputEventDialog.setPositiveButton(R.string.create, (dialog, whichButton) -> {
 

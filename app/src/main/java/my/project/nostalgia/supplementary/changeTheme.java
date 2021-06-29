@@ -59,7 +59,6 @@ public class changeTheme {
             menu.findItem(R.id.share_memory).setIcon(R.drawable.share_purple);
         }
     }
-
     public void setLayoutTheme(View v){
         if (mTheme.equals("Light"))
             v.setBackground(ContextCompat.getDrawable(mContext,R.drawable.layout_border_light));
@@ -67,7 +66,6 @@ public class changeTheme {
             v.setBackground(ContextCompat.getDrawable(mContext,R.drawable.layout_border));
     }
     public int setDialogTheme() {
-        //TODO fix add memory button in light theme
         if (mTheme.equals("Dark")){
             return R.style.Theme_AppCompat_DayNight_Dialog_Alert;
         }
