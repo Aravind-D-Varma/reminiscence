@@ -2,19 +2,17 @@ package my.project.nostalgia.fragments;
 import android.Manifest;
 import android.app.Activity;
 import androidx.appcompat.app.AlertDialog;
-import android.app.Dialog;
+
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -23,7 +21,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -40,24 +37,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import androidx.viewpager.widget.ViewPager;
 
-import my.project.nostalgia.supplementary.CircularViewPager;
-import my.project.nostalgia.supplementary.ItemClickRecyclerView;
 import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.activities.MemoryListActivity;
 import my.project.nostalgia.activities.MemoryPagerActivity;
 import my.project.nostalgia.R;
-import my.project.nostalgia.adapters.ZoomViewPagerAdapter;
 import my.project.nostalgia.adapters.MediaGalleryRVAdapter;
 import my.project.nostalgia.supplementary.MediaAndURI;
 import my.project.nostalgia.supplementary.changeTheme;
 import my.project.nostalgia.supplementary.memoryEvents;
-import my.project.nostalgia.supplementary.transformationViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
@@ -68,7 +59,6 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -292,16 +282,10 @@ public class MemoryFragment extends Fragment {
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL));
         try{
-            mAdapter = new MediaGalleryRVAdapter(getActivity(), individualFilePaths(mMemory));
+            mAdapter = new MediaGalleryRVAdapter(getActivity(), mMemory);
             mPhotoRecyclerView.setAdapter(mAdapter);
         }
         catch (NullPointerException ignored){}
-        ItemClickRecyclerView.addTo(mPhotoRecyclerView).setOnItemClickListener((recyclerView, position, v14) -> displayMediaZoomedIn(position));
-        ItemClickRecyclerView.addTo(mPhotoRecyclerView).setOnItemLongClickListener((recyclerView, position, v15) -> {
-            String[] filePaths = individualFilePaths(mMemory);
-            AskDeleteMedia(filePaths[position]);
-            return false;
-        });
         mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
         behaviourBeforeAddingMedia();
         Intent getmoreImage = new MediaAndURI().getFromMediaIntent();
@@ -345,43 +329,6 @@ public class MemoryFragment extends Fragment {
         });
         return v;
     }
-
-    private void displayMediaZoomedIn(int position) {
-        Dialog dialog = new Dialog(getActivity(),R.style.PauseDialog);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.media_pager_layout);
-        viewPagerImplementation(position, dialog);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.show();
-    }
-    private void viewPagerImplementation(int position, Dialog dialog) {
-        ZoomViewPagerAdapter adapter = new ZoomViewPagerAdapter(getActivity(),individualFilePaths(mMemory));
-        ViewPager pager = (ViewPager) dialog.findViewById(R.id.media_view_pager);
-        pager.setAdapter(adapter);
-
-        pager.addOnPageChangeListener(new CircularViewPager(pager));
-        pager.setCurrentItem(position);
-
-        pager.setPageTransformer(false, new transformationViewPager());
-        TabLayout tabLayout = dialog.findViewById(R.id.tabDots);
-        tabLayout.setupWithViewPager(pager,true);
-    }
-    private void AskDeleteMedia(String toDeleteMediapath){
-        new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme())
-                .setTitle(stringFromResource(R.string.delete_file))
-                .setMessage(stringFromResource(R.string.deletion_confirm))
-                .setPositiveButton(stringFromResource(R.string.delete), (dialog, whichButton) -> {
-                    String[] allPhotoPaths = individualFilePaths(mMemory);
-                    List<String> list = new ArrayList<>(Arrays.asList(allPhotoPaths));
-                    list.remove(toDeleteMediapath);
-                    String joined = TextUtils.join(",", list);
-                    mMemory.setMediaPaths(joined);
-                    mAdapter.updateList(joined.split(","));
-                    dialog.dismiss();
-                })
-                .setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> dialog.dismiss())
-                .create().show();
-    }
     private void behaviourBeforeAddingMedia() {
         mPhotoFAB.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);
         mPhotoFAB.setEnabled(mMemory.getMediaPaths()!=null);
@@ -419,7 +366,7 @@ public class MemoryFragment extends Fragment {
             try {
                 mAdapter.updateList(joinedFilePaths.toString().split(","));
             }catch(NullPointerException e){
-                mAdapter = new MediaGalleryRVAdapter(getActivity(), individualFilePaths(mMemory));
+                mAdapter = new MediaGalleryRVAdapter(getActivity(), mMemory);
                 mPhotoRecyclerView.setAdapter(mAdapter);
             }
             behaviourAfterAddingMedia();

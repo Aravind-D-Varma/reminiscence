@@ -1,18 +1,33 @@
 package my.project.nostalgia.adapters;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import my.project.nostalgia.R;
+import my.project.nostalgia.models.Memory;
+import my.project.nostalgia.supplementary.CircularViewPager;
 import my.project.nostalgia.supplementary.MediaAndURI;
+import my.project.nostalgia.supplementary.changeTheme;
+import my.project.nostalgia.supplementary.transformationViewPager;
 
 /**
  * Setting up the gridLayout: images and videos.<br>
@@ -20,17 +35,17 @@ import my.project.nostalgia.supplementary.MediaAndURI;
  */
 public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
 
-    private MediaAndURI mMediaAndURI;
     private Context mContext;
     private String[] mediaPaths;
+    private Memory mMemory;
 
     /**
      * Upon initialisation, sets video uris and image bitmaps from a memory's videopaths.
      */
-    public MediaGalleryRVAdapter(Context context, String[] mediaPaths) {
+    public MediaGalleryRVAdapter(Context context, Memory memory) {
         this.mContext = context;
-        this.mediaPaths = mediaPaths;
-        mMediaAndURI = new MediaAndURI(context);
+        this.mMemory = memory;
+        this.mediaPaths = mMemory.getMediaPaths().split(",");
     }
 
     @NonNull
@@ -47,12 +62,27 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
      */
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        final ImageView imageView = ((MyImageViewHolder) holder).image;
+        final MediaAndURI mMediaAndURI = new MediaAndURI(mContext);
         try {
             Glide.with(mContext).load(mMediaAndURI.getMediaUriOf(mediaPaths[position]))
-                    .into(((MyImageViewHolder) holder).image);
+                    .into(imageView);
         } catch (NullPointerException ignored){}
-    }
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayMediaZoomedIn(position);
+            }
+        });
+        imageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AskDeleteMedia(mediaPaths[position]);
+                return false;
+            }
+        });
 
+    }
     @Override
     public int getItemCount() {
         return mediaPaths.length;
@@ -66,11 +96,6 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void updateList(String[] newMediaPaths) {
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MediaDiffUtilCallback(this.mediaPaths, newMediaPaths));
-        this.mediaPaths = newMediaPaths;
-        diffResult.dispatchUpdatesTo(this);
-    }
     private static class MediaDiffUtilCallback extends DiffUtil.Callback {
 
         private String[] mOldMediaPaths;
@@ -101,4 +126,51 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
             return mOldMediaPaths[oldItemPosition].equals(mNewMediaPaths[newItemPosition]);
         }
     }
+
+    private void displayMediaZoomedIn(int position) {
+        Dialog dialog = new Dialog(mContext,R.style.PauseDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.media_pager_layout);
+        viewPagerImplementation(position, dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+    }
+    private void viewPagerImplementation(int position, Dialog dialog) {
+        ZoomViewPagerAdapter adapter = new ZoomViewPagerAdapter(mContext,mediaPaths);
+        ViewPager pager = (ViewPager) dialog.findViewById(R.id.media_view_pager);
+        pager.setAdapter(adapter);
+
+        pager.addOnPageChangeListener(new CircularViewPager(pager));
+        pager.setCurrentItem(position);
+
+        pager.setPageTransformer(false, new transformationViewPager());
+        TabLayout tabLayout = dialog.findViewById(R.id.tabDots);
+        tabLayout.setupWithViewPager(pager,true);
+    }
+    private void AskDeleteMedia(String toDeleteMediapath){
+        new AlertDialog.Builder(mContext,new changeTheme(mContext).setDialogTheme())
+                .setTitle(stringFromResource(R.string.delete_file))
+                .setMessage(stringFromResource(R.string.deletion_confirm))
+                .setPositiveButton(stringFromResource(R.string.delete), (dialog, whichButton) -> {
+                    List<String> list = new ArrayList<>(Arrays.asList(mediaPaths));
+                    list.remove(toDeleteMediapath);
+                    String joined = TextUtils.join(",", list);
+                    mMemory.setMediaPaths(joined);
+                    this.updateList(joined.split(","));
+                    dialog.dismiss();
+                })
+                .setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> dialog.dismiss())
+                .create().show();
+    }
+
+    private String stringFromResource(int resourceID) {
+        return mContext.getResources().getString(resourceID);
+    }
+
+    public void updateList(String[] newMediaPaths) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MediaDiffUtilCallback(this.mediaPaths, newMediaPaths));
+        this.mediaPaths = newMediaPaths;
+        diffResult.dispatchUpdatesTo(this);
+    }
+
 }
