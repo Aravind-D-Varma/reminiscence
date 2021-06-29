@@ -2,10 +2,10 @@ package my.project.nostalgia.supplementary;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -58,9 +58,24 @@ public class changeTheme {
             menu.findItem(R.id.share_memory).setIcon(R.drawable.share_purple);
         }
     }
+
     public void setLayoutTheme(View v){
-        if (mTheme.equals("Light"))
-            v.setBackground(ContextCompat.getDrawable(mContext,R.drawable.layout_border_light));
+        if (mTheme.equals("Light")) {
+            v.setBackground(ContextCompat.getDrawable(mContext, R.drawable.layout_border_light));
+            final Button share = (Button) v.findViewById(R.id.cardview_share);
+            share.setTextColor(mContext.getResources().getColor(R.color.black));
+
+            final Button delete = (Button) v.findViewById(R.id.cardview_delete);
+            delete.setTextColor(mContext.getResources().getColor(R.color.black));
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
+                ColorStateList csl = ColorStateList.valueOf(
+                        mContext.getResources().getColor(R.color.black,mContext.getTheme()));
+                share.setCompoundDrawableTintList(csl);
+                delete.setCompoundDrawableTintList(csl);
+            }
+
+        }
         else if (mTheme.equals("Dark"))
             v.setBackground(ContextCompat.getDrawable(mContext,R.drawable.layout_border));
     }

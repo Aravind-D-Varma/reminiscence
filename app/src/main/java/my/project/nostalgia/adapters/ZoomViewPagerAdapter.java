@@ -1,6 +1,5 @@
 package my.project.nostalgia.adapters;
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,8 @@ import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+
+import com.bumptech.glide.Glide;
 
 import my.project.nostalgia.R;
 import my.project.nostalgia.supplementary.MediaAndURI;
@@ -44,7 +45,8 @@ public class ZoomViewPagerAdapter extends PagerAdapter {
         else {
             v = inflater.inflate(R.layout.zoom_image, container, false);
             ImageView iv = v.findViewById(R.id.zoomed_imageView);
-            iv.setImageBitmap(BitmapFactory.decodeFile(individualMediaPaths[position]));
+            Glide.with(mContext).load(new MediaAndURI(mContext).getMediaUriOf(individualMediaPaths[position]))
+                    .into(iv);
         }
         container.addView(v);
         return v;
@@ -74,7 +76,7 @@ public class ZoomViewPagerAdapter extends PagerAdapter {
         FrameLayout buttonLayout = v.findViewById(R.id.play_button_layout);
         ImageButton ib = v.findViewById(R.id.play_button);
         try {
-            vv.setVideoURI(new MediaAndURI(mContext).getVideoURIs(individualMediaPaths).get(position));
+            vv.setVideoURI(new MediaAndURI(mContext).getMediaUriOf(individualMediaPaths[position]));
             vv.seekTo(1);
             buttonLayout.setOnClickListener(v12 -> clickForPauseOrResume(vv, ib));
             ib.setOnClickListener(v1 -> clickForPauseOrResume(vv, ib));

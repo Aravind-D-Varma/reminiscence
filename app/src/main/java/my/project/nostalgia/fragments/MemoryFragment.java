@@ -65,7 +65,6 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -300,8 +299,7 @@ public class MemoryFragment extends Fragment {
         ItemClickRecyclerView.addTo(mPhotoRecyclerView).setOnItemClickListener((recyclerView, position, v14) -> displayMediaZoomedIn(position));
         ItemClickRecyclerView.addTo(mPhotoRecyclerView).setOnItemLongClickListener((recyclerView, position, v15) -> {
             String[] filePaths = individualFilePaths(mMemory);
-            AlertDialog diaBox = AskDeleteMedia(filePaths[position]);
-            diaBox.show();
+            AskDeleteMedia(filePaths[position]);
             return false;
         });
         mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
@@ -368,8 +366,8 @@ public class MemoryFragment extends Fragment {
         TabLayout tabLayout = dialog.findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(pager,true);
     }
-    private AlertDialog AskDeleteMedia(String toDeleteMediapath){
-        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme())
+    private void AskDeleteMedia(String toDeleteMediapath){
+        new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme())
                 .setTitle(stringFromResource(R.string.delete_file))
                 .setMessage(stringFromResource(R.string.deletion_confirm))
                 .setPositiveButton(stringFromResource(R.string.delete), (dialog, whichButton) -> {
@@ -382,8 +380,7 @@ public class MemoryFragment extends Fragment {
                     dialog.dismiss();
                 })
                 .setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> dialog.dismiss())
-                .create();
-        return myQuittingDialogBox;
+                .create().show();
     }
     private void behaviourBeforeAddingMedia() {
         mPhotoFAB.setVisibility(mMemory.getMediaPaths()==null? View.GONE:View.VISIBLE);

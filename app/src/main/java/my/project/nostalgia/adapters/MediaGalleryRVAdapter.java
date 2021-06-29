@@ -1,11 +1,9 @@
 package my.project.nostalgia.adapters;
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -15,8 +13,6 @@ import com.bumptech.glide.Glide;
 
 import my.project.nostalgia.R;
 import my.project.nostalgia.supplementary.MediaAndURI;
-
-import java.util.List;
 
 /**
  * Setting up the gridLayout: images and videos.<br>
@@ -64,7 +60,6 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
 
     private static class MyImageViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
-
         public MyImageViewHolder(View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.memory_photo);
