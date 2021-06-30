@@ -13,7 +13,6 @@ import androidx.core.content.FileProvider;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class MediaAndURI {
 
@@ -23,35 +22,7 @@ public class MediaAndURI {
         this.mContext = context;
     }
     public MediaAndURI(){}
-    /**Extracts a list of Uris to set video from a memory's filePaths.<br>
-     * The Uri is null at those positions where the filepath is an image.
-     * @param mediaPaths all media paths including images
-     */
-    public List<Uri> getVideoURIs(String[] mediaPaths) {
-        List<Uri> videos = new ArrayList<>();
-        for (String mediaPath:mediaPaths) {
-            if(isThisVideoFile(mediaPath)) {
-                Uri uriVid = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", new File(mediaPath));
-                videos.add(uriVid);
-            }
-            else
-                videos.add(null);
-        }
-        return videos;
-    }
 
-    public List<Uri> getPhotoUris(String[] mediaPaths){
-        List<Uri> imageUris = new ArrayList<>();
-        MediaAndURI mediaAndURI = new MediaAndURI();
-        for (String mediaPath:mediaPaths) {
-            if(mediaAndURI.isThisImageFile(mediaPath)) {
-                Uri uriImg = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", new File(mediaPath));
-                imageUris.add(uriImg);
-            }
-            else imageUris.add(null);
-        }
-        return imageUris;
-    }
     public Uri getMediaUriOf(String mediaPath){
         return FileProvider.getUriForFile(mContext,mContext.getPackageName()+".fileprovider",new File(mediaPath));
     }

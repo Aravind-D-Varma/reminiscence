@@ -3,21 +3,27 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import my.project.nostalgia.R;
@@ -27,12 +33,16 @@ import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.supplementary.MediaAndURI;
 import my.project.nostalgia.supplementary.changeTheme;
 
-public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.MemoryHolder>{
+public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.MemoryHolder> {
 
     private Activity mActivity;
     private List<Memory> mMemories;
     private Context mContext;
-    public MemoryRVAdapter(Context context, Activity activity, List<Memory> Memorys){
+    private List<Memory> selectedMemories = new LinkedList<>();
+    private boolean mLongClickPressed = false;
+    private ActionMode aM;
+
+    public MemoryRVAdapter(Context context, Activity activity, List<Memory> Memorys) {
         mContext = context;
         mActivity = activity;
         mMemories = Memorys;
@@ -44,107 +54,133 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         LayoutInflater layoutInflater = LayoutInflater.from(mActivity);
         return new MemoryHolder(layoutInflater, parent);
     }
+
     @Override
     public void onBindViewHolder(@NonNull MemoryHolder holder, int position) {
         Memory Memory = mMemories.get(position);
-        holder.bind(Memory);
+        CheckBox checkbox = holder.mCheckBox;
+        checkbox.setVisibility(View.GONE);
+        checkbox.setChecked(false);
+        selectedMemories.remove(Memory);
+        setTitleAndDetail(holder, Memory);
+        holder.mShare.setOnClickListener(v -> shareMemory(Memory));
+        setImagesAndText(holder, Memory);
+        holder.itemView.setOnLongClickListener(v -> {
+            mLongClickPressed = true;
+            checkbox.setVisibility(View.VISIBLE);
+            checkbox.setChecked(true);
+            selectedMemories.add(Memory);
+            if (aM == null) {
+                aM = mActivity.startActionMode(new ActionModeCallback());
+                aM.setTitle(String.valueOf(selectedMemories.size()));
+            }
+            else {
+                aM.setTitle(String.valueOf(selectedMemories.size()));
+                aM.invalidate();
+            }
+            return true;
+        });
+        holder.itemView.setOnClickListener(v -> {
+            if (!mLongClickPressed) {
+                Intent intent = MemoryPagerActivity.newIntent(mContext, Memory.getId());
+                mContext.startActivity(intent);
+            } else {
+                if (checkbox.isChecked()) {
+                    checkbox.setVisibility(View.GONE);
+                    checkbox.setChecked(false);
+                    selectedMemories.remove(Memory);
+                } else {
+                    checkbox.setVisibility(View.VISIBLE);
+                    checkbox.setChecked(true);
+                    selectedMemories.add(Memory);
+                }
+                if(aM!=null)
+                    aM.setTitle(String.valueOf(selectedMemories.size()));
+            }
+        });
     }
+    private void setImagesAndText(@NonNull MemoryHolder holder, Memory memory) {
+        MediaAndURI mMediaAndURI = new MediaAndURI(mContext);
+        holder.mExtraText.setText("");
+        for (ImageView img : holder.ImageViews) {
+            img.setImageBitmap(null);
+        }
+        try {
+            String[] mediaPaths = memory.getMediaPaths().split(",");
+            int numberOfMedias = mediaPaths.length;
+            for (int i = 0; i < numberOfMedias && i <= 3; i++)
+                Glide.with(mContext).load(mMediaAndURI.getMediaUriOf(mediaPaths[i])).into(holder.ImageViews[i]);
+            if (numberOfMedias > 4)
+                holder.mExtraText.setText(mContext.getString(R.string.cardview_extratext, (numberOfMedias - 4)));
+        } catch (NullPointerException e) {
+            holder.mExtraText.setText(mContext.getResources().getString(R.string.share_warning));
+        }
+    }
+
+    private void shareMemory(Memory memory) {
+        MediaAndURI mMediaAndURI = new MediaAndURI(mContext);
+        try {
+            ArrayList<Uri> mediaUri = mMediaAndURI.getUrisFromPaths(memory.getMediaPaths().split(","));
+            Intent share = mMediaAndURI.shareMemoryIntent(mediaUri, memory.getTitle());
+            mContext.startActivity(Intent.createChooser(share, "Share Memory"));
+        } catch (NullPointerException e) {
+            Toast.makeText(mContext, mContext.getResources().getString(R.string.share_warning),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setTitleAndDetail(@NonNull MemoryHolder holder, Memory memory) {
+        try {
+            if (memory.getTitle() == null || memory.getTitle().equals(""))
+                holder.mTitleText.setText(R.string.no_title_set);
+            else
+                holder.mTitleText.setText(memory.getTitle());
+            if (memory.getDetail() == null || memory.getDetail().equals(""))
+                holder.mDetailText.setText(R.string.no_details_set);
+            else
+                holder.mDetailText.setText(memory.getDetail());
+        } catch (NullPointerException ignored) {
+        }
+    }
+
     @Override
     public int getItemCount() {
         return mMemories.size();
     }
+
     public void updateList(List<Memory> newMemories) {
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MemoryDiffUtilCallback(this.mMemories, newMemories));
+        List<Memory> oldMemories = this.mMemories;
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
+                new MemoryDiffUtilCallback(oldMemories, newMemories));
         this.mMemories = newMemories;
         diffResult.dispatchUpdatesTo(this);
     }
 
-    public class MemoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MemoryHolder extends RecyclerView.ViewHolder {
 
-        private TextView mTitleText, mDetailText,mExtraText;
-        private Button mShare, mDelete;
-        private ImageView mImageView, mImageView2;
-        private Memory mMemory;
-        private MediaAndURI mMediaAndURI;
+        private TextView mTitleText, mDetailText, mExtraText;
+        private Button mShare;
+        private CheckBox mCheckBox;
+        private ImageView[] ImageViews = new ImageView[4];
 
         public MemoryHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_memory, parent, false));
-            itemView.setOnClickListener(this);
             changeTheme cT = new changeTheme(mContext);
             cT.setLayoutTheme(itemView);
             mTitleText = itemView.findViewById(R.id.cardview_memory_title);
             mDetailText = itemView.findViewById(R.id.cardview_memory_detail);
             mShare = itemView.findViewById(R.id.cardview_share);
-            mDelete = itemView.findViewById(R.id.cardview_delete);
-            mImageView = itemView.findViewById(R.id.cardview_image);
-            mImageView2 = itemView.findViewById(R.id.cardview_image2);
+            ImageViews[0] = itemView.findViewById(R.id.cardview_image);
+            ImageViews[1] = itemView.findViewById(R.id.cardview_image2);
+            ImageViews[2] = itemView.findViewById(R.id.cardview_image3);
+            ImageViews[3] = itemView.findViewById(R.id.cardview_image4);
             mExtraText = itemView.findViewById(R.id.cardview_extramedia);
+            mCheckBox = itemView.findViewById(R.id.cardview_checkbox);
         }
-        public void bind(Memory Memory){
-            mMemory = Memory;
-            try{
-                if (mMemory.getTitle()==null || mMemory.getTitle().equals(""))
-                    mTitleText.setText(R.string.no_title_set);
-                else
-                    mTitleText.setText(mMemory.getTitle());
-                if(mMemory.getDetail()==null || mMemory.getDetail().equals(""))
-                    mDetailText.setText(R.string.no_details_set);
-                else
-                    mDetailText.setText(mMemory.getDetail());
-            }catch (NullPointerException ignored){}
-            mShare.setOnClickListener(v -> {
-                try {
-                    mMediaAndURI = new MediaAndURI(mContext);
-                    ArrayList<Uri> mediaUri = mMediaAndURI.getUrisFromPaths(mMemory.getMediaPaths().split(","));
-                    Intent share = mMediaAndURI.shareMemoryIntent(mediaUri,mMemory.getTitle());
-                    mContext.startActivity(Intent.createChooser(share, "Share Memory"));
-                }
-                catch (NullPointerException e){
-                    Toast.makeText(mContext, stringResource(R.string.share_warning),Toast.LENGTH_SHORT).show();
-                }
-            });
-            mDelete.setOnClickListener(v -> {
-                MemoryLab.get(mActivity).deleteMemory(mMemory);
-                updateList(MemoryLab.get(mActivity).getMemories());
-            });
-            try{
-                String[] mediaPaths = mMemory.getMediaPaths().split(",");
-                int numberOfMedias = mediaPaths.length;
-                if(numberOfMedias == 1) {
-                    setPreviewImage(mediaPaths[0], mImageView);
-                    mImageView2.setImageBitmap(null);
-                    mExtraText.setText("");
-                }
-                else if (numberOfMedias == 2) {
-                    setPreviewImage(mediaPaths[0], mImageView);
-                    setPreviewImage(mediaPaths[1], mImageView2);
-                    mExtraText.setText("");
-                }
-                else if (numberOfMedias > 2){
-                    setPreviewImage(mediaPaths[0], mImageView);
-                    setPreviewImage(mediaPaths[1], mImageView2);
-                    mExtraText.setText("+"+ (numberOfMedias-2)+" "+mContext.getString(R.string.more));
-                }
-            }catch (NullPointerException e){
-                mImageView.setImageResource(R.drawable.media_notfound_red);
-                mImageView2.setImageResource(R.drawable.media_notfound_red);
-                mExtraText.setTextSize(16);
-                mExtraText.setText(stringResource(R.string.share_warning));
-            }
-        }
-        private void setPreviewImage(String mediaPath, ImageView imageView) {
-            Glide.with(mContext).load(new MediaAndURI(mContext).getMediaUriOf(mediaPath)).into(imageView);
-        }
-        @Override
-        public void onClick(View v) {
-            Intent intent = MemoryPagerActivity.newIntent(mContext, mMemory.getId());
-            mContext.startActivity(intent);
-        }
-        private String stringResource(int resourceID) {
-            return mContext.getResources().getString(resourceID);
-        }
+
     }
-    private static class MemoryDiffUtilCallback extends DiffUtil.Callback {
+
+    public static class MemoryDiffUtilCallback extends DiffUtil.Callback {
 
         private List<Memory> mOldMemories, mNewMemories;
 
@@ -167,9 +203,50 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
             return mOldMemories.get(oldItemPosition).getId() == mNewMemories.get(newItemPosition).getId();
         }
+
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
             return mOldMemories.get(oldItemPosition).equals(mNewMemories.get(newItemPosition));
+        }
+    }
+
+    private class ActionModeCallback implements ActionMode.Callback {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.fragment_memory_list_delete, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            if (item.getItemId() == R.id.memory_delete_menu) {
+                MemoryLab memoryLab = MemoryLab.get(mContext);
+                for(Memory memory:selectedMemories)
+                    memoryLab.deleteMemory(memory);
+                mLongClickPressed = false;
+                int MemoryCount = memoryLab.getMemories().size();
+                String subtitle = mContext.getResources().getQuantityString(R.plurals.subtitle_plural
+                        , MemoryCount, MemoryCount);
+                ((AppCompatActivity) mActivity).getSupportActionBar().setSubtitle(subtitle);
+                mode.finish();
+                return true;
+            }
+            else if (item.getItemId() == android.R.id.home) {
+                mLongClickPressed = false;
+                mode.finish();
+            }
+            return false;
+        }
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            updateList(MemoryLab.get(mContext).getMemories());
+            mLongClickPressed = false;
+            aM = null;
         }
     }
 }

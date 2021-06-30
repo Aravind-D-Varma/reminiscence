@@ -70,8 +70,6 @@ public class Memory {
             return false;
         if(!(this.mDetail).equals(other.getDetail()))
             return false;
-        if(!(this.mEvent).equals(other.getEvent()))
-            return false;
         if(!(this.mMediaPaths).equals(other.getMediaPaths()))
             return false;
 

@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,7 +25,6 @@ public class changeTheme {
     }
 
     public void setUserTheme() {
-        //TODO fix add memory button in light theme
         if (mTheme.equals("Dark")){
             mContext.setTheme(R.style.Theme_Reminiscence);
         }
@@ -60,9 +60,25 @@ public class changeTheme {
     }
 
     public void setLayoutTheme(View v){
-        if (mTheme.equals("Light"))
-            v.setBackground(ContextCompat.getDrawable(mContext,R.drawable.layout_border_light));
+        if (mTheme.equals("Light")) {
+            v.setBackground(ContextCompat.getDrawable(mContext, R.drawable.layout_border_light));
+            final Button share = (Button) v.findViewById(R.id.cardview_share);
+            share.setTextColor(mContext.getResources().getColor(R.color.black));
+            
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
+                ColorStateList csl = ColorStateList.valueOf(
+                        mContext.getResources().getColor(R.color.black,mContext.getTheme()));
+                share.setCompoundDrawableTintList(csl);
+            }
+
+        }
         else if (mTheme.equals("Dark"))
             v.setBackground(ContextCompat.getDrawable(mContext,R.drawable.layout_border));
+    }
+    public int setDialogTheme() {
+        if (mTheme.equals("Dark"))
+            return R.style.Theme_AppCompat_DayNight_Dialog_Alert;
+        else
+            return R.style.Theme_AppCompat_Light_Dialog_Alert;
     }
 }

@@ -17,35 +17,72 @@
 
         <ImageView
             android:id="@+id/cardview_image"
-            android:layout_width="75dp"
+            android:layout_width="0dp"
             android:layout_height="75dp"
+            android:layout_margin="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"/>
+            card_view:layout_constraintEnd_toStartOf="@+id/cardview_image2"
+            card_view:layout_constraintHorizontal_bias="0.5" />
 
         <ImageView
             android:id="@+id/cardview_image2"
-            android:layout_width="75dp"
+            android:layout_width="0dp"
             android:layout_height="75dp"
-            app:layout_constraintStart_toEndOf="@id/cardview_image"
+            android:layout_margin="8dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"/>
+            card_view:layout_constraintEnd_toStartOf="@+id/cardview_image3"
+            card_view:layout_constraintHorizontal_bias="0.5"
+            card_view:layout_constraintStart_toEndOf="@+id/cardview_image" />
+
+        <ImageView
+            android:id="@+id/cardview_image3"
+            android:layout_width="0dp"
+            android:layout_height="75dp"
+            android:layout_margin="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintEnd_toStartOf="@+id/cardview_image4"
+            card_view:layout_constraintHorizontal_bias="0.5"
+            card_view:layout_constraintStart_toEndOf="@+id/cardview_image2" />
+
+        <ImageView
+            android:id="@+id/cardview_image4"
+            android:layout_width="0dp"
+            android:layout_height="75dp"
+            android:layout_margin="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintEnd_toStartOf="@+id/cardview_extramedia"
+            card_view:layout_constraintHorizontal_bias="0.5"
+            card_view:layout_constraintStart_toEndOf="@+id/cardview_image3" />
+
         <TextView
             android:id="@+id/cardview_extramedia"
-            android:layout_width="85dp"
+            android:layout_width="0dp"
             android:layout_height="75dp"
+            android:layout_margin="8dp"
             android:gravity="center"
-            android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@id/cardview_image2"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.5"
+            card_view:layout_constraintStart_toEndOf="@+id/cardview_image4" />
 
+        <CheckBox
+            android:id="@+id/cardview_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:buttonTint="#00FF00"
+            android:visibility="gone"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/cardview_memory_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,39 +96,26 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            android:textStyle="bold"
             android:ellipsize="end"
             android:maxLines="2"
+            android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardview_memory_title"/>
+            app:layout_constraintTop_toBottomOf="@+id/cardview_memory_title" />
 
         <Button
             android:id="@+id/cardview_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardview_memory_detail"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/share_purple"
             android:text="@string/share"
             android:textStyle="bold"
-            android:background="@android:color/transparent"
-            android:drawableStart="@drawable/share_purple"/>
-
-        <Button
-            android:id="@+id/cardview_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardview_memory_detail"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="@string/Delete"
-            android:textStyle="bold"
-            android:background="@android:color/transparent"
-            android:drawableEnd="@drawable/delete_purple"/>
-
+            app:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardview_memory_detail" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -30,7 +30,7 @@ import java.util.UUID;
 public class MemoryPagerActivity extends AppCompatActivity implements MemoryFragment.Callbacks {
 
     private static final String EXTRA_memory_ID = "my.project.memory_id";
-    private static ViewPager2 mViewPager;
+    private static ViewPager2 mViewPager2;
     private List<Memory> mMemories;
     /**
      * Not sure. To be inspected
@@ -52,10 +52,10 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
         new changeTheme(this).setUserTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.memory_pager_layout);
-        mViewPager = findViewById(R.id.memory_viewpager2);
+        mViewPager2 = findViewById(R.id.memory_viewpager2);
         mMemories = MemoryLab.get(this).getMemories();
 
-        mViewPager.setAdapter(new FragmentStateAdapter(this) {
+        mViewPager2.setAdapter(new FragmentStateAdapter(this) {
             @NonNull
             @Override
             public Fragment createFragment(int position) {
@@ -77,7 +77,7 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
         int i = 0;
         for (Memory memory:mMemories) {
             if (memory.getId().equals(memoryId)) {
-                mViewPager.setCurrentItem(i);
+                mViewPager2.setCurrentItem(i,false);
                 break;
             }
             i++;
@@ -101,4 +101,5 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
         }
         return super.dispatchTouchEvent(ev);
     }
+
 }

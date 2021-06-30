@@ -1,6 +1,8 @@
 package my.project.nostalgia.fragments;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -8,10 +10,10 @@ import android.text.InputType;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DropDownPreference;
-import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
@@ -22,19 +24,27 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import my.project.nostalgia.BuildConfig;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.LoginActivity;
 import my.project.nostalgia.activities.UserSettingsActivity;
+import my.project.nostalgia.models.Memory;
+import my.project.nostalgia.models.MemoryLab;
+import my.project.nostalgia.supplementary.changeTheme;
 import my.project.nostalgia.supplementary.memoryEvents;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static my.project.nostalgia.activities.LoginActivity.LANGUAGE;
 import static my.project.nostalgia.activities.LoginActivity.SEND_USERNAME;
+import static my.project.nostalgia.fragments.MemoryListFragment.MEMORIES_KEY;
 
 /**
  * Creates and sets application according to choices made here.
@@ -55,7 +65,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         mChoices.setTitle(stringResource(R.string.personal_settings));
         mScreen.addPreference(mChoices);
 
-        EditTextPreference username = setUserName(mScreen);
+        Preference username = setUserName(mScreen);
         mChoices.addPreference(username);
 
         DropDownPreference events = getDropDownPreference(mScreen);
@@ -97,24 +107,29 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         pref.setTitle(stringResource(R.string.delete_account));
         pref.setSummary(stringResource(R.string.delete_account_summary));
         pref.setOnPreferenceClickListener(preference -> {
-            AlertDialog.Builder deleted_account = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder deleted_account = new AlertDialog.Builder(
+                    getContext(),new changeTheme(getContext()).setDialogTheme());
             LinearLayout layout = new LinearLayout(getContext());
             layout.setOrientation(LinearLayout.VERTICAL);
             final TextView confirmation = new TextView(getContext());
             confirmation.setText(stringResource(R.string.delete_account_confirm));
+            confirmation.setTypeface(null, Typeface.BOLD);
+            confirmation.setTextAppearance(getContext(), android.R.style.TextAppearance_Large);
             layout.addView(confirmation);
             final EditText email = new EditText(getContext());
-            email.setHint("Re-enter your email address");
+            email.setHint(R.string.email_address_hint);
             email.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
             layout.addView(email);
             final EditText password = new EditText(getContext());
             password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD| InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            password.setHint("Re-enter your password");
+            password.setHint(R.string.password_hint);
             layout.addView(password);
+            layout.setPadding(35,35,35,35);
             deleted_account.setView(layout);
             deleted_account.setPositiveButton(stringResource(R.string.delete), (dialog, whichButton) -> {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                AuthCredential credential = EmailAuthProvider.getCredential(email.getText().toString(), password.getText().toString());
+                AuthCredential credential = EmailAuthProvider
+                        .getCredential(email.getText().toString(), password.getText().toString());
                 user.reauthenticate(credential).addOnSuccessListener(aVoid -> {
                     user.delete();
                     //TODO make a toast on successful deletion
@@ -138,20 +153,72 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         pref.setTitle(stringResource(R.string.sign_out));
         pref.setSummary(stringResource(R.string.sign_out_summary));
         pref.setOnPreferenceClickListener(preference -> {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(getActivity(), LoginActivity.class));
-            getActivity().finish();
+            AlertDialog.Builder confirmSignOut = new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme());
+            confirmSignOut.setTitle(R.string.sign_out);
+            confirmSignOut.setMessage(R.string.sign_out_confirm);
+            final EditText input = new EditText(getContext());
+            input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
+            confirmSignOut.setView(input);
+            confirmSignOut.setPositiveButton(R.string.save_and_confirm, (dialog, whichButton) -> {
+                String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
+                        .document(userid);
+                ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+                mProgressDialog.setMessage("Uploading...");
+                mProgressDialog.show();
+                Map<String,List<Memory>> dataToSave = new HashMap<>();
+                dataToSave.put(MEMORIES_KEY, MemoryLab.get(getActivity()).getMemories());
+                userDocument.set(dataToSave).addOnSuccessListener(aVoid -> {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().finish();
+                    mProgressDialog.dismiss();
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Upload Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    mProgressDialog.dismiss();
+                });
+                dialog.dismiss();
+            });
+            confirmSignOut.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
+                    .setNeutralButton(R.string.signout, (dialog, which) -> {
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        getActivity().finish();
+                        dialog.dismiss();
+                    }).create();
+            confirmSignOut.show();
+
             return false;
         });
         return pref;
     }
 
-    private EditTextPreference setUserName(PreferenceScreen mScreen) {
-        EditTextPreference pref = new EditTextPreference(mScreen.getContext());
+    private Preference setUserName(PreferenceScreen mScreen) {
+        Preference pref = new Preference(mScreen.getContext());
         pref.setKey(SEND_USERNAME);
         pref.setTitle(stringResource(R.string.settings_name));
         pref.setSummary(stringResource(R.string.settings_name_summary));
-        pref.setIcon(R.drawable.settings_username);
+        pref.setIcon(R.drawable.settings_username);pref.setOnPreferenceClickListener(preference -> {
+            AlertDialog.Builder changeName = new AlertDialog.Builder(
+                    getContext(),new changeTheme(getContext()).setDialogTheme());
+            LinearLayout layout = new LinearLayout(getContext());
+            layout.setOrientation(LinearLayout.VERTICAL);
+            final TextView message = new TextView(getContext());
+            message.setText(stringResource(R.string.settings_name));
+            message.setTypeface(null, Typeface.BOLD);
+            message.setTextAppearance(getContext(), android.R.style.TextAppearance_Large);
+            layout.addView(message);
+            final EditText name = new EditText(getContext());
+            name.setHint(R.string.settings_name_summary);
+            name.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
+            layout.addView(name);
+            layout.setPadding(35,35,35,35);
+            changeName.setView(layout);
+            changeName.setPositiveButton(stringResource(R.string.delete_account_confirm), (dialog, whichButton) -> PreferenceManager.getDefaultSharedPreferences(getContext())
+                    .edit().putString(SEND_USERNAME,name.getText().toString()).apply()).setNegativeButton(stringResource(R.string.cancel), (dialog, which) -> dialog.dismiss()).create();
+            changeName.show();
+            return false;
+        });
         return pref;
     }
     private ListPreference setThemePref(PreferenceScreen mScreen) {

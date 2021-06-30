@@ -18,7 +18,6 @@
         <item name = "editTextStyle">@style/darkEditText</item>
         <item name="spinnerStyle">@style/darkSpinner</item>
         <item name="android:textViewStyle">@style/darkTextView</item>
-        <item name="cardViewStyle">@style/darkCardView</item>
 
     </style>
 <!-- Light application theme. -->
@@ -41,7 +40,6 @@
         <item name="spinnerStyle">@style/lightSpinner</item>
         <item name="android:textViewStyle">@style/lightTextView</item>
         <item name="navigationIconTint">@color/black</item>
-
     </style>
 
 

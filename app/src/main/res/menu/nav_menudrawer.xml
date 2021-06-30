@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="@string/general">
+    <item android:title="@string/settings_events">
         <menu>
             <group>
                 <item
@@ -23,6 +23,11 @@
             android:id="@+id/user_settings"
             android:icon="@drawable/navigation_settings"
             android:title="@string/settings"/>
+        <item
+            android:orderInCategory="2"
+            android:id="@+id/userprofile_save"
+            android:icon="@android:drawable/ic_menu_upload"
+            android:title="@string/save_profile"/>
     </group>
 
 </menu>

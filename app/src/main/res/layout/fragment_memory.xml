@@ -63,18 +63,6 @@
         android:layout_below="@id/memory_details"
         tools:ignore="SmallSp" />
     <Button
-        android:id="@+id/memory_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="8dp"
-        android:drawableStart="@drawable/memory_time_white"
-        android:textSize="10sp"
-        android:layout_below="@id/memory_details"
-        tools:ignore="SmallSp" />
-
-    <Button
         android:id="@+id/memory_selectphotos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,7 +85,7 @@
         android:dropDownWidth="match_parent"
         android:padding="2dp"
         android:spinnerMode="dropdown"
-        android:layout_below="@id/memory_time"/>
+        android:layout_below="@id/memory_details"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/photoGridView"

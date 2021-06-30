@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -66,11 +67,16 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
     }
     public void getAndSetNewEvent(View view, Activity activity,Memory memory) {
 
-        AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(mContext,new changeTheme(mContext).setDialogTheme());
         inputEventDialog.setTitle(R.string.new_custom_event);
+        LinearLayout layout = new LinearLayout(mContext);
+        layout.setOrientation(LinearLayout.VERTICAL);
         final EditText input = new EditText(mContext);
+        input.setHint(R.string.new_custom_event_hint);
         input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
-        inputEventDialog.setView(input);
+        layout.addView(input);
+        layout.setPadding(35,35,35,35);
+        inputEventDialog.setView(layout);
 
         inputEventDialog.setPositiveButton(R.string.create, (dialog, whichButton) -> {
 
@@ -86,16 +92,8 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
     }
     public void askDiscardEvent(View view, Activity activity,int finalI){
 
-        String themeValues = mPreferences.getString("GlobalTheme", "Dark");
-        AlertDialog.Builder discardMemoryDialogBox;
-        if(themeValues.equals("Light"))
-            discardMemoryDialogBox = new AlertDialog.Builder(mContext, R.style.LightDialog)
-                    .setIcon(R.drawable.delete_black);
-        else
-            discardMemoryDialogBox = new AlertDialog.Builder(mContext, R.style.DarkDialog)
-                    .setIcon(R.drawable.delete_purple);
-
-        discardMemoryDialogBox.setTitle(stringResource(R.string.discard_event))
+        AlertDialog.Builder discardMemoryDialogBox = new AlertDialog.Builder(mContext, new changeTheme(mContext).setDialogTheme());
+                discardMemoryDialogBox.setTitle(stringResource(R.string.discard_event))
                 .setMessage(stringResource(R.string.discard_event_confirm))
                 .setPositiveButton(stringResource(R.string.discard), (dialog, whichButton) -> {
                     removeFromEvents(finalI);
@@ -103,8 +101,7 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
                     dialog.dismiss();
                 })
                 .setNegativeButton(stringResource(R.string.cancel), (dialog, which) -> dialog.dismiss())
-                .create();
-        discardMemoryDialogBox.show();
+                .create().show();
     }
     public void refreshSnackbar(View view, Activity activity, Memory memory){
         Snackbar.make(view,stringResource(R.string.refreshPage),Snackbar.LENGTH_SHORT)

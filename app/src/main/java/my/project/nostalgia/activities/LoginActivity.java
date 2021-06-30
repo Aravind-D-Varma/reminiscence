@@ -41,11 +41,11 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTheme(R.style.SplashTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.introduction_login);
 
         mAuth = FirebaseAuth.getInstance();
-
         mEmail = findViewById(R.id.login_email);
         mPassword = findViewById(R.id.login_password);
         mName = findViewById(R.id.login_name);
@@ -53,10 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         Button forgot = findViewById(R.id.login_forgot);
         Button login = findViewById(R.id.login_button);
         mProgressDialog = new ProgressDialog(this);
-        register.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
-            finish();
-        });
+        register.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this,RegisterActivity.class)));
 
         login.setOnClickListener(v -> Login());
         forgot.setOnClickListener(v -> ForgotPassword());
