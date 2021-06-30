@@ -245,13 +245,16 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
                 mode.finish();
                 return true;
             }
-            else if (item.getItemId() == android.R.id.home)
+            else if (item.getItemId() == android.R.id.home) {
+                mLongClickPressed = false;
                 mode.finish();
+            }
             return false;
         }
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             updateList(MemoryLab.get(mContext).getMemories());
+            mLongClickPressed = false;
             aM = null;
         }
     }
