@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +28,7 @@ import java.util.List;
 
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.MemoryPagerActivity;
+import my.project.nostalgia.fragments.MemoryListFragment;
 import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.supplementary.MediaAndURI;
@@ -39,6 +41,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
     private Context mContext;
     private List<Memory> selectedMemories = new LinkedList<>();
     private boolean mLongClickPressed = false;
+    private ActionMode aM;
 
     public MemoryRVAdapter(Context context, Activity activity, List<Memory> Memorys) {
         mContext = context;
@@ -56,9 +59,10 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
     @Override
     public void onBindViewHolder(@NonNull MemoryHolder holder, int position) {
         Memory Memory = mMemories.get(position);
-        mLongClickPressed = holder.longClickPressed;
         CheckBox checkbox = holder.mCheckBox;
-        ActionMode aM;
+        checkbox.setVisibility(View.GONE);
+        checkbox.setChecked(false);
+        selectedMemories.remove(Memory);
         setTitleAndDetail(holder, Memory);
         holder.mShare.setOnClickListener(v -> {
             shareMemory(Memory);
@@ -68,25 +72,24 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
             updateList(MemoryLab.get(mActivity).getMemories());
         });
         setImagesAndText(holder, Memory);
-        /*holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 mLongClickPressed = true;
                 checkbox.setVisibility(View.VISIBLE);
                 checkbox.setChecked(true);
                 selectedMemories.add(Memory);
-                if (aM == null)
+                if (aM == null) {
                     aM = mActivity.startActionMode(new ActionModeCallback());
-
-                if (selectedMemories.size() == 0) {
-                    aM.finish();
-                } else {
-                    aM.setTitle(selectedMemories.size());
+                    aM.setTitle(String.valueOf(selectedMemories.size()));
+                }
+                else {
+                    aM.setTitle(String.valueOf(selectedMemories.size()));
                     aM.invalidate();
                 }
-                return false;
+                return true;
             }
-        });*/
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,12 +106,12 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
                         checkbox.setChecked(true);
                         selectedMemories.add(Memory);
                     }
+                    if(aM!=null)
+                        aM.setTitle(String.valueOf(selectedMemories.size()));
                 }
             }
         });
-
     }
-
     private void setImagesAndText(@NonNull MemoryHolder holder, Memory memory) {
         MediaAndURI mMediaAndURI = new MediaAndURI(mContext);
         holder.mExtraText.setText("");
@@ -171,7 +174,6 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         private TextView mTitleText, mDetailText, mExtraText;
         private Button mShare, mDelete;
         private CheckBox mCheckBox;
-        private boolean longClickPressed = false;
         private ImageView[] ImageViews = new ImageView[4];
 
         public MemoryHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -241,14 +243,21 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
                 for(Memory memory:selectedMemories)
                     memoryLab.deleteMemory(memory);
                 mLongClickPressed = false;
+                int MemoryCount = memoryLab.getMemories().size();
+                String subtitle = mContext.getResources().getQuantityString(R.plurals.subtitle_plural
+                        , MemoryCount, MemoryCount);
+                ((AppCompatActivity) mActivity).getSupportActionBar().setSubtitle(subtitle);
                 mode.finish();
                 return true;
             }
+            else if (item.getItemId() == android.R.id.home)
+                mode.finish();
             return false;
         }
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             updateList(MemoryLab.get(mContext).getMemories());
+            aM = null;
         }
     }
 }

@@ -74,8 +74,10 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
             Glide.with(mContext).load(mMediaAndURI.getMediaUriOf(mediaPaths[position]))
                     .into(imageView);
         } catch (NullPointerException ignored){}
-        CheckBox checkbox = ((MyImageViewHolder) holder).mCheckbox;
+        CheckBox checkbox = ((MyImageViewHolder) holder).mMediaCheckbox;
         checkbox.setVisibility(View.GONE);
+        checkbox.setChecked(false);
+        selectedMediaPaths.remove(mediaPaths[position]);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +108,6 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
                 return true;
             }
         });
-
     }
     @Override
     public int getItemCount() {
@@ -115,11 +116,11 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
 
     private static class MyImageViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
-        CheckBox mCheckbox;
+        CheckBox mMediaCheckbox;
         public MyImageViewHolder(View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.memory_photo);
-            mCheckbox = itemView.findViewById(R.id.memory_photo_checkbox);
+            mMediaCheckbox = itemView.findViewById(R.id.memory_photo_checkbox);
         }
     }
     private static class MediaDiffUtilCallback extends DiffUtil.Callback {

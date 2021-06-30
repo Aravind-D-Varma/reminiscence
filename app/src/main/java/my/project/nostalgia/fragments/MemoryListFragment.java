@@ -60,7 +60,6 @@ public class MemoryListFragment extends Fragment {
     private MemoryRVAdapter mAdapter;
     private Callbacks mCallbacks;
     private boolean firstTime = true;
-    private Menu mMenu = null;
 
     private static final String[] DECLARED_GETPHOTO_PERMISSIONS = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
     private static final int MY_STORAGE_CODE = 102;
@@ -122,15 +121,6 @@ public class MemoryListFragment extends Fragment {
             }
         });
     }
-
-    @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        mMenu = menu;
-        super.onPrepareOptionsMenu(menu);
-    }
-    public Menu getMenu(){return mMenu;}
-
-
     private String stringResource(int resourceID) {
         return getResources().getString(resourceID);
     }
@@ -290,7 +280,7 @@ public class MemoryListFragment extends Fragment {
     /**
      * Shows how many memories are there on the ActionBar
      */
-    private void updateSubtitle(){
+    public void updateSubtitle(){
         MemoryLab memoryLab = MemoryLab.get(getActivity());
         int MemoryCount = memoryLab.getMemories().size();
         String subtitle = getResources().getQuantityString(R.plurals.subtitle_plural, MemoryCount, MemoryCount);
