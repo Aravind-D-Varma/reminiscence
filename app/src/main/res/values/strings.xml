@@ -95,5 +95,6 @@
     <string name="new_custom_event_hint">New Event:</string>
     <string name="cardview_extratext">+ %d</string>
     <string name="save_profile">Save to profile</string>
+    <string name="signout">Sign Out</string>
 
 </resources>

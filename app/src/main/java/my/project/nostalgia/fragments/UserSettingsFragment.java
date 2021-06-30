@@ -1,5 +1,6 @@
 package my.project.nostalgia.fragments;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
@@ -179,7 +180,13 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                 });
                 dialog.dismiss();
             });
-            confirmSignOut.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel()).create();
+            confirmSignOut.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
+                    .setNeutralButton(R.string.signout, (dialog, which) -> {
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        getActivity().finish();
+                        dialog.dismiss();
+                    }).create();
             confirmSignOut.show();
 
             return false;

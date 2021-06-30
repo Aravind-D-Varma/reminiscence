@@ -59,7 +59,7 @@ public class MemoryListFragment extends Fragment {
     private Memory mNewMemory;
     private MemoryRVAdapter mAdapter;
     private Callbacks mCallbacks;
-    private boolean firstTime = true;
+    private boolean isFirstTime = false;
 
     private static final String[] DECLARED_GETPHOTO_PERMISSIONS = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
     private static final int MY_STORAGE_CODE = 102;
@@ -137,7 +137,7 @@ public class MemoryListFragment extends Fragment {
         List<Memory> memories = MemoryLab.get(getActivity()).getMemories();
         View view;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        boolean isFirstTime = prefs.getBoolean(FIRST_TIME,true);
+        isFirstTime = prefs.getBoolean(FIRST_TIME,true);
 
         if (isFirstTime) {
             view = inflater.inflate(R.layout.fragment_memory_list, container, false);
@@ -150,18 +150,20 @@ public class MemoryListFragment extends Fragment {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     if (documentSnapshot.exists()) {
                         if(!hasMediaPermission()) {
-                            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme());
+                            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext()
+                                    ,R.style.Theme_AppCompat_Light_Dialog_Alert);
                             alertBuilder.setCancelable(true);
                             alertBuilder.setTitle("Storage permission necessary");
                             alertBuilder.setMessage("In order to load your images and videos of previous memories" +
                                     ", please grant storage permissions");
-                            alertBuilder.setPositiveButton(android.R.string.yes, (dialog, which) -> requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE));
+                            alertBuilder.setPositiveButton(android.R.string.yes, (dialog, which) ->
+                                    requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE));
                             AlertDialog alert = alertBuilder.create();
                             alert.show();
                         }
-
                         prefs.edit().putBoolean(FIRST_TIME,false).apply();
                         MemoryLab memoryLab = MemoryLab.get(getActivity());
+                        int number = memoryLab.getMemories().size();
                         Map<String,Object> dataReceived = documentSnapshot.getData();
                         List<HashMap> hashMaps = (List<HashMap>) dataReceived.get(MEMORIES_KEY);
                         for(HashMap hashMap:hashMaps){
@@ -177,6 +179,7 @@ public class MemoryListFragment extends Fragment {
                             catch (NullPointerException e){memory.setEvent("");}
                             memoryLab.addMemory(memory);
                         }
+
                     }
                 }
             });
@@ -236,7 +239,7 @@ public class MemoryListFragment extends Fragment {
         MemoryLab memoryLab = MemoryLab.get(getActivity());
         List<Memory> Memorys = memoryLab.getMemories();
         if(mAdapter == null && Memorys.size()!=0) {
-            firstTime = false;
+            isFirstTime = false;
             mAdapter = new MemoryRVAdapter(getContext(),getActivity(),Memorys);
             mRecyclerView.setAdapter(mAdapter);
         }
@@ -250,14 +253,15 @@ public class MemoryListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(MemoryLab.get(getActivity()).getMemories().size()!=0 && firstTime) {
+        if(MemoryLab.get(getActivity()).getMemories().size()!=0 && isFirstTime) {
             MemoryListFragment fragment = new MemoryListFragment();
             getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
             startActivity(new Intent(getContext(), MemoryListActivity.class));
             getActivity().finish();
             return;
         }
-        updateUI();
+        if(!isFirstTime)
+            updateUI();
     }
     /**
      * Shows how many memories are there on the ActionBar
