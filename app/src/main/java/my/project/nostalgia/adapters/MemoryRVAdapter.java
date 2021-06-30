@@ -67,10 +67,6 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         holder.mShare.setOnClickListener(v -> {
             shareMemory(Memory);
         });
-        holder.mDelete.setOnClickListener(v -> {
-            MemoryLab.get(mActivity).deleteMemory(Memory);
-            updateList(MemoryLab.get(mActivity).getMemories());
-        });
         setImagesAndText(holder, Memory);
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -172,7 +168,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
     public class MemoryHolder extends RecyclerView.ViewHolder {
 
         private TextView mTitleText, mDetailText, mExtraText;
-        private Button mShare, mDelete;
+        private Button mShare;
         private CheckBox mCheckBox;
         private ImageView[] ImageViews = new ImageView[4];
 
@@ -183,7 +179,6 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
             mTitleText = itemView.findViewById(R.id.cardview_memory_title);
             mDetailText = itemView.findViewById(R.id.cardview_memory_detail);
             mShare = itemView.findViewById(R.id.cardview_share);
-            mDelete = itemView.findViewById(R.id.cardview_delete);
             ImageViews[0] = itemView.findViewById(R.id.cardview_image);
             ImageViews[1] = itemView.findViewById(R.id.cardview_image2);
             ImageViews[2] = itemView.findViewById(R.id.cardview_image3);

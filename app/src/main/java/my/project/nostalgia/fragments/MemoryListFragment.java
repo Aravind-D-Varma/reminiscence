@@ -221,24 +221,6 @@ public class MemoryListFragment extends Fragment {
             updateUI();
             mCallbacks.onMemorySelected(mNewMemory);
         });
-        FloatingActionButton upload = view.findViewById(R.id.memory_upload);
-        upload.setOnClickListener(v -> {
-            String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
-                    .document(userid);
-            ProgressDialog mProgressDialog = new ProgressDialog(getContext());
-            mProgressDialog.setMessage("Uploading...");
-            mProgressDialog.show();
-            Map<String,List<Memory>> dataToSave = new HashMap<>();
-            dataToSave.put(MEMORIES_KEY,MemoryLab.get(getActivity()).getMemories());
-            userDocument.set(dataToSave).addOnSuccessListener(aVoid -> {
-                Toast.makeText(getContext(), "Upload Successful", Toast.LENGTH_SHORT).show();
-                mProgressDialog.dismiss();
-            }).addOnFailureListener(e -> {
-                Toast.makeText(getContext(), "Upload Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                mProgressDialog.dismiss();
-            });
-        });
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -287,10 +269,6 @@ public class MemoryListFragment extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.getSupportActionBar().setSubtitle(subtitle);
     }
-    /** Deletes null memories to avoid crashes
-     * Deletes all those memories whose title is null and does not contain any photos.
-     * Then, hooks up the adapter and RecyclerView.*/
-
     public void eventFilter(String event) {
         List<Memory> searchMemorysList = new ArrayList<>();
 
@@ -307,7 +285,6 @@ public class MemoryListFragment extends Fragment {
             Toast.makeText(getContext(), stringResource(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
         }
     }
-
     public void searchMemoriesByTitle(String text) {
 
         List<Memory> searchMemorysList = new ArrayList<>();

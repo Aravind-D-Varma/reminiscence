@@ -64,15 +64,11 @@ public class changeTheme {
             v.setBackground(ContextCompat.getDrawable(mContext, R.drawable.layout_border_light));
             final Button share = (Button) v.findViewById(R.id.cardview_share);
             share.setTextColor(mContext.getResources().getColor(R.color.black));
-
-            final Button delete = (Button) v.findViewById(R.id.cardview_delete);
-            delete.setTextColor(mContext.getResources().getColor(R.color.black));
-
+            
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
                 ColorStateList csl = ColorStateList.valueOf(
                         mContext.getResources().getColor(R.color.black,mContext.getTheme()));
                 share.setCompoundDrawableTintList(csl);
-                delete.setCompoundDrawableTintList(csl);
             }
 
         }
