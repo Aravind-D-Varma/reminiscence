@@ -28,7 +28,6 @@ import java.util.List;
 
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.MemoryPagerActivity;
-import my.project.nostalgia.fragments.MemoryListFragment;
 import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.supplementary.MediaAndURI;
@@ -64,47 +63,39 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         checkbox.setChecked(false);
         selectedMemories.remove(Memory);
         setTitleAndDetail(holder, Memory);
-        holder.mShare.setOnClickListener(v -> {
-            shareMemory(Memory);
-        });
+        holder.mShare.setOnClickListener(v -> shareMemory(Memory));
         setImagesAndText(holder, Memory);
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                mLongClickPressed = true;
-                checkbox.setVisibility(View.VISIBLE);
-                checkbox.setChecked(true);
-                selectedMemories.add(Memory);
-                if (aM == null) {
-                    aM = mActivity.startActionMode(new ActionModeCallback());
-                    aM.setTitle(String.valueOf(selectedMemories.size()));
-                }
-                else {
-                    aM.setTitle(String.valueOf(selectedMemories.size()));
-                    aM.invalidate();
-                }
-                return true;
+        holder.itemView.setOnLongClickListener(v -> {
+            mLongClickPressed = true;
+            checkbox.setVisibility(View.VISIBLE);
+            checkbox.setChecked(true);
+            selectedMemories.add(Memory);
+            if (aM == null) {
+                aM = mActivity.startActionMode(new ActionModeCallback());
+                aM.setTitle(String.valueOf(selectedMemories.size()));
             }
+            else {
+                aM.setTitle(String.valueOf(selectedMemories.size()));
+                aM.invalidate();
+            }
+            return true;
         });
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mLongClickPressed) {
-                    Intent intent = MemoryPagerActivity.newIntent(mContext, Memory.getId());
-                    mContext.startActivity(intent);
+        holder.itemView.setOnClickListener(v -> {
+            if (!mLongClickPressed) {
+                Intent intent = MemoryPagerActivity.newIntent(mContext, Memory.getId());
+                mContext.startActivity(intent);
+            } else {
+                if (checkbox.isChecked()) {
+                    checkbox.setVisibility(View.GONE);
+                    checkbox.setChecked(false);
+                    selectedMemories.remove(Memory);
                 } else {
-                    if (checkbox.isChecked()) {
-                        checkbox.setVisibility(View.GONE);
-                        checkbox.setChecked(false);
-                        selectedMemories.remove(Memory);
-                    } else {
-                        checkbox.setVisibility(View.VISIBLE);
-                        checkbox.setChecked(true);
-                        selectedMemories.add(Memory);
-                    }
-                    if(aM!=null)
-                        aM.setTitle(String.valueOf(selectedMemories.size()));
+                    checkbox.setVisibility(View.VISIBLE);
+                    checkbox.setChecked(true);
+                    selectedMemories.add(Memory);
                 }
+                if(aM!=null)
+                    aM.setTitle(String.valueOf(selectedMemories.size()));
             }
         });
     }

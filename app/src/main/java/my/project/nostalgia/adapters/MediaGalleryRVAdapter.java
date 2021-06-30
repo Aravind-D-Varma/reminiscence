@@ -78,35 +78,29 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
         checkbox.setVisibility(View.GONE);
         checkbox.setChecked(false);
         selectedMediaPaths.remove(mediaPaths[position]);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!longClickPressed)
-                    displayMediaZoomedIn(position);
-                else{
-                    if (checkbox.isChecked()) {
-                        checkbox.setVisibility(View.GONE);
-                        checkbox.setChecked(false);
-                        selectedMediaPaths.remove(mediaPaths[position]);
-                    }
-                    else {
-                        checkbox.setVisibility(View.VISIBLE);
-                        checkbox.setChecked(true);
-                        selectedMediaPaths.add(mediaPaths[position]);
-                    }
+        imageView.setOnClickListener(v -> {
+            if(!longClickPressed)
+                displayMediaZoomedIn(position);
+            else{
+                if (checkbox.isChecked()) {
+                    checkbox.setVisibility(View.GONE);
+                    checkbox.setChecked(false);
+                    selectedMediaPaths.remove(mediaPaths[position]);
+                }
+                else {
+                    checkbox.setVisibility(View.VISIBLE);
+                    checkbox.setChecked(true);
+                    selectedMediaPaths.add(mediaPaths[position]);
                 }
             }
         });
-        imageView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                longClickPressed = true;
-                checkbox.setVisibility(View.VISIBLE);
-                checkbox.setChecked(true);
-                selectedMediaPaths.add(mediaPaths[position]);
-                AskDeleteMedias();
-                return true;
-            }
+        imageView.setOnLongClickListener(v -> {
+            longClickPressed = true;
+            checkbox.setVisibility(View.VISIBLE);
+            checkbox.setChecked(true);
+            selectedMediaPaths.add(mediaPaths[position]);
+            AskDeleteMedias();
+            return true;
         });
     }
     @Override

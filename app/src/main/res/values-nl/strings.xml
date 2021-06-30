@@ -68,7 +68,6 @@
     <string name="language">Taal</string>
     <string name="language_summary">App-taal wijzigen</string>
     <string name="emptyfilter">Geen geheugen gevonden!</string>
-    <string name="general">Algemeen</string>
     <string name="invite_someone">Bekijk dit eens! U kunt uw favoriete herinneringen op één plek opslaan en delen!
         Ik raad het je aan!</string>
     <string name="refreshPage">Klik op Vernieuwen om wijzigingen te zien</string>
@@ -96,4 +95,6 @@
     <string name="password_hint">Voer je wachtwoord opnieuw in</string>
     <string name="new_custom_event_hint">Nieuw evenement:</string>
     <string name="cardview_extratext">+ %d</string>
+    <string name="save_profile">Opslaan in profiel</string>
+    <string name="signout">Afmelden</string>
 </resources>

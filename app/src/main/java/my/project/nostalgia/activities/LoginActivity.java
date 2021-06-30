@@ -53,9 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         Button forgot = findViewById(R.id.login_forgot);
         Button login = findViewById(R.id.login_button);
         mProgressDialog = new ProgressDialog(this);
-        register.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
-        });
+        register.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this,RegisterActivity.class)));
 
         login.setOnClickListener(v -> Login());
         forgot.setOnClickListener(v -> ForgotPassword());

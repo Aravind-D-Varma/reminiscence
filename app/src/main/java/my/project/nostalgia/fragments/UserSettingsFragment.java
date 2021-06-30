@@ -1,6 +1,5 @@
 package my.project.nostalgia.fragments;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
@@ -215,10 +214,8 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             layout.addView(name);
             layout.setPadding(35,35,35,35);
             changeName.setView(layout);
-            changeName.setPositiveButton(stringResource(R.string.delete_account_confirm), (dialog, whichButton) -> {
-                PreferenceManager.getDefaultSharedPreferences(getContext())
-                        .edit().putString(SEND_USERNAME,name.getText().toString()).apply();
-            }).setNegativeButton(stringResource(R.string.cancel), (dialog, which) -> dialog.dismiss()).create();
+            changeName.setPositiveButton(stringResource(R.string.delete_account_confirm), (dialog, whichButton) -> PreferenceManager.getDefaultSharedPreferences(getContext())
+                    .edit().putString(SEND_USERNAME,name.getText().toString()).apply()).setNegativeButton(stringResource(R.string.cancel), (dialog, which) -> dialog.dismiss()).create();
             changeName.show();
             return false;
         });
