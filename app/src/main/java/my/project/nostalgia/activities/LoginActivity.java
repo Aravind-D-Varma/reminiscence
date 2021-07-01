@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void ForgotPassword() {
-        String email = mEmail.getText().toString();
+        final String email = mEmail.getText().toString();
 
         if (TextUtils.isEmpty(email)) {
             mEmail.setError("Enter your email");return;}
@@ -84,8 +84,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     private void Login() {
-        String email = mEmail.getText().toString();
-        String password = mPassword.getText().toString();
+        final String email = mEmail.getText().toString();
+        final String password = mPassword.getText().toString();
 
         if(TextUtils.isEmpty(email)){
             mEmail.setError("Enter your email");return;}

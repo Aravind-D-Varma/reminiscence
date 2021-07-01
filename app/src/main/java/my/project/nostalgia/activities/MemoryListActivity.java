@@ -139,14 +139,16 @@ public class MemoryListActivity extends SingleFragmentActivity
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext())).getIndividualEvents();
 
         if(item.getItemId() == R.id.all ){
-            return filterEvent(getString(R.string.all));
+            filterEvent(getString(R.string.all));
+            return true;
         }
         else if (item.getItemId() == R.id.user_settings )
             goToSettings();
         else if (item.getItemId() == R.id.userprofile_save)
             saveDataToProfile();
         else {
-            return filterEvent(currentEvents[item.getItemId()]);
+            filterEvent(currentEvents[item.getItemId()]);
+            return true;
         }
         return true;
     }
@@ -169,10 +171,9 @@ public class MemoryListActivity extends SingleFragmentActivity
         });
     }
 
-    private boolean filterEvent(String currentEvent) {
+    private void filterEvent(String currentEvent) {
         MLfragment.eventFilter(currentEvent);
         onBackPressed();
-        return true;
     }
 
     /**

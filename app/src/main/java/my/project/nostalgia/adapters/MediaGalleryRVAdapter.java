@@ -109,8 +109,8 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
     }
 
     private static class MyImageViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
-        CheckBox mMediaCheckbox;
+        final ImageView image;
+        final CheckBox mMediaCheckbox;
         public MyImageViewHolder(View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.memory_photo);

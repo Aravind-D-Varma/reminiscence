@@ -3,7 +3,6 @@ import android.Manifest;
 import android.app.Activity;
 import androidx.appcompat.app.AlertDialog;
 
-import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -50,11 +49,8 @@ import my.project.nostalgia.supplementary.memoryEvents;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,8 +75,6 @@ public class MemoryFragment extends Fragment {
     private FloatingActionButton mPhotoFAB;
     private Callbacks mCallbacks;
 
-    private StorageReference mStorageReference;
-    private FirebaseAuth mFirebaseAuth;
     private boolean discardPhoto = false;
 
     public static final String DIALOG_DATE = "DialogDate";
