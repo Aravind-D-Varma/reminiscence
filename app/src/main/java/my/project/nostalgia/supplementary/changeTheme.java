@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -61,19 +62,27 @@ public class changeTheme {
 
     public void setLayoutTheme(View v){
         if (mTheme.equals("Light")) {
-            v.setBackground(ContextCompat.getDrawable(mContext, R.drawable.layout_border_light));
-            final Button share = (Button) v.findViewById(R.id.cardview_share);
-            share.setTextColor(mContext.getResources().getColor(R.color.black));
-            
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
-                ColorStateList csl = ColorStateList.valueOf(
-                        mContext.getResources().getColor(R.color.black,mContext.getTheme()));
-                share.setCompoundDrawableTintList(csl);
+            if(v instanceof Spinner) {
+                ((Spinner)v).setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_border_light));
+                ((TextView)((Spinner) v).getChildAt(0)).setTextColor(mContext.getResources()
+                        .getColor(R.color.white));
             }
+            else {
+                v.setBackground(ContextCompat.getDrawable(mContext, R.drawable.layout_border_light));
 
+                final Button share = (Button) v.findViewById(R.id.cardview_share);
+                share.setTextColor(mContext.getResources().getColor(R.color.black));
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    ColorStateList csl = ColorStateList.valueOf(
+                            mContext.getResources().getColor(R.color.black, mContext.getTheme()));
+                    share.setCompoundDrawableTintList(csl);
+                }
+            }
         }
-        else if (mTheme.equals("Dark"))
-            v.setBackground(ContextCompat.getDrawable(mContext,R.drawable.layout_border));
+        else if (mTheme.equals("Dark")) {
+            if(!(v instanceof Spinner))
+                v.setBackground(ContextCompat.getDrawable(mContext, R.drawable.layout_border));
+        }
     }
     public int setDialogTheme() {
         if (mTheme.equals("Dark"))

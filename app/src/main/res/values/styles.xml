@@ -74,10 +74,6 @@
         <item name="android:backgroundTint">@color/grey</item>
         <item name="android:textColor">@color/black</item>
     </style>
-    <style name="lightSpinner" parent="Widget.AppCompat.Spinner">
-        <item name="android:background">@drawable/button_border_light</item>
-        <item name="android:textColorHint">@color/white</item>
-    </style>
     <style name="lightTextView" parent="android:Widget.TextView">
         <item name="android:textColor">@color/black</item>
     </style>

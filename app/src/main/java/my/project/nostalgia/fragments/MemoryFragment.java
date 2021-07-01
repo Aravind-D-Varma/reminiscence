@@ -262,6 +262,7 @@ public class MemoryFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        new changeTheme(getContext()).setLayoutTheme(spinner);
         mPhotoButton = (Button)v.findViewById(R.id.memory_selectphotos);
         try {
             if (mMemory.getMediaPaths().length() != 0)
@@ -290,43 +291,7 @@ public class MemoryFragment extends Fragment {
         behaviourBeforeAddingMedia();
         Intent getmoreImage = new MediaAndURI().getFromMediaIntent();
         mPhotoFAB.setOnClickListener(v16 -> startActivityForResult(Intent.createChooser(getmoreImage, "Select Image"), REQUEST_GALLERY_ADDITIONALPHOTO));
-        FloatingActionButton uploadFAB = (FloatingActionButton) v.findViewById(R.id.upload_fab);
-        uploadFAB.setOnClickListener(v17 -> {
-            ProgressDialog mProgressDialog = new ProgressDialog(getActivity());
-            mProgressDialog.setMessage("Uploading...");
-            mProgressDialog.show();
-            mFirebaseAuth = FirebaseAuth.getInstance();
-            FirebaseUser user = mFirebaseAuth.getCurrentUser();
-            String userID = user.getUid();
-            mStorageReference = FirebaseStorage.getInstance().getReference();
-            String s = mMemory.getId().toString();
 
-            for(String path:individualFilePaths(mMemory)){
-                if(path!=null) {
-                    Uri uri = Uri.fromFile(new File(path));
-
-                    char[] arrayOfFilename = path.toCharArray();
-                    for(int i = arrayOfFilename.length-1; i>0; i--){
-                        if(arrayOfFilename[i] == '/'){
-                            path = path.substring(i+1);
-                            break;
-                        }
-                    }
-                    StorageReference storageReference = mStorageReference.child(userID+"/"+ s +"/"+path);
-                    storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> {
-                        try {
-                            Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_SHORT).show();
-                            mProgressDialog.dismiss();
-                        }catch (NullPointerException ignored){}
-                    }).addOnFailureListener(e -> {
-                        try{
-                            Toast.makeText(getContext(),"Upload failed",Toast.LENGTH_SHORT).show();
-                            mProgressDialog.dismiss();}catch (NullPointerException ignored){}
-                    });
-                }
-            }
-
-        });
         return v;
     }
     private void behaviourBeforeAddingMedia() {

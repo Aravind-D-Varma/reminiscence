@@ -12,8 +12,6 @@
 
         <item name = "actionBarStyle">@style/myActionbar</item>
 
-        <item name="preferenceTheme">@style/darkPreferenceStyle</item>
-
         <item name="buttonStyle">@style/darkButtonsStyle</item>
         <item name = "editTextStyle">@style/darkEditText</item>
         <item name="spinnerStyle">@style/darkSpinner</item>
@@ -37,7 +35,6 @@
 
         <item name="buttonStyle">@style/lightButtonsStyle</item>
         <item name = "editTextStyle">@style/lightEditText</item>
-        <item name="spinnerStyle">@style/lightSpinner</item>
         <item name="android:textViewStyle">@style/lightTextView</item>
         <item name="navigationIconTint">@color/black</item>
     </style>
