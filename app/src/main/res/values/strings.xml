@@ -95,5 +95,11 @@
     <string name="cardview_extratext">+ %d</string>
     <string name="save_profile">Save to profile</string>
     <string name="signout">Sign Out</string>
+    <string name="note_developer">Note from Developer</string>
+    <string name="minute_please">A minute please!</string>
+    <string name="lengthy_note_developer">"Keeping privacy in mind, this app does not store your photos/videos anywhere but only shows it to you from your phone/tablet. This means you will not need an internet connection to use this app but most importantly, your data is safe with you and is entirely invisible to anyone else, including Android(Google).\n
+        However, this comes with a downside that if you move/delete your media, you cannot access them from this app as well. Apart from this, have a happy time here!"</string>
+    <string name="storage_permission_necessary">Storage permission necessary</string>
+    <string name="please_grant_storage">In order to load your images and videos of previous memories, please grant storage permissions</string>
 
 </resources>

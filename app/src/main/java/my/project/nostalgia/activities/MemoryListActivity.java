@@ -1,5 +1,7 @@
 package my.project.nostalgia.activities;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -146,11 +148,24 @@ public class MemoryListActivity extends SingleFragmentActivity
             goToSettings();
         else if (item.getItemId() == R.id.userprofile_save)
             saveDataToProfile();
+        else if (item.getItemId() == R.id.note_developer)
+            showNote();
         else {
             filterEvent(currentEvents[item.getItemId()]);
             return true;
         }
         return true;
+    }
+
+    private void showNote() {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this
+                ,new changeTheme(this).setDialogTheme());
+        alertBuilder.setCancelable(true);
+        alertBuilder.setTitle(R.string.minute_please);
+        alertBuilder.setMessage(R.string.lengthy_note_developer);
+        alertBuilder.setPositiveButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
+        AlertDialog alert = alertBuilder.create();
+        alert.show();
     }
 
     private void saveDataToProfile() {

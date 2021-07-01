@@ -86,7 +86,7 @@ public class changeTheme {
     }
     public int setDialogTheme() {
         if (mTheme.equals("Dark"))
-            return R.style.Theme_AppCompat_DayNight_Dialog_Alert;
+            return R.style.darkalertDialog;
         else
             return R.style.Theme_AppCompat_Light_Dialog_Alert;
     }

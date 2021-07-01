@@ -30,6 +30,7 @@ import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.MemoryListActivity;
+import my.project.nostalgia.supplementary.changeTheme;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -148,11 +149,10 @@ public class MemoryListFragment extends Fragment {
                     if (documentSnapshot.exists()) {
                         if(!hasMediaPermission()) {
                             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext()
-                                    ,R.style.Theme_AppCompat_Light_Dialog_Alert);
+                                    ,new changeTheme(getContext()).setDialogTheme());
                             alertBuilder.setCancelable(true);
-                            alertBuilder.setTitle("Storage permission necessary");
-                            alertBuilder.setMessage("In order to load your images and videos of previous memories" +
-                                    ", please grant storage permissions");
+                            alertBuilder.setTitle(R.string.storage_permission_necessary);
+                            alertBuilder.setMessage(R.string.please_grant_storage);
                             alertBuilder.setPositiveButton(android.R.string.yes, (dialog, which) ->
                                     requestPermissions(DECLARED_GETPHOTO_PERMISSIONS, MY_STORAGE_CODE));
                             AlertDialog alert = alertBuilder.create();
@@ -242,6 +242,7 @@ public class MemoryListFragment extends Fragment {
         }
         else {
             if (Memorys.size() != 0) {
+                mRecyclerView.setItemAnimator(null);
                 mAdapter.updateList(Memorys);
             }
         }
