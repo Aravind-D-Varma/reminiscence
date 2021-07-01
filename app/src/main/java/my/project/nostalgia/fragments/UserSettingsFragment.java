@@ -100,99 +100,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         Preference deleteAccount = deleteAccountPref(mScreen);
         accounts.addPreference(deleteAccount);
     }
-
-    private Preference deleteAccountPref(PreferenceScreen mScreen) {
-        //TODO delete user files in storage and database
-        Preference pref = new Preference(mScreen.getContext());
-        pref.setTitle(stringResource(R.string.delete_account));
-        pref.setSummary(stringResource(R.string.delete_account_summary));
-        pref.setOnPreferenceClickListener(preference -> {
-            AlertDialog.Builder deleted_account = new AlertDialog.Builder(
-                    getContext(),new changeTheme(getContext()).setDialogTheme());
-            LinearLayout layout = new LinearLayout(getContext());
-            layout.setOrientation(LinearLayout.VERTICAL);
-            final TextView confirmation = new TextView(getContext());
-            confirmation.setText(stringResource(R.string.delete_account_confirm));
-            confirmation.setTypeface(null, Typeface.BOLD);
-            confirmation.setTextAppearance(getContext(), android.R.style.TextAppearance_Large);
-            layout.addView(confirmation);
-            final EditText email = new EditText(getContext());
-            email.setHint(R.string.email_address_hint);
-            email.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
-            layout.addView(email);
-            final EditText password = new EditText(getContext());
-            password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD| InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            password.setHint(R.string.password_hint);
-            layout.addView(password);
-            layout.setPadding(35,35,35,35);
-            deleted_account.setView(layout);
-            deleted_account.setPositiveButton(stringResource(R.string.delete), (dialog, whichButton) -> {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                AuthCredential credential = EmailAuthProvider
-                        .getCredential(email.getText().toString(), password.getText().toString());
-                user.reauthenticate(credential).addOnSuccessListener(aVoid -> {
-                    user.delete();
-                    //TODO make a toast on successful deletion
-                    startActivity(new Intent(getActivity(), LoginActivity.class));
-                    getActivity().finish();
-                    dialog.dismiss();
-                });
-            }).setNegativeButton(stringResource(R.string.cancel), (dialog, which) -> dialog.dismiss()).create();
-            deleted_account.show();
-            return false;
-        });
-        return pref;
-    }
-
-    private String stringResource(int p) {
-        return getResources().getString(p);
-    }
-
-    private Preference signOutPref(PreferenceScreen mScreen) {
-        Preference pref = new Preference(mScreen.getContext());
-        pref.setTitle(stringResource(R.string.sign_out));
-        pref.setSummary(stringResource(R.string.sign_out_summary));
-        pref.setOnPreferenceClickListener(preference -> {
-            AlertDialog.Builder confirmSignOut = new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme());
-            confirmSignOut.setTitle(R.string.sign_out);
-            confirmSignOut.setMessage(R.string.sign_out_confirm);
-            final EditText input = new EditText(getContext());
-            input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
-            confirmSignOut.setView(input);
-            confirmSignOut.setPositiveButton(R.string.save_and_confirm, (dialog, whichButton) -> {
-                String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
-                        .document(userid);
-                ProgressDialog mProgressDialog = new ProgressDialog(getContext());
-                mProgressDialog.setMessage("Uploading...");
-                mProgressDialog.show();
-                Map<String,List<Memory>> dataToSave = new HashMap<>();
-                dataToSave.put(MEMORIES_KEY, MemoryLab.get(getActivity()).getMemories());
-                userDocument.set(dataToSave).addOnSuccessListener(aVoid -> {
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(getActivity(), LoginActivity.class));
-                    getActivity().finish();
-                    mProgressDialog.dismiss();
-                }).addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Upload Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    mProgressDialog.dismiss();
-                });
-                dialog.dismiss();
-            });
-            confirmSignOut.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
-                    .setNeutralButton(R.string.signout, (dialog, which) -> {
-                        FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(getActivity(), LoginActivity.class));
-                        getActivity().finish();
-                        dialog.dismiss();
-                    }).create();
-            confirmSignOut.show();
-
-            return false;
-        });
-        return pref;
-    }
-
     private Preference setUserName(PreferenceScreen mScreen) {
         Preference pref = new Preference(mScreen.getContext());
         pref.setKey(SEND_USERNAME);
@@ -220,6 +127,32 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             return false;
         });
         return pref;
+    }
+    private DropDownPreference getDropDownPreference(PreferenceScreen screen) {
+
+        mEvents = new DropDownPreference(screen.getContext());
+        mEvents.setTitle(stringResource(R.string.settings_events));
+        mEvents.setSummary(stringResource(R.string.settings_events_summary));
+        mEvents.setIcon(R.drawable.settings_customevents);
+        updateDropDownEvents();
+        mEvents.setOnPreferenceChangeListener((preference, newValue) -> {
+            int index = mEvents.findIndexOfValue(newValue.toString());
+
+            if(mEvents.getEntries()[index].equals("Add Event")) {
+                getMemoryEventHandling().getAndSetNewEvent(getView(),getActivity(),null);
+            }
+            else{
+                if(calls == 0){
+                    calls = 1;
+                    return false;
+                }
+                else {
+                    getMemoryEventHandling().askDiscardEvent(getView(),getActivity(),index);
+                }
+            }
+            return true;
+        });
+        return mEvents;
     }
     private ListPreference setThemePref(PreferenceScreen mScreen) {
         ListPreference pref = new ListPreference(mScreen.getContext());
@@ -273,15 +206,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         });
         return pref;
     }
-    private void setLanguage(ListPreference languages, String language, String lang) {
-        languages.setValue(language);
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getContext().getResources().
-                updateConfiguration(config, getContext().getResources().getDisplayMetrics());
-    }
+
     private Preference sendFeedbackPref(PreferenceScreen mScreen) {
         Preference pref = new Preference(mScreen.getContext());
         pref.setTitle(stringResource(R.string.settings_feedback));
@@ -326,44 +251,115 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         return pref;
     }
 
-    private DropDownPreference getDropDownPreference(PreferenceScreen screen) {
+    private Preference signOutPref(PreferenceScreen mScreen) {
+        Preference pref = new Preference(mScreen.getContext());
+        pref.setTitle(stringResource(R.string.sign_out));
+        pref.setSummary(stringResource(R.string.sign_out_summary));
+        pref.setIcon(R.drawable.signout);
+        pref.setOnPreferenceClickListener(preference -> {
+            AlertDialog.Builder confirmSignOut = new AlertDialog.Builder(getContext(),new changeTheme(getContext()).setDialogTheme());
+            confirmSignOut.setTitle(R.string.sign_out);
+            confirmSignOut.setMessage(R.string.sign_out_confirm);
+            final EditText input = new EditText(getContext());
+            input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
+            confirmSignOut.setView(input);
+            confirmSignOut.setPositiveButton(R.string.save_and_confirm, (dialog, whichButton) -> {
+                String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DocumentReference userDocument = FirebaseFirestore.getInstance().collection("Users")
+                        .document(userid);
+                ProgressDialog mProgressDialog = new ProgressDialog(getContext());
+                mProgressDialog.setMessage("Uploading...");
+                mProgressDialog.show();
+                Map<String,List<Memory>> dataToSave = new HashMap<>();
+                dataToSave.put(MEMORIES_KEY, MemoryLab.get(getActivity()).getMemories());
+                userDocument.set(dataToSave).addOnSuccessListener(aVoid -> {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().finish();
+                    mProgressDialog.dismiss();
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Upload Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    mProgressDialog.dismiss();
+                });
+                dialog.dismiss();
+            });
+            confirmSignOut.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
+                    .setNeutralButton(R.string.signout, (dialog, which) -> {
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        getActivity().finish();
+                        dialog.dismiss();
+                    }).create();
+            confirmSignOut.show();
 
-        mEvents = new DropDownPreference(screen.getContext());
-        mEvents.setTitle(stringResource(R.string.settings_events));
-        mEvents.setSummary(stringResource(R.string.settings_events_summary));
-        mEvents.setIcon(R.drawable.settings_customevents);
-        updateDropDownEvents();
-        mEvents.setOnPreferenceChangeListener((preference, newValue) -> {
-            int index = mEvents.findIndexOfValue(newValue.toString());
-
-            if(mEvents.getEntries()[index].equals("Add Event")) {
-                getMemoryEventHandling().getAndSetNewEvent(getView(),getActivity(),null);
-            }
-            else{
-                if(calls == 0){
-                    calls = 1;
-                    return false;
-                }
-                else {
-                    getMemoryEventHandling().askDiscardEvent(getView(),getActivity(),index);
-                }
-            }
-            return true;
+            return false;
         });
-        return mEvents;
+        return pref;
+    }
+    private Preference deleteAccountPref(PreferenceScreen mScreen) {
+        //TODO delete user files in storage and database
+        Preference pref = new Preference(mScreen.getContext());
+        pref.setTitle(stringResource(R.string.delete_account));
+        pref.setSummary(stringResource(R.string.delete_account_summary));
+        pref.setIcon(R.drawable.deleteaccount);
+        pref.setOnPreferenceClickListener(preference -> {
+            AlertDialog.Builder deleted_account = new AlertDialog.Builder(
+                    getContext(),new changeTheme(getContext()).setDialogTheme());
+            LinearLayout layout = new LinearLayout(getContext());
+            layout.setOrientation(LinearLayout.VERTICAL);
+            final TextView confirmation = new TextView(getContext());
+            confirmation.setText(stringResource(R.string.delete_account_confirm));
+            confirmation.setTypeface(null, Typeface.BOLD);
+            confirmation.setTextAppearance(getContext(), android.R.style.TextAppearance_Large);
+            layout.addView(confirmation);
+            final EditText email = new EditText(getContext());
+            email.setHint(R.string.email_address_hint);
+            email.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
+            layout.addView(email);
+            final EditText password = new EditText(getContext());
+            password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD| InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            password.setHint(R.string.password_hint);
+            layout.addView(password);
+            layout.setPadding(35,35,35,35);
+            deleted_account.setView(layout);
+            deleted_account.setPositiveButton(stringResource(R.string.delete), (dialog, whichButton) -> {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                AuthCredential credential = EmailAuthProvider
+                        .getCredential(email.getText().toString(), password.getText().toString());
+                user.reauthenticate(credential).addOnSuccessListener(aVoid -> {
+                    user.delete();
+                    //TODO make a toast on successful deletion
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    getActivity().finish();
+                    dialog.dismiss();
+                });
+            }).setNegativeButton(stringResource(R.string.cancel), (dialog, which) -> dialog.dismiss()).create();
+            deleted_account.show();
+            return false;
+        });
+        return pref;
     }
 
+
+
+    private void setLanguage(ListPreference languages, String language, String lang) {
+        languages.setValue(language);
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getContext().getResources().
+                updateConfiguration(config, getContext().getResources().getDisplayMetrics());
+    }
     private memoryEvents getMemoryEventHandling() {
         return new memoryEvents(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
     }
-
     private void updateDropDownEvents() {
         CharSequence[] userevents = getEntries();
         CharSequence[] entryValues = getEntryValues(userevents);
         mEvents.setEntries(userevents);
         mEvents.setEntryValues(entryValues);
     }
-
     private String[] getEntryValues(CharSequence[] userevents) {
         List<String> stringList = new ArrayList<>();
         for(CharSequence sequence:userevents)
@@ -375,6 +371,9 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         applicableEvents = getMemoryEventHandling().addStringToArray(stringResource(R.string.add_event),
                 applicableEvents);
         return applicableEvents;
+    }
+    private String stringResource(int p) {
+        return getResources().getString(p);
     }
 
 }

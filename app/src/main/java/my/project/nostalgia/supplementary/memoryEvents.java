@@ -28,10 +28,10 @@ import static my.project.nostalgia.activities.LoginActivity.APPLICABLE_EVENTS;
 
 public class memoryEvents implements MemoryListFragment.Callbacks{
 
-    private Context mContext;
+    private final Context mContext;
     private SharedPreferences mPreferences;
 
-    private String joinedCurrentEvents;
+    private final String joinedCurrentEvents;
 
     /**Constructor with context and preferences as parameters indicates getting events from Preferences*/
     public memoryEvents(Context context, SharedPreferences preference) {

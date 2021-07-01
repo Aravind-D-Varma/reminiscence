@@ -10,6 +10,8 @@
         <item name="android:textColorPrimary">@color/light_purple</item>
         <item name="android:textColorSecondary">@color/grey</item>
 
+        <item name="preferenceTheme">@style/darkPreferenceStyle</item>
+
         <item name = "actionBarStyle">@style/myActionbar</item>
 
         <item name="buttonStyle">@style/darkButtonsStyle</item>

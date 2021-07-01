@@ -64,10 +64,15 @@
     </style>
     <style name="lightPreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
         <item name="android:tint">@color/black</item>
+        <item name="android:negativeButtonText">@style/lightPreferenceStyle.negativeButton</item>
+        <item name="android:positiveButtonText">@style/lightPreferenceStyle.negativeButton</item>
     </style>
     <style name="lightButtonsStyle" parent = "Widget.AppCompat.Button">
         <item name="android:background">@drawable/button_border_light</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="lightPreferenceStyle.negativeButton" parent = "PreferenceThemeOverlay">
+        <item name="android:textColor">@color/black</item>
     </style>
     <style name="lightEditText" parent="Widget.AppCompat.EditText">
         <item name="android:background">@drawable/button_border_light</item>

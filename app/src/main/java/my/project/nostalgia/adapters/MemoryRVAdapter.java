@@ -35,10 +35,10 @@ import my.project.nostalgia.supplementary.changeTheme;
 
 public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.MemoryHolder> {
 
-    private Activity mActivity;
+    private final Activity mActivity;
     private List<Memory> mMemories;
-    private Context mContext;
-    private List<Memory> selectedMemories = new LinkedList<>();
+    private final Context mContext;
+    private final List<Memory> selectedMemories = new LinkedList<>();
     private boolean mLongClickPressed = false;
     private ActionMode aM;
 
@@ -158,10 +158,12 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
 
     public class MemoryHolder extends RecyclerView.ViewHolder {
 
-        private TextView mTitleText, mDetailText, mExtraText;
-        private Button mShare;
-        private CheckBox mCheckBox;
-        private ImageView[] ImageViews = new ImageView[4];
+        private final TextView mTitleText;
+        private final TextView mDetailText;
+        private final TextView mExtraText;
+        private final Button mShare;
+        private final CheckBox mCheckBox;
+        private final ImageView[] ImageViews = new ImageView[4];
 
         public MemoryHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_memory, parent, false));
@@ -182,7 +184,8 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
 
     public static class MemoryDiffUtilCallback extends DiffUtil.Callback {
 
-        private List<Memory> mOldMemories, mNewMemories;
+        private final List<Memory> mOldMemories;
+        private final List<Memory> mNewMemories;
 
         private MemoryDiffUtilCallback(List<Memory> oldMemories, List<Memory> newMemories) {
             mOldMemories = oldMemories;

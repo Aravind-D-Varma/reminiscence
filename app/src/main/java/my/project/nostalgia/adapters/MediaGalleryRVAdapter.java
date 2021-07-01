@@ -39,10 +39,10 @@ import my.project.nostalgia.supplementary.transformationViewPager;
  */
 public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
 
-    private Context mContext;
+    private final Context mContext;
     private String[] mediaPaths;
-    private List<String> selectedMediaPaths = new LinkedList<>();
-    private Memory mMemory;
+    private final List<String> selectedMediaPaths = new LinkedList<>();
+    private final Memory mMemory;
     private boolean longClickPressed = false;
 
     /**
@@ -119,8 +119,8 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
     }
     private static class MediaDiffUtilCallback extends DiffUtil.Callback {
 
-        private String[] mOldMediaPaths;
-        private String[] mNewMediaPaths;
+        private final String[] mOldMediaPaths;
+        private final String[] mNewMediaPaths;
 
         private MediaDiffUtilCallback(String[] oldMediaPaths, String[] newMediaPaths) {
             mOldMediaPaths = oldMediaPaths;

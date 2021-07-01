@@ -17,8 +17,8 @@ import com.google.android.material.navigation.NavigationView;
 import my.project.nostalgia.R;
 
 public class changeTheme {
-    private String mTheme;
-    private Context mContext;
+    private final String mTheme;
+    private final Context mContext;
     public changeTheme(Context context){
         SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(context);
         this.mContext = context;

@@ -9,7 +9,7 @@ import java.util.UUID;
  */
 public class Memory {
 
-    private UUID mId;
+    private final UUID mId;
     private String mTitle;
     private String mEvent;
     private Date mDate;

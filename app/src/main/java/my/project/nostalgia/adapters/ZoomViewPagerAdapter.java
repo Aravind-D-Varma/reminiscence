@@ -21,8 +21,8 @@ import my.project.nostalgia.supplementary.MediaAndURI;
  * Uses isVideoFile(filepath) method of RecyclerViewGalleryAdapter.
  */
 public class ZoomViewPagerAdapter extends PagerAdapter {
-    private Context mContext;
-    private String[] individualMediaPaths;
+    private final Context mContext;
+    private final String[] individualMediaPaths;
 
     public ZoomViewPagerAdapter(Context context, String[] mediaPaths) {
         mContext = context;

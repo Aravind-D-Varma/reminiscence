@@ -2,7 +2,7 @@ package my.project.nostalgia.supplementary;
 import androidx.viewpager.widget.ViewPager;
 
 public class CircularViewPager implements ViewPager.OnPageChangeListener {
-    private ViewPager   mViewPager;
+    private final ViewPager   mViewPager;
     private int         mCurrentPosition;
     private int         mScrollState;
 
