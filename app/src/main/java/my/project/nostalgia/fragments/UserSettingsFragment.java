@@ -300,7 +300,6 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
         return pref;
     }
     private Preference deleteAccountPref(PreferenceScreen mScreen) {
-        //TODO delete user files in storage and database
         Preference pref = new Preference(mScreen.getContext());
         pref.setTitle(stringResource(R.string.delete_account));
         pref.setSummary(stringResource(R.string.delete_account_summary));

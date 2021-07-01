@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,12 +30,14 @@ import java.util.List;
 
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.MemoryPagerActivity;
+import my.project.nostalgia.fragments.MemoryFragment;
+import my.project.nostalgia.fragments.MemoryListFragment;
 import my.project.nostalgia.models.Memory;
 import my.project.nostalgia.models.MemoryLab;
 import my.project.nostalgia.supplementary.MediaAndURI;
 import my.project.nostalgia.supplementary.changeTheme;
 
-public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.MemoryHolder> {
+public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.MemoryHolder> implements MemoryListFragment.Callbacks {
 
     private final Activity mActivity;
     private List<Memory> mMemories;
@@ -61,7 +65,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         CheckBox checkbox = holder.mCheckBox;
         checkbox.setVisibility(View.GONE);
         checkbox.setChecked(false);
-        selectedMemories.remove(Memory);
+        try{selectedMemories.remove(Memory);}catch(NullPointerException ignored){}
         setTitleAndDetail(holder, Memory);
         holder.mShare.setOnClickListener(v -> shareMemory(Memory));
         setImagesAndText(holder, Memory);
@@ -82,8 +86,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         });
         holder.itemView.setOnClickListener(v -> {
             if (!mLongClickPressed) {
-                Intent intent = MemoryPagerActivity.newIntent(mContext, Memory.getId());
-                mContext.startActivity(intent);
+                onMemorySelected(Memory);
             } else {
                 if (checkbox.isChecked()) {
                     checkbox.setVisibility(View.GONE);
@@ -156,6 +159,18 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
                 new MemoryDiffUtilCallback(oldMemories, newMemories));
         this.mMemories = newMemories;
         diffResult.dispatchUpdatesTo(this);
+    }
+
+    @Override
+    public void onMemorySelected(Memory Memory) {
+        if(((FragmentActivity)mContext).findViewById(R.id.detail_fragment_container) == null){
+            Intent intent = MemoryPagerActivity.newIntent(mContext, Memory.getId());
+            mContext.startActivity(intent);
+        }
+        else{
+            Fragment newDetail = MemoryFragment.newInstance(Memory.getId());
+            ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.detail_fragment_container, newDetail).commit();
+        }
     }
 
     public class MemoryHolder extends RecyclerView.ViewHolder {

@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/sign_up"
+        android:textColor="@color/light_purple"
         android:gravity="center"
         android:textSize="40sp"/>
 
@@ -21,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_border"
+        android:backgroundTint="@color/grey"
         android:hint="@string/enter_name"
         android:layout_margin="20dp"
         android:padding="20dp"
@@ -32,6 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_border"
+        android:backgroundTint="@color/grey"
         android:hint="@string/email_adress"
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
@@ -50,6 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_border"
+        android:backgroundTint="@color/grey"
         android:hint="@string/password"
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
@@ -67,6 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_border"
+        android:backgroundTint="@color/grey"
         android:hint="@string/password_reenter"
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
@@ -80,6 +85,7 @@
         android:layout_height="wrap_content"
         android:text="@string/register"
         android:background="@drawable/button_border"
+        android:textColor="@color/light_purple"
         android:layout_margin="20dp"
         android:padding="20dp"/>
 </LinearLayout>

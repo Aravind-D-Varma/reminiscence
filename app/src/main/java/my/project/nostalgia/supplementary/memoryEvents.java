@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -21,6 +23,7 @@ import java.util.List;
 import my.project.nostalgia.R;
 import my.project.nostalgia.activities.MemoryPagerActivity;
 import my.project.nostalgia.activities.UserSettingsActivity;
+import my.project.nostalgia.fragments.MemoryFragment;
 import my.project.nostalgia.fragments.MemoryListFragment;
 import my.project.nostalgia.models.Memory;
 
@@ -121,8 +124,14 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
 
     @Override
     public void onMemorySelected(Memory memory) {
-        Intent intent = MemoryPagerActivity.newIntent(mContext, memory.getId());
-        mContext.startActivity(intent);
+        if(((FragmentActivity)mContext).findViewById(R.id.detail_fragment_container) == null){
+            Intent intent = MemoryPagerActivity.newIntent(mContext, memory.getId());
+            mContext.startActivity(intent);
+        }
+        else{
+            Fragment newDetail = MemoryFragment.newInstance(memory.getId());
+            ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.detail_fragment_container, newDetail).commit();
+        }
     }
 
     private void addNewEvent(String input) {
