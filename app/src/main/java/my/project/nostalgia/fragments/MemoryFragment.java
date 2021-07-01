@@ -48,8 +48,6 @@ import my.project.nostalgia.supplementary.changeTheme;
 import my.project.nostalgia.supplementary.memoryEvents;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.StorageReference;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
