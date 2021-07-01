@@ -40,7 +40,12 @@
         android:inputType="textEmailAddress"
         app:layout_constraintTop_toBottomOf="@id/register_name"
         />
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etPasswordLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true">
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/register_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,7 +56,13 @@
         android:inputType="textPassword"
         android:layout_margin="20dp"
         android:padding="20dp"/>
-    <EditText
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/rePasswordLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true">
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/register_password_reenter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,6 +73,7 @@
         android:inputType="textPassword"
         android:layout_margin="20dp"
         android:padding="20dp"/>
+    </com.google.android.material.textfield.TextInputLayout>
     <Button
         android:id="@+id/register_button"
         android:layout_width="match_parent"

@@ -30,7 +30,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private EditText mName, mEmail, mPassword, mPassword2;
-    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +42,6 @@ public class RegisterActivity extends AppCompatActivity {
         mPassword = findViewById(R.id.register_password);
         mPassword2 = findViewById(R.id.register_password_reenter);
         Button register = findViewById(R.id.register_button);
-        mProgressDialog = new ProgressDialog(this);
         register.setOnClickListener(v -> Register());
     }
 
@@ -72,22 +70,15 @@ public class RegisterActivity extends AppCompatActivity {
 
         setGeneralInfo(mName.getText().toString(),new memoryEvents(this).getJoinedEvents());
 
-        mProgressDialog.setMessage("Please wait...");
-        mProgressDialog.show();
-        mProgressDialog.setCanceledOnTouchOutside(false);
-
         mAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, task -> {
                     if(task.isSuccessful()) {
-                        Toast.makeText(RegisterActivity.this, "Successfully registered."
-                                , Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(RegisterActivity.this,MemoryListActivity.class));
                         finish();
                     }
                     else{
                         Toast.makeText(RegisterActivity.this, "Registration Failed!"
                                 , Toast.LENGTH_SHORT).show();
-                        mProgressDialog.dismiss();
                     }
                 });
     }

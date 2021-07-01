@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DropDownPreference;
 import androidx.preference.ListPreference;
@@ -20,10 +21,12 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -317,7 +320,7 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
             email.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
             layout.addView(email);
             final EditText password = new EditText(getContext());
-            password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD| InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             password.setHint(R.string.password_hint);
             layout.addView(password);
             layout.setPadding(35,35,35,35);
@@ -332,7 +335,16 @@ public class UserSettingsFragment extends PreferenceFragmentCompat{
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     getActivity().finish();
                     dialog.dismiss();
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(),"Confirmation failed!",Toast.LENGTH_SHORT).show();
+                    }
                 });
+                String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("Users");
+                DocumentReference userDocument = usersCollection.document(userid);
+                userDocument.delete();
             }).setNegativeButton(stringResource(R.string.cancel), (dialog, which) -> dialog.dismiss()).create();
             deleted_account.show();
             return false;
