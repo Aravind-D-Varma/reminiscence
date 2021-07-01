@@ -40,13 +40,19 @@ public class ZoomViewPagerAdapter extends PagerAdapter {
         if(new MediaAndURI().isThisVideoFile(individualMediaPaths[position])){
             v = inflater.inflate(R.layout.zoom_video,container,false);
             VideoView vv = v.findViewById(R.id.zoomed_videoView);
-            setVideo(position, v, vv);
+            if(individualMediaPaths[position].length()>1)
+                setVideo(position, v, vv);
+            else
+                container.removeView(v);
         }
         else {
             v = inflater.inflate(R.layout.zoom_image, container, false);
             ImageView iv = v.findViewById(R.id.zoomed_imageView);
-            Glide.with(mContext).load(new MediaAndURI(mContext).getMediaUriOf(individualMediaPaths[position]))
+            if(individualMediaPaths[position].length()>1)
+                Glide.with(mContext).load(new MediaAndURI(mContext).getMediaUriOf(individualMediaPaths[position]))
                     .into(iv);
+            else
+                container.removeView(v);
         }
         container.addView(v);
         return v;

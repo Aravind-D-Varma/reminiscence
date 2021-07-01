@@ -64,8 +64,8 @@ public class changeTheme {
         if (mTheme.equals("Light")) {
             if(v instanceof Spinner) {
                 ((Spinner)v).setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_border_light));
-                ((TextView)((Spinner) v).getChildAt(0)).setTextColor(mContext.getResources()
-                        .getColor(R.color.white));
+                try{((TextView)((Spinner)v).getChildAt(0)).setTextColor(mContext.getResources()
+                        .getColor(R.color.white)); }catch (NullPointerException ignored){}
             }
             else {
                 v.setBackground(ContextCompat.getDrawable(mContext, R.drawable.layout_border_light));

@@ -112,8 +112,10 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
             String[] mediaPaths = memory.getMediaPaths().split(",");
             int numberOfMedias = mediaPaths.length;
             for (int i = 0; i < numberOfMedias && i <= 3; i++) {
-                final Uri mediaUriOf = mMediaAndURI.getMediaUriOf(mediaPaths[i]);
-                Glide.with(mContext).load(mediaUriOf).into(holder.ImageViews[i]);
+                if(mediaPaths[i].length()>1) {
+                    final Uri mediaUriOf = mMediaAndURI.getMediaUriOf(mediaPaths[i]);
+                    Glide.with(mContext).load(mediaUriOf).into(holder.ImageViews[i]);
+                }
             }
             if (numberOfMedias > 4)
                 holder.mExtraText.setText(mContext.getString(R.string.cardview_extratext, (numberOfMedias - 4)));

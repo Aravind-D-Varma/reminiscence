@@ -11,8 +11,8 @@ android {
         applicationId "my.project.nostalgia"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 11
-        versionName "Betaware"
+        versionCode 14
+        versionName "Alphaware"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -71,8 +71,11 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
         ImageView imageView = ((MyImageViewHolder) holder).image;
         final MediaAndURI mMediaAndURI = new MediaAndURI(mContext);
         try {
-            Glide.with(mContext).load(mMediaAndURI.getMediaUriOf(mediaPaths[position]))
+            if(mediaPaths[position].length()>1)
+                Glide.with(mContext).load(mMediaAndURI.getMediaUriOf(mediaPaths[position]))
                     .into(imageView);
+            else
+                imageView.setImageBitmap(null);
         } catch (NullPointerException ignored){}
         CheckBox checkbox = ((MyImageViewHolder) holder).mMediaCheckbox;
         checkbox.setVisibility(View.GONE);
@@ -199,7 +202,6 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
     private String stringFromResource(int resourceID) {
         return mContext.getResources().getString(resourceID);
     }
-
     public void updateList(String[] newMediaPaths) {
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MediaDiffUtilCallback(this.mediaPaths, newMediaPaths));
         this.mediaPaths = newMediaPaths;

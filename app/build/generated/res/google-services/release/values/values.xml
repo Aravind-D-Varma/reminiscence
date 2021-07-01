@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">320660318662-slb6n23iltuoum0oo865117v1s776417.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">320660318662</string>
+    <string name="google_api_key" translatable="false">AIzaSyDtEX6Z-U21fMIptz1J1dJ0IQj7qtJTMVk</string>
+    <string name="google_app_id" translatable="false">1:320660318662:android:2e359dce35a3729857eac7</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDtEX6Z-U21fMIptz1J1dJ0IQj7qtJTMVk</string>
+    <string name="google_storage_bucket" translatable="false">reminiscence-556ae.appspot.com</string>
+    <string name="project_id" translatable="false">reminiscence-556ae</string>
+</resources>
