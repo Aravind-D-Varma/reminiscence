@@ -3,12 +3,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.ActionMode;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -16,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -25,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -149,7 +155,6 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         } catch (NullPointerException ignored) {
         }
     }
-
     @Override
     public int getItemCount() {
         return mMemories.size();
@@ -249,28 +254,57 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             if (item.getItemId() == R.id.memory_delete_menu) {
-                MemoryLab memoryLab = MemoryLab.get(mContext);
-                for(Memory memory:selectedMemories)
-                    memoryLab.deleteMemory(memory);
-                mLongClickPressed = false;
-                int MemoryCount = memoryLab.getMemories().size();
-                String subtitle = mContext.getResources().getQuantityString(R.plurals.subtitle_plural
-                        , MemoryCount, MemoryCount);
-                ((AppCompatActivity) mActivity).getSupportActionBar().setSubtitle(subtitle);
-                mode.finish();
+                final List<Memory> todeleteMemories = selectedMemories;
+                AlertDialog.Builder deleteDialogbuilder = new AlertDialog.Builder(mContext, new changeTheme(mContext).setDialogTheme())
+                        .setTitle(stringFromResource(R.string.delete_memories))
+                        .setMessage(stringFromResource(R.string.deletion_memories_confirm))
+                        .setPositiveButton(stringFromResource(R.string.delete), (dialog, whichButton) -> {
+                            MemoryLab memoryLab = MemoryLab.get(mContext);
+                            for(Memory memory:todeleteMemories)
+                                memoryLab.deleteMemory(memory);
+                            mLongClickPressed = false;
+                            final List<Memory> memories = memoryLab.getMemories();
+                            updateList(memories);
+                            mode.finish();
+                            dialog.dismiss();
+                        }).setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> {
+                            notifyDataSetChanged();
+                            mLongClickPressed = false;
+                            dialog.dismiss();
+                        });
+                AlertDialog deleteDialog = deleteDialogbuilder.create();
+                deleteDialog.setCancelable(false);
+                Window window = deleteDialog.getWindow();
+                WindowManager.LayoutParams wlp = window.getAttributes();
+                wlp.gravity = Gravity.TOP;
+                window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+                window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                window.setAttributes(wlp);
+                deleteDialog.show();
                 return true;
-            }
-            else if (item.getItemId() == android.R.id.home) {
+            }else if (item.getItemId() == android.R.id.home) {
                 mLongClickPressed = false;
+                selectedMemories.clear();
                 mode.finish();
             }
             return false;
         }
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            updateList(MemoryLab.get(mContext).getMemories());
+
+            final List<Memory> memories = MemoryLab.get(mContext).getMemories();
+            int MemoryCount = memories.size();
+            String subtitle = mContext.getResources().getQuantityString(R.plurals.subtitle_plural
+                    , MemoryCount, MemoryCount);
+            ((AppCompatActivity) mActivity).getSupportActionBar().setSubtitle(subtitle);
+            updateList(memories);
             mLongClickPressed = false;
+            selectedMemories.clear();
             aM = null;
         }
+    }
+
+    private String stringFromResource(int resourceID) {
+        return mContext.getResources().getString(resourceID);
     }
 }

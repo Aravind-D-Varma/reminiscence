@@ -51,7 +51,10 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
     public MediaGalleryRVAdapter(Context context, Memory memory) {
         this.mContext = context;
         this.mMemory = memory;
-        this.mediaPaths = mMemory.getMediaPaths().split(",");
+        if(memory.getMediaPaths()!=null)
+            this.mediaPaths = mMemory.getMediaPaths().split(",");
+        else
+            this.mediaPaths = new String[]{""};
     }
 
     @NonNull
@@ -80,7 +83,8 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
         CheckBox checkbox = ((MyImageViewHolder) holder).mMediaCheckbox;
         checkbox.setVisibility(View.GONE);
         checkbox.setChecked(false);
-        selectedMediaPaths.remove(mediaPaths[position]);
+        if(mediaPaths[position].length()>1)
+            selectedMediaPaths.remove(mediaPaths[position]);
         imageView.setOnClickListener(v -> {
             if(!longClickPressed)
                 displayMediaZoomedIn(position);

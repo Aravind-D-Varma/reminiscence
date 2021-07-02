@@ -64,13 +64,19 @@ public class Memory {
         if (getClass() != obj.getClass())
             return false;
 
-        final Memory other = (Memory) obj;
+        Memory other = (Memory) obj;
+        if(other.getTitle()==null)
+            other.mTitle = "";
+        if(other.getDetail()==null)
+            other.mDetail = "";
+        if(other.getMediaPaths()==null)
+            other.mMediaPaths = "";
 
-        if(!(this.mTitle).equals(other.getTitle()))
+        if (!(this.mTitle).equals(other.getTitle()))
             return false;
-        if(!(this.mDetail).equals(other.getDetail()))
+        if (!(this.mDetail).equals(other.getDetail()))
             return false;
-        if(!(this.mMediaPaths).equals(other.getMediaPaths()))
+        if (!(this.mMediaPaths).equals(other.getMediaPaths()))
             return false;
 
         return true;

@@ -104,4 +104,6 @@
         Dit heeft echter een nadeel dat als u uw media verplaatst / verwijdert, u ze ook niet vanuit deze app kunt openen. Behalve dit, heb een gelukkige tijd hier!"</string>
     <string name="storage_permission_necessary">Opslag toestemming nodig"</string>
     <string name="please_grant_storage">Verleen opslagrechten om uw afbeeldingen en videos van eerdere herinneringen te laden</string>
+    <string name="delete_memories">Herinneringen verwijderen</string>
+    <string name="deletion_memories_confirm">Wilt u de geselecteerde herinneringen wissen</string>
 </resources>

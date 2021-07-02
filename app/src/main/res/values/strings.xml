@@ -101,5 +101,7 @@
         However, this comes with a downside that if you move/delete your media, you cannot access them from this app as well. Apart from this, have a happy time here!"</string>
     <string name="storage_permission_necessary">Storage permission necessary</string>
     <string name="please_grant_storage">In order to load your images and videos of previous memories, please grant storage permissions</string>
+    <string name="delete_memories">Delete memories</string>
+    <string name="deletion_memories_confirm">Do you want to delete the selected memories</string>
 
 </resources>

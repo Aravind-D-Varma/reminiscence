@@ -283,7 +283,7 @@ public class MemoryFragment extends Fragment {
         try{
             mAdapter = new MediaGalleryRVAdapter(getActivity(), mMemory);
             mPhotoRecyclerView.setAdapter(mAdapter);
-        }catch (Exception e){Toast.makeText(getContext(),"App crashes because of galleryn",Toast.LENGTH_SHORT).show();}
+        }catch (Exception e){Toast.makeText(getContext(),"App crashes because of gallery and exception is "+e.toString(),Toast.LENGTH_LONG).show();}
 
         mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
         behaviourBeforeAddingMedia();
