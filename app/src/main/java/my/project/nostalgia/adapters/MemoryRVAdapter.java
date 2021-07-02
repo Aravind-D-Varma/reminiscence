@@ -166,8 +166,10 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
     @Override
     public void onMemorySelected(Memory Memory) {
         if(((FragmentActivity)mContext).findViewById(R.id.detail_fragment_container) == null){
-            Intent intent = MemoryPagerActivity.newIntent(mContext, Memory.getId());
-            mContext.startActivity(intent);
+            try {
+                Intent intent = MemoryPagerActivity.newIntent(mContext, Memory.getId());
+                mContext.startActivity(intent);
+            }catch (Exception e){Toast.makeText(mContext,"App crashes before going to memory page",Toast.LENGTH_SHORT).show();}
         }
         else{
             Fragment newDetail = MemoryFragment.newInstance(Memory.getId());

@@ -187,6 +187,7 @@ public class MemoryFragment extends Fragment {
         }
 
         // region EditText
+        try{
         EditText titleField = (EditText) v.findViewById(R.id.memory_title);
         titleField.setText(mMemory.getTitle());
         titleField.addTextChangedListener(new TextWatcher() {
@@ -206,9 +207,10 @@ public class MemoryFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
             }
-        });
+        });}catch (Exception e){Toast.makeText(getContext(),"App crashes because of title",Toast.LENGTH_SHORT).show();}
         //endregion
         //region EditText Details
+        try{
         EditText detailField = (EditText) v.findViewById(R.id.memory_details);
         detailField.setText(mMemory.getDetail());
         detailField.addTextChangedListener(new TextWatcher() {
@@ -224,15 +226,17 @@ public class MemoryFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
             }
-        });
-        mDateButton = (Button) v.findViewById(R.id.memory_date);
-        updateDate();
-        mDateButton.setOnClickListener(v1 -> {
-            FragmentManager manager = getActivity().getSupportFragmentManager();
-            DatePickerDialogFragment dp = DatePickerDialogFragment.newInstance(mMemory.getDate());
-            dp.setTargetFragment(MemoryFragment.this, REQUEST_DATE);
-            dp.show(manager, DIALOG_DATE);
-        });
+        });}catch (Exception e){Toast.makeText(getContext(),"App crashes because of details",Toast.LENGTH_SHORT).show();}
+        try {
+            mDateButton = (Button) v.findViewById(R.id.memory_date);
+            updateDate();
+            mDateButton.setOnClickListener(v1 -> {
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                DatePickerDialogFragment dp = DatePickerDialogFragment.newInstance(mMemory.getDate());
+                dp.setTargetFragment(MemoryFragment.this, REQUEST_DATE);
+                dp.show(manager, DIALOG_DATE);
+            });
+        }catch (Exception e){Toast.makeText(getContext(),"App crashes because of date",Toast.LENGTH_SHORT).show();}
         Spinner spinner = (Spinner) v.findViewById(R.id.memory_spinner);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.myspinner, applicableEvents);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -255,6 +259,7 @@ public class MemoryFragment extends Fragment {
             }
         });
         new changeTheme(getContext()).setLayoutTheme(spinner);
+        try{
         mPhotoButton = (Button)v.findViewById(R.id.memory_selectphotos);
         try {
             if (mMemory.getMediaPaths().length() != 0)
@@ -271,14 +276,15 @@ public class MemoryFragment extends Fragment {
                     startActivityForResult(Intent.createChooser(getImage, "Select Images/Videos"), REQUEST_GALLERY_PHOTO);
                 }
             }
-        });
+        });}catch (Exception e){Toast.makeText(getContext(),"App crashes because of add photos",Toast.LENGTH_SHORT).show();}
+
         mPhotoRecyclerView = (RecyclerView) v.findViewById(R.id.photoGridView);
         mPhotoRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL));
         try{
             mAdapter = new MediaGalleryRVAdapter(getActivity(), mMemory);
             mPhotoRecyclerView.setAdapter(mAdapter);
-        }
-        catch (NullPointerException ignored){}
+        }catch (Exception e){Toast.makeText(getContext(),"App crashes because of galleryn",Toast.LENGTH_SHORT).show();}
+
         mPhotoFAB = (FloatingActionButton) v.findViewById(R.id.photo_fab);
         behaviourBeforeAddingMedia();
         Intent getmoreImage = new MediaAndURI().getFromMediaIntent();

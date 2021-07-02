@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -65,7 +66,9 @@ public class changeTheme {
             if(v instanceof Spinner) {
                 ((Spinner)v).setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_border_light));
                 try{((TextView)((Spinner)v).getChildAt(0)).setTextColor(mContext.getResources()
-                        .getColor(R.color.white)); }catch (NullPointerException ignored){}
+                        .getColor(R.color.white)); }catch (NullPointerException ignored){
+                    Toast.makeText(mContext,"App crashes because of spinner text",Toast.LENGTH_SHORT).show();
+                }
             }
             else {
                 v.setBackground(ContextCompat.getDrawable(mContext, R.drawable.layout_border_light));

@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -73,15 +74,18 @@ public class MemoryPagerActivity extends AppCompatActivity implements MemoryFrag
      * Sets the viewPager to show selected Memory. Else, it will show from the first memory every time.
      */
     public void getCurrentPosition() {
-        UUID memoryId = (UUID) getIntent().getSerializableExtra(EXTRA_memory_ID);
-        int i = 0;
-        for (Memory memory:mMemories) {
-            if (memory.getId().equals(memoryId)) {
-                mViewPager2.setCurrentItem(i,false);
-                break;
+        try {
+            UUID memoryId = (UUID) getIntent().getSerializableExtra(EXTRA_memory_ID);
+            int i = 0;
+            for (Memory memory : mMemories) {
+                if (memory.getId().equals(memoryId)) {
+                    mViewPager2.setCurrentItem(i, false);
+                    break;
+                }
+                i++;
             }
-            i++;
-        }
+        }catch (Exception e){
+            Toast.makeText(this,"App crashes because of position of memory",Toast.LENGTH_SHORT).show();}
     }
     /**Ensures that the keyboard goes down if user presses anywhere outside the edit text box.
      * Applicable to all edittexts in this activity*/
