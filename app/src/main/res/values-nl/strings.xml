@@ -100,7 +100,7 @@
 
     <string name="note_developer">Opmerking van ontwikkelaar</string>
     <string name="minute_please">Een minuutje alstublieft!</string>
-    <string name="lengthy_note_developer">"Met het oog op privacy slaat deze app uw fotos/videos nergens op, maar toont deze u alleen vanaf uw telefoon/tablet. Dit betekent dat je geen internetverbinding nodig hebt om deze app te gebruiken, maar het belangrijkste is dat je gegevens veilig zijn bij jou en volledig onzichtbaar zijn voor anderen, inclusief Android (Google).\n
+    <string name="lengthy_note_developer">"Met het oog op privacy slaat deze app uw fotos/videos nergens op, maar toont deze u alleen vanaf uw telefoon/tablet. Dit betekent dat je geen internetverbinding nodig hebt om deze app te gebruiken, maar het belangrijkste is dat je gegevens veilig zijn bij jou en volledig onzichtbaar zijn voor anderen, inclusief Android (Google).
         Dit heeft echter een nadeel dat als u uw media verplaatst / verwijdert, u ze ook niet vanuit deze app kunt openen. Behalve dit, heb een gelukkige tijd hier!"</string>
     <string name="storage_permission_necessary">Opslag toestemming nodig"</string>
     <string name="please_grant_storage">Verleen opslagrechten om uw afbeeldingen en videos van eerdere herinneringen te laden</string>

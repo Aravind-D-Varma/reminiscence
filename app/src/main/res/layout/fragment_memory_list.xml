@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="5dp">
+    android:layout_marginBottom="5dp"
+    android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/memory_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/memory_recycler_view"/>
+        android:orientation="vertical" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/memory_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/memory_fab"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="25dp"
-        android:elevation="20dp"
-        android:src="@drawable/add"
-        android:contentDescription="@string/no_memory_add"
         android:clickable="true"
-        android:focusable="true" />
+        android:contentDescription="@string/no_memory_add"
+        android:elevation="20dp"
+        android:focusable="true"
+        android:src="@drawable/add" />
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="PauseDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowAnimationStyle">@style/PauseDialogAnimation</item>
     </style>
@@ -8,81 +9,97 @@
         <item name="android:windowEnterAnimation">@anim/fadein</item>
         <item name="android:windowExitAnimation">@anim/fadeout</item>
     </style>
+
     <style name="SplashTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
+
     <style name="darkalertDialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:backgroundTint">@color/black</item>
 
     </style>
-<!-- Dark application theme. __________________________________________________________________-->
+    <!-- Dark application theme. __________________________________________________________________-->
 
-    <style name="myActionbar" parent ="Widget.AppCompat.ActionBar">
-        <item name ="background">@color/medium_black</item>
+    <style name="myActionbar" parent="Widget.AppCompat.ActionBar">
+        <item name="background">@color/medium_black</item>
         <item name="titleTextStyle">@style/myActionbar.TitleTextStyle</item>
         <item name="subtitleTextStyle">@style/myActionbar.SubtitleTextStyle</item>
     </style>
+
     <style name="myActionbar.TitleTextStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:textColor">@color/light_purple</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="myActionbar.SubtitleTextStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:textColor">@color/light_purple</item>
     </style>
+
     <style name="darkPreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
         <item name="android:tint">@color/white</item>
     </style>
-    <style name="darkButtonsStyle" parent = "Widget.AppCompat.Button">
+
+    <style name="darkButtonsStyle" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/button_border</item>
         <item name="android:textColor">@color/light_purple</item>
     </style>
+
     <style name="darkEditText" parent="Widget.AppCompat.EditText">
         <item name="android:background">@drawable/button_border</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:backgroundTint">@color/grey</item>
     </style>
+
     <style name="darkSpinner" parent="Widget.AppCompat.Spinner">
         <item name="android:background">@drawable/button_border</item>
         <item name="android:textColor">@color/light_purple</item>
     </style>
-    <style name="darkTextView" parent="android:Widget.TextView" >
+
+    <style name="darkTextView" parent="android:Widget.TextView">
         <item name="android:textColor">@color/light_purple</item>
     </style>
 
 
-<!-- Light application theme. __________________________________________________________________-->
+    <!-- Light application theme. __________________________________________________________________-->
 
-    <style name="myActionbarLight" parent ="Widget.AppCompat.ActionBar">
-        <item name ="background">@color/dark_purple</item>
+    <style name="myActionbarLight" parent="Widget.AppCompat.ActionBar">
+        <item name="background">@color/dark_purple</item>
         <item name="titleTextStyle">@style/myActionbar.TitleTextStyleLight</item>
         <item name="subtitleTextStyle">@style/myActionbar.SubtitleTextStyleLight</item>
     </style>
+
     <style name="myActionbar.TitleTextStyleLight" parent="Widget.AppCompat.ActionBar">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="myActionbar.SubtitleTextStyleLight" parent="Widget.AppCompat.ActionBar">
         <item name="android:textColor">@color/white</item>
     </style>
+
     <style name="lightPreferenceStyle" parent="@style/PreferenceThemeOverlay.v14.Material">
         <item name="android:tint">@color/black</item>
         <item name="android:negativeButtonText">@style/lightPreferenceStyle.negativeButton</item>
         <item name="android:positiveButtonText">@style/lightPreferenceStyle.negativeButton</item>
     </style>
-    <style name="lightButtonsStyle" parent = "Widget.AppCompat.Button">
+
+    <style name="lightButtonsStyle" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/button_border_light</item>
         <item name="android:textColor">@color/white</item>
     </style>
-    <style name="lightPreferenceStyle.negativeButton" parent = "PreferenceThemeOverlay">
+
+    <style name="lightPreferenceStyle.negativeButton" parent="PreferenceThemeOverlay">
         <item name="android:textColor">@color/black</item>
     </style>
+
     <style name="lightEditText" parent="Widget.AppCompat.EditText">
         <item name="android:background">@drawable/button_border_light</item>
         <item name="android:backgroundTint">@color/grey</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
     <style name="lightTextView" parent="android:Widget.TextView">
         <item name="android:textColor">@color/black</item>
     </style>

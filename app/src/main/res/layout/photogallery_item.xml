@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/memory_photo"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:adjustViewBounds="true"
-        android:focusable="false"
         android:layout_margin="5dp"
-        android:focusableInTouchMode="false"
-        android:contentDescription="@string/memory_photo_no_image_description"/>
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/memory_photo_no_image_description"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
 
     <CheckBox
         android:id="@+id/memory_photo_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
         android:backgroundTint="@color/black"
         android:buttonTint="#00FF00"
-        android:visibility="gone"
-        android:layout_gravity="top|end" />
+        android:visibility="gone" />
 </FrameLayout>
 

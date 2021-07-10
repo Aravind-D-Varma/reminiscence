@@ -1,4 +1,5 @@
 package my.project.nostalgia.activities;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
@@ -50,52 +51,64 @@ public class RegisterActivity extends AppCompatActivity {
         String password = mPassword.getText().toString();
         String password2 = mPassword2.getText().toString();
 
-        if(TextUtils.isEmpty(name)){
-            mName.setError("Enter your Name");return;}
+        if (TextUtils.isEmpty(name)) {
+            mName.setError("Enter your Name");
+            return;
+        }
 
-        if(TextUtils.isEmpty(email)){
-            mEmail.setError("Enter your email");return;}
-        else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            mEmail.setError("Enter valid email ID");return;}
+        if (TextUtils.isEmpty(email)) {
+            mEmail.setError("Enter your email");
+            return;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            mEmail.setError("Enter valid email ID");
+            return;
+        }
 
-        if(TextUtils.isEmpty(password)){
-            mPassword.setError("Enter your password");return;}
-        else if(password.length() < 6){
-            mPassword.setError("Password too short/weak");return;}
-        if(TextUtils.isEmpty(password2)){
-            mPassword.setError("Confirm your password");return;}
-        else if(!password.equals(password2)){
-            mPassword2.setError("Different Password");return;}
+        if (TextUtils.isEmpty(password)) {
+            mPassword.setError("Enter your password");
+            return;
+        } else if (password.length() < 6) {
+            mPassword.setError("Password too short/weak");
+            return;
+        }
+        if (TextUtils.isEmpty(password2)) {
+            mPassword.setError("Confirm your password");
+            return;
+        } else if (!password.equals(password2)) {
+            mPassword2.setError("Different Password");
+            return;
+        }
 
-        setGeneralInfo(mName.getText().toString(),new memoryEvents(this).getJoinedEvents());
+        setGeneralInfo(mName.getText().toString(), new memoryEvents(this).getJoinedEvents());
 
-        mAuth.createUserWithEmailAndPassword(email,password)
+        mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
-                    if(task.isSuccessful()) {
-                        startActivity(new Intent(RegisterActivity.this,MemoryListActivity.class));
+                    if (task.isSuccessful()) {
+                        startActivity(new Intent(RegisterActivity.this, MemoryListActivity.class));
                         finish();
-                    }
-                    else{
+                    } else {
                         Toast.makeText(RegisterActivity.this, "Registration Failed!"
                                 , Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
     private void setGeneralInfo(String userName, String combinedEvents) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
         editor.putString(SEND_USERNAME, userName);
         editor.putString(APPLICABLE_EVENTS, combinedEvents);
-        editor.putBoolean(FIRST_TIME,true);
+        editor.putBoolean(FIRST_TIME, true);
         editor.apply();
     }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if(ev.getAction()==MotionEvent.ACTION_DOWN){
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
-            if(v instanceof EditText){
+            if (v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
-                if(!outRect.contains((int)ev.getRawX(),(int)ev.getRawY())){
+                if (!outRect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
                     v.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);

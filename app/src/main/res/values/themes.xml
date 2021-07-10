@@ -14,15 +14,15 @@
 
         <item name="preferenceTheme">@style/darkPreferenceStyle</item>
 
-        <item name = "actionBarStyle">@style/myActionbar</item>
+        <item name="actionBarStyle">@style/myActionbar</item>
 
         <item name="buttonStyle">@style/darkButtonsStyle</item>
-        <item name = "editTextStyle">@style/darkEditText</item>
+        <item name="editTextStyle">@style/darkEditText</item>
         <item name="spinnerStyle">@style/darkSpinner</item>
         <item name="android:textViewStyle">@style/darkTextView</item>
 
     </style>
-<!-- Light application theme. -->
+    <!-- Light application theme. -->
     <style name="Theme.Reminiscence.Light" parent="Theme.AppCompat.Light.DarkActionBar">
 
         <item name="colorOnPrimary">@color/black</item>
@@ -35,12 +35,12 @@
         <item name="android:textColorPrimary">@color/black</item>
         <item name="android:textColorSecondary">@color/grey</item>
 
-        <item name = "actionBarStyle">@style/myActionbarLight</item>
+        <item name="actionBarStyle">@style/myActionbarLight</item>
 
         <item name="preferenceTheme">@style/lightPreferenceStyle</item>
 
         <item name="buttonStyle">@style/lightButtonsStyle</item>
-        <item name = "editTextStyle">@style/lightEditText</item>
+        <item name="editTextStyle">@style/lightEditText</item>
         <item name="android:textViewStyle">@style/lightTextView</item>
         <item name="navigationIconTint">@color/black</item>
     </style>

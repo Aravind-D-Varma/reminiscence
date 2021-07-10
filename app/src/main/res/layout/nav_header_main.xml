@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_header_textView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textSize="24sp"
-    android:textStyle="bold"
-    android:padding="15dp"
     android:drawablePadding="10dp"
     android:gravity="center_vertical"
-    app:drawableStartCompat="@mipmap/nostalgia_logo">
-</TextView>
+    android:padding="15dp"
+    android:textSize="24sp"
+    android:textStyle="bold"
+    app:drawableStartCompat="@mipmap/nostalgia_logo"></TextView>

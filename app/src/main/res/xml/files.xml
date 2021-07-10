@@ -2,8 +2,8 @@
 <paths>
     <files-path
         name="memory_photos"
-        path="."/>
+        path="." />
     <external-path
         name="external_files"
-        path="."/>
+        path="." />
 </paths>

@@ -1,9 +1,9 @@
 package my.project.nostalgia.adapters;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,7 +30,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,9 +45,9 @@ import my.project.nostalgia.supplementary.changeTheme;
 public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.MemoryHolder> implements MemoryListFragment.Callbacks {
 
     private final Activity mActivity;
-    private List<Memory> mMemories;
     private final Context mContext;
     private final List<Memory> selectedMemories = new LinkedList<>();
+    private List<Memory> mMemories;
     private boolean mLongClickPressed = false;
     private ActionMode aM;
 
@@ -71,7 +70,10 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         CheckBox checkbox = holder.mCheckBox;
         checkbox.setVisibility(View.GONE);
         checkbox.setChecked(false);
-        try{selectedMemories.remove(Memory);}catch(NullPointerException ignored){}
+        try {
+            selectedMemories.remove(Memory);
+        } catch (NullPointerException ignored) {
+        }
         setTitleAndDetail(holder, Memory);
         holder.mShare.setOnClickListener(v -> shareMemory(Memory));
         setImagesAndText(holder, Memory);
@@ -83,8 +85,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
             if (aM == null) {
                 aM = mActivity.startActionMode(new ActionModeCallback());
                 aM.setTitle(String.valueOf(selectedMemories.size()));
-            }
-            else {
+            } else {
                 aM.setTitle(String.valueOf(selectedMemories.size()));
                 aM.invalidate();
             }
@@ -103,11 +104,12 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
                     checkbox.setChecked(true);
                     selectedMemories.add(Memory);
                 }
-                if(aM!=null)
+                if (aM != null)
                     aM.setTitle(String.valueOf(selectedMemories.size()));
             }
         });
     }
+
     private void setImagesAndText(@NonNull MemoryHolder holder, Memory memory) {
         MediaAndURI mMediaAndURI = new MediaAndURI(mContext);
         holder.mExtraText.setText("");
@@ -118,7 +120,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
             String[] mediaPaths = memory.getMediaPaths().split(",");
             int numberOfMedias = mediaPaths.length;
             for (int i = 0; i < numberOfMedias && i <= 3; i++) {
-                if(mediaPaths[i].length()>1) {
+                if (mediaPaths[i].length() > 1) {
                     final Uri mediaUriOf = mMediaAndURI.getMediaUriOf(mediaPaths[i]);
                     Glide.with(mContext).load(mediaUriOf).into(holder.ImageViews[i]);
                 }
@@ -155,6 +157,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         } catch (NullPointerException ignored) {
         }
     }
+
     @Override
     public int getItemCount() {
         return mMemories.size();
@@ -170,42 +173,21 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
 
     @Override
     public void onMemorySelected(Memory Memory) {
-        if(((FragmentActivity)mContext).findViewById(R.id.detail_fragment_container) == null){
+        if (((FragmentActivity) mContext).findViewById(R.id.detail_fragment_container) == null) {
             try {
                 Intent intent = MemoryPagerActivity.newIntent(mContext, Memory.getId());
                 mContext.startActivity(intent);
-            }catch (Exception e){Toast.makeText(mContext,"App crashes before going to memory page",Toast.LENGTH_SHORT).show();}
-        }
-        else{
+            } catch (Exception e) {
+                Toast.makeText(mContext, "App crashes before going to memory page", Toast.LENGTH_SHORT).show();
+            }
+        } else {
             Fragment newDetail = MemoryFragment.newInstance(Memory.getId());
-            ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.detail_fragment_container, newDetail).commit();
+            ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.detail_fragment_container, newDetail).commit();
         }
     }
 
-    public class MemoryHolder extends RecyclerView.ViewHolder {
-
-        private final TextView mTitleText;
-        private final TextView mDetailText;
-        private final TextView mExtraText;
-        private final Button mShare;
-        private final CheckBox mCheckBox;
-        private final ImageView[] ImageViews = new ImageView[4];
-
-        public MemoryHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_memory, parent, false));
-            changeTheme cT = new changeTheme(mContext);
-            cT.setLayoutTheme(itemView);
-            mTitleText = itemView.findViewById(R.id.cardview_memory_title);
-            mDetailText = itemView.findViewById(R.id.cardview_memory_detail);
-            mShare = itemView.findViewById(R.id.cardview_share);
-            ImageViews[0] = itemView.findViewById(R.id.cardview_image);
-            ImageViews[1] = itemView.findViewById(R.id.cardview_image2);
-            ImageViews[2] = itemView.findViewById(R.id.cardview_image3);
-            ImageViews[3] = itemView.findViewById(R.id.cardview_image4);
-            mExtraText = itemView.findViewById(R.id.cardview_extramedia);
-            mCheckBox = itemView.findViewById(R.id.cardview_checkbox);
-        }
-
+    private String stringFromResource(int resourceID) {
+        return mContext.getResources().getString(resourceID);
     }
 
     public static class MemoryDiffUtilCallback extends DiffUtil.Callback {
@@ -239,6 +221,32 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
         }
     }
 
+    public class MemoryHolder extends RecyclerView.ViewHolder {
+
+        private final TextView mTitleText;
+        private final TextView mDetailText;
+        private final TextView mExtraText;
+        private final Button mShare;
+        private final CheckBox mCheckBox;
+        private final ImageView[] ImageViews = new ImageView[4];
+
+        public MemoryHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.list_item_memory, parent, false));
+            changeTheme cT = new changeTheme(mContext);
+            cT.setLayoutTheme(itemView);
+            mTitleText = itemView.findViewById(R.id.cardview_memory_title);
+            mDetailText = itemView.findViewById(R.id.cardview_memory_detail);
+            mShare = itemView.findViewById(R.id.cardview_share);
+            ImageViews[0] = itemView.findViewById(R.id.cardview_image);
+            ImageViews[1] = itemView.findViewById(R.id.cardview_image2);
+            ImageViews[2] = itemView.findViewById(R.id.cardview_image3);
+            ImageViews[3] = itemView.findViewById(R.id.cardview_image4);
+            mExtraText = itemView.findViewById(R.id.cardview_extramedia);
+            mCheckBox = itemView.findViewById(R.id.cardview_checkbox);
+        }
+
+    }
+
     private class ActionModeCallback implements ActionMode.Callback {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -260,7 +268,7 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
                         .setMessage(stringFromResource(R.string.deletion_memories_confirm))
                         .setPositiveButton(stringFromResource(R.string.delete), (dialog, whichButton) -> {
                             MemoryLab memoryLab = MemoryLab.get(mContext);
-                            for(Memory memory:todeleteMemories)
+                            for (Memory memory : todeleteMemories)
                                 memoryLab.deleteMemory(memory);
                             mLongClickPressed = false;
                             final List<Memory> memories = memoryLab.getMemories();
@@ -277,18 +285,19 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
                 Window window = deleteDialog.getWindow();
                 WindowManager.LayoutParams wlp = window.getAttributes();
                 wlp.gravity = Gravity.TOP;
-                window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+                window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
                 window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                 window.setAttributes(wlp);
                 deleteDialog.show();
                 return true;
-            }else if (item.getItemId() == android.R.id.home) {
+            } else if (item.getItemId() == android.R.id.home) {
                 mLongClickPressed = false;
                 selectedMemories.clear();
                 mode.finish();
             }
             return false;
         }
+
         @Override
         public void onDestroyActionMode(ActionMode mode) {
 
@@ -302,9 +311,5 @@ public class MemoryRVAdapter extends RecyclerView.Adapter<MemoryRVAdapter.Memory
             selectedMemories.clear();
             aM = null;
         }
-    }
-
-    private String stringFromResource(int resourceID) {
-        return mContext.getResources().getString(resourceID);
     }
 }

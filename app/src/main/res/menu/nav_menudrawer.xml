@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="@string/settings_events">
         <menu>
             <group>
                 <item
-                    android:orderInCategory="0"
                     android:id="@+id/all"
                     android:icon="@drawable/navigation_all"
+                    android:orderInCategory="0"
                     android:title="@string/all" />
             </group>
-            <group android:id="@+id/events">
-            </group>
+            <group android:id="@+id/events"></group>
 
         </menu>
     </item>
@@ -19,26 +17,24 @@
 
     <group android:id="@+id/extras">
         <item
-            android:orderInCategory="2"
             android:id="@+id/user_settings"
             android:icon="@drawable/navigation_settings"
-            android:title="@string/settings"/>
-        <item
             android:orderInCategory="2"
+            android:title="@string/settings" />
+        <item
             android:id="@+id/userprofile_save"
             android:icon="@android:drawable/ic_menu_upload"
-            android:title="@string/save_profile"/>
+            android:orderInCategory="2"
+            android:title="@string/save_profile" />
     </group>
 
     <group android:id="@+id/note">
         <item
-            android:orderInCategory="3"
             android:id="@+id/note_developer"
             android:icon="@drawable/note_developer"
-            android:title="@string/note_developer"/>
+            android:orderInCategory="3"
+            android:title="@string/note_developer" />
     </group>
-
-
 
 
 </menu>

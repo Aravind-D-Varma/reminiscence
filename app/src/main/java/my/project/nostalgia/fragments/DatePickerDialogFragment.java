@@ -1,4 +1,5 @@
 package my.project.nostalgia.fragments;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -12,25 +13,26 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-import my.project.nostalgia.R;
-import my.project.nostalgia.supplementary.changeTheme;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import my.project.nostalgia.R;
+import my.project.nostalgia.supplementary.changeTheme;
 
 /**
  * Setup of getting and saving date from the date dialog in memory
  */
 public class DatePickerDialogFragment extends DialogFragment {
 
-    private static final String ARG_DATE = "date_id";
     public static final String EXTRA_DATE = "my.project.criminalintent.date";
+    private static final String ARG_DATE = "date_id";
     private DatePicker mDatePicker;
+
     /**
-    * Creating a new DialogFragment from MemoryFragment. Gets memory's date if present, else current date as default and shows in dialog.
-    */
-    public static DatePickerDialogFragment newInstance(Date date){
+     * Creating a new DialogFragment from MemoryFragment. Gets memory's date if present, else current date as default and shows in dialog.
+     */
+    public static DatePickerDialogFragment newInstance(Date date) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_DATE, date);
         DatePickerDialogFragment dpfragment = new DatePickerDialogFragment();
@@ -38,6 +40,7 @@ public class DatePickerDialogFragment extends DialogFragment {
 
         return dpfragment;
     }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -53,14 +56,14 @@ public class DatePickerDialogFragment extends DialogFragment {
         mDatePicker = v.findViewById(R.id.dialog_date_picker);
         mDatePicker.init(year, month, day, null);
         AlertDialog.Builder dialogBuildernew = new AlertDialog.Builder(
-                getActivity(),new changeTheme(getContext()).setDialogTheme())
+                getActivity(), new changeTheme(getContext()).setDialogTheme())
                 .setView(v)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     int year1 = mDatePicker.getYear();
                     int month1 = mDatePicker.getMonth();
                     int day1 = mDatePicker.getDayOfMonth();
                     Date calendarDate = new GregorianCalendar(year1, month1, day1
-                            , calendar.get(Calendar.HOUR),calendar.get(Calendar.MINUTE)).getTime();
+                            , calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE)).getTime();
                     sendResult(Activity.RESULT_OK, calendarDate);
                 });
         return dialogBuildernew.create();
@@ -69,8 +72,8 @@ public class DatePickerDialogFragment extends DialogFragment {
     /**
      * When OK has been clicked, go back to memory with new date (if selected, else default is current date)
      */
-    private void sendResult(int resultCode, Date date){
-        if(getTargetFragment() == null)
+    private void sendResult(int resultCode, Date date) {
+        if (getTargetFragment() == null)
             return;
         Intent intent = new Intent();
         intent.putExtra(EXTRA_DATE, date);

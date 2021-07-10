@@ -1,4 +1,5 @@
 package my.project.nostalgia.adapters;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +29,10 @@ public class ZoomViewPagerAdapter extends PagerAdapter {
         mContext = context;
         individualMediaPaths = mediaPaths;
     }
+
     /**
      * Inflate video through defined method setVideo or inflates image simply through Bitmap
+     *
      * @see #setVideo(int, View, VideoView)
      */
     @NonNull
@@ -37,26 +40,26 @@ public class ZoomViewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View v;
-        if(new MediaAndURI().isThisVideoFile(individualMediaPaths[position])){
-            v = inflater.inflate(R.layout.zoom_video,container,false);
+        if (new MediaAndURI().isThisVideoFile(individualMediaPaths[position])) {
+            v = inflater.inflate(R.layout.zoom_video, container, false);
             VideoView vv = v.findViewById(R.id.zoomed_videoView);
-            if(individualMediaPaths[position].length()>1)
+            if (individualMediaPaths[position].length() > 1)
                 setVideo(position, v, vv);
             else
                 container.removeView(v);
-        }
-        else {
+        } else {
             v = inflater.inflate(R.layout.zoom_image, container, false);
             ImageView iv = v.findViewById(R.id.zoomed_imageView);
-            if(individualMediaPaths[position].length()>1)
+            if (individualMediaPaths[position].length() > 1)
                 Glide.with(mContext).load(new MediaAndURI(mContext).getMediaUriOf(individualMediaPaths[position]))
-                    .into(iv);
+                        .into(iv);
             else
                 container.removeView(v);
         }
         container.addView(v);
         return v;
     }
+
     /**
      * Includes videso and images. So should return total count of media files
      */
@@ -67,15 +70,18 @@ public class ZoomViewPagerAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return (view==object);
+        return (view == object);
     }
+
     /**
      * Important to remove the super.destoryItem
      */
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
     }
-    /**Set the logic for pausing and resuming video. User can click anywhere on the screen to pause/resume.
+
+    /**
+     * Set the logic for pausing and resuming video. User can click anywhere on the screen to pause/resume.
      * Play button appears only when paused and disappears when resumed
      */
     private void setVideo(int position, View v, VideoView vv) {
@@ -86,9 +92,10 @@ public class ZoomViewPagerAdapter extends PagerAdapter {
             vv.seekTo(1);
             buttonLayout.setOnClickListener(v12 -> clickForPauseOrResume(vv, ib));
             ib.setOnClickListener(v1 -> clickForPauseOrResume(vv, ib));
+        } catch (NullPointerException ignored) {
         }
-        catch (NullPointerException ignored){}
     }
+
     private void clickForPauseOrResume(VideoView vv, ImageButton ib) {
         if (vv.isPlaying()) {
             ib.setVisibility(View.VISIBLE);

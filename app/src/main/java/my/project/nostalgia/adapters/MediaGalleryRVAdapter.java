@@ -1,4 +1,5 @@
 package my.project.nostalgia.adapters;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
@@ -40,9 +41,9 @@ import my.project.nostalgia.supplementary.transformationViewPager;
 public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;
-    private String[] mediaPaths;
     private final List<String> selectedMediaPaths = new LinkedList<>();
     private final Memory mMemory;
+    private String[] mediaPaths;
     private boolean longClickPressed = false;
 
     /**
@@ -51,7 +52,7 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
     public MediaGalleryRVAdapter(Context context, Memory memory) {
         this.mContext = context;
         this.mMemory = memory;
-        if(memory.getMediaPaths()!=null)
+        if (memory.getMediaPaths() != null)
             this.mediaPaths = mMemory.getMediaPaths().split(",");
         else
             this.mediaPaths = new String[]{""};
@@ -63,6 +64,7 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.photogallery_item, parent, false);
         return new MyImageViewHolder(v);
     }
+
     /**
      * Binds video or image depending on what type of item it is.
      * If video, sets video using its Uri. If image, uses Bitmap to set from filepath.
@@ -74,27 +76,27 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
         ImageView imageView = ((MyImageViewHolder) holder).image;
         final MediaAndURI mMediaAndURI = new MediaAndURI(mContext);
         try {
-            if(mediaPaths[position].length()>1)
+            if (mediaPaths[position].length() > 1)
                 Glide.with(mContext).load(mMediaAndURI.getMediaUriOf(mediaPaths[position]))
-                    .into(imageView);
+                        .into(imageView);
             else
                 imageView.setImageBitmap(null);
-        } catch (NullPointerException ignored){}
+        } catch (NullPointerException ignored) {
+        }
         CheckBox checkbox = ((MyImageViewHolder) holder).mMediaCheckbox;
         checkbox.setVisibility(View.GONE);
         checkbox.setChecked(false);
-        if(mediaPaths[position].length()>1)
+        if (mediaPaths[position].length() > 1)
             selectedMediaPaths.remove(mediaPaths[position]);
         imageView.setOnClickListener(v -> {
-            if(!longClickPressed)
+            if (!longClickPressed)
                 displayMediaZoomedIn(position);
-            else{
+            else {
                 if (checkbox.isChecked()) {
                     checkbox.setVisibility(View.GONE);
                     checkbox.setChecked(false);
                     selectedMediaPaths.remove(mediaPaths[position]);
-                }
-                else {
+                } else {
                     checkbox.setVisibility(View.VISIBLE);
                     checkbox.setChecked(true);
                     selectedMediaPaths.add(mediaPaths[position]);
@@ -110,20 +112,84 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
             return true;
         });
     }
+
     @Override
     public int getItemCount() {
         return mediaPaths.length;
     }
 
+    private void displayMediaZoomedIn(int position) {
+        Dialog dialog = new Dialog(mContext, R.style.PauseDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.media_pager_layout);
+        viewPagerImplementation(position, dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    private void viewPagerImplementation(int position, Dialog dialog) {
+        ZoomViewPagerAdapter adapter = new ZoomViewPagerAdapter(mContext, mediaPaths);
+        ViewPager pager = (ViewPager) dialog.findViewById(R.id.media_view_pager);
+        pager.setAdapter(adapter);
+
+        pager.addOnPageChangeListener(new CircularViewPager(pager));
+        pager.setCurrentItem(position);
+
+        pager.setPageTransformer(false, new transformationViewPager());
+        TabLayout tabLayout = dialog.findViewById(R.id.tabDots);
+        tabLayout.setupWithViewPager(pager, true);
+    }
+
+    private void AskDeleteMedias() {
+        AlertDialog.Builder deleteDialogbuilder = new AlertDialog.Builder(mContext, new changeTheme(mContext).setDialogTheme())
+                .setTitle(stringFromResource(R.string.delete_file))
+                .setMessage(stringFromResource(R.string.deletion_confirm))
+                .setPositiveButton(stringFromResource(R.string.delete), (dialog, whichButton) -> {
+                    List<String> list = new ArrayList<>(Arrays.asList(mediaPaths));
+                    list.removeAll(selectedMediaPaths);
+                    String joined = TextUtils.join(",", list);
+                    mMemory.setMediaPaths(joined);
+                    this.updateList(joined.split(","));
+                    this.notifyDataSetChanged();
+                    longClickPressed = false;
+                    dialog.dismiss();
+                }).setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> {
+                    this.notifyDataSetChanged();
+                    longClickPressed = false;
+                    dialog.dismiss();
+                });
+        AlertDialog deleteDialog = deleteDialogbuilder.create();
+        deleteDialog.setCancelable(false);
+        Window window = deleteDialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.TOP;
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        window.setAttributes(wlp);
+        deleteDialog.show();
+    }
+
+    private String stringFromResource(int resourceID) {
+        return mContext.getResources().getString(resourceID);
+    }
+
+    public void updateList(String[] newMediaPaths) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MediaDiffUtilCallback(this.mediaPaths, newMediaPaths));
+        this.mediaPaths = newMediaPaths;
+        diffResult.dispatchUpdatesTo(this);
+    }
+
     private static class MyImageViewHolder extends RecyclerView.ViewHolder {
         final ImageView image;
         final CheckBox mMediaCheckbox;
+
         public MyImageViewHolder(View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.memory_photo);
             mMediaCheckbox = itemView.findViewById(R.id.memory_photo_checkbox);
         }
     }
+
     private static class MediaDiffUtilCallback extends DiffUtil.Callback {
 
         private final String[] mOldMediaPaths;
@@ -153,63 +219,6 @@ public class MediaGalleryRVAdapter extends RecyclerView.Adapter {
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
             return mOldMediaPaths[oldItemPosition].equals(mNewMediaPaths[newItemPosition]);
         }
-    }
-
-    private void displayMediaZoomedIn(int position) {
-        Dialog dialog = new Dialog(mContext,R.style.PauseDialog);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.media_pager_layout);
-        viewPagerImplementation(position, dialog);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.show();
-    }
-    private void viewPagerImplementation(int position, Dialog dialog) {
-        ZoomViewPagerAdapter adapter = new ZoomViewPagerAdapter(mContext,mediaPaths);
-        ViewPager pager = (ViewPager) dialog.findViewById(R.id.media_view_pager);
-        pager.setAdapter(adapter);
-
-        pager.addOnPageChangeListener(new CircularViewPager(pager));
-        pager.setCurrentItem(position);
-
-        pager.setPageTransformer(false, new transformationViewPager());
-        TabLayout tabLayout = dialog.findViewById(R.id.tabDots);
-        tabLayout.setupWithViewPager(pager,true);
-    }
-    private void AskDeleteMedias(){
-        AlertDialog.Builder deleteDialogbuilder = new AlertDialog.Builder(mContext, new changeTheme(mContext).setDialogTheme())
-            .setTitle(stringFromResource(R.string.delete_file))
-            .setMessage(stringFromResource(R.string.deletion_confirm))
-            .setPositiveButton(stringFromResource(R.string.delete), (dialog, whichButton) -> {
-                List<String> list = new ArrayList<>(Arrays.asList(mediaPaths));
-                list.removeAll(selectedMediaPaths);
-                String joined = TextUtils.join(",", list);
-                mMemory.setMediaPaths(joined);
-                this.updateList(joined.split(","));
-                this.notifyDataSetChanged();
-                longClickPressed = false;
-                dialog.dismiss();
-            }).setNegativeButton(stringFromResource(R.string.cancel), (dialog, which) -> {
-                this.notifyDataSetChanged();
-                longClickPressed = false;
-                dialog.dismiss();
-             });
-        AlertDialog deleteDialog = deleteDialogbuilder.create();
-        deleteDialog.setCancelable(false);
-        Window window = deleteDialog.getWindow();
-        WindowManager.LayoutParams wlp = window.getAttributes();
-        wlp.gravity = Gravity.TOP;
-        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        window.setAttributes(wlp);
-        deleteDialog.show();
-    }
-    private String stringFromResource(int resourceID) {
-        return mContext.getResources().getString(resourceID);
-    }
-    public void updateList(String[] newMediaPaths) {
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new MediaDiffUtilCallback(this.mediaPaths, newMediaPaths));
-        this.mediaPaths = newMediaPaths;
-        diffResult.dispatchUpdatesTo(this);
     }
 
 }

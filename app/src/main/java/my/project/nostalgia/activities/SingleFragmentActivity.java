@@ -1,4 +1,5 @@
 package my.project.nostalgia.activities;
+
 import android.os.Bundle;
 
 import androidx.annotation.LayoutRes;
@@ -14,6 +15,7 @@ import my.project.nostalgia.R;
 public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     protected abstract Fragment createFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +30,11 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         }
     }
 
-    /**Depending on the screen size, i.e, phone/tablet, this will (should) return the relevant user interface.u*/
+    /**
+     * Depending on the screen size, i.e, phone/tablet, this will (should) return the relevant user interface.u
+     */
     @LayoutRes
-    protected int  getlayoutresID() {
+    protected int getlayoutresID() {
         return R.layout.activity_main;
     }
 }

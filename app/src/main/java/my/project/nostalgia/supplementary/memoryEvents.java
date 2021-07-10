@@ -29,29 +29,40 @@ import my.project.nostalgia.models.Memory;
 
 import static my.project.nostalgia.activities.LoginActivity.APPLICABLE_EVENTS;
 
-public class memoryEvents implements MemoryListFragment.Callbacks{
+public class memoryEvents implements MemoryListFragment.Callbacks {
 
     private final Context mContext;
+    private final String joinedCurrentEvents;
     private SharedPreferences mPreferences;
 
-    private final String joinedCurrentEvents;
-
-    /**Constructor with context and preferences as parameters indicates getting events from Preferences*/
+    /**
+     * Constructor with context and preferences as parameters indicates getting events from Preferences
+     */
     public memoryEvents(Context context, SharedPreferences preference) {
         this.mContext = context;
-        this.mPreferences =  preference;
-        this.joinedCurrentEvents = mPreferences.getString(APPLICABLE_EVENTS,"");
+        this.mPreferences = preference;
+        this.joinedCurrentEvents = mPreferences.getString(APPLICABLE_EVENTS, "");
     }
-    /**Only context as parameter indicates default Events*/
-    public memoryEvents(Context context){
+
+    /**
+     * Only context as parameter indicates default Events
+     */
+    public memoryEvents(Context context) {
         this.mContext = context;
         this.joinedCurrentEvents = defaultEventsJoined();
     }
+
     public String getJoinedEvents() {
         return joinedCurrentEvents;
     }
-    public String[] getIndividualEvents(){ return joinedCurrentEvents.split(",");}
-    /** Concatenates all events which are applicable into one string so that it can be stored in SharedPreferences.*/
+
+    public String[] getIndividualEvents() {
+        return joinedCurrentEvents.split(",");
+    }
+
+    /**
+     * Concatenates all events which are applicable into one string so that it can be stored in SharedPreferences.
+     */
     public String defaultEventsJoined() {
         List<String> allEvents = new LinkedList<>();
 
@@ -68,53 +79,56 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
         wordList.remove(finalI);
         saveInPreference(wordList);
     }
-    public void getAndSetNewEvent(View view, Activity activity,Memory memory) {
 
-        AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(mContext,new changeTheme(mContext).setDialogTheme());
+    public void getAndSetNewEvent(View view, Activity activity, Memory memory) {
+
+        AlertDialog.Builder inputEventDialog = new AlertDialog.Builder(mContext, new changeTheme(mContext).setDialogTheme());
         inputEventDialog.setTitle(R.string.new_custom_event);
         LinearLayout layout = new LinearLayout(mContext);
         layout.setOrientation(LinearLayout.VERTICAL);
         final EditText input = new EditText(mContext);
         input.setHint(R.string.new_custom_event_hint);
-        input.setInputType(InputType.TYPE_CLASS_TEXT| InputType.TYPE_TEXT_VARIATION_NORMAL);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
         layout.addView(input);
-        layout.setPadding(35,35,35,35);
+        layout.setPadding(35, 35, 35, 35);
         inputEventDialog.setView(layout);
 
         inputEventDialog.setPositiveButton(R.string.create, (dialog, whichButton) -> {
 
             String inputString = input.getText().toString();
-            if(inputString.length()>1){
+            if (inputString.length() > 1) {
                 addNewEvent(inputString);
-                refreshSnackbar(view,activity,memory);
+                refreshSnackbar(view, activity, memory);
             }
             dialog.dismiss();
         });
         inputEventDialog.setNegativeButton("cancel", (dialog, which) -> dialog.cancel()).create();
         inputEventDialog.show();
     }
-    public void askDiscardEvent(View view, Activity activity,int finalI){
+
+    public void askDiscardEvent(View view, Activity activity, int finalI) {
 
         AlertDialog.Builder discardMemoryDialogBox = new AlertDialog.Builder(mContext, new changeTheme(mContext).setDialogTheme());
-                discardMemoryDialogBox.setTitle(stringResource(R.string.discard_event))
+        discardMemoryDialogBox.setTitle(stringResource(R.string.discard_event))
                 .setMessage(stringResource(R.string.discard_event_confirm))
                 .setPositiveButton(stringResource(R.string.discard), (dialog, whichButton) -> {
                     removeFromEvents(finalI);
-                    refreshSnackbar(view,activity,null);
+                    refreshSnackbar(view, activity, null);
                     dialog.dismiss();
                 })
                 .setNegativeButton(stringResource(R.string.cancel), (dialog, which) -> dialog.dismiss())
                 .create().show();
     }
-    public void refreshSnackbar(View view, Activity activity, Memory memory){
-        Snackbar.make(view,stringResource(R.string.refreshPage),Snackbar.LENGTH_SHORT)
+
+    public void refreshSnackbar(View view, Activity activity, Memory memory) {
+        Snackbar.make(view, stringResource(R.string.refreshPage), Snackbar.LENGTH_SHORT)
                 .setAction(stringResource(R.string.refreshButton), v -> {
 
                     String activityName = activity.getClass().getSimpleName();
-                    if(activityName.equals("UserSettingsActivity"))
-                        mContext.startActivity(new Intent(mContext,UserSettingsActivity.class));
+                    if (activityName.equals("UserSettingsActivity"))
+                        mContext.startActivity(new Intent(mContext, UserSettingsActivity.class));
 
-                    else if(activityName.equals("MemoryPagerActivity")) {
+                    else if (activityName.equals("MemoryPagerActivity")) {
                         activity.finish();
                         onMemorySelected(memory);
                     }
@@ -124,13 +138,12 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
 
     @Override
     public void onMemorySelected(Memory memory) {
-        if(((FragmentActivity)mContext).findViewById(R.id.detail_fragment_container) == null){
+        if (((FragmentActivity) mContext).findViewById(R.id.detail_fragment_container) == null) {
             Intent intent = MemoryPagerActivity.newIntent(mContext, memory.getId());
             mContext.startActivity(intent);
-        }
-        else{
+        } else {
             Fragment newDetail = MemoryFragment.newInstance(memory.getId());
-            ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.detail_fragment_container, newDetail).commit();
+            ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.detail_fragment_container, newDetail).commit();
         }
     }
 
@@ -139,28 +152,33 @@ public class memoryEvents implements MemoryListFragment.Callbacks{
         wordList.add(input);
         saveInPreference(wordList);
     }
+
     private String stringResource(int resourceID) {
         return mContext.getResources().getString(resourceID);
     }
+
     private List<String> stringListOfCurrentEvents() {
         List<String> currentEventsList = Arrays.asList(joinedCurrentEvents.split(","));
         return new ArrayList<>(currentEventsList);
     }
+
     private void saveInPreference(List<String> wordList) {
         SharedPreferences.Editor mEditor = mPreferences.edit();
         mEditor.putString(APPLICABLE_EVENTS, stringListToString(wordList));
         mEditor.apply();
     }
+
     private String stringListToString(List<String> allEvents) {
         String[] applicableEvents = {};
         applicableEvents = allEvents.toArray(applicableEvents);
         StringBuilder combinedEvents = new StringBuilder();
-        for (String string:applicableEvents)
+        for (String string : applicableEvents)
             combinedEvents.append(string).append(",");
 
         return combinedEvents.toString();
     }
-    public String[] addStringToArray(String string, String[] strings){
+
+    public String[] addStringToArray(String string, String[] strings) {
         List<String> mylist = new LinkedList<>(Arrays.asList(strings));
         mylist.add(string);
         return mylist.toArray(new String[0]);

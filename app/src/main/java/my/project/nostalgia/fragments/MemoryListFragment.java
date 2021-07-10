@@ -1,4 +1,5 @@
 package my.project.nostalgia.fragments;
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,13 +26,6 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import my.project.nostalgia.adapters.MemoryRVAdapter;
-import my.project.nostalgia.models.Memory;
-import my.project.nostalgia.models.MemoryLab;
-import my.project.nostalgia.R;
-import my.project.nostalgia.activities.MemoryListActivity;
-import my.project.nostalgia.supplementary.changeTheme;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -44,8 +38,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import my.project.nostalgia.R;
+import my.project.nostalgia.activities.MemoryListActivity;
+import my.project.nostalgia.adapters.MemoryRVAdapter;
+import my.project.nostalgia.models.Memory;
+import my.project.nostalgia.models.MemoryLab;
+import my.project.nostalgia.supplementary.changeTheme;
+
 import static my.project.nostalgia.activities.LoginActivity.FIRST_TIME;
 //TODO Some input files use or override a depecrate API recompile with -Xlint:deprecation for details
+
 /**
  * Contains list layout of RecyclerView and floating action button to show all memories and to add a new one.
  */
@@ -53,23 +55,14 @@ public class MemoryListFragment extends Fragment {
 
     //region Declarations
     public static final String MEMORIES_KEY = "Memories";
+    private static final String[] DECLARED_GETPHOTO_PERMISSIONS = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+    private static final int MY_STORAGE_CODE = 102;
     private RecyclerView mRecyclerView;
     private Memory mNewMemory;
     private MemoryRVAdapter mAdapter;
     private Callbacks mCallbacks;
     private boolean isFirstTime = false;
-
-    private static final String[] DECLARED_GETPHOTO_PERMISSIONS = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
-    private static final int MY_STORAGE_CODE = 102;
     //endregion
-
-    /**
-     * MemoryListFragment has a way to call methods on its hosting activity. It does not matter which
-     * activity is the host. As long as the activity implements CrimeListFragment.Callbacks, everything in CrimeListFragment can work the same.
-     */
-    public interface Callbacks{
-        void onMemorySelected(Memory Memory);
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -86,6 +79,7 @@ public class MemoryListFragment extends Fragment {
     private boolean isDeviceTablet() {
         return getResources().getBoolean(R.bool.isTablet);
     }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -99,9 +93,8 @@ public class MemoryListFragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 try {
                     searchMemoriesByTitle(query);
-                }
-                catch (NullPointerException e){
-                    Toast.makeText(getContext(), stringResource(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
+                } catch (NullPointerException e) {
+                    Toast.makeText(getContext(), stringResource(R.string.emptyfilter), Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
@@ -110,15 +103,15 @@ public class MemoryListFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 try {
                     searchMemoriesByTitle(newText);
-                }
-                catch (NullPointerException e){
-                    if(newText.length()>=1)
-                        Toast.makeText(getContext(), stringResource(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
+                } catch (NullPointerException e) {
+                    if (newText.length() >= 1)
+                        Toast.makeText(getContext(), stringResource(R.string.emptyfilter), Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
         });
     }
+
     private String stringResource(int resourceID) {
         return getResources().getString(resourceID);
     }
@@ -135,7 +128,7 @@ public class MemoryListFragment extends Fragment {
         List<Memory> memories = MemoryLab.get(getActivity()).getMemories();
         View view;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        isFirstTime = prefs.getBoolean(FIRST_TIME,true);
+        isFirstTime = prefs.getBoolean(FIRST_TIME, true);
 
         if (isFirstTime) {
             view = inflater.inflate(R.layout.fragment_memory_list, container, false);
@@ -147,9 +140,9 @@ public class MemoryListFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     if (documentSnapshot.exists()) {
-                        if(!hasMediaPermission()) {
+                        if (!hasMediaPermission()) {
                             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext()
-                                    ,new changeTheme(getContext()).setDialogTheme());
+                                    , new changeTheme(getContext()).setDialogTheme());
                             alertBuilder.setCancelable(true);
                             alertBuilder.setTitle(R.string.storage_permission_necessary);
                             alertBuilder.setMessage(R.string.please_grant_storage);
@@ -158,30 +151,40 @@ public class MemoryListFragment extends Fragment {
                             AlertDialog alert = alertBuilder.create();
                             alert.show();
                         }
-                        prefs.edit().putBoolean(FIRST_TIME,false).apply();
+                        prefs.edit().putBoolean(FIRST_TIME, false).apply();
                         MemoryLab memoryLab = MemoryLab.get(getActivity());
                         int number = memoryLab.getMemories().size();
-                        Map<String,Object> dataReceived = documentSnapshot.getData();
+                        Map<String, Object> dataReceived = documentSnapshot.getData();
                         List<HashMap> hashMaps = (List<HashMap>) dataReceived.get(MEMORIES_KEY);
-                        for(HashMap hashMap:hashMaps){
+                        for (HashMap hashMap : hashMaps) {
                             Memory memory = new Memory();
-                            try {memory.setTitle(hashMap.get("title").toString());
-                            }catch (NullPointerException e){memory.setTitle("");}
-                            try{memory.setDetail(hashMap.get("detail").toString());
-                            }catch (NullPointerException e){memory.setDetail("");}
-                            try{memory.setMediaPaths(hashMap.get("mediaPaths").toString());
-                            }catch (NullPointerException e){memory.setMediaPaths("");}
-                            try{
-                            memory.setEvent(hashMap.get("event").toString());}
-                            catch (NullPointerException e){memory.setEvent("");}
+                            try {
+                                memory.setTitle(hashMap.get("title").toString());
+                            } catch (NullPointerException e) {
+                                memory.setTitle("");
+                            }
+                            try {
+                                memory.setDetail(hashMap.get("detail").toString());
+                            } catch (NullPointerException e) {
+                                memory.setDetail("");
+                            }
+                            try {
+                                memory.setMediaPaths(hashMap.get("mediaPaths").toString());
+                            } catch (NullPointerException e) {
+                                memory.setMediaPaths("");
+                            }
+                            try {
+                                memory.setEvent(hashMap.get("event").toString());
+                            } catch (NullPointerException e) {
+                                memory.setEvent("");
+                            }
                             memoryLab.addMemory(memory);
                         }
 
                     }
                 }
             });
-        }
-        else if(memories.size()==0){
+        } else if (memories.size() == 0) {
 
             view = inflater.inflate(R.layout.empty_list_page, container, false);
             Button noMemoryButton = view.findViewById(R.id.no_memory_button);
@@ -189,7 +192,7 @@ public class MemoryListFragment extends Fragment {
             noMemoryButton.setOnClickListener(noMemoryView -> {
                 mNewMemory = new Memory();
                 MemoryLab.get(getActivity()).addMemory(mNewMemory);
-                if(isDeviceTablet()) {
+                if (isDeviceTablet()) {
                     container.removeAllViews();
                     noMemoryView = inflater.inflate(R.layout.fragment_memory_list, container, false);
                     container.addView(noMemoryView);
@@ -197,8 +200,7 @@ public class MemoryListFragment extends Fragment {
                 }
                 mCallbacks.onMemorySelected(mNewMemory);
             });
-        }
-        else{
+        } else {
             view = inflater.inflate(R.layout.fragment_memory_list, container, false);
             setListAndAddButton(view);
         }
@@ -210,6 +212,7 @@ public class MemoryListFragment extends Fragment {
         int result = ContextCompat.checkSelfPermission(getActivity(), DECLARED_GETPHOTO_PERMISSIONS[0]);
         return result == PackageManager.PERMISSION_GRANTED;
     }
+
     private void setListAndAddButton(View view) {
         mRecyclerView = view.findViewById(R.id.memory_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -222,6 +225,7 @@ public class MemoryListFragment extends Fragment {
             mCallbacks.onMemorySelected(mNewMemory);
         });
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == MY_STORAGE_CODE) {
@@ -232,15 +236,15 @@ public class MemoryListFragment extends Fragment {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
     public void updateUI() {
         MemoryLab memoryLab = MemoryLab.get(getActivity());
         List<Memory> Memorys = memoryLab.getMemories();
-        if(mAdapter == null && Memorys.size()!=0) {
+        if (mAdapter == null && Memorys.size() != 0) {
             isFirstTime = false;
-            mAdapter = new MemoryRVAdapter(getContext(),getActivity(),Memorys);
+            mAdapter = new MemoryRVAdapter(getContext(), getActivity(), Memorys);
             mRecyclerView.setAdapter(mAdapter);
-        }
-        else {
+        } else {
             if (Memorys.size() != 0) {
                 mRecyclerView.setItemAnimator(null);
                 mAdapter.updateList(Memorys);
@@ -248,45 +252,49 @@ public class MemoryListFragment extends Fragment {
         }
         updateSubtitle();
     }
+
     @Override
     public void onResume() {
         super.onResume();
-        if(MemoryLab.get(getActivity()).getMemories().size()!=0 && isFirstTime) {
+        if (MemoryLab.get(getActivity()).getMemories().size() != 0 && isFirstTime) {
             MemoryListFragment fragment = new MemoryListFragment();
             getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
             startActivity(new Intent(getContext(), MemoryListActivity.class));
             getActivity().finish();
             return;
         }
-        if(!isFirstTime)
+        if (!isFirstTime)
             updateUI();
     }
+
     /**
      * Shows how many memories are there on the ActionBar
      */
-    public void updateSubtitle(){
+    public void updateSubtitle() {
         MemoryLab memoryLab = MemoryLab.get(getActivity());
         int MemoryCount = memoryLab.getMemories().size();
         String subtitle = getResources().getQuantityString(R.plurals.subtitle_plural, MemoryCount, MemoryCount);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.getSupportActionBar().setSubtitle(subtitle);
     }
+
     public void eventFilter(String event) {
         List<Memory> searchMemorysList = new ArrayList<>();
 
-        for(Memory Memory: MemoryLab.get(getActivity()).getMemories()){
-            if(event.equals(getString(R.string.all)))
+        for (Memory Memory : MemoryLab.get(getActivity()).getMemories()) {
+            if (event.equals(getString(R.string.all)))
                 searchMemorysList.add(Memory);
-            else if(Memory.getEvent().equals(event)){
+            else if (Memory.getEvent().equals(event)) {
                 searchMemorysList.add(Memory);
             }
         }
         try {
             mAdapter.updateList(searchMemorysList);
-        }catch (NullPointerException e){
-            Toast.makeText(getContext(), stringResource(R.string.emptyfilter),Toast.LENGTH_SHORT).show();
+        } catch (NullPointerException e) {
+            Toast.makeText(getContext(), stringResource(R.string.emptyfilter), Toast.LENGTH_SHORT).show();
         }
     }
+
     public void searchMemoriesByTitle(String text) {
 
         List<Memory> searchMemorysList = new ArrayList<>();
@@ -296,8 +304,16 @@ public class MemoryListFragment extends Fragment {
         }
         try {
             mAdapter.updateList(searchMemorysList);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             Toast.makeText(getContext(), stringResource(R.string.emptyfilter), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * MemoryListFragment has a way to call methods on its hosting activity. It does not matter which
+     * activity is the host. As long as the activity implements CrimeListFragment.Callbacks, everything in CrimeListFragment can work the same.
+     */
+    public interface Callbacks {
+        void onMemorySelected(Memory Memory);
     }
 }

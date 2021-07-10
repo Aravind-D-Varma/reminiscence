@@ -1,4 +1,5 @@
 package my.project.nostalgia.supplementary;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -20,19 +21,20 @@ import my.project.nostalgia.R;
 public class changeTheme {
     private final String mTheme;
     private final Context mContext;
-    public changeTheme(Context context){
+
+    public changeTheme(Context context) {
         SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(context);
         this.mContext = context;
         this.mTheme = getData.getString("GlobalTheme", "Dark");
     }
 
     public void setUserTheme() {
-        if (mTheme.equals("Dark")){
+        if (mTheme.equals("Dark")) {
             mContext.setTheme(R.style.Theme_Reminiscence);
-        }
-        else
+        } else
             mContext.setTheme(R.style.Theme_Reminiscence_Light);
     }
+
     public void colorToNavigationIcons(NavigationView nV) {
         int colorInt;
         if (mTheme.equals("Dark"))
@@ -43,34 +45,36 @@ public class changeTheme {
         ColorStateList csl = ColorStateList.valueOf(colorInt);
         nV.setItemIconTintList(csl);
     }
+
     public void setNavigationHeaderTheme(View headerView, TextView headerText) {
 
         if (mTheme.equals("Dark")) {
             headerView.setBackgroundColor(mContext.getResources().getColor(R.color.medium_black));
         }
-        if (mTheme.equals("Light")){
+        if (mTheme.equals("Light")) {
             headerView.setBackgroundColor(mContext.getResources().getColor(R.color.dark_purple));
             headerText.setTextColor(mContext.getResources().getColor(R.color.white));
         }
     }
 
     public void colorMemoryIcon(@NonNull Menu menu) {
-        if (mTheme.equals("Dark")){
+        if (mTheme.equals("Dark")) {
             menu.findItem(R.id.delete_memory).setIcon(R.drawable.delete_purple);
             menu.findItem(R.id.share_memory).setIcon(R.drawable.share_purple);
         }
     }
 
-    public void setLayoutTheme(View v){
+    public void setLayoutTheme(View v) {
         if (mTheme.equals("Light")) {
-            if(v instanceof Spinner) {
-                ((Spinner)v).setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_border_light));
-                try{((TextView)((Spinner)v).getChildAt(0)).setTextColor(mContext.getResources()
-                        .getColor(R.color.white)); }catch (NullPointerException ignored){
-                    Toast.makeText(mContext,"App crashes because of spinner text",Toast.LENGTH_SHORT).show();
+            if (v instanceof Spinner) {
+                ((Spinner) v).setBackground(ContextCompat.getDrawable(mContext, R.drawable.button_border_light));
+                try {
+                    ((TextView) ((Spinner) v).getChildAt(0)).setTextColor(mContext.getResources()
+                            .getColor(R.color.white));
+                } catch (NullPointerException ignored) {
+                    Toast.makeText(mContext, "App crashes because of spinner text", Toast.LENGTH_SHORT).show();
                 }
-            }
-            else {
+            } else {
                 v.setBackground(ContextCompat.getDrawable(mContext, R.drawable.layout_border_light));
 
                 final Button share = (Button) v.findViewById(R.id.cardview_share);
@@ -81,12 +85,12 @@ public class changeTheme {
                     share.setCompoundDrawableTintList(csl);
                 }
             }
-        }
-        else if (mTheme.equals("Dark")) {
-            if(!(v instanceof Spinner))
+        } else if (mTheme.equals("Dark")) {
+            if (!(v instanceof Spinner))
                 v.setBackground(ContextCompat.getDrawable(mContext, R.drawable.layout_border));
         }
     }
+
     public int setDialogTheme() {
         if (mTheme.equals("Dark"))
             return R.style.darkalertDialog;

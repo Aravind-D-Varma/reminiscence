@@ -1,4 +1,5 @@
 package my.project.nostalgia.models;
+
 import androidx.annotation.Nullable;
 
 import java.util.Date;
@@ -20,7 +21,7 @@ public class Memory {
         this(UUID.randomUUID());
     }
 
-    public Memory(UUID uuid){
+    public Memory(UUID uuid) {
         mId = uuid;
         mDate = new Date();
     }
@@ -28,33 +29,43 @@ public class Memory {
     public UUID getId() {
         return mId;
     }
+
     public String getMediaPaths() {
         return mMediaPaths;
     }
+
     public void setMediaPaths(String photos) {
         mMediaPaths = photos;
     }
+
     public String getEvent() {
         return mEvent;
     }
+
     public void setEvent(String event) {
         mEvent = event;
     }
+
     public String getDetail() {
         return mDetail;
     }
+
     public void setDetail(String detail) {
         mDetail = detail;
     }
+
     public String getTitle() {
         return mTitle;
     }
+
     public void setTitle(String title) {
         mTitle = title;
     }
+
     public Date getDate() {
         return mDate;
     }
+
     public void setDate(Date date) {
         mDate = date;
     }
@@ -65,11 +76,11 @@ public class Memory {
             return false;
 
         Memory other = (Memory) obj;
-        if(other.getTitle()==null)
+        if (other.getTitle() == null)
             other.mTitle = "";
-        if(other.getDetail()==null)
+        if (other.getDetail() == null)
             other.mDetail = "";
-        if(other.getMediaPaths()==null)
+        if (other.getMediaPaths() == null)
             other.mMediaPaths = "";
 
         if (!(this.mTitle).equals(other.getTitle()))
